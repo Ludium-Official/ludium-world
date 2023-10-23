@@ -8,8 +8,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-
 @Service
 public class LoginService {
     private final Environment env;
@@ -19,18 +17,8 @@ public class LoginService {
         this.env = env;
     }
 
-    public Object socialLogin(String code, String registrationId) {
-        String accessToken = getAccessToken(code, registrationId);
-        JsonNode userResourceNode = getUserResource(accessToken, registrationId);
-
-        return new HashMap<String, Object>(){
-            {
-                put("code", code);
-                put("registrationId", registrationId);
-                put("accessToken", accessToken);
-                put("resource", userResourceNode);
-            }
-        };
+    public String socialLogin(String code, String registrationId) {
+        return getAccessToken(code, registrationId);
     }
 
     private String getAccessToken(String authorizationCode, String registrationId) {
@@ -61,7 +49,7 @@ public class LoginService {
         return accessTokenNode.get("access_token").asText();
     }
 
-    private JsonNode getUserResource(String accessToken, String registrationId) {
+    public JsonNode getUserResource(String accessToken, String registrationId) {
         String resourceUri = env.getProperty("spring.security.oauth2.client.provider." + registrationId + ".resource-uri");
 
         HttpHeaders headers = new HttpHeaders();
