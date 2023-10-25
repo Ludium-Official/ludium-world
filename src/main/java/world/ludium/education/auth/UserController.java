@@ -1,0 +1,64 @@
+package world.ludium.education.auth;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import world.ludium.education.auth.google.GoogleUser;
+import world.ludium.education.auth.google.GoogleUserService;
+import world.ludium.education.auth.ludium.LudiumUser;
+import world.ludium.education.auth.ludium.LudiumUserService;
+
+import java.math.BigInteger;
+import java.util.HashMap;
+
+@RestController
+@RequestMapping(value = "/user", produces = "application/json")
+public class UserController {
+    LoginService loginService;
+    GoogleUserService googleUserService;
+    LudiumUserService ludiumUserService;
+
+    public UserController(LoginService loginService, GoogleUserService googleUserService, LudiumUserService ludiumUserService) {
+        this.loginService = loginService;
+        this.googleUserService = googleUserService;
+        this.ludiumUserService = ludiumUserService;
+    }
+
+    @PostMapping("/sign-up/{registrationId}")
+    public ResponseEntity<Object> signUpUser(@RequestHeader("Authorization") String authorization,
+                             @PathVariable String registrationId,
+                             @RequestParam String nick,
+                             @RequestParam String self_intro,
+                             @RequestParam String phone_number
+                             ) {
+        String accessToken = authorization.replace("Bearer", "");
+
+        JsonNode googleUserApiData = loginService.getUserResource(accessToken, registrationId);
+
+        GoogleUser googleUser = new GoogleUser();
+        googleUser.setGgl_id(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        googleUser.setGgl_gvn(googleUserApiData.get("given_name").toString().replaceAll("\"", ""));
+        googleUser.setGgl_nm(googleUserApiData.get("name").toString().replaceAll("\"", ""));
+        googleUser.setGgl_eml(googleUserApiData.get("email").toString().replaceAll("\"", ""));
+
+        LudiumUser ludiumUser = new LudiumUser();
+        ludiumUser.setGgl_id(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        ludiumUser.setNick(nick);
+        ludiumUser.setSelf_intro(self_intro);
+        ludiumUser.setPhn_nmb(phone_number);
+
+        try {
+            googleUserService.createUser(googleUser);
+            ludiumUserService.createUser(ludiumUser);
+        } catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("사용자 데이터를 만드는 중에 에러가 발생하였습니다.");
+        }
+
+        return ResponseEntity.ok(new HashMap<String, String>(){{
+            put("nick", nick);
+            put("self_intro", self_intro);
+            put("phn_nmb", phone_number);
+        }});
+    }
+}
