@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 export default function Article() {
+
   return (
     <>
       <Link href="/article/new">글쓰기</Link>

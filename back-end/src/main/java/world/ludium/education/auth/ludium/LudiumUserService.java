@@ -2,6 +2,7 @@ package world.ludium.education.auth.ludium;
 
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.UUID;
 
 @Service
@@ -10,6 +11,10 @@ public class LudiumUserService {
 
     public LudiumUserService(LudiumUserRepository ludiumUserRepository) {
         this.ludiumUserRepository = ludiumUserRepository;
+    }
+
+    public LudiumUser getUserByGglId(BigInteger ggl_id) {
+        return ludiumUserRepository.findByGglId(ggl_id);
     }
 
     public LudiumUser createUser(LudiumUser ludiumUser) {

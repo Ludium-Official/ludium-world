@@ -1,39 +1,39 @@
 import { useEffect, useRef, useState } from "react";
-import "@toast-ui/editor/dist/toastui-editor.css";
+import Editor from "../../../components/Editor";
 
 export default function NewArticle() {
-  const [editor, setEditor] = useState(null);
-  const divRef = useRef(null);
+  const titleRef = useRef(null);
+  const editorRef = useRef(null);
 
-  const handleSave = _ => {
-    localStorage.setItem("md-content", editor.getMarkdown());
+  const handleSave = async () => {
+    const { editorInstance } = editorRef.current;
+    const formData = new FormData();
+
+    formData.append("title", titleRef.current.value);
+    formData.append("content", editorInstance.getMarkdown());
+
+    const { value } = await cookieStore.get("access_token");
+
+    fetch("http://localhost:8080/article", {
+      method: "post",
+      body: formData,
+      headers: {
+        Authorization: `Bearer${value}`
+      },
+    });
   }
 
   const handleLoad = _ => {
-    editor.setMarkdown(localStorage.getItem("md-content"));
+    const { editorInstance } = editorRef.current;
+    editorInstance.setMarkdown(localStorage.getItem("md-content"));
   }
-
-  useEffect(() => {
-    const putEditor = async () => {
-      const {Editor} = await import("@toast-ui/editor");
-
-      divRef.current.innerText = ""
-      setEditor(new Editor({
-        el: divRef.current,
-        height: "90vh",
-        initialEditType: "wysiwyg",
-        previewStyle: "tab",
-      }));
-    }
-
-    putEditor();
-  }, [])
 
   return (
     <>
       <button onClick={handleSave}>Save</button>
       <button onClick={handleLoad}>Load</button>
-      <div ref={divRef} style={{ width: "100%", height: "100vh" }}>Loading...</div>
+      <input type="text" name="title" id="title" ref={titleRef} placeholder="제목을 입력해주세요" />
+      <Editor editorRef={editorRef} />
     </>
   )
 }
