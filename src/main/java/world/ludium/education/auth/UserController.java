@@ -27,11 +27,11 @@ public class UserController {
 
     @PostMapping("/sign-up/{registrationId}")
     public ResponseEntity<Object> signUpUser(@RequestHeader("Authorization") String authorization,
-                             @PathVariable String registrationId,
-                             @RequestParam String nick,
-                             @RequestParam String self_intro,
-                             @RequestParam String phone_number
-                             ) {
+                                             @PathVariable String registrationId,
+                                             @RequestParam String nick,
+                                             @RequestParam String self_intro,
+                                             @RequestParam String phone_number
+    ) {
         String accessToken = authorization.replace("Bearer", "");
 
         JsonNode googleUserApiData = loginService.getUserResource(accessToken, registrationId);
@@ -43,19 +43,25 @@ public class UserController {
         googleUser.setGgl_eml(googleUserApiData.get("email").toString().replaceAll("\"", ""));
 
         LudiumUser ludiumUser = new LudiumUser();
-        ludiumUser.setGgl_id(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        ludiumUser.setGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
         ludiumUser.setNick(nick);
-        ludiumUser.setSelf_intro(self_intro);
-        ludiumUser.setPhn_nmb(phone_number);
+        ludiumUser.setSelfIntro(self_intro);
+        ludiumUser.setPhnNmb(phone_number);
 
         try {
             googleUserService.createUser(googleUser);
             ludiumUserService.createUser(ludiumUser);
-        } catch(Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("사용자 데이터를 만드는 중에 에러가 발생하였습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new HashMap<String, String>() {
+                        {
+                            put("message", "사용자 데이터를 만드는 중에 에러가 발생하였습니다.");
+                            put("debug", e.getMessage());
+                        }
+                    });
         }
 
-        return ResponseEntity.ok(new HashMap<String, String>(){{
+        return ResponseEntity.ok(new HashMap<String, String>() {{
             put("nick", nick);
             put("self_intro", self_intro);
             put("phn_nmb", phone_number);

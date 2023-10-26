@@ -15,9 +15,9 @@ public class LudiumUser {
     @GeneratedValue
     private UUID id;
     private String nick;
-    private String self_intro;
-    private String phn_nmb;
-    private BigInteger ggl_id;
+    private String selfIntro;
+    private String phnNmb;
+    private BigInteger gglId;
 
     public UUID getId() {
         return id;
@@ -35,27 +35,27 @@ public class LudiumUser {
         this.nick = nick;
     }
 
-    public String getSelf_intro() {
-        return self_intro;
+    public String getSelfIntro() {
+        return selfIntro;
     }
 
-    public void setSelf_intro(String self_intro) {
-        this.self_intro = self_intro;
+    public void setSelfIntro(String selfIntro) {
+        this.selfIntro = selfIntro;
     }
 
-    public String getPhn_nmb() {
-        return phn_nmb;
+    public String getPhnNmb() {
+        return phnNmb;
     }
 
-    public void setPhn_nmb(String phn_nmb) {
-        this.phn_nmb = phn_nmb;
+    public void setPhnNmb(String phnNmb) {
+        this.phnNmb = phnNmb;
     }
 
-    public BigInteger getGgl_id() {
-        return ggl_id;
+    public BigInteger getGglId() {
+        return gglId;
     }
 
-    public void setGgl_id(BigInteger ggl_id) {
-        this.ggl_id = ggl_id;
+    public void setGglId(BigInteger gglId) {
+        this.gglId = gglId;
     }
 }
