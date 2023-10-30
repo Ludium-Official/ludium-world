@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import Viewer from "../Viewer";
 
-export default function SubmitContent({ id, content, vldStt }) {
+export default function SubmitContent({ id, content, vldStt, nick }) {
     const [submitData, setSubmitData] = useState({
         content: content,
         isValidate: vldStt
@@ -43,6 +43,7 @@ export default function SubmitContent({ id, content, vldStt }) {
     return (
         <div key={id} style={{ display: "flex", justifyContent: "space-between" }}>
             <Viewer viewerRef={viewerRef} content={submitData.content} />
+            <p>{nick}</p>
             {submitData.isValidate ?
                 <>
                     <p>검증O</p>
