@@ -6,6 +6,8 @@ export default function Viewer({ viewerRef }) {
             const toastViewer = (await import("@toast-ui/editor/dist/toastui-editor-viewer")).default;
             
             try {
+                if(viewerRef.current === null) return;
+                
                 viewerRef.current.innerText = "";
 
                 viewerRef.current.viewerInstance = new toastViewer({

@@ -24,11 +24,18 @@ export default function getArticle() {
                     const article = await getArticleResponse.json();
                     setArticle(article);
 
-                    setTimeout(ref => {
-                        const viewerInstance = ref.current.viewerInstance;
-
+                    if(viewerRef.current.viewerInstance === undefined) {
+                        setTimeout(ref => {
+                            if(ref.current === null) return;
+                            const viewerInstance = ref.current.viewerInstance;
+    
+                            viewerInstance.setMarkdown(article.content);
+                        }, 1000, viewerRef);
+                    } else {
+                        const viewerInstance = viewerRef.current.viewerInstance;
+    
                         viewerInstance.setMarkdown(article.content);
-                    }, 1000, viewerRef);
+                    }
                 }
             }
         }

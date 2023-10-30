@@ -18,7 +18,7 @@ export default function NewArticle() {
     const createArticleResponse = await fetch(`${serverUri}/article`, {
       method: "post",
       body: formData,
-      credentials: 'include'
+      credentials: "include"
     });
 
     if (createArticleResponse.ok) {
