@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 
-export default function Viewer({ viewerRef }) {
+export default function Viewer({ viewerRef, content }) {
     useEffect(() => {
         const putViewer = async () => {
             const toastViewer = (await import("@toast-ui/editor/dist/toastui-editor-viewer")).default;
@@ -13,7 +13,7 @@ export default function Viewer({ viewerRef }) {
                 viewerRef.current.viewerInstance = new toastViewer({
                     el: viewerRef.current,
                     height: "90vh",
-                    initialValue: ""
+                    initialValue: content ?? ""
                 });
             } catch(error) {
                 console.error(error);
