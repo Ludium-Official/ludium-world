@@ -18,7 +18,7 @@ export default function SignUP() {
             const res = await fetch(`${serverUri}/user/sign-up/google`, {
                 method: "post",
                 body: formData,
-                credentials : 'include'
+                credentials : "include"
             })
 
             if(res.ok) {
