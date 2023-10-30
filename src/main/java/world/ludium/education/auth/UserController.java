@@ -26,14 +26,12 @@ public class UserController {
     }
 
     @PostMapping("/sign-up/{registrationId}")
-    public ResponseEntity<Object> signUpUser(@RequestHeader("Authorization") String authorization,
+    public ResponseEntity<Object> signUpUser(@CookieValue(name = "access_token", required = false) String accessToken,
                                              @PathVariable String registrationId,
                                              @RequestParam String nick,
                                              @RequestParam String self_intro,
                                              @RequestParam String phone_number
     ) {
-        String accessToken = authorization.replace("Bearer", "");
-
         JsonNode googleUserApiData = loginService.getUserResource(accessToken, registrationId);
 
         GoogleUser googleUser = new GoogleUser();
