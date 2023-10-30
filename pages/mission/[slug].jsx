@@ -1,8 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import Viewer from "../../components/Viewer";
-import Editor from "../../components/Editor";
-import MissionSubmit from "../../components/mission/Submit";
 
 export async function getServerSideProps(context) {
     return {
@@ -13,26 +11,15 @@ export async function getServerSideProps(context) {
 export default function getMission() {
     const router = useRouter();
     const viewerRef = useRef(null);
-    const editorRef = useRef(null);
     const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
     const [mission, setMission] = useState({ id: null, title: "", content: "" });
 
-    const handleSubmitMission = () => {
-        const submitContent = editorRef.current.editorInstance.getMarkdown();
+    const handleGoSubmit = () => {
+        router.push(`/mission/${router.query.slug}/submit/new`);
+    }
 
-        if (submitContent == null || submitContent === "") return;
-
-        const submitFormData = new FormData();
-
-        submitFormData.append("content", submitContent);
-
-        const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
-
-        fetch(`${serverUri}/mission/${router.query.slug}`, {
-            method: "post",
-            body: submitFormData,
-            credentials: "include"
-        })
+    const handleGoMissionSubmit = () => {
+        router.push(`/mission/${router.query.slug}/submit`);
     }
 
     useEffect(() => {
@@ -65,19 +52,9 @@ export default function getMission() {
     }, []);
 
     return <>
+        <button onClick={handleGoSubmit}>미션제출하러가기</button>
+        <button onClick={handleGoMissionSubmit}>미션 제출 보기</button>
         <input type="text" name="title" id="title" readOnly={true} value={mission.title} />
         <Viewer viewerRef={viewerRef} />
-        <details>
-            <summary>미션 제출</summary>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <button onClick={handleSubmitMission}>제출하기</button>
-            </div>
-            <hr />
-            <Editor editorRef={editorRef} />
-        </details>
-        <details>
-            <summary>미션 제출 이력</summary>
-            <MissionSubmit missionId={router.query.slug} />
-        </details>
     </>
 }
