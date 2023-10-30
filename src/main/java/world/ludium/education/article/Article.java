@@ -40,11 +40,7 @@ public class Article {
         this.content = content;
     }
 
-    public UUID getUsrId() {
-        return usrId;
-    }
+    public UUID getUsrId() { return usrId; }
 
-    public void setUsrId(UUID usrId) {
-        this.usrId = usrId;
-    }
+    public void setUsrId(UUID usrId) { this.usrId = usrId; }
 }

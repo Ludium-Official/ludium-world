@@ -22,8 +22,7 @@ public class ArticleController {
 
     public ArticleController(LoginService loginService,
                              LudiumUserService ludiumUserService,
-                             ArticleService articleService
-    ) {
+                             ArticleService articleService) {
         this.loginService = loginService;
         this.ludiumUserService = ludiumUserService;
         this.articleService = articleService;
@@ -42,8 +41,7 @@ public class ArticleController {
     @PostMapping("")
     public ResponseEntity createArticle(@RequestParam String title,
                                         @RequestParam String content,
-                                        @CookieValue(name = "access_token", required = false) String accessToken
-    ) {
+                                        @CookieValue(name = "access_token", required = false) String accessToken) {
         JsonNode googleUserApiData = loginService.getUserResource(accessToken, "google");
 
         LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
@@ -64,11 +62,9 @@ public class ArticleController {
             );
         }
 
-        return ResponseEntity.ok(new HashMap<String, String>() {
-            {
+        return ResponseEntity.ok(new HashMap<String, String>() {{
                 put("title", title);
                 put("content", content);
-            }
-        });
+            }});
     }
 }
