@@ -22,4 +22,8 @@ public class LudiumUserService {
 
         return ludiumUserRepository.save(ludiumUser);
     }
+
+    public LudiumUser getUserById(UUID id) {
+        return ludiumUserRepository.findById(id).orElse(null);
+    }
 }

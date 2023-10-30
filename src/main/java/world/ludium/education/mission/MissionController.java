@@ -14,6 +14,7 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/mission", produces = "application/json")
@@ -116,7 +117,18 @@ public class MissionController {
     public ResponseEntity getMissionSubmits(@PathVariable UUID missionId) {
         List<MissionSubmit> missionSubmits = missionSubmitService.getMissionSubmits(missionId);
 
-        return ResponseEntity.ok(missionSubmits);
+        return ResponseEntity.ok(missionSubmits.stream()
+                .map(submit -> {
+                    LudiumUser ludiumUser = ludiumUserService.getUserById(submit.getUsrId());
+
+                    return new MissionSubmitDTO(submit.getId(),
+                            submit.getContent(),
+                            submit.isVldStt(),
+                            ludiumUser.getNick()
+                    );
+                })
+                .collect(Collectors.toList())
+        );
     }
 
     @PutMapping("/submit/validate/{submitId}")
