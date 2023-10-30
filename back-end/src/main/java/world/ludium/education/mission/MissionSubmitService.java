@@ -45,4 +45,13 @@ public class MissionSubmitService {
 
         return missionSubmitRepository.save(missionSubmit);
     }
+
+    public MissionSubmit invalidateMissionSubmit(UUID submitId) {
+        MissionSubmit missionSubmit = missionSubmitRepository.findById(submitId)
+                .orElseThrow(() -> new EntityNotFoundException("미션 서브밋을 찾을 수 없습니다. ID: " + submitId));
+
+        missionSubmit.setVldStt(false);
+
+        return missionSubmitRepository.save(missionSubmit);
+    }
 }
