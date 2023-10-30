@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import Viewer from "../../components/Viewer";
 import Editor from "../../components/Editor";
+import MissionSubmit from "../../components/mission/Submit";
 
 export async function getServerSideProps(context) {
     return {
@@ -19,12 +20,12 @@ export default function getMission() {
     const handleSubmitMission = () => {
         const submitContent = editorRef.current.editorInstance.getMarkdown();
 
-        if(submitContent == null || submitContent === "") return;
+        if (submitContent == null || submitContent === "") return;
 
         const submitFormData = new FormData();
 
         submitFormData.append("content", submitContent);
-        
+
         const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
 
         fetch(`${serverUri}/mission/${router.query.slug}`, {
@@ -66,13 +67,17 @@ export default function getMission() {
     return <>
         <input type="text" name="title" id="title" readOnly={true} value={mission.title} />
         <Viewer viewerRef={viewerRef} />
-        <div>
-            <div style={{display: "flex", justifyContent: "space-between"}}>
-            <h2>미션 제출</h2>
-            <button onClick={handleSubmitMission}>제출하기</button>
+        <details>
+            <summary>미션 제출</summary>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <button onClick={handleSubmitMission}>제출하기</button>
             </div>
             <hr />
             <Editor editorRef={editorRef} />
-        </div>
+        </details>
+        <details>
+            <summary>미션 제출 이력</summary>
+            <MissionSubmit missionId={router.query.slug} />
+        </details>
     </>
 }

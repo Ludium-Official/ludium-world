@@ -12,6 +12,7 @@ import world.ludium.education.auth.ludium.LudiumUserService;
 
 import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -109,5 +110,34 @@ public class MissionController {
                     put("missionId", missionId.toString());
                     put("content", content);
                 }});
+    }
+
+    @GetMapping("/submit/{missionId}")
+    public ResponseEntity getMissionSubmits(@PathVariable UUID missionId) {
+        List<MissionSubmit> missionSubmits = missionSubmitService.getMissionSubmits(missionId);
+
+        return ResponseEntity.ok(missionSubmits);
+    }
+
+    @PutMapping("/submit/validate/{submitId}")
+    public ResponseEntity validateSubmit(@PathVariable UUID submitId) {
+        MissionSubmitHistory missionSubmitHistory = new MissionSubmitHistory();
+        missionSubmitHistory.setMsnSbmId(submitId);
+        missionSubmitHistory.setContent("검증됨");
+        try {
+            missionSubmitService.validateMissionSubmit(submitId);
+            missionSubmitService.createMissionSubmitHistory(missionSubmitHistory);
+        } catch(Exception e) {
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new HashMap<>() {{
+                        put("message", "미션을 검증하는 중에 에러가 발생했습니다.");
+                        put("debug", e.getMessage());
+                    }});
+        }
+
+        return ResponseEntity.ok(new HashMap<>() {{
+            put("id", submitId);
+            put("vldStt", true);
+        }});
     }
 }
