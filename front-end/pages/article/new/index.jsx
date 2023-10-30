@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import Editor from "../../../components/Editor";
+import { useRouter } from "next/router";
 
 export default function NewArticle() {
+  const router = useRouter();
   const titleRef = useRef(null);
   const editorRef = useRef(null);
 
@@ -13,22 +15,20 @@ export default function NewArticle() {
     formData.append("content", editorInstance.getMarkdown());
 
     const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
-    fetch(`${serverUri}/article`, {
+    const createArticleResponse = await fetch(`${serverUri}/article`, {
       method: "post",
       body: formData,
-      credentials : 'include'
+      credentials: 'include'
     });
-  }
 
-  const handleLoad = _ => {
-    const { editorInstance } = editorRef.current;
-    editorInstance.setMarkdown(localStorage.getItem("md-content"));
+    if (createArticleResponse.ok) {
+      router.push("/article");
+    }
   }
 
   return (
     <>
-      <button onClick={handleSave}>Save</button>
-      <button onClick={handleLoad}>Load</button>
+      <button onClick={handleSave}>저장</button>
       <input type="text" name="title" id="title" ref={titleRef} placeholder="제목을 입력해주세요" />
       <Editor editorRef={editorRef} />
     </>
