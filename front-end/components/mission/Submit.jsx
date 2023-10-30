@@ -20,7 +20,7 @@ export default function MissionSubmit({ missionId }) {
 
     return (
         <div>
-          {submits.map(({ id, content, vldStt }) => <SubmitContent key={id} id={id} content={content} vldStt={vldStt} />)}
+          {submits.map((submit) => <SubmitContent key={submit.id} {...submit} />)}
         </div>
       );
       
