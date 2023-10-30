@@ -61,7 +61,7 @@ public class MissionController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     new HashMap<String, String>() {{
-                        put("message", "아티클을 만드는 중에 에러가 발생했습니다.");
+                        put("message", "미션을 만드는 중에 에러가 발생했습니다.");
                         put("debug", e.getMessage());
                     }}
             );
@@ -138,6 +138,28 @@ public class MissionController {
         return ResponseEntity.ok(new HashMap<>() {{
             put("id", submitId);
             put("vldStt", true);
+        }});
+    }
+
+    @PutMapping("/submit/invalidate/{submitId}")
+    public ResponseEntity invalidateSubmit(@PathVariable UUID submitId) {
+        MissionSubmitHistory missionSubmitHistory = new MissionSubmitHistory();
+        missionSubmitHistory.setMsnSbmId(submitId);
+        missionSubmitHistory.setContent("검증해제 됨");
+        try {
+            missionSubmitService.invalidateMissionSubmit(submitId);
+            missionSubmitService.createMissionSubmitHistory(missionSubmitHistory);
+        } catch(Exception e) {
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new HashMap<>() {{
+                        put("message", "미션을 검증을 해제하는 중에 에러가 발생했습니다.");
+                        put("debug", e.getMessage());
+                    }});
+        }
+
+        return ResponseEntity.ok(new HashMap<>() {{
+            put("id", submitId);
+            put("vldStt", false);
         }});
     }
 }
