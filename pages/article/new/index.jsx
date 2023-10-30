@@ -12,14 +12,11 @@ export default function NewArticle() {
     formData.append("title", titleRef.current.value);
     formData.append("content", editorInstance.getMarkdown());
 
-    const { value } = await cookieStore.get("access_token");
-
-    fetch("http://localhost:8080/article", {
+    const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
+    fetch(`${serverUri}/article`, {
       method: "post",
       body: formData,
-      headers: {
-        Authorization: `Bearer${value}`
-      },
+      credentials : 'include'
     });
   }
 

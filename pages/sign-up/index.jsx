@@ -9,18 +9,16 @@ export default function SignUP() {
         e.preventDefault();
 
         const formData = new FormData(e.target);
-        const { value } = await cookieStore.get("access_token");
         
         const { editorInstance } = editorRef.current;
-        formData.append('self_intro', editorInstance.getMarkdown());
+        formData.append("self_intro", editorInstance.getMarkdown());
 
         try {
-            const res = await fetch("http://localhost:8080/user/sign-up/google", {
+            const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
+            const res = await fetch(`${serverUri}/user/sign-up/google`, {
                 method: "post",
                 body: formData,
-                headers: {
-                    Authorization: `Bearer${value}`
-                }
+                credentials : 'include'
             })
 
             if(res.ok) {
