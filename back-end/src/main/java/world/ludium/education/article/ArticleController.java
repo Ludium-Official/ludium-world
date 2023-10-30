@@ -10,6 +10,7 @@ import world.ludium.education.auth.ludium.LudiumUserService;
 
 import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/article", produces = "application/json")
@@ -28,12 +29,21 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
+    @GetMapping("")
+    public ResponseEntity getArticles() {
+        return ResponseEntity.ok(articleService.getAllArticle());
+    }
+
+    @GetMapping("/{articleId}")
+    public ResponseEntity getArticle(@PathVariable UUID articleId) {
+        return ResponseEntity.ok(articleService.getArticle(articleId));
+    }
+
     @PostMapping("")
-    public ResponseEntity createArticle(@RequestHeader("Authorization") String authorization,
-                                        @RequestParam String title,
-                                        @RequestParam String content
+    public ResponseEntity createArticle(@RequestParam String title,
+                                        @RequestParam String content,
+                                        @CookieValue(name = "access_token", required = false) String accessToken
     ) {
-        String accessToken = authorization.replace("Bearer", "");
         JsonNode googleUserApiData = loginService.getUserResource(accessToken, "google");
 
         LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));

@@ -23,9 +23,5 @@ export default function Editor({ editorRef }) {
         putEditor();
     }, []);
 
-    return (
-        <>
-            <div ref={editorRef} style={{ width: "100%", height: "100vh" }}>Loading...</div>
-        </>
-    );
+    return <div ref={editorRef} style={{ width: "100%", height: "100vh" }}>Loading...</div>;
 }
