@@ -207,4 +207,26 @@ public class MissionController {
     public ResponseEntity getMissionSubmitHistory(@PathVariable UUID submitId) {
         return ResponseEntity.ok(missionSubmitService.getMissionSubmitHistory(submitId));
     }
+
+    @PostMapping("/{missionId}/submit/{submitId}")
+    public ResponseEntity createSubmitComment(@PathVariable UUID submitId,
+                                              @RequestParam String content,
+                                              @CookieValue(name = "access_token", required = false) String accessToken) {
+        JsonNode googleUserApiData = loginService.getUserResource(accessToken, "google");
+
+        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+
+        MissionSubmitComment missionSubmitComment = new MissionSubmitComment();
+
+        missionSubmitComment.setContent(content);
+        missionSubmitComment.setMsnSbmId(submitId);
+        missionSubmitComment.setUsrId(ludiumUser.getId());
+
+        return ResponseEntity.ok(missionSubmitService.createMissionSubmitComment(missionSubmitComment));
+    }
+
+    @GetMapping("/{missionId}/submit/{submitId}/comment")
+    public ResponseEntity getSubmitComments(@PathVariable UUID submitId) {
+        return ResponseEntity.ok(missionSubmitService.getMissionSubmitComments(submitId));
+    }
 }
