@@ -8,11 +8,11 @@ export async function getServerSideProps(context) {
     };
 }
 
-export default function newSubmit() {
+export default function NewSubmit() {
     const router = useRouter();
     const editorRef = useRef(null);
 
-    const handleSubmitMission = () => {
+    const handleSubmitMission = async () => {
         const submitContent = editorRef.current.editorInstance.getMarkdown();
 
         if (submitContent == null || submitContent === "") return;
@@ -23,11 +23,15 @@ export default function newSubmit() {
 
         const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
 
-        fetch(`${serverUri}/mission/${router.query.slug}`, {
+        const newMissionSubmitResponse = await fetch(`${serverUri}/mission/${router.query.missionId}`, {
             method: "post",
             body: submitFormData,
             credentials: "include"
         })
+
+        if(newMissionSubmitResponse.ok) {
+            router.push(`/mission/${router.query.missionId}`)
+        }
     }
 
     return <>

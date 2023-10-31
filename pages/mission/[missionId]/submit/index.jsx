@@ -9,12 +9,12 @@ export async function getServerSideProps(context) {
 }
 
 
-export default function getSubmits() {
+export default function GetSubmits() {
     const router = useRouter();
 
     return <>
         <h1>미션 제출 목록</h1>
         <hr />
-        <MissionSubmit missionId={router.query.slug} />
+        <MissionSubmit missionId={router.query.missionId} />
     </>
 }

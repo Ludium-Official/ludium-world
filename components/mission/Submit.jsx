@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import Viewer from "../Viewer";
+import { useEffect, useState } from "react";
 import SubmitContent from "./SubmitContent";
 
 export default function MissionSubmit({ missionId }) {
@@ -20,7 +19,7 @@ export default function MissionSubmit({ missionId }) {
 
     return (
         <div>
-          {submits.map((submit) => <SubmitContent key={submit.id} {...submit} />)}
+          {submits.map((submit) => <SubmitContent key={submit.id} {...submit} submitId = {missionId} />)}
         </div>
       );
       

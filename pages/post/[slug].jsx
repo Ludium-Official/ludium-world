@@ -8,7 +8,7 @@ export async function getServerSideProps(context) {
     };
 }
 
-export default function getPost() {
+export default function GetPost() {
     const router = useRouter();
     const viewerRef = useRef(null);
     const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
