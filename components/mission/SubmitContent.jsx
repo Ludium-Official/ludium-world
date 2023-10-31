@@ -1,7 +1,8 @@
+import Link from "next/link";
 import { useRef, useState } from "react";
 import Viewer from "../Viewer";
 
-export default function SubmitContent({ id, content, vldStt, nick }) {
+export default function SubmitContent({ id, content, vldStt, nick, submitId }) {
     const [submitData, setSubmitData] = useState({
         content: content,
         isValidate: vldStt
@@ -41,7 +42,7 @@ export default function SubmitContent({ id, content, vldStt, nick }) {
     }
 
     return (
-        <div key={id} style={{ display: "flex", justifyContent: "space-between" }}>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
             <Viewer viewerRef={viewerRef} content={submitData.content} />
             <p>{nick}</p>
             {submitData.isValidate ?
@@ -54,6 +55,7 @@ export default function SubmitContent({ id, content, vldStt, nick }) {
                     <button onClick={() => handleValidate(id)}>검증</button>
                 </>
             }
+            <Link href={`/mission/${submitId}/submit/edit/${id}`}>수정</Link>
         </div>
     );
 }
