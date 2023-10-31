@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import Viewer from "../Viewer";
 
-export default function SubmitContent({ id, content, vldStt, nick, submitId }) {
+export default function SubmitContent({ id, content, vldStt, nick, missionId }) {
     const [submitData, setSubmitData] = useState({
         content: content,
         isValidate: vldStt
@@ -12,7 +12,7 @@ export default function SubmitContent({ id, content, vldStt, nick, submitId }) {
     const handleValidate = async (submitId) => {
         const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
 
-        const validateMissionSubmitResponse = await fetch(`${serverUri}/mission/submit/validate/${submitId}`, {
+        const validateMissionSubmitResponse = await fetch(`${serverUri}/mission/${missionId}/submit/${submitId}/validate`, {
             method: "put",
             credentials: "include"
         });
@@ -28,7 +28,7 @@ export default function SubmitContent({ id, content, vldStt, nick, submitId }) {
     const handleInvalidate = async (submitId) => {
         const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
 
-        const invalidateMissionSubmitResponse = await fetch(`${serverUri}/mission/submit/invalidate/${submitId}`, {
+        const invalidateMissionSubmitResponse = await fetch(`${serverUri}/mission/${missionId}/submit/${submitId}/invalidate`, {
             method: "put",
             credentials: "include"
         });
@@ -55,7 +55,8 @@ export default function SubmitContent({ id, content, vldStt, nick, submitId }) {
                     <button onClick={() => handleValidate(id)}>검증</button>
                 </>
             }
-            <Link href={`/mission/${submitId}/submit/edit/${id}`}>수정</Link>
+            <Link href={`/mission/${missionId}/submit/${id}/edit`}>수정</Link>
+            <Link href={`/mission/${missionId}/submit/${id}/history`}>이력 확인</Link>
         </div>
     );
 }
