@@ -54,4 +54,18 @@ public class MissionSubmitService {
 
         return missionSubmitRepository.save(missionSubmit);
     }
+
+    public MissionSubmit getMissionSubmit(UUID submitId) {
+        return missionSubmitRepository.findById(submitId)
+                .orElseThrow(() -> new EntityNotFoundException("미션 서브밋을 찾을 수 없습니다. ID: " + submitId));
+    }
+
+    public MissionSubmit updateMissionSubmit(UUID submitId, String content) {
+        MissionSubmit missionSubmit = missionSubmitRepository.findById(submitId)
+                .orElseThrow(() -> new EntityNotFoundException("미션 서브밋을 찾을 수 없습니다. ID: " + submitId));
+
+        missionSubmit.setContent(content);
+
+        return missionSubmitRepository.save(missionSubmit);
+    }
 }

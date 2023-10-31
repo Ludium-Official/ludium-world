@@ -174,4 +174,32 @@ public class MissionController {
             put("vldStt", false);
         }});
     }
+
+    @PutMapping("/submit/edit/{submitId}")
+    public ResponseEntity editSubmit(@PathVariable UUID submitId,
+                                     @RequestParam String content) {
+        MissionSubmitHistory missionSubmitHistory = new MissionSubmitHistory();
+        missionSubmitHistory.setMsnSbmId(submitId);
+        missionSubmitHistory.setContent(content);
+        try {
+            missionSubmitService.updateMissionSubmit(submitId, content);
+            missionSubmitService.createMissionSubmitHistory(missionSubmitHistory);
+        } catch(Exception e) {
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new HashMap<>() {{
+                        put("message", "미션을 수정하는 중에 에러가 발생했습니다.");
+                        put("debug", e.getMessage());
+                    }});
+        }
+
+        return ResponseEntity.ok(new HashMap<>() {{
+            put("id", submitId);
+            put("content", content);
+        }});
+    }
+
+    @GetMapping("/submit/{missionId}/{submitId}")
+    public ResponseEntity getMissionSubmit(@PathVariable UUID submitId) {
+        return ResponseEntity.ok(missionSubmitService.getMissionSubmit(submitId));
+    }
 }

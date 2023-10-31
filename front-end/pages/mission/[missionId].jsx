@@ -8,18 +8,18 @@ export async function getServerSideProps(context) {
     };
 }
 
-export default function getMission() {
+export default function GetMission() {
     const router = useRouter();
     const viewerRef = useRef(null);
     const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
     const [mission, setMission] = useState({ id: null, title: "", content: "" });
 
     const handleGoSubmit = () => {
-        router.push(`/mission/${router.query.slug}/submit/new`);
+        router.push(`/mission/${router.query.missionId}/submit/new`);
     }
 
     const handleGoMissionSubmit = () => {
-        router.push(`/mission/${router.query.slug}/submit`);
+        router.push(`/mission/${router.query.missionId}/submit`);
     }
 
     useEffect(() => {
@@ -48,7 +48,7 @@ export default function getMission() {
             }
         }
 
-        getMission(router.query.slug);
+        getMission(router.query.missionId);
     }, []);
 
     return <>
