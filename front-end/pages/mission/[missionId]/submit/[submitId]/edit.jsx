@@ -21,7 +21,7 @@ export default function EditSubmit() {
 
         formData.append("content", editorRef.current.editorInstance.getMarkdown());
 
-        const editSubmitResponse = await fetch(`${serverUri}/mission/submit/edit/${submitId}`, {
+        const editSubmitResponse = await fetch(`${serverUri}/mission/${missionId}/submit/${submitId}/edit`, {
             method: "put",
             credentials: "include",
             body: formData
@@ -37,7 +37,7 @@ export default function EditSubmit() {
 
     useEffect(() => {
         const getSubmit = async () => {
-            const { content } = await (await fetch(`${serverUri}/mission/submit/${missionId}/${submitId}`)).json();
+            const { content } = await (await fetch(`${serverUri}/mission/${missionId}/submit/${submitId}`)).json();
 
             setTimeout(() => {
                 setSubmitContent(content);

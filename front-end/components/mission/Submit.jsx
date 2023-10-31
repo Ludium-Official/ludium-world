@@ -7,7 +7,7 @@ export default function MissionSubmit({ missionId }) {
     useEffect(() => {
         const getMissionSubmits = async () => {
             const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
-            const getMissionSumitResponse = await fetch(`${serverUri}/mission/submit/${missionId}`);
+            const getMissionSumitResponse = await fetch(`${serverUri}/mission/${missionId}/submit`);
 
             if (getMissionSumitResponse.ok) {
                 setSubmits(await getMissionSumitResponse.json());
@@ -19,7 +19,7 @@ export default function MissionSubmit({ missionId }) {
 
     return (
         <div>
-          {submits.map((submit) => <SubmitContent key={submit.id} {...submit} submitId = {missionId} />)}
+          {submits.map((submit) => <SubmitContent key={submit.id} {...submit} missionId = {missionId} />)}
         </div>
       );
       

@@ -68,4 +68,8 @@ public class MissionSubmitService {
 
         return missionSubmitRepository.save(missionSubmit);
     }
+
+    public List<MissionSubmitHistory> getMissionSubmitHistory(UUID submitId) {
+        return missionSubmitHistoryRepository.findAllByMsnSbmId(submitId);
+    }
 }

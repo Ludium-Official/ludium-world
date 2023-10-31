@@ -113,7 +113,7 @@ public class MissionController {
                 }});
     }
 
-    @GetMapping("/submit/{missionId}")
+    @GetMapping("/{missionId}/submit")
     public ResponseEntity getMissionSubmits(@PathVariable UUID missionId) {
         List<MissionSubmit> missionSubmits = missionSubmitService.getMissionSubmits(missionId);
 
@@ -131,7 +131,7 @@ public class MissionController {
         );
     }
 
-    @PutMapping("/submit/validate/{submitId}")
+    @PutMapping("/{missionId}/submit/{submitId}/validate")
     public ResponseEntity validateSubmit(@PathVariable UUID submitId) {
         MissionSubmitHistory missionSubmitHistory = new MissionSubmitHistory();
         missionSubmitHistory.setMsnSbmId(submitId);
@@ -153,7 +153,7 @@ public class MissionController {
         }});
     }
 
-    @PutMapping("/submit/invalidate/{submitId}")
+    @PutMapping("/{missionId}/submit/{submitId}/invalidate")
     public ResponseEntity invalidateSubmit(@PathVariable UUID submitId) {
         MissionSubmitHistory missionSubmitHistory = new MissionSubmitHistory();
         missionSubmitHistory.setMsnSbmId(submitId);
@@ -175,7 +175,7 @@ public class MissionController {
         }});
     }
 
-    @PutMapping("/submit/edit/{submitId}")
+    @PutMapping("/{missionId}/submit/{submitId}/edit")
     public ResponseEntity editSubmit(@PathVariable UUID submitId,
                                      @RequestParam String content) {
         MissionSubmitHistory missionSubmitHistory = new MissionSubmitHistory();
@@ -198,8 +198,13 @@ public class MissionController {
         }});
     }
 
-    @GetMapping("/submit/{missionId}/{submitId}")
+    @GetMapping("/{missionId}/submit/{submitId}")
     public ResponseEntity getMissionSubmit(@PathVariable UUID submitId) {
         return ResponseEntity.ok(missionSubmitService.getMissionSubmit(submitId));
+    }
+
+    @GetMapping("/{missionId}/submit/{submitId}/history")
+    public ResponseEntity getMissionSubmitHistory(@PathVariable UUID submitId) {
+        return ResponseEntity.ok(missionSubmitService.getMissionSubmitHistory(submitId));
     }
 }
