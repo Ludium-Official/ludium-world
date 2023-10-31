@@ -23,8 +23,8 @@ export default function EditSubmit() {
 
         const editSubmitResponse = await fetch(`${serverUri}/mission/${missionId}/submit/${submitId}/edit`, {
             method: "put",
-            credentials: "include",
-            body: formData
+            body: formData,
+            credentials: "include"
         });
 
         if (editSubmitResponse.ok) {
