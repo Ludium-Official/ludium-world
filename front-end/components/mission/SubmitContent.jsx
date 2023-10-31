@@ -57,6 +57,7 @@ export default function SubmitContent({ id, content, vldStt, nick, missionId }) 
             }
             <Link href={`/mission/${missionId}/submit/${id}/edit`}>수정</Link>
             <Link href={`/mission/${missionId}/submit/${id}/history`}>이력 확인</Link>
+            <Link href={`/mission/${missionId}/submit/${id}/comment`}>댓글 작성하기</Link>
         </div>
     );
 }

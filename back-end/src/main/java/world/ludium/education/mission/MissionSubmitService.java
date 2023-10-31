@@ -12,11 +12,14 @@ public class MissionSubmitService {
 
     private final MissionSubmitRepository missionSubmitRepository;
     private final MissionSubmitHistoryRepository missionSubmitHistoryRepository;
+    private final MissionSubmitCommentRepository missionSubmitCommentRepository;
 
     public MissionSubmitService(MissionSubmitRepository missionSubmitRepository,
-                                MissionSubmitHistoryRepository missionSubmitHistoryRepository) {
+                                MissionSubmitHistoryRepository missionSubmitHistoryRepository,
+                                MissionSubmitCommentRepository missionSubmitCommentRepository) {
         this.missionSubmitRepository = missionSubmitRepository;
         this.missionSubmitHistoryRepository = missionSubmitHistoryRepository;
+        this.missionSubmitCommentRepository = missionSubmitCommentRepository;
     }
 
     public MissionSubmit createMissionSubmit(MissionSubmit missionSubmit) {
@@ -27,7 +30,7 @@ public class MissionSubmitService {
     }
 
     public MissionSubmitHistory createMissionSubmitHistory(MissionSubmitHistory missionSubmitHistory) {
-        missionSubmitHistory.setId((UUID.randomUUID()));
+        missionSubmitHistory.setId(UUID.randomUUID());
         missionSubmitHistory.setCreateAt(ZonedDateTime.now());
 
         return missionSubmitHistoryRepository.save(missionSubmitHistory);
@@ -71,5 +74,16 @@ public class MissionSubmitService {
 
     public List<MissionSubmitHistory> getMissionSubmitHistory(UUID submitId) {
         return missionSubmitHistoryRepository.findAllByMsnSbmId(submitId);
+    }
+
+    public MissionSubmitComment createMissionSubmitComment(MissionSubmitComment missionSubmitComment) {
+        missionSubmitComment.setId(UUID.randomUUID());
+        missionSubmitComment.setCreateAt(ZonedDateTime.now());
+
+        return missionSubmitCommentRepository.save(missionSubmitComment);
+    }
+
+    public List<MissionSubmitComment> getMissionSubmitComments(UUID submitId) {
+        return missionSubmitCommentRepository.findAllByMsnSbmId(submitId);
     }
 }
