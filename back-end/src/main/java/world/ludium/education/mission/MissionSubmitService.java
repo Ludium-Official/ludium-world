@@ -86,4 +86,13 @@ public class MissionSubmitService {
     public List<MissionSubmitComment> getMissionSubmitComments(UUID submitId) {
         return missionSubmitCommentRepository.findAllByMsnSbmId(submitId);
     }
+
+    public MissionSubmitComment getMissionSubmitComment(UUID commentId) {
+        return missionSubmitCommentRepository.findById(commentId)
+                .orElseThrow(() -> new EntityNotFoundException("미션 코멘트를 찾을 수 없습니다. ID: " + commentId));
+    }
+
+    public void deleteMissionSubmitComment(MissionSubmitComment missionSubmitComment) {
+        missionSubmitCommentRepository.delete(missionSubmitComment);
+    }
 }
