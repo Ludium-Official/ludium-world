@@ -24,11 +24,5 @@ export default function Editor({ editorRef, content }) {
         putEditor();
     }, []);
 
-    useEffect(() => {
-        if(editorRef.current.editorInstance === undefined) return;
-
-        editorRef.current.editorInstance.setMarkdown(content);
-    }, [content]);
-
     return <div ref={editorRef} style={{ width: "100%", height: "100vh" }}>Loading...</div>;
 }
