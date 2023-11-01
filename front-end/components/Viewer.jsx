@@ -4,24 +4,24 @@ export default function Viewer({ viewerRef, content }) {
     useEffect(() => {
         const putViewer = async () => {
             const toastViewer = (await import("@toast-ui/editor/dist/toastui-editor-viewer")).default;
-            
+
             try {
-                if(viewerRef.current === null) return;
-                
+                if (viewerRef.current === null) return;
+
                 viewerRef.current.innerText = "";
 
                 viewerRef.current.viewerInstance = new toastViewer({
                     el: viewerRef.current,
                     height: "90vh",
-                    initialValue: content ?? ""
+                    initialValue: content
                 });
-            } catch(error) {
+            } catch (error) {
                 console.error(error);
             }
         }
 
         putViewer();
-    },[]);
+    }, []);
 
     return <div ref={viewerRef}>Loading</div>
 }
