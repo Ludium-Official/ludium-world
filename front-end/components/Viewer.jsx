@@ -23,5 +23,11 @@ export default function Viewer({ viewerRef, content }) {
         putViewer();
     }, []);
 
+    useEffect(() => {
+        if (viewerRef.current.viewerInstance === undefined) return;
+
+        viewerRef.current.viewerInstance.setMarkdown(content);
+    }, [content])
+
     return <div ref={viewerRef}>Loading</div>
 }
