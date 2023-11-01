@@ -24,16 +24,16 @@ export default function GetPost() {
                     const post = await getPostResponse.json();
                     setPost(post);
 
-                    if(viewerRef.current.viewerInstance === undefined) {
+                    if (viewerRef.current.viewerInstance === undefined) {
                         setTimeout(ref => {
-                            if(ref.current === null) return;
+                            if (ref.current === null) return;
                             const viewerInstance = ref.current.viewerInstance;
-    
+
                             viewerInstance.setMarkdown(post.content);
                         }, 1000, viewerRef);
                     } else {
                         const viewerInstance = viewerRef.current.viewerInstance;
-    
+
                         viewerInstance.setMarkdown(post.content);
                     }
                 }
