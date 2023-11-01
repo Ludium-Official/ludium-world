@@ -140,7 +140,7 @@ public class MissionController {
             missionSubmitService.validateMissionSubmit(submitId);
             missionSubmitService.createMissionSubmitHistory(missionSubmitHistory);
         } catch(Exception e) {
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new HashMap<>() {{
                         put("message", "미션을 검증하는 중에 에러가 발생했습니다.");
                         put("debug", e.getMessage());
@@ -162,7 +162,7 @@ public class MissionController {
             missionSubmitService.invalidateMissionSubmit(submitId);
             missionSubmitService.createMissionSubmitHistory(missionSubmitHistory);
         } catch(Exception e) {
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new HashMap<>() {{
                         put("message", "미션을 검증을 해제하는 중에 에러가 발생했습니다.");
                         put("debug", e.getMessage());
@@ -185,7 +185,7 @@ public class MissionController {
             missionSubmitService.updateMissionSubmit(submitId, content);
             missionSubmitService.createMissionSubmitHistory(missionSubmitHistory);
         } catch(Exception e) {
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new HashMap<>() {{
                         put("message", "미션을 수정하는 중에 에러가 발생했습니다.");
                         put("debug", e.getMessage());
@@ -245,7 +245,11 @@ public class MissionController {
         try {
             missionSubmitService.createMissionSubmitComment(missionSubmitComment);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new HashMap<>() {{
+                        put("message", "미션 코멘트를 만드는 중에 에러가 발생했습니다.");
+                        put("debug", e.getMessage());
+                    }});
         }
 
         MissionSubmitCommentDTO missionSubmitCommentDTO = new MissionSubmitCommentDTO();
@@ -255,5 +259,36 @@ public class MissionController {
         missionSubmitCommentDTO.setNick(ludiumUser.getNick());
 
         return ResponseEntity.ok(missionSubmitCommentDTO);
+    }
+
+    @DeleteMapping("/{missionId}/submit/{submitId}/{commentId}")
+    public ResponseEntity createSubmitComment(@PathVariable UUID commentId,
+                                              @CookieValue(name = "access_token", required = false) String accessToken) {
+        JsonNode googleUserApiData = loginService.getUserResource(accessToken, "google");
+
+        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+
+        MissionSubmitComment missionSubmitComment = missionSubmitService.getMissionSubmitComment(commentId);
+
+        if(!missionSubmitComment.getUsrId().equals(ludiumUser.getId())) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new HashMap<>() {{
+                        put("message", "미션 코멘트를 삭제하는 중에 에러가 발생했습니다.");
+                        put("debug", "아이디가 다름");
+                    }});
+        }
+
+        try {
+            missionSubmitService.deleteMissionSubmitComment(missionSubmitComment);
+        } catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new HashMap<>() {{
+                        put("message", "미션 코멘트를 삭제하는 중에 에러가 발생했습니다.");
+                        put("debug", e.getMessage());
+                    }});
+        }
+
+
+        return ResponseEntity.ok(commentId);
     }
 }
