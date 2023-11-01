@@ -76,6 +76,7 @@ export default function CommentSubmit({ comments, missionId, submitId }) {
         {commentList.map(comment => {
             return <SubmitComment key={comment.id} {...comment} missionId={missionId} submitId={submitId} handleCallback={refreshComments} />;
         })}
+        <hr />
         <button onClick={handleNewSubmitComment}>댓글 추가</button>
         <Editor editorRef={editorRef} />
     </>
