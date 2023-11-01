@@ -1,20 +1,37 @@
 import { useRouter } from "next/router";
-import Editor from "../../../../../components/Editor"
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
+import Editor from "../../../../../components/Editor";
 
 export async function getServerSideProps(context) {
+    const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
+    const { missionId, submitId } = context.query;
+
+    const getSubmitResponse = await fetch(`${serverUri}/mission/${missionId}/submit/${submitId}`);
+
+    if (!getSubmitResponse.ok) {
+        return {
+            props: {
+                submit: null,
+                missionId,
+                submitId
+            }
+        }
+    }
+
     return {
-        props: {}
+        props: {
+            submit: await getSubmitResponse.json(),
+            missionId,
+            submitId
+        }
     };
 }
 
 
-export default function EditSubmit() {
-    const [submitContent, setSubmitContent] = useState("");
+export default function EditSubmit({ submit, missionId, submitId }) {
     const router = useRouter();
     const editorRef = useRef(null);
     const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
-    const { missionId, submitId } = router.query;
 
     const handleEditSubmit = async () => {
         const formData = new FormData();
@@ -35,20 +52,8 @@ export default function EditSubmit() {
         }
     }
 
-    useEffect(() => {
-        const getSubmit = async () => {
-            const { content } = await (await fetch(`${serverUri}/mission/${missionId}/submit/${submitId}`)).json();
-
-            setTimeout(() => {
-                setSubmitContent(content);
-            }, 500);
-        }
-
-        getSubmit();
-    }, []);
-
     return <div>
         <button onClick={handleEditSubmit}>수정하기</button>
-        <Editor editorRef={editorRef} content={submitContent} />
+        <Editor editorRef={editorRef} content={submit.content} />
     </div>
 }
