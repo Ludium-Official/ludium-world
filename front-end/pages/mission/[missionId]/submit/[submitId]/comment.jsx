@@ -1,19 +1,35 @@
-import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Editor from "../../../../../components/Editor";
 
 export async function getServerSideProps(context) {
+    const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
+    const { missionId, submitId } = context.query;
+
+    const getCommentsResponse = await fetch(`${serverUri}/mission/${missionId}/submit/${submitId}/comment`);
+
+    if (!getCommentsResponse.ok) {
+        return {
+            props: {
+                comments: [],
+                missionId,
+                submitId
+            }
+        };
+    }
+
     return {
-        props: {}
+        props: {
+            comments: await getCommentsResponse.json(),
+            missionId,
+            submitId
+        }
     };
 }
 
-export default function CommentSubmit() {
-    const [comments, setComments] = useState([]);
-    const router = useRouter();
+export default function CommentSubmit({ comments, missionId, submitId }) {
+    const [commentList, setCommentList] = useState(comments);
     const editorRef = useRef(null);
     const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
-    const { missionId, submitId } = router.query;
 
     const handleNewSubmitComment = async () => {
         const formData = new FormData();
@@ -26,36 +42,22 @@ export default function CommentSubmit() {
             credentials: "include",
         });
 
-        if(createSubmitCommentResponse.ok) {
-            setComments([...comments, await createSubmitCommentResponse.json()]);
+        if (createSubmitCommentResponse.ok) {
+            setCommentList([...comments, await createSubmitCommentResponse.json()]);
         }
     }
 
-    useEffect(() => {
-        const getComments = async () => {
-            const getCommentsResponse = await fetch(`${serverUri}/mission/${missionId}/submit/${submitId}/comment`);
-
-            if(getCommentsResponse.ok) {
-                setComments(await getCommentsResponse.json());
-            }
-        }
-
-        getComments();
-    }, []);
-
-    return (
-        <>
-            <button onClick={handleNewSubmitComment}>댓글 추가</button>
-            <Editor editorRef={editorRef} />
-            <h2>댓글 이력</h2>
-            <hr />
-            {comments.map(comment => (
-                <div key={comment.id} style={{display: "flex", justifyContent: "space-between"}}>
-                    <p>{comment.content}</p>
-                    <p>{comment.usrId}</p>
-                    <p>{comment.createAt}</p>
-                </div>
-            ))}
-        </>
-    );
+    return <>
+        <button onClick={handleNewSubmitComment}>댓글 추가</button>
+        <Editor editorRef={editorRef} />
+        <h2>댓글 이력</h2>
+        <hr />
+        {commentList.map(comment => (
+            <div key={comment.id} style={{ display: "flex", justifyContent: "space-between" }}>
+                <p>{comment.content}</p>
+                <p>{comment.usrId}</p>
+                <p>{comment.createAt}</p>
+            </div>
+        ))}
+    </>
 }
