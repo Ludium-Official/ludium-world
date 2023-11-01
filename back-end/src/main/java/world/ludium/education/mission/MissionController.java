@@ -208,6 +208,26 @@ public class MissionController {
         return ResponseEntity.ok(missionSubmitService.getMissionSubmitHistory(submitId));
     }
 
+    @GetMapping("/{missionId}/submit/{submitId}/comment")
+    public ResponseEntity<List<MissionSubmitCommentDTO>> getSubmitComments(@PathVariable UUID submitId) {
+        List<MissionSubmitComment> missionSubmitComments = missionSubmitService.getMissionSubmitComments(submitId);
+
+        return ResponseEntity.ok(missionSubmitComments.stream()
+                .map(comment -> {
+                    LudiumUser ludiumUser = ludiumUserService.getUserById(comment.getUsrId());
+                    MissionSubmitCommentDTO missionSubmitCommentDTO = new MissionSubmitCommentDTO();
+
+                    missionSubmitCommentDTO.setId(comment.getId());
+                    missionSubmitCommentDTO.setContent(comment.getContent());
+                    missionSubmitCommentDTO.setCreateAt(comment.getCreateAt());
+                    missionSubmitCommentDTO.setNick(ludiumUser.getNick());
+
+                    return missionSubmitCommentDTO;
+                })
+                .collect(Collectors.toList())
+        );
+    }
+
     @PostMapping("/{missionId}/submit/{submitId}")
     public ResponseEntity createSubmitComment(@PathVariable UUID submitId,
                                               @RequestParam String content,
@@ -222,11 +242,18 @@ public class MissionController {
         missionSubmitComment.setMsnSbmId(submitId);
         missionSubmitComment.setUsrId(ludiumUser.getId());
 
-        return ResponseEntity.ok(missionSubmitService.createMissionSubmitComment(missionSubmitComment));
-    }
+        try {
+            missionSubmitService.createMissionSubmitComment(missionSubmitComment);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("");
+        }
 
-    @GetMapping("/{missionId}/submit/{submitId}/comment")
-    public ResponseEntity getSubmitComments(@PathVariable UUID submitId) {
-        return ResponseEntity.ok(missionSubmitService.getMissionSubmitComments(submitId));
+        MissionSubmitCommentDTO missionSubmitCommentDTO = new MissionSubmitCommentDTO();
+        missionSubmitCommentDTO.setId(missionSubmitComment.getId());
+        missionSubmitCommentDTO.setContent(missionSubmitComment.getContent());
+        missionSubmitCommentDTO.setCreateAt(missionSubmitComment.getCreateAt());
+        missionSubmitCommentDTO.setNick(ludiumUser.getNick());
+
+        return ResponseEntity.ok(missionSubmitCommentDTO);
     }
 }

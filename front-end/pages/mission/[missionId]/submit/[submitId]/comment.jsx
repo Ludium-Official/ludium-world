@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import Editor from "../../../../../components/Editor";
+import SubmitComment from "../../../../../components/mission/SubmitComment";
 
 export async function getServerSideProps(context) {
     const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
@@ -52,12 +53,8 @@ export default function CommentSubmit({ comments, missionId, submitId }) {
         <Editor editorRef={editorRef} />
         <h2>댓글 이력</h2>
         <hr />
-        {commentList.map(comment => (
-            <div key={comment.id} style={{ display: "flex", justifyContent: "space-between" }}>
-                <p>{comment.content}</p>
-                <p>{comment.usrId}</p>
-                <p>{comment.createAt}</p>
-            </div>
-        ))}
+        {commentList.map(comment => {
+            return <SubmitComment key={comment.id} {...comment} />;
+        })}
     </>
 }
