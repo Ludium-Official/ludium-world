@@ -46,7 +46,7 @@ export default function EditSubmit({ submit, missionId, submitId }) {
 
         if (editSubmitResponse.ok) {
             router.replace({
-                pathname: '../',
+                pathname: "../",
                 query: { missionId }
             });
         }
