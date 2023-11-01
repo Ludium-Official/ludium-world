@@ -76,11 +76,11 @@ public class MissionSubmitService {
         return missionSubmitHistoryRepository.findAllByMsnSbmId(submitId);
     }
 
-    public MissionSubmitComment createMissionSubmitComment(MissionSubmitComment missionSubmitComment) {
+    public void createMissionSubmitComment(MissionSubmitComment missionSubmitComment) {
         missionSubmitComment.setId(UUID.randomUUID());
         missionSubmitComment.setCreateAt(ZonedDateTime.now());
 
-        return missionSubmitCommentRepository.save(missionSubmitComment);
+        missionSubmitCommentRepository.save(missionSubmitComment);
     }
 
     public List<MissionSubmitComment> getMissionSubmitComments(UUID submitId) {
@@ -90,6 +90,10 @@ public class MissionSubmitService {
     public MissionSubmitComment getMissionSubmitComment(UUID commentId) {
         return missionSubmitCommentRepository.findById(commentId)
                 .orElseThrow(() -> new EntityNotFoundException("미션 코멘트를 찾을 수 없습니다. ID: " + commentId));
+    }
+
+    public void updateMissionSubmitComment(MissionSubmitComment missionSubmitComment) {
+        missionSubmitCommentRepository.save(missionSubmitComment);
     }
 
     public void deleteMissionSubmitComment(MissionSubmitComment missionSubmitComment) {

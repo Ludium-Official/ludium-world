@@ -261,8 +261,47 @@ public class MissionController {
         return ResponseEntity.ok(missionSubmitCommentDTO);
     }
 
+    @PutMapping("/{missionId}/submit/{submitId}/{commentId}")
+    public ResponseEntity updateSubmitComment(@PathVariable UUID commentId,
+                                              @RequestParam String content,
+                                              @CookieValue(name = "access_token", required = false) String accessToken) {
+        JsonNode googleUserApiData = loginService.getUserResource(accessToken, "google");
+
+        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+
+        MissionSubmitComment missionSubmitComment = missionSubmitService.getMissionSubmitComment(commentId);
+
+        if(!missionSubmitComment.getUsrId().equals(ludiumUser.getId())) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new HashMap<>() {{
+                        put("message", "미션 코멘트를 삭제하는 중에 에러가 발생했습니다.");
+                        put("debug", "아이디가 다름");
+                    }});
+        }
+
+        try {
+            missionSubmitComment.setContent(content);
+            missionSubmitService.updateMissionSubmitComment(missionSubmitComment);
+        } catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new HashMap<>() {{
+                        put("message", "미션 코멘트를 삭제하는 중에 에러가 발생했습니다.");
+                        put("debug", e.getMessage());
+                    }});
+        }
+
+        MissionSubmitCommentDTO missionSubmitCommentDTO = new MissionSubmitCommentDTO();
+        missionSubmitCommentDTO.setId(missionSubmitComment.getId());
+        missionSubmitCommentDTO.setContent(missionSubmitComment.getContent());
+        missionSubmitCommentDTO.setCreateAt(missionSubmitComment.getCreateAt());
+        missionSubmitCommentDTO.setNick(ludiumUser.getNick());
+
+
+        return ResponseEntity.ok(missionSubmitCommentDTO);
+    }
+
     @DeleteMapping("/{missionId}/submit/{submitId}/{commentId}")
-    public ResponseEntity createSubmitComment(@PathVariable UUID commentId,
+    public ResponseEntity deleteSubmitComment(@PathVariable UUID commentId,
                                               @CookieValue(name = "access_token", required = false) String accessToken) {
         JsonNode googleUserApiData = loginService.getUserResource(accessToken, "google");
 
