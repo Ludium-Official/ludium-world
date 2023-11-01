@@ -1,31 +1,32 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
-export default function Article() {
-  const [articles, setArticles] = useState([]);
+export async function getServerSideProps() {
+  const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
+  const getArticlesResponse = await fetch(`${serverUri}/article`);
 
-  useEffect(() => {
-    const getArticles = async () => {
-      const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
-      const getArticlesResponse = await fetch(`${serverUri}/article`);
-
-      if (getArticlesResponse.ok) {
-        setArticles(await getArticlesResponse.json());
+  if (!getArticlesResponse.ok) {
+    return {
+      props: {
+        articles: []
       }
     }
+  }
 
-    getArticles();
-  }, [])
+  return {
+    props: {
+      articles: await getArticlesResponse.json()
+    }
+  };
+}
 
-  return (
-    <>
-      <Link href="/article/new">글쓰기</Link>
-      <h1>글 목록</h1>
-      <div style={{display: "flex", flexDirection: "column"}}>
-        {articles.map(article => (
-          <Link key={article.id} href={`/article/${article.id}`}>{article.title}</Link>
-        ))}
-      </div>
-    </>
-  )
+export default function Article({ articles }) {
+  return <>
+    <Link href="/article/new">글쓰기</Link>
+    <h1>글 목록</h1>
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      {articles.map(article => (
+        <Link key={article.id} href={`/article/${article.id}`}>{article.title}</Link>
+      ))}
+    </div>
+  </>
 }
