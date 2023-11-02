@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface MissionSubmitRepository extends JpaRepository<MissionSubmit, UUID> {
     List<MissionSubmit> findAllByMsnId(UUID msnId);
+    List<MissionSubmit> findAllByUsrId(UUID usrId);
 }

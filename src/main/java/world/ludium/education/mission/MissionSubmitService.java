@@ -36,6 +36,10 @@ public class MissionSubmitService {
         return missionSubmitHistoryRepository.save(missionSubmitHistory);
     }
 
+    public List<MissionSubmit> getAllMissionSubmitByUsrId(UUID usrId) {
+        return missionSubmitRepository.findAllByUsrId(usrId);
+    }
+
     public List<MissionSubmit> getMissionSubmits(UUID missionId) {
         return missionSubmitRepository.findAllByMsnId(missionId);
     }
@@ -98,5 +102,9 @@ public class MissionSubmitService {
 
     public void deleteMissionSubmitComment(MissionSubmitComment missionSubmitComment) {
         missionSubmitCommentRepository.delete(missionSubmitComment);
+    }
+
+    public List<MissionSubmitComment> getAllMissionSubmitCommentByUsrId(UUID usrId) {
+        return missionSubmitCommentRepository.findAllByUsrId(usrId);
     }
 }
