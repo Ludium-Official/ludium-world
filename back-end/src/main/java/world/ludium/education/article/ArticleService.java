@@ -26,4 +26,8 @@ public class ArticleService {
 
         return articleRepository.save(article);
     }
+
+    public List<Article> getAllArticlesByUsrId(UUID usrId) {
+        return articleRepository.findAllByUsrId(usrId);
+    }
 }
