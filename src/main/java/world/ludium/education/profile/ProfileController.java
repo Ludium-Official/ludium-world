@@ -1,11 +1,9 @@
 package world.ludium.education.profile;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import world.ludium.education.article.Article;
 import world.ludium.education.article.ArticleService;
 import world.ludium.education.auth.LoginService;
@@ -63,5 +61,36 @@ public class ProfileController {
             put("userCommentsByMyMission", userCommentsByMyMission);
             }}
         );
+    }
+
+    @PutMapping("")
+    public ResponseEntity updateProfile(@CookieValue(name = "access_token", required = false) String accessToken,
+                                        @RequestParam String nick,
+                                        @RequestParam String phone_number,
+                                        @RequestParam String self_intro) {
+        JsonNode googleUserApiData = loginService.getUserResource(accessToken, "google");
+
+        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        ludiumUser.setNick(nick);
+        ludiumUser.setSelfIntro(self_intro);
+        ludiumUser.setPhnNmb(phone_number);
+
+        try {
+            ludiumUserService.updateUser(ludiumUser);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new HashMap<String, String>() {
+                        {
+                            put("message", "사용자 데이터를 변경하는 중에 에러가 발생했습니다.");
+                            put("debug", e.getMessage());
+                        }
+                    });
+        }
+
+        return ResponseEntity.ok(new HashMap<String, String>() {{
+            put("nick", nick);
+            put("self_intro", self_intro);
+            put("phn_nmb", phone_number);
+        }});
     }
 }
