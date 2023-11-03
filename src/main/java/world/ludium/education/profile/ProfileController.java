@@ -18,6 +18,7 @@ import world.ludium.education.mission.MissionSubmitService;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/profile", produces = "application/json")
@@ -40,6 +41,17 @@ public class ProfileController {
 
         LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
         List<Article> articles = articleService.getAllArticlesByUsrId(ludiumUser.getId());
+
+        List<MissionSubmitComment> userCommentsByMyMission = articles.stream()
+                .flatMap(article -> {
+                    List<MissionSubmit> submits = missionSubmitService.getMissionSubmits(article.getId());
+
+                    return submits.stream()
+                            .map(submit -> missionSubmitService.getMissionSubmitComments(submit.getId()))
+                            .flatMap(List::stream);
+                })
+                .collect(Collectors.toList());
+
         List<MissionSubmit> submits = missionSubmitService.getAllMissionSubmitByUsrId(ludiumUser.getId());
         List<MissionSubmitComment> comments = missionSubmitService.getAllMissionSubmitCommentByUsrId(ludiumUser.getId());
 
@@ -48,6 +60,7 @@ public class ProfileController {
             put("articles", articles);
             put("submits", submits);
             put("comments", comments);
+            put("userCommentsByMyMission", userCommentsByMyMission);
             }}
         );
     }
