@@ -26,18 +26,17 @@ export async function getServerSideProps(context) {
 }
 
 export default function Profile({ profile }) {
-    console.log(profile)
     if (!profile) return <h1>사용자 데이터를 불러오지 못했습니다.</h1>
 
     return <>
         <p>닉네임: {profile.user.nick}</p>
         <h1>내가 쓴 아티클</h1>
-        {profile.articles.map(article => <>
-            <div style={{ display: "flex", flexDirection: "column", border: "solid 1px", margin: "0 0 10px 0" }}>
+        {profile.articles.map(article =>
+            <div key={article.id} style={{ display: "flex", flexDirection: "column", border: "solid 1px", margin: "0 0 10px 0" }}>
                 <p>{article.title}</p>
                 <p>{article.content}</p>
             </div>
-        </>)}
+        )}
         <hr />
         <h1>내가 쓴 미션</h1>
 
@@ -47,15 +46,20 @@ export default function Profile({ profile }) {
         <hr />
         <h1>내가 제출한 미션</h1>
         <hr />
-        {profile.submits.map(submit => <>
-            <div style={{ display: "flex", flexDirection: "column" }}>
+        {profile.submits.map(submit =>
+            <div key={submit.id} style={{ display: "flex", flexDirection: "column" }}>
                 <p>{submit.content}</p>
             </div>
-        </>)}
+        )}
         <h1>내 댓글</h1>
         <hr />
-        {profile.comments.map(comment => <>
-            <p>{comment.content}</p>
-        </>)}
+        {profile.comments.map(comment =>
+            <p key={comment.id} >{comment.content}</p>
+        )}
+        <h1>내 미션에 달린 댓글</h1>
+        <hr />
+        {profile.userCommentsByMyMission.map(comment =>
+            <p key={comment.id}>{comment.content}</p>
+        )}
     </>;
 }
