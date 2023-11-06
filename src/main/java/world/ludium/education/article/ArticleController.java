@@ -50,6 +50,7 @@ public class ArticleController {
         article.setTitle(title);
         article.setContent(content);
         article.setUsrId(ludiumUser.getId());
+        article.setCategory(Category.ARTICLE);
 
         try {
             articleService.createArticle(article);

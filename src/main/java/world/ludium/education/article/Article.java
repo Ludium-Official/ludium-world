@@ -1,8 +1,6 @@
 package world.ludium.education.article;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.UUID;
 
@@ -15,6 +13,8 @@ public class Article {
     private String title;
     private String content;
     private UUID usrId;
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     public UUID getId() {
         return id;
@@ -43,4 +43,12 @@ public class Article {
     public UUID getUsrId() { return usrId; }
 
     public void setUsrId(UUID usrId) { this.usrId = usrId; }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }

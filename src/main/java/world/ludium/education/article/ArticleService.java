@@ -14,7 +14,7 @@ public class ArticleService {
     }
 
     public List<Article> getAllArticle() {
-        return articleRepository.findAll();
+        return articleRepository.findAllByCategory(Category.ARTICLE);
     }
 
     public Article getArticle(UUID id) {
@@ -30,4 +30,8 @@ public class ArticleService {
     public List<Article> getAllArticlesByUsrId(UUID usrId) {
         return articleRepository.findAllByUsrId(usrId);
     }
+
+    public List<Article> getAllMission() { return articleRepository.findAllByCategory(Category.MISSION); }
+
+    public List<Article> getAllPost() { return articleRepository.findAllByCategory(Category.FREE_BOARD); }
 }

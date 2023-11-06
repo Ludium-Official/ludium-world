@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import world.ludium.education.article.Article;
 import world.ludium.education.article.ArticleService;
+import world.ludium.education.article.Category;
 import world.ludium.education.auth.LoginService;
 import world.ludium.education.auth.ludium.LudiumUser;
 import world.ludium.education.auth.ludium.LudiumUserService;
@@ -31,7 +32,7 @@ public class PostController {
 
     @GetMapping("")
     public ResponseEntity getPosts() {
-        return ResponseEntity.ok(articleService.getAllArticle());
+        return ResponseEntity.ok(articleService.getAllPost());
     }
 
     @GetMapping("/{postId}")
@@ -47,13 +48,14 @@ public class PostController {
 
         LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
-        Article msission = new Article();
-        msission.setTitle(title);
-        msission.setContent(content);
-        msission.setUsrId(ludiumUser.getId());
+        Article freeBoard = new Article();
+        freeBoard.setTitle(title);
+        freeBoard.setContent(content);
+        freeBoard.setUsrId(ludiumUser.getId());
+        freeBoard.setCategory(Category.FREE_BOARD);
 
         try {
-            articleService.createArticle(msission);
+            articleService.createArticle(freeBoard);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     new HashMap<String, String>() {{

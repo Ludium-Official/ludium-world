@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import world.ludium.education.article.Article;
 import world.ludium.education.article.ArticleService;
+import world.ludium.education.article.Category;
 import world.ludium.education.auth.LoginService;
 import world.ludium.education.auth.ludium.LudiumUser;
 import world.ludium.education.auth.ludium.LudiumUserService;
@@ -36,7 +37,7 @@ public class MissionController {
 
     @GetMapping("")
     public ResponseEntity getMissions() {
-        return ResponseEntity.ok(articleService.getAllArticle());
+        return ResponseEntity.ok(articleService.getAllMission());
     }
 
     @GetMapping("/{missionId}")
@@ -52,13 +53,14 @@ public class MissionController {
 
         LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
-        Article msission = new Article();
-        msission.setTitle(title);
-        msission.setContent(content);
-        msission.setUsrId(ludiumUser.getId());
+        Article mission = new Article();
+        mission.setTitle(title);
+        mission.setContent(content);
+        mission.setUsrId(ludiumUser.getId());
+        mission.setCategory(Category.MISSION);
 
         try {
-            articleService.createArticle(msission);
+            articleService.createArticle(mission);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     new HashMap<String, String>() {{

@@ -7,4 +7,6 @@ import java.util.UUID;
 
 public interface ArticleRepository extends JpaRepository<Article, UUID> {
     public List<Article> findAllByUsrId(UUID UsrId);
+
+    public List<Article> findAllByCategory(Category category);
 }
