@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import world.ludium.education.article.Article;
 import world.ludium.education.article.ArticleService;
+import world.ludium.education.article.Category;
 import world.ludium.education.auth.LoginService;
 import world.ludium.education.auth.ludium.LudiumUser;
 import world.ludium.education.auth.ludium.LudiumUserService;
@@ -38,7 +39,19 @@ public class ProfileController {
         JsonNode googleUserApiData = loginService.getUserResource(accessToken, "google");
 
         LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
-        List<Article> articles = articleService.getAllArticlesByUsrId(ludiumUser.getId());
+        List<Article> myAllArticles = articleService.getAllArticlesByUsrId(ludiumUser.getId());
+
+        List<Article> articles = myAllArticles.stream()
+                .filter(article -> article.getCategory() == Category.ARTICLE)
+                .toList();
+
+        List<Article> missions = myAllArticles.stream()
+                .filter(article -> article.getCategory() == Category.MISSION)
+                .toList();
+
+        List<Article> freeBoards = myAllArticles.stream()
+                .filter(article -> article.getCategory() == Category.FREE_BOARD)
+                .toList();
 
         List<MissionSubmitComment> userCommentsByMyMission = articles.stream()
                 .flatMap(article -> {
@@ -56,6 +69,8 @@ public class ProfileController {
         return ResponseEntity.ok(new HashMap<>(){{
             put("user", ludiumUser);
             put("articles", articles);
+            put("missions", missions);
+            put("freeBoards", freeBoards);
             put("submits", submits);
             put("comments", comments);
             put("userCommentsByMyMission", userCommentsByMyMission);

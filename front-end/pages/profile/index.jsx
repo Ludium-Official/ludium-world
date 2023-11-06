@@ -49,16 +49,28 @@ export default function Profile({ profile }) {
         )}
         <hr />
         <h1>내가 쓴 미션</h1>
-
+        {profile.missions.map(article =>
+            <div key={article.id} style={{ display: "flex", flexDirection: "column", border: "solid 1px", margin: "0 0 10px 0" }}>
+                <p>{article.title}</p>
+                <p>{article.content}</p>
+            </div>
+        )}
         <hr />
         <h1>내가 쓴 자유게시글</h1>
-
+        {profile.freeBoards.map(article =>
+            <div key={article.id} style={{ display: "flex", flexDirection: "column", border: "solid 1px", margin: "0 0 10px 0" }}>
+                <p>{article.title}</p>
+                <p>{article.content}</p>
+            </div>
+        )}
         <hr />
         <h1>내가 제출한 미션</h1>
         <hr />
         {profile.submits.map(submit =>
             <div key={submit.id} style={{ display: "flex", flexDirection: "column" }}>
-                <p>{submit.content}</p>
+                <span>{submit.content}
+                    <p style={{ color: submit.vldStt === true ? "green" : "red" }}>{submit.vldStt === true ? "검증됨" : "검증되지 않음"}</p>
+                </span>
             </div>
         )}
         <h1>내 댓글</h1>
