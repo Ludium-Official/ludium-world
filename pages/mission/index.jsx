@@ -23,6 +23,7 @@ export default function Mission({ missions }) {
 
   return <>
     <Link href="/mission/new">글쓰기</Link>
+
     <h1>글 목록</h1>
     <div style={{ display: "flex", flexDirection: "column" }}>
       {missions.map(mission => (
