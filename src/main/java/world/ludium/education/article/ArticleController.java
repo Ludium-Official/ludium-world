@@ -41,6 +41,7 @@ public class ArticleController {
     @PostMapping("")
     public ResponseEntity createArticle(@RequestParam String title,
                                         @RequestParam String content,
+                                        @RequestParam String category,
                                         @CookieValue(name = "access_token", required = false) String accessToken) {
         JsonNode googleUserApiData = loginService.getUserResource(accessToken, "google");
 
@@ -50,7 +51,7 @@ public class ArticleController {
         article.setTitle(title);
         article.setContent(content);
         article.setUsrId(ludiumUser.getId());
-        article.setCategory(Category.ARTICLE);
+        article.setCategory(Category.valueOf(category));
 
         try {
             articleService.createArticle(article);
