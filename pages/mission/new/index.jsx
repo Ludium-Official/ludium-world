@@ -1,22 +1,23 @@
 import { useRouter } from "next/router";
 import { useRef } from "react";
 import Editor from "../../../components/Editor";
+import Category from "../../../enums/Category";
 
 export default function NewMission() {
     const router = useRouter();
-    const titleRef = useRef(null);
     const editorRef = useRef(null);
 
-    const handleSave = async () => {
-        const { editorInstance } = editorRef.current;
-        const formData = new FormData();
+    const handleSave = async (e) => {
+        e.preventDefault();
 
-        formData.append("title", titleRef.current.value);
+        const { editorInstance } = editorRef.current;
+        const formData = new FormData(e.target);
+
         formData.append("content", editorInstance.getMarkdown());
 
         const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
 
-        const createMissionResponse = await fetch(`${serverUri}/mission`, {
+        const createMissionResponse = await fetch(`${serverUri}/article`, {
             method: "post",
             body: formData,
             credentials: "include"
@@ -28,10 +29,14 @@ export default function NewMission() {
     }
 
     return (
-        <>
-            <button onClick={handleSave}>저장</button>
-            <input type="text" name="title" id="title" ref={titleRef} placeholder="제목을 입력해주세요" />
+        <form onSubmit={handleSave}>
+            <input type="text" name="title" id="title" placeholder="제목을 입력해주세요" />
+            <select name="category" id="category">
+                <option value={Category.MISSION}>미션</option>
+                <option value={Category.ARTICLE}>아티클</option>
+            </select>
+            <input type="submit" value="저장하기" />
             <Editor editorRef={editorRef} />
-        </>
+        </form>
     )
 }
