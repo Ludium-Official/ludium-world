@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useRef } from "react";
 import Editor from "../../../../../components/Editor";
+import fetchWithRetry from "../../../../../functions/api";
 
 export async function getServerSideProps(context) {
     return {
@@ -21,16 +22,13 @@ export default function NewSubmit() {
 
         submitFormData.append("content", submitContent);
 
-        const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
-
-        const newMissionSubmitResponse = await fetch(`${serverUri}/mission/${router.query.missionId}`, {
-            method: "post",
+        const newMissionSubmitResponse = await fetchWithRetry(`/mission/${router.query.missionId}`, {
+            method: "POST",
             body: submitFormData,
-            credentials: "include"
-        })
+        });
 
-        if(newMissionSubmitResponse.ok) {
-            router.push(`/mission/${router.query.missionId}`)
+        if (newMissionSubmitResponse.ok) {
+            router.push(`/mission/${router.query.missionId}`);
         }
     }
 

@@ -1,15 +1,13 @@
 import Link from "next/link";
 import Viewer from "../../components/Viewer";
 import { useRef } from "react";
+import fetchWithRetry from "../../functions/api";
 
 export async function getServerSideProps(context) {
-    const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
-
-    const getProfileResopnse = await fetch(`${serverUri}/profile`, {
+    const getProfileResopnse = await fetchWithRetry(`/profile`, {
         headers: {
             cookie: context.req.headers.cookie
         },
-        credentials: "include"
     });
 
     if (!getProfileResopnse.ok) {

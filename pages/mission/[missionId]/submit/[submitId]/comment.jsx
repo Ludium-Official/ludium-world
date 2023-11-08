@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import Editor from "../../../../../components/Editor";
 import SubmitComment from "../../../../../components/mission/SubmitComment";
+import fetchWithRetry from "../../../../../functions/api";
 
 export async function getServerSideProps(context) {
-    const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
     const { missionId, submitId } = context.query;
 
-    const getCommentsResponse = await fetch(`${serverUri}/mission/${missionId}/submit/${submitId}/comment`);
+    const getCommentsResponse = await fetchWithRetry(`/mission/${missionId}/submit/${submitId}/comment`);
 
     if (!getCommentsResponse.ok) {
         return {
@@ -31,7 +31,6 @@ export default function CommentSubmit({ comments, missionId, submitId }) {
     const [commentList, setCommentList] = useState(comments);
     const [isUpdated, setIsUpdated] = useState(false);
     const editorRef = useRef(null);
-    const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
 
     const refreshComments = () => {
         setIsUpdated(true)
@@ -42,10 +41,9 @@ export default function CommentSubmit({ comments, missionId, submitId }) {
 
         formData.append("content", editorRef.current.editorInstance.getMarkdown());
 
-        const createSubmitCommentResponse = await fetch(`${serverUri}/mission/${missionId}/submit/${submitId}`, {
-            method: "post",
+        const createSubmitCommentResponse = await fetchWithRetry(`/mission/${missionId}/submit/${submitId}`, {
+            method: "POST",
             body: formData,
-            credentials: "include",
         });
 
         if (createSubmitCommentResponse.ok) {
@@ -58,8 +56,7 @@ export default function CommentSubmit({ comments, missionId, submitId }) {
         if (!isUpdated) return;
 
         const getComments = async () => {
-            const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
-            const getCommentsResponse = await fetch(`${serverUri}/mission/${missionId}/submit/${submitId}/comment`);
+            const getCommentsResponse = await fetchWithRetry(`/mission/${missionId}/submit/${submitId}/comment`);
 
             if (!getCommentsResponse.ok) return;
 

@@ -1,12 +1,12 @@
 import { useRouter } from "next/router";
 import { useRef } from "react";
 import Viewer from "../../components/Viewer";
+import fetchWithRetry from "../../functions/api";
 
 export async function getServerSideProps(context) {
-    const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
     const { missionId } = context.query;
 
-    const getMissionResponse = await fetch(`${serverUri}/mission/${missionId}`);
+    const getMissionResponse = await fetchWithRetry(`/mission/${missionId}`);
 
     if (!getMissionResponse.ok) {
         return {
