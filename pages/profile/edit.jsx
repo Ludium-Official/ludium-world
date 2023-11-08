@@ -2,15 +2,13 @@ import { useRef } from "react";
 import Editor from "../../components/Editor";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import fetchWithRetry from "../../functions/api";
 
 export async function getServerSideProps(context) {
-  const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
-
-  const getProfileResopnse = await fetch(`${serverUri}/profile`, {
+  const getProfileResopnse = await fetchWithRetry(`/profile`, {
     headers: {
       cookie: context.req.headers.cookie
     },
-    credentials: "include"
   });
 
   if (!getProfileResopnse.ok) {
@@ -29,9 +27,11 @@ export async function getServerSideProps(context) {
 }
 
 export default function EditProfile({ profile }) {
-  if (!profile) return <h1>사용자 데이터를 불러오지 못했습니다.</h1>
   const editorRef = useRef(null);
   const router = useRouter();
+
+  if (!profile) return <h1>사용자 데이터를 불러오지 못했습니다.</h1>
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,19 +42,17 @@ export default function EditProfile({ profile }) {
     formData.append("self_intro", editorInstance.getMarkdown());
 
     try {
-      const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
-      const res = await fetch(`${serverUri}/profile`, {
-        method: "put",
+      const res = await fetchWithRetry(`/profile`, {
+        method: "PUT",
         body: formData,
-        credentials: "include"
-      })
+      });
 
       if (res.ok) {
         router.push("/profile");
       }
 
     } catch (error) {
-      console.log(error)
+      console.error(error);
     }
   }
 

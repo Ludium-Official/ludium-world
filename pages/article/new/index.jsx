@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useRef } from "react";
 import Editor from "../../../components/Editor";
 import Category from "../../../enums/Category";
+import fetchWithRetry from "../../../functions/api";
 
 export default function NewArticle() {
   const router = useRouter();
@@ -15,11 +16,9 @@ export default function NewArticle() {
 
     formData.append("content", editorInstance.getMarkdown());
 
-    const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
-    const createArticleResponse = await fetch(`${serverUri}/article`, {
-      method: "post",
+    const createArticleResponse = await fetchWithRetry(`/article`, {
+      method: "POST",
       body: formData,
-      credentials: "include"
     });
 
     if (createArticleResponse.ok) {

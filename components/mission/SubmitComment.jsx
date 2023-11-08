@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import Viewer from "../Viewer";
 import Editor from "../Editor";
+import fetchWithRetry from "../../functions/api";
 
 export default function SubmitComment({ id, content, nick, createAt, missionId, submitId, handleCallback }) {
   const viewerRef = useRef(null);
@@ -20,12 +21,9 @@ export default function SubmitComment({ id, content, nick, createAt, missionId, 
     const formData = new FormData();
     formData.append("content", editorInstance.getMarkdown());
 
-    const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
-
-    const updateCommentResponse = await fetch(`${serverUri}/mission/${missionId}/submit/${submitId}/${id}`, {
-      method: "put",
+    const updateCommentResponse = await fetchWithRetry(`/mission/${missionId}/submit/${submitId}/${id}`, {
+      method: "PUT",
       body: formData,
-      credentials: "include"
     });
 
     if (!updateCommentResponse.ok) return;
@@ -36,11 +34,8 @@ export default function SubmitComment({ id, content, nick, createAt, missionId, 
 
 
   const handleDeleteComment = async () => {
-    const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
-
-    const deleteCommentResponse = await fetch(`${serverUri}/mission/${missionId}/submit/${submitId}/${id}`, {
-      method: "delete",
-      credentials: "include"
+    const deleteCommentResponse = await fetchWithRetry(`/mission/${missionId}/submit/${submitId}/${id}`, {
+      method: "DELETE",
     });
 
     if (!deleteCommentResponse.ok) return;
@@ -53,7 +48,7 @@ export default function SubmitComment({ id, content, nick, createAt, missionId, 
       <Editor editorRef={editorRef} content={content} />
       <button onClick={handleSaveEdit}>저장</button>
       <button onClick={handleCancelEdit}>취소</button>
-    </> : <>
+    </> :
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <Viewer viewerRef={viewerRef} content={content} />
         <p>{nick}</p>
@@ -61,6 +56,6 @@ export default function SubmitComment({ id, content, nick, createAt, missionId, 
         <button onClick={handleEditComment}>수정</button>
         <button onClick={handleDeleteComment}>삭제</button>
       </div>
-    </>}
+    }
   </>
 }

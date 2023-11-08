@@ -1,8 +1,8 @@
 import Link from "next/link";
+import fetchWithRetry from "../../functions/api";
 
 export async function getServerSideProps() {
-  const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
-  const getMissionsResponse = await fetch(`${serverUri}/mission`);
+  const getMissionsResponse = await fetchWithRetry(`/mission`);
 
   if (!getMissionsResponse.ok) {
     return {
