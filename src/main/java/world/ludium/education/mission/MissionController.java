@@ -49,7 +49,17 @@ public class MissionController {
     public ResponseEntity createMission(@RequestParam String title,
                                         @RequestParam String content,
                                         @CookieValue(name = "access_token", required = false) String accessToken) {
-        JsonNode googleUserApiData = loginService.getUserResource(accessToken, "google");
+        JsonNode googleUserApiData = null;
+        try {
+            googleUserApiData = loginService.getUserResource(accessToken, "google");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    new HashMap<String, String>() {{
+                        put("message", "인증에 실패했습니다.");
+                        put("debug", e.getMessage());
+                    }
+                    });
+        }
 
         LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
@@ -82,7 +92,17 @@ public class MissionController {
     public ResponseEntity submitMission(@PathVariable UUID missionId,
                                         @RequestParam String content,
                                         @CookieValue(name = "access_token", required = false) String accessToken) {
-        JsonNode googleUserApiData = loginService.getUserResource(accessToken, "google");
+        JsonNode googleUserApiData = null;
+        try {
+            googleUserApiData = loginService.getUserResource(accessToken, "google");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    new HashMap<String, String>() {{
+                        put("message", "인증에 실패했습니다.");
+                        put("debug", e.getMessage());
+                    }
+                    });
+        }
 
         LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
@@ -234,7 +254,17 @@ public class MissionController {
     public ResponseEntity createSubmitComment(@PathVariable UUID submitId,
                                               @RequestParam String content,
                                               @CookieValue(name = "access_token", required = false) String accessToken) {
-        JsonNode googleUserApiData = loginService.getUserResource(accessToken, "google");
+        JsonNode googleUserApiData = null;
+        try {
+            googleUserApiData = loginService.getUserResource(accessToken, "google");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    new HashMap<String, String>() {{
+                        put("message", "인증에 실패했습니다.");
+                        put("debug", e.getMessage());
+                    }
+                    });
+        }
 
         LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
@@ -267,7 +297,17 @@ public class MissionController {
     public ResponseEntity updateSubmitComment(@PathVariable UUID commentId,
                                               @RequestParam String content,
                                               @CookieValue(name = "access_token", required = false) String accessToken) {
-        JsonNode googleUserApiData = loginService.getUserResource(accessToken, "google");
+        JsonNode googleUserApiData = null;
+        try {
+            googleUserApiData = loginService.getUserResource(accessToken, "google");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    new HashMap<String, String>() {{
+                        put("message", "인증에 실패했습니다.");
+                        put("debug", e.getMessage());
+                    }
+                    });
+        }
 
         LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
@@ -305,7 +345,17 @@ public class MissionController {
     @DeleteMapping("/{missionId}/submit/{submitId}/{commentId}")
     public ResponseEntity deleteSubmitComment(@PathVariable UUID commentId,
                                               @CookieValue(name = "access_token", required = false) String accessToken) {
-        JsonNode googleUserApiData = loginService.getUserResource(accessToken, "google");
+        JsonNode googleUserApiData = null;
+        try {
+            googleUserApiData = loginService.getUserResource(accessToken, "google");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    new HashMap<String, String>() {{
+                        put("message", "인증에 실패했습니다.");
+                        put("debug", e.getMessage());
+                    }
+                    });
+        }
 
         LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 

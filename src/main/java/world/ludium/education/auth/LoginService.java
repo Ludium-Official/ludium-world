@@ -17,11 +17,11 @@ public class LoginService {
         this.env = env;
     }
 
-    public String socialLogin(String code, String registrationId) {
+    public JsonNode socialLogin(String code, String registrationId) {
         return getAccessToken(code, registrationId);
     }
 
-    private String getAccessToken(String authorizationCode, String registrationId) {
+    private JsonNode getAccessToken(String authorizationCode, String registrationId) {
         String clientId = env.getProperty("spring.security.oauth2.client.registration." + registrationId + ".client-id");
         String clientSecret = env.getProperty("spring.security.oauth2.client.registration." + registrationId + ".client-secret");
         String redirectUri = env.getProperty("spring.security.oauth2.client.registration." + registrationId + ".redirect-uri");
@@ -44,9 +44,35 @@ public class LoginService {
 
         assert tokenUri != null;
         ResponseEntity<JsonNode> responseNode = restTemplate.exchange(tokenUri, HttpMethod.POST, entity, JsonNode.class);
-        JsonNode accessTokenNode = responseNode.getBody();
-        assert accessTokenNode != null;
-        return accessTokenNode.get("access_token").asText();
+        JsonNode googleTokenNode = responseNode.getBody();
+        assert googleTokenNode != null;
+        return googleTokenNode;
+    }
+
+    public JsonNode getAccessToken(String refreshToken) {
+        String clientId = env.getProperty("spring.security.oauth2.client.registration.google.client-id");
+        String clientSecret = env.getProperty("spring.security.oauth2.client.registration.google.client-secret");
+        String tokenUri = env.getProperty("spring.security.oauth2.client.provider.google.token-uri");
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>(){
+            {
+                add("client_id", clientId);
+                add("client_secret", clientSecret);
+                add("grant_type", "refresh_token");
+                add("refresh_token", refreshToken);
+            }
+        };
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
+
+        assert tokenUri != null;
+        ResponseEntity<JsonNode> responseNode = restTemplate.exchange(tokenUri, HttpMethod.POST, entity, JsonNode.class);
+        JsonNode googleTokenNode = responseNode.getBody();
+        assert googleTokenNode != null;
+        return googleTokenNode;
     }
 
     public JsonNode getUserResource(String accessToken, String registrationId) {

@@ -4,12 +4,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.env.Environment;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
-import world.ludium.education.auth.google.GoogleUser;
+import world.ludium.education.auth.google.GoogleRefreshToken;
 import world.ludium.education.auth.google.GoogleUserService;
 
 import java.math.BigInteger;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping(value = "/auth/google", produces = "application/json")
@@ -28,7 +30,8 @@ public class OAuth2Controller {
 
     @GetMapping("/code/{registrationId}")
     public RedirectView googleLogin(@RequestParam String code, @PathVariable String registrationId, HttpServletResponse response) {
-        String accessToken = loginService.socialLogin(code, registrationId).toString();
+        JsonNode tokenInfo = loginService.socialLogin(code, registrationId);
+        String accessToken = tokenInfo.get("access_token").asText();
 
         Cookie cookie = new Cookie("access_token", accessToken);
         cookie.setPath("/");
@@ -36,6 +39,20 @@ public class OAuth2Controller {
         response.addCookie(cookie);
 
         JsonNode googleUserInfo = loginService.getUserResource(accessToken, registrationId);
+
+        Cookie cookie1 = new Cookie("ggl_id", googleUserInfo.get("id").toString().replaceAll("\"", ""));
+        cookie1.setPath("/");
+        cookie1.setHttpOnly(true);
+        response.addCookie(cookie1);
+
+
+        if(tokenInfo.get("refresh_token") != null) {
+            GoogleRefreshToken googleRefreshToken = new GoogleRefreshToken();
+            googleRefreshToken.setGglId(new BigInteger(googleUserInfo.get("id").toString().replaceAll("\"", "")));
+            googleRefreshToken.setGglTk(tokenInfo.get("refresh_token").asText());
+
+            googleUserService.createUserRefreshToken(googleRefreshToken);
+        }
 
         String uri = env.getProperty("ludium.world.redirect-uri");
         if (googleUserService.getUserById(new BigInteger(googleUserInfo.get("id").toString().replaceAll("\"", ""))) == null) {
@@ -53,5 +70,25 @@ public class OAuth2Controller {
     public JsonNode googleUserInfo(@CookieValue(name = "access_token", required = false) String accessToken,
                                    @PathVariable String registrationId) {
         return loginService.getUserResource(accessToken, registrationId);
+    }
+
+    @PostMapping("/token-refresh")
+    public ResponseEntity tokenRefresh(@CookieValue(name = "ggl_id", required = false) String gglId,
+                                       HttpServletResponse response) {
+        GoogleRefreshToken googleRefreshToken =  googleUserService.getUserRefreshToken(new BigInteger(gglId));
+        JsonNode tokenInfo = loginService.getAccessToken(googleRefreshToken.getGglTk());
+
+        Cookie cookie = new Cookie("access_token", tokenInfo.get("access_token").asText());
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok(new HashMap<>(){{
+            put("headers", new HashMap<>(){{
+                put("cookie", """
+                                ggl_id=%s; access_token=%s
+                                """.formatted(gglId, tokenInfo.get("access_token").asText()));
+            }});
+        }});
     }
 }
