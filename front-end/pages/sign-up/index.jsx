@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import Editor from "../../components/Editor";
 import { useRef } from "react";
+import fetchWithRetry from "../../functions/api";
 
 export default function SignUP() {
     const router = useRouter();
@@ -14,14 +15,12 @@ export default function SignUP() {
         formData.append("self_intro", editorInstance.getMarkdown());
 
         try {
-            const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
-            const res = await fetch(`${serverUri}/user/sign-up/google`, {
-                method: "post",
+            const createUserSignResponse = await fetchWithRetry(`/user/sign-up/google`, {
+                method: "POST",
                 body: formData,
-                credentials: "include"
             })
 
-            if (res.ok) {
+            if (createUserSignResponse.ok) {
                 router.push("/main");
             }
 

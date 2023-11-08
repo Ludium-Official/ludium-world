@@ -1,10 +1,10 @@
 import SubmitContent from "../../../../components/mission/SubmitContent";
+import fetchWithRetry from "../../../../functions/api";
 
 export async function getServerSideProps(context) {
-    const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
     const { missionId } = context.query;
 
-    const getMissionSumitResponse = await fetch(`${serverUri}/mission/${missionId}/submit`);
+    const getMissionSumitResponse = await fetchWithRetry(`/mission/${missionId}/submit`);
 
     if (!getMissionSumitResponse.ok) {
         return {

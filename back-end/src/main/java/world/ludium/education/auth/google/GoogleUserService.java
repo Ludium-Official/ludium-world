@@ -1,6 +1,5 @@
 package world.ludium.education.auth.google;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
@@ -8,9 +7,12 @@ import java.math.BigInteger;
 @Service
 public class GoogleUserService {
     private GoogleUserRepository googleUserRepository;
+    private GoogleRefreshTokenRepository googleRefreshTokenRepository;
 
-    public GoogleUserService(GoogleUserRepository googleUserRepository) {
+    public GoogleUserService(GoogleUserRepository googleUserRepository,
+                             GoogleRefreshTokenRepository googleRefreshTokenRepository) {
         this.googleUserRepository = googleUserRepository;
+        this.googleRefreshTokenRepository = googleRefreshTokenRepository;
     }
 
     public GoogleUser getUserById(BigInteger id) {
@@ -19,5 +21,13 @@ public class GoogleUserService {
 
     public GoogleUser createUser(GoogleUser googleUser) {
         return googleUserRepository.save(googleUser);
+    }
+
+    public GoogleRefreshToken createUserRefreshToken(GoogleRefreshToken googleRefreshToken) {
+        return googleRefreshTokenRepository.save(googleRefreshToken);
+    }
+
+    public GoogleRefreshToken getUserRefreshToken(BigInteger id) {
+        return googleRefreshTokenRepository.findById(id).orElse(null);
     }
 }

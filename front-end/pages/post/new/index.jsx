@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useRef } from "react";
 import Editor from "../../../components/Editor";
+import fetchWithRetry from "../../../functions/api";
 
 export default function NewPost() {
   const router = useRouter();
@@ -14,11 +15,9 @@ export default function NewPost() {
     formData.append("title", titleRef.current.value);
     formData.append("content", editorInstance.getMarkdown());
 
-    const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
-    const createPostResponse = await fetch(`${serverUri}/post`, {
-      method: "post",
+    const createPostResponse = await fetchWithRetry(`/post`, {
+      method: "POST",
       body: formData,
-      credentials: "include"
     });
 
     if (createPostResponse.ok) {

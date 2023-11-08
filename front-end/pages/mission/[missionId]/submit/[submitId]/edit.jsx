@@ -1,12 +1,12 @@
 import { useRouter } from "next/router";
 import { useRef } from "react";
 import Editor from "../../../../../components/Editor";
+import fetchWithRetry from "../../../../../functions/api";
 
 export async function getServerSideProps(context) {
-    const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
     const { missionId, submitId } = context.query;
 
-    const getSubmitResponse = await fetch(`${serverUri}/mission/${missionId}/submit/${submitId}`);
+    const getSubmitResponse = await fetchWithRetry(`/mission/${missionId}/submit/${submitId}`);
 
     if (!getSubmitResponse.ok) {
         return {
@@ -31,17 +31,15 @@ export async function getServerSideProps(context) {
 export default function EditSubmit({ submit, missionId, submitId }) {
     const router = useRouter();
     const editorRef = useRef(null);
-    const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
 
     const handleEditSubmit = async () => {
         const formData = new FormData();
 
         formData.append("content", editorRef.current.editorInstance.getMarkdown());
 
-        const editSubmitResponse = await fetch(`${serverUri}/mission/${missionId}/submit/${submitId}/edit`, {
-            method: "put",
+        const editSubmitResponse = await fetchWithRetry(`/mission/${missionId}/submit/${submitId}/edit`, {
+            method: "PUT",
             body: formData,
-            credentials: "include"
         });
 
         if (editSubmitResponse.ok) {

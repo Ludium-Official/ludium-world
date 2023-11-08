@@ -43,7 +43,17 @@ public class ArticleController {
                                         @RequestParam String content,
                                         @RequestParam String category,
                                         @CookieValue(name = "access_token", required = false) String accessToken) {
-        JsonNode googleUserApiData = loginService.getUserResource(accessToken, "google");
+        JsonNode googleUserApiData = null;
+        try {
+            googleUserApiData = loginService.getUserResource(accessToken, "google");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    new HashMap<String, String>() {{
+                        put("message", "인증에 실패했습니다.");
+                        put("debug", e.getMessage());
+                    }
+            });
+        }
 
         LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 

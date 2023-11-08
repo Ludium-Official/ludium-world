@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useRef, useState } from "react";
 import Viewer from "../Viewer";
+import fetchWithRetry from "../../functions/api";
 
 export default function SubmitContent({ id, content, vldStt, nick, missionId }) {
     const [submitData, setSubmitData] = useState({
@@ -10,11 +11,8 @@ export default function SubmitContent({ id, content, vldStt, nick, missionId }) 
     const viewerRef = useRef(null);
 
     const handleValidate = async (submitId) => {
-        const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
-
-        const validateMissionSubmitResponse = await fetch(`${serverUri}/mission/${missionId}/submit/${submitId}/validate`, {
-            method: "put",
-            credentials: "include"
+        const validateMissionSubmitResponse = await fetchWithRetry(`/mission/${missionId}/submit/${submitId}/validate`, {
+            method: "PUT",
         });
 
         if (validateMissionSubmitResponse.ok) {
@@ -26,11 +24,8 @@ export default function SubmitContent({ id, content, vldStt, nick, missionId }) 
     }
 
     const handleInvalidate = async (submitId) => {
-        const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
-
-        const invalidateMissionSubmitResponse = await fetch(`${serverUri}/mission/${missionId}/submit/${submitId}/invalidate`, {
-            method: "put",
-            credentials: "include"
+        const invalidateMissionSubmitResponse = await fetchWithRetry(`/mission/${missionId}/submit/${submitId}/invalidate`, {
+            method: "PUT",
         });
 
         if (invalidateMissionSubmitResponse.ok) {

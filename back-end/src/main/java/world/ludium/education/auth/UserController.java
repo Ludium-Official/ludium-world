@@ -32,7 +32,17 @@ public class UserController {
                                              @RequestParam String self_intro,
                                              @RequestParam String phone_number
     ) {
-        JsonNode googleUserApiData = loginService.getUserResource(accessToken, registrationId);
+        JsonNode googleUserApiData = null;
+        try {
+            googleUserApiData = loginService.getUserResource(accessToken, "google");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    new HashMap<String, String>() {{
+                        put("message", "인증에 실패했습니다.");
+                        put("debug", e.getMessage());
+                    }
+                    });
+        }
 
         GoogleUser googleUser = new GoogleUser();
         googleUser.setGgl_id(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));

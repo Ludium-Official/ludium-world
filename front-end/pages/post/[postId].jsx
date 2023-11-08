@@ -1,11 +1,11 @@
 import { useRef } from "react";
 import Viewer from "../../components/Viewer";
+import fetchWithRetry from "../../functions/api";
 
 export async function getServerSideProps(context) {
-    const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
     const { postId } = context.query;
 
-    const getPostResponse = await fetch(`${serverUri}/post/${postId}`);
+    const getPostResponse = await fetchWithRetry(`/post/${postId}`);
 
     if (!getPostResponse.ok) {
         return {

@@ -36,7 +36,17 @@ public class ProfileController {
 
     @GetMapping("")
     public ResponseEntity getProfile(@CookieValue(name = "access_token", required = false) String accessToken) {
-        JsonNode googleUserApiData = loginService.getUserResource(accessToken, "google");
+        JsonNode googleUserApiData = null;
+        try {
+            googleUserApiData = loginService.getUserResource(accessToken, "google");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    new HashMap<String, String>() {{
+                        put("message", "인증에 실패했습니다.");
+                        put("debug", e.getMessage());
+                    }
+                    });
+        }
 
         LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
         List<Article> myAllArticles = articleService.getAllArticlesByUsrId(ludiumUser.getId());
@@ -83,7 +93,17 @@ public class ProfileController {
                                         @RequestParam String nick,
                                         @RequestParam String phone_number,
                                         @RequestParam String self_intro) {
-        JsonNode googleUserApiData = loginService.getUserResource(accessToken, "google");
+        JsonNode googleUserApiData = null;
+        try {
+            googleUserApiData = loginService.getUserResource(accessToken, "google");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    new HashMap<String, String>() {{
+                        put("message", "인증에 실패했습니다.");
+                        put("debug", e.getMessage());
+                    }
+                    });
+        }
 
         LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
         ludiumUser.setNick(nick);
