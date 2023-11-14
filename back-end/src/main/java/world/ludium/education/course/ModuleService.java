@@ -3,6 +3,7 @@ package world.ludium.education.course;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -21,5 +22,9 @@ public class ModuleService {
         module.setCrsId(articleId);
 
         return moduleRepository.save(module);
+    }
+
+    public List<Module> getAllModulesByCourse(UUID courseId) {
+        return moduleRepository.findAllByCrsId(courseId);
     }
 }

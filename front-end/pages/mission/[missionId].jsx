@@ -11,7 +11,7 @@ export async function getServerSideProps(context) {
     if (!getMissionResponse.ok) {
         return {
             props: {
-                missions: null,
+                mission: null,
                 missionId
             }
         };

@@ -14,6 +14,7 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -22,18 +23,43 @@ public class CourseController {
     private LoginService loginService;
     private ArticleService articleService;
     private LudiumUserService ludiumUserService;
+    private ModuleService moduleService;
 
     public CourseController(LoginService loginService,
                             ArticleService articleService,
-                            LudiumUserService ludiumUserService) {
+                            LudiumUserService ludiumUserService,
+                            ModuleService moduleService) {
         this.loginService = loginService;
         this.articleService = articleService;
         this.ludiumUserService = ludiumUserService;
+        this.moduleService = moduleService;
     }
 
     @GetMapping("")
     public ResponseEntity getAllCourse() {
         return ResponseEntity.ok(articleService.getAllCourse());
+    }
+
+    @GetMapping("/{courseId}")
+    public ResponseEntity getPost(@PathVariable UUID courseId) {
+       Article course = null;
+       List<Module> modules = null;
+       CourseDTO courseDTO = new CourseDTO();
+        try {
+            course = articleService.getArticle(courseId);
+            modules = moduleService.getAllModulesByCourse(courseId);
+
+            courseDTO.setId(course.getId());
+            courseDTO.setTitle(course.getTitle());
+            courseDTO.setContent(course.getContent());
+            courseDTO.setModules(modules);
+        } catch (Exception e) {
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new HashMap<>(){{
+                put("message", "수업을 불러오는 중에 에러가 발생했습니다.");
+                put("debug", e.getMessage());
+            }});
+        }
+        return ResponseEntity.ok(courseDTO);
     }
 
     @PostMapping("")
