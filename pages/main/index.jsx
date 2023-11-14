@@ -7,6 +7,7 @@ export default function Main() {
       <Link href="/article">아티클</ Link>
       <Link href="/post">자유게시판</ Link>
       <Link href="/profile">프로필</Link>
+      <Link href="/course">교육</Link>
     </article>
   </>
 }
