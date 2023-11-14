@@ -1,6 +1,9 @@
 package world.ludium.education.article;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import world.ludium.education.course.Module;
+import world.ludium.education.course.ModuleService;
 
 import java.util.List;
 import java.util.UUID;
@@ -8,9 +11,12 @@ import java.util.UUID;
 @Service
 public class ArticleService {
     private final ArticleRepository articleRepository;
+    private ModuleService moduleService;
 
-    public ArticleService(ArticleRepository articleRepository) {
+    public ArticleService(ArticleRepository articleRepository,
+                          ModuleService moduleService) {
         this.articleRepository = articleRepository;
+        this.moduleService = moduleService;
     }
 
     public List<Article> getAllArticle() {
@@ -27,6 +33,17 @@ public class ArticleService {
         return articleRepository.save(article);
     }
 
+    @Transactional
+    public void createCourseWithModule(Article article, List<Module> modules) {
+        article.setId(UUID.randomUUID());
+        article.setCategory(Category.COURSE);
+
+        articleRepository.save(article);
+        for(Module module: modules) {
+            moduleService.createModule(module, article.getId());
+        }
+    }
+
     public List<Article> getAllArticlesByUsrId(UUID usrId) {
         return articleRepository.findAllByUsrId(usrId);
     }
@@ -34,4 +51,6 @@ public class ArticleService {
     public List<Article> getAllMission() { return articleRepository.findAllByCategory(Category.MISSION); }
 
     public List<Article> getAllPost() { return articleRepository.findAllByCategory(Category.FREE_BOARD); }
+
+    public List<Article> getAllCourse() { return articleRepository.findAllByCategory(Category.COURSE); }
 }
