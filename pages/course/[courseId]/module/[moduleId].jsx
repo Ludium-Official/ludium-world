@@ -17,7 +17,7 @@ export async function getServerSideProps(context) {
     }
 }
 
-export default function GetModule({module, courseId, moduleId}) {
+export default function GetModule({ module, courseId, moduleId }) {
     const viewerRef = useRef(null);
 
     return <>
@@ -27,7 +27,9 @@ export default function GetModule({module, courseId, moduleId}) {
         <input type="text" defaultValue={module.category} placeholder="카테고리 값 없음" readOnly />
         <hr />
         <h1>모듈 참고 링크</h1>
-        {module.moduleReferences.map(moduleReference => <p>{moduleReference.artId}</p> )}
+        {module.moduleReferences.map(moduleReference => <div key={moduleReference.artId}>
+            <Link href={`/mission/${moduleReference.artId}`}>{moduleReference.artId}</Link>
+        </div>)}
         <hr />
         <Viewer viewerRef={viewerRef} content={module.content} />
     </>;
