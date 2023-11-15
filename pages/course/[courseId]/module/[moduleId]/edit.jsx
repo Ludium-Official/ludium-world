@@ -48,7 +48,13 @@ export default function EditModule({ module, courseId, moduleId }) {
     }
 
     const handleEditReference = async ({ id }) => {
-        
+        const getModuleResponse = await fetchWithRetry(`/course/${courseId}/${moduleId}/${id}`, {
+            method: "PUT",
+        });
+
+        if(getModuleResponse.ok) {
+            handleFetchMissionAndArticle();
+        }
     }
 
     const getTextValue = value => {
@@ -106,7 +112,6 @@ export default function EditModule({ module, courseId, moduleId }) {
         <h1>모듈 참고 링크</h1>
         <button onClick={handleFetchMissionAndArticle}>미션, 아티클 불러오기</button>
         <div ref={gridRef} className="ref-grid"></div>
-        {module.moduleReferences.map(moduleReference => <p>{moduleReference.artId}</p>)}
         <hr />
         <Editor editorRef={editorRef} content={module.content} />
     </>;
