@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import world.ludium.education.course.Module;
 import world.ludium.education.course.ModuleService;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,4 +54,10 @@ public class ArticleService {
     public List<Article> getAllPost() { return articleRepository.findAllByCategory(Category.FREE_BOARD); }
 
     public List<Article> getAllCourse() { return articleRepository.findAllByCategory(Category.COURSE); }
+
+    public List<Article> getAllMissionsAndArticles() { return articleRepository.findAllByCategoryIn(Arrays.asList(Category.MISSION, Category.ARTICLE)); }
+
+    public List<ModuleReferenceArticleDTO> getALlMissionsAndArticles(UUID moduleId) {
+        return articleRepository.getArtWithStatusAndFilter(moduleId);
+    }
 }
