@@ -135,6 +135,12 @@ public class CourseController {
         return ResponseEntity.ok(moduleDTO);
     }
 
+    @PutMapping("/{courseId}/{moduleId}/{articleId}")
+    public ResponseEntity updateModuleReference(@PathVariable UUID moduleId,
+                                                @PathVariable UUID articleId) {
+        return ResponseEntity.ok(moduleService.updateModuleReference(moduleId, articleId));
+    }
+
     @GetMapping("/missionAndArticles/{moduleId}")
     public ResponseEntity getMissionAndArticles(@PathVariable UUID moduleId) {
         return ResponseEntity.ok(articleService.getALlMissionsAndArticles(moduleId));

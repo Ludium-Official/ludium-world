@@ -7,5 +7,5 @@ import java.util.UUID;
 
 public interface ModuleReferenceRepository extends JpaRepository<ModuleReference, UUID> {
     List<ModuleReference> findAllByMdlId(UUID mdlId);
-
+    ModuleReference findByMdlIdAndArtId(UUID mdlId, UUID artId);
 }

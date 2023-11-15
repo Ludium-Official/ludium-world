@@ -1,12 +1,18 @@
 package world.ludium.education.course;
 
+import jakarta.persistence.Embeddable;
+
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
+@Embeddable
 public class ModuleReferenceId implements Serializable {
     private UUID mdlId;
     private UUID artId;
+
+    public ModuleReferenceId() {
+    }
 
     public ModuleReferenceId(UUID mdlId, UUID artId) {
         this.mdlId = mdlId;
