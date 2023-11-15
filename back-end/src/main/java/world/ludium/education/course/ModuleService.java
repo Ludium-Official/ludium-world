@@ -57,4 +57,8 @@ public class ModuleService {
 
         return moduleReference;
     }
+
+    public Module updateModule(Module module) {
+        return moduleRepository.save(module);
+    }
 }
