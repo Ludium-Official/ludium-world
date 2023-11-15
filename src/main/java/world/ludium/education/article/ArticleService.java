@@ -57,7 +57,7 @@ public class ArticleService {
 
     public List<Article> getAllMissionsAndArticles() { return articleRepository.findAllByCategoryIn(Arrays.asList(Category.MISSION, Category.ARTICLE)); }
 
-    public List<ModuleReferenceArticleDTO> getALlMissionsAndArticles(UUID moduleId) {
+    public List<ModuleReferenceArticleDTO> getAllMissionsAndArticles(UUID moduleId) {
         return articleRepository.getArtWithStatusAndFilter(moduleId);
     }
 }

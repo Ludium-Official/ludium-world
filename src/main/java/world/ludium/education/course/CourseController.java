@@ -135,6 +135,22 @@ public class CourseController {
         return ResponseEntity.ok(moduleDTO);
     }
 
+    @PutMapping("/{courseId}/module/{moduleId}")
+    public ResponseEntity updateModule(@PathVariable UUID courseId,
+                                       @PathVariable UUID moduleId,
+                                       @RequestParam String title,
+                                       @RequestParam String content,
+                                       @RequestParam String category) {
+        Module module = new Module();
+        module.setId(moduleId);
+        module.setTitle(title);
+        module.setContent(content);
+        module.setCategory(category);
+        module.setCrsId(courseId);
+
+        return ResponseEntity.ok(moduleService.updateModule(module));
+    }
+
     @PutMapping("/{courseId}/{moduleId}/{articleId}")
     public ResponseEntity updateModuleReference(@PathVariable UUID moduleId,
                                                 @PathVariable UUID articleId) {
@@ -143,6 +159,6 @@ public class CourseController {
 
     @GetMapping("/missionAndArticles/{moduleId}")
     public ResponseEntity getMissionAndArticles(@PathVariable UUID moduleId) {
-        return ResponseEntity.ok(articleService.getALlMissionsAndArticles(moduleId));
+        return ResponseEntity.ok(articleService.getAllMissionsAndArticles(moduleId));
     }
 }
