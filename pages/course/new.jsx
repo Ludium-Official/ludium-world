@@ -12,7 +12,7 @@ export default function newCourse() {
         e.preventDefault();
 
         const { editorInstance } = editorRef.current;
-        const moduleFields = e.target.querySelectorAll('[name^="module-"]');
+        const moduleFields = e.target.querySelectorAll(`[name^="module-"]`);
 
         const modules = Array.from(moduleFields).reduce((acc, moduleField, index) => {
             const value = moduleField.value;
