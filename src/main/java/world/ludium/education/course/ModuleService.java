@@ -40,4 +40,21 @@ public class ModuleService {
     public List<ModuleReference> getAllModuleReferenceByModuleId(UUID moduleId) {
         return moduleReferenceRepository.findAllByMdlId(moduleId);
     }
+
+    public ModuleReference updateModuleReference(UUID moduleId,
+                                      UUID articleId) {
+        ModuleReference moduleReference = moduleReferenceRepository.findByMdlIdAndArtId(moduleId, articleId);
+
+        if(moduleReference == null) {
+            moduleReference = new ModuleReference();
+            moduleReference.setMdlId(moduleId);
+            moduleReference.setArtId(articleId);
+
+            moduleReferenceRepository.save(moduleReference);
+        } else {
+            moduleReferenceRepository.delete(moduleReference);
+        }
+
+        return moduleReference;
+    }
 }
