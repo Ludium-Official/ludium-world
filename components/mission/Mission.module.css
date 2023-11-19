@@ -1,0 +1,4 @@
+.mission-list-wrapper {
+    display: flex;
+    flex-direction: column;
+}
