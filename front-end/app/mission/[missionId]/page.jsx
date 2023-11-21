@@ -2,6 +2,7 @@ import Link from "next/link";
 import Viewer from "../../../components/Viewer";
 import fetchWithRetry from "../../../functions/api";
 import missionstyle from "./mission.module.css";
+import ContentNavigation from "../../../components/ContentNavigation";
 
 async function getMission(missionId) {
     const getMissionResponse = await fetchWithRetry(`/mission/${missionId}`);
@@ -17,20 +18,18 @@ async function getMission(missionId) {
 export default async function MissionPage({ params }) {
     const { missionId } = params;
     const mission = await getMission(missionId);
+    const links = [{
+        href: `/mission/${missionId}/submit/new`,
+        text: "미션제출하러가기"
+    }, {
+        href: `/mission/${missionId}/submit`,
+        text: "미션제출보기"
+    }];
 
-    return <div>
-        <nav className={missionstyle["nav-wrapper"]}>
-            <ul className={missionstyle.list}>
-                <li>
-                    <Link href={`/mission/${missionId}/submit/new`}>미션제출하러가기</Link>
-                </li>
-                <li>
-                    <Link href={`/mission/${missionId}/submit`}>미션제출보기</Link>
-                </li>
-            </ul>
-        </nav>
-        <h1 className={missionstyle.title}>{mission.title}</h1>
-        <div className={missionstyle["content-wrapper"]}>
+    return <div className={missionstyle.wrapper}>
+        <ContentNavigation links={links} />
+        <h1>{mission.title}</h1>
+        <div className={missionstyle.content}>
             <Viewer content={mission.content} />
         </div>
     </div>

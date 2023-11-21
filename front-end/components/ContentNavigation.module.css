@@ -1,0 +1,24 @@
+.wrapper {
+    height: 50px;
+}
+
+.list {
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+.list>li {
+    margin: 0 10px;
+    border: solid 1px;
+    background-color: #efefef;
+    list-style-type: none;
+    list-style: none;
+}
+
+.list>li>a {
+    display: block;
+    padding: 10px;
+    color: #000;
+    text-decoration: none;
+}
