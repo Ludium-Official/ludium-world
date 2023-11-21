@@ -1,6 +1,7 @@
-import Link from "next/link";
-import fetchWithRetry from "../../functions/api";
+import ContentNavigation from "../../components/ContentNavigation";
 import MissionList from "../../components/mission/MissionList";
+import fetchWithRetry from "../../functions/api";
+import missionliststyle from "./mission-list.module.css";
 
 async function getMissions() {
     const getMissionsResponse = await fetchWithRetry(`/mission`);
@@ -12,10 +13,14 @@ async function getMissions() {
 
 export default async function MissionListPage() {
     const missions = await getMissions();
+    const links = [{
+        href: "/mission/new",
+        text: "글쓰기"
+    }];
 
-    return <>
-        <Link href="/mission/new">글쓰기</Link>
+    return <div className={missionliststyle.wrapper}>
+        <ContentNavigation links={links} />
         <h1>글 목록</h1>
         <MissionList missions={missions} />
-    </>
+    </div>
 }

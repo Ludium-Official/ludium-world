@@ -1,33 +1,8 @@
-.nav-wrapper {
-    height: 50px;
-}
-
-.list {
-    display: flex;
-    padding: 0;
-    margin: 0;
-}
-
-.list>li {
-    margin: 0 10px;
-    padding: 10px;
-    border: solid 1px;
-    background-color: #efefef;
-    list-style-type: none;
-    list-style: none;
-}
-
-.list>li>a {
-    color: #000;
-    text-decoration: none;
-}
-
-.title {
-    width: 100%;
-}
-
-.content-wrapper {
+.wrapper {
     width: Calc(100vw - 362px);
+}
+
+.content {
     padding: 10px 0;
     border: solid 1px;
 }
