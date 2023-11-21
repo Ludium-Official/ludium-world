@@ -62,7 +62,7 @@ public class OAuth2Controller {
         }
 
         return new RedirectView() {{
-            setUrl(uri+"/main");
+            setUrl(uri);
         }};
     }
 

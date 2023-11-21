@@ -1,7 +1,9 @@
-import { useRouter } from "next/router";
+"use client";
+
 import Editor from "../../components/Editor";
 import { useRef } from "react";
 import fetchWithRetry from "../../functions/api";
+import { useRouter } from "next/navigation";
 
 export default function SignUP() {
     const router = useRouter();
