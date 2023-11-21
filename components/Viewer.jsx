@@ -1,6 +1,9 @@
-import { useEffect } from "react"
+"use client";
 
-export default function Viewer({ viewerRef, content }) {
+import { useEffect, useRef } from "react"
+
+export default function Viewer({ content }) {
+    const viewerRef = useRef(null);
     useEffect(() => {
         const putViewer = async () => {
             const toastViewer = (await import("@toast-ui/editor/dist/toastui-editor-viewer")).default;
