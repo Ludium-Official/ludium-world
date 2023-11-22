@@ -1,9 +1,10 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import Editor from "../../../../../components/Editor";
-import { useRouter } from "next/navigation";
 import fetchWithRetry from "../../../../../functions/api";
+import { revalidatePath } from "next/cache";
 
 export default function NewMissionSubmitPage({ params }) {
     const { missionId } = params;
@@ -24,6 +25,7 @@ export default function NewMissionSubmitPage({ params }) {
 
         if (newMissionSubmitResponse.ok) {
             router.push(`/mission/${missionId}`);
+            router.refresh();
         }
     }
 

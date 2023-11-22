@@ -24,6 +24,7 @@ export default function SignUP() {
 
             if (createUserSignResponse.ok) {
                 router.push("/main");
+                router.refresh();
             }
 
         } catch (error) {
