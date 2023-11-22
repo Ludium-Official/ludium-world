@@ -1,43 +1,33 @@
-import Link from "next/link";
-import Viewer from "../../components/Viewer";
-import { useRef } from "react";
+import { cookies } from "next/headers";
 import fetchWithRetry from "../../functions/api";
+import Viewer from "../../components/Viewer";
+import Link from "next/link";
 
-export async function getServerSideProps(context) {
+export async function getProfile() {
+    const cookieStore = cookies();
+
     const getProfileResopnse = await fetchWithRetry(`/profile`, {
         headers: {
-            cookie: context.req.headers.cookie
+            cookie: cookieStore
         },
     });
 
-    if (!getProfileResopnse.ok) {
-        return {
-            props: {
-                profile: null
-            }
-        }
-    }
+    if (!getProfileResopnse.ok) return null;
 
-    return {
-        props: {
-            profile: await getProfileResopnse.json()
-        }
-    }
+    return await getProfileResopnse.json();
 }
 
-export default function Profile({ profile }) {
-    if (!profile) return <h1>사용자 데이터를 불러오지 못했습니다.</h1>
+export default async function ProfilePage() {
+    const profile = await getProfile();
 
-    const viewerRef = useRef(null);
-
-    return <>
+    return <div>
         <h1>내 정보</h1>
         <Link href="/profile/edit">내 정보 수정하기</Link>
         <hr />
         <p>닉네임: {profile.user.nick}</p>
         <p>핸드폰 번호: {profile.user.phnNmb}</p>
         <p>자기소개</p>
-        <Viewer viewerRef={viewerRef} content={profile.user.selfIntro}></Viewer>
+        <Viewer content={profile.user.selfIntro}></Viewer>
         <h1>내가 쓴 아티클</h1>
         {profile.articles.map(article =>
             <div key={article.id} style={{ display: "flex", flexDirection: "column", border: "solid 1px", margin: "0 0 10px 0" }}>
@@ -81,5 +71,5 @@ export default function Profile({ profile }) {
         {profile.userCommentsByMyMission.map(comment =>
             <p key={comment.id}>{comment.content}</p>
         )}
-    </>;
+    </div>;
 }
