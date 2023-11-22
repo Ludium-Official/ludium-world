@@ -4,7 +4,6 @@ import Editor from "../Editor";
 import fetchWithRetry from "../../functions/api";
 
 export default function SubmitComment({ id, content, nick, createAt, missionId, submitId, handleCallback }) {
-  const viewerRef = useRef(null);
   const editorRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -50,7 +49,7 @@ export default function SubmitComment({ id, content, nick, createAt, missionId, 
       <button onClick={handleCancelEdit}>취소</button>
     </> :
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <Viewer viewerRef={viewerRef} content={content} />
+        <Viewer content={content} />
         <p>{nick}</p>
         <p>{createAt}</p>
         <button onClick={handleEditComment}>수정</button>
