@@ -6,6 +6,7 @@ const refreshAccessToken = async (options) => {
       "Content-Type": "application/x-www-form-urlencoded",
     },
     credentials: "include",
+    cache: "no-store"
   };
 
   if (options.headers !== undefined) {

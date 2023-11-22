@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
-import Category from "../../../enums/Category";
 import Editor from "../../../components/Editor";
+import Category from "../../../enums/Category";
 import fetchWithRetry from "../../../functions/api";
 
 export default function NewMissionPage() {
@@ -25,6 +25,7 @@ export default function NewMissionPage() {
 
         if (createMissionResponse.ok) {
             router.push("/mission");
+            router.refresh();
         }
     }
 
