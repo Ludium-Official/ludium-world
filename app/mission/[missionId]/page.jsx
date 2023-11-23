@@ -1,8 +1,7 @@
-import Link from "next/link";
+import ContentNavigation from "../../../components/ContentNavigation";
 import Viewer from "../../../components/Viewer";
 import fetchWithRetry from "../../../functions/api";
-import missionstyle from "./mission.module.css";
-import ContentNavigation from "../../../components/ContentNavigation";
+import missionstyle from "../mission.module.css"
 
 async function getMission(missionId) {
     const getMissionResponse = await fetchWithRetry(`/mission/${missionId}`);
@@ -26,11 +25,11 @@ export default async function MissionPage({ params }) {
         text: "미션제출보기"
     }];
 
-    return <div className={missionstyle.wrapper}>
+    return <>
         <ContentNavigation links={links} />
         <h1>{mission.title}</h1>
         <div className={missionstyle.content}>
             <Viewer content={mission.content} />
         </div>
-    </div>
+    </>
 }
