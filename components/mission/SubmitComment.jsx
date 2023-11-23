@@ -1,3 +1,5 @@
+"use client";
+
 import { useRef, useState } from "react";
 import Viewer from "../Viewer";
 import Editor from "../Editor";
@@ -44,7 +46,7 @@ export default function SubmitComment({ id, content, nick, createAt, missionId, 
 
   return <>
     {isEditing ? <>
-      <Editor editorRef={editorRef} content={content} />
+      <Editor editorRef={editorRef} content={content} height={"150px"} />
       <button onClick={handleSaveEdit}>저장</button>
       <button onClick={handleCancelEdit}>취소</button>
     </> :
