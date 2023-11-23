@@ -1,8 +1,0 @@
-.wrapper {
-    width: Calc(100vw - 362px);
-}
-
-.section-header-wrapper {
-    display: flex;
-    justify-content: space-between;
-}

@@ -1,5 +1,6 @@
-import Navigation from "../components/Navigation";
 import { cookies } from "next/headers";
+import MainWrapper from "../components/MainWrapper";
+import Navigation from "../components/Navigation";
 
 export default function RootLayout({
     children
@@ -12,7 +13,9 @@ export default function RootLayout({
         <body>
             <main style={{ display: "flex" }}>
                 <Navigation googleAuthInfo={cookieStore.get("access_token")} gglId={cookieStore.get("ggl_id")} />
-                {children}
+                <MainWrapper>
+                    {children}
+                </MainWrapper>
             </main>
         </body>
     </html>
