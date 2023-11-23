@@ -1,9 +1,11 @@
-import { useRef, useState } from "react";
-import Editor from "../../components/Editor";
-import fetchWithRetry from "../../functions/api";
-import { useRouter } from "next/router";
+"use client";
 
-export default function newCourse() {
+import { useRef, useState } from "react";
+import Editor from "../../../components/Editor";
+import fetchWithRetry from "../../../functions/api";
+import { useRouter } from "next/navigation";
+
+export default function NewCoursePage() {
     const editorRef = useRef(null);
     const [modules, setModules] = useState([]);
     const router = useRouter();
@@ -37,6 +39,7 @@ export default function newCourse() {
 
         if (createCourseResponse.ok) {
             router.push("/course");
+            router.refresh();
         }
     }
 
@@ -45,14 +48,14 @@ export default function newCourse() {
     }
 
     return <form onSubmit={handleSave}>
-        <input type="text" name="title" id="title" placeholder="제목을 입력해주세요" />
-        <input type="submit" value="저장하기" />
-        <div style={{display: "flex", flexDirection: "column"}}>
-            <button type="button" onClick={handleCreateModule}>모듈 추가하기</button>
-            {modules.map((_, index) =>
-                <input key={`module-${index}`} type="text" name={`module-${index}`} id={`module-${index}`} placeholder="모듈 제목을 입력해주세요" />
-            )}
-        </div>
-        <Editor editorRef={editorRef} />
-    </form>
+    <input type="text" name="title" id="title" placeholder="제목을 입력해주세요" />
+    <input type="submit" value="저장하기" />
+    <div style={{display: "flex", flexDirection: "column"}}>
+        <button type="button" onClick={handleCreateModule}>모듈 추가하기</button>
+        {modules.map((_, index) =>
+            <input key={crypto.randomUUID()} type="text" name={`module-${index}`} id={`module-${index}`} placeholder="모듈 제목을 입력해주세요" />
+        )}
+    </div>
+    <Editor editorRef={editorRef} />
+</form>
 }
