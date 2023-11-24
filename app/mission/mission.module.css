@@ -1,8 +1,3 @@
-.content {
-  padding: 10px 0;
-  border: solid 1px;
-}
-
 .section-header-wrapper {
   display: flex;
   justify-content: space-between;
@@ -88,4 +83,28 @@
   padding: 15px;
   padding-right: 45px;
   height: Calc(100vh - 190px);
+}
+
+.mission-view-wrapper {
+  margin-left: 360px;
+  padding: 15px 17px 40px 44px;
+  height: calc(100vh - 135px);
+}
+
+.mission-view-wrapper>h1 {
+  margin: 15px;
+  background-color: #e6e0e9;
+  height: 45px;
+  border-bottom: solid 1px;
+  border-radius: 4px 4px 0 0;
+}
+
+.content {
+  margin: 25px 15px 0;
+  padding: 10px 15px;
+  height: calc(100% - 107px);
+  background-color: #fff;
+  border: solid 1px #e6e2e6;
+  border-radius: 5px;
+  overflow-y: auto;
 }
