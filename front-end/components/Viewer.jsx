@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react"
 
-export default function Viewer({ content }) {
+export default function Viewer({ content, height }) {
     const viewerRef = useRef(null);
     useEffect(() => {
         const putViewer = async () => {
@@ -15,7 +15,7 @@ export default function Viewer({ content }) {
 
                 viewerRef.current.viewerInstance = new toastViewer({
                     el: viewerRef.current,
-                    height: "90vh",
+                    height: height ?? "90vh",
                     initialValue: content
                 });
             } catch (error) {
