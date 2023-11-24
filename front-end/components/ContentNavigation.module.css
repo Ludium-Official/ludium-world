@@ -1,6 +1,7 @@
 .wrapper {
+    margin-left: 360px;
     height: 50px;
-    padding: 15px;
+    padding: 15px 15px 15px 44px;
 }
 
 .list {
@@ -27,4 +28,16 @@
     color: #fff;
     gap: 8px;
     flex: 1 0 0;
+}
+
+.list>li:hover {
+    background-color: #7965af;
+}
+
+.list>li:active {
+    background-color: #f7f2fa;
+}
+
+.list>li>a:active {
+    color: #8b78b9;
 }
