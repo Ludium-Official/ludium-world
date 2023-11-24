@@ -19,8 +19,12 @@
 
 .mission-title {
   margin: 0;
-  padding: 10px 15px;
+  padding: 15px 15px 10px;
   color: #1d1b20;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 32px;
 }
 
 .mission-author {
@@ -37,7 +41,7 @@
   border: solid 1px #cac4d0;
   border-radius: 12px;
   font-size: 14px;
-  background-color: #fef7ff;
+  background-color: #e8def8;
   height: 250px;
   overflow: hidden;
 }
@@ -46,20 +50,19 @@
 .mission-content > div > div > h2,
 .mission-content > div > div > h3 {
   margin: 5px 15px 0;
-  padding-left: 15px;
+  border-bottom: none;
 }
 
 .mission-content > div > div > p {
   margin: 5px 15px 15px;
-  padding-left: 15px;
 }
 
-.mission-content > div > div > p:has(img) {
+.mission-content > div > div > p:has(:first-child:is(img)) {
   margin: 0;
   padding-left: 0;
 }
 
-.mission-content > div > div > p > img {
+.mission-content > div > div > p img {
   width: 100%;
   height: 250px;
   object-fit: cover;
