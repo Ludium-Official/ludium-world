@@ -2,8 +2,6 @@ import Link from "next/link";
 import missionstyle from "./Mission.module.css";
 
 export default function MissionList({ missions }) {
-  console.log(missions);
-
   return (
     <div className={missionstyle["mission-list-wrapper"]}>
       {missions.map(({ id, title, content, usrId }) => (
