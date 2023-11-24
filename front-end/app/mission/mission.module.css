@@ -15,3 +15,77 @@
   border: solid 1px;
   border-radius: 5px;
 }
+
+.mission-new-wrapper {
+  padding-left: 44px;
+  margin-left: 360px;
+  height: 100vh;
+}
+
+.mission-new-button-area {
+  display: flex;
+  justify-content: flex-end;
+  height: 50px;
+  padding: 15px;
+}
+
+.mission-new-button {
+  margin: 0 10px;
+  border: solid 1px #6750a4;
+  background-color: #6750a4;
+  list-style-type: none;
+  border-radius: 100px;
+  height: 40px;
+  padding: 9.2px 24px;
+  color: #fff;
+  font-size: 16px;
+}
+
+.mission-new-button:hover {
+  background-color: #7965af;
+}
+
+.mission-new-button:active {
+  background-color: #f7f2fa;
+  color: #8b78b9;
+}
+
+.mission-new-header-area {
+  display: flex;
+  height: 50px;
+  padding: 15px;
+  gap: 70px;
+}
+
+.mission-new-header-area > input {
+  width: 800px;
+  height: 45px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: solid 1px;
+  border-radius: 4px 4px 0 0;
+  text-indent: 15px;
+  font-size: 16px;
+  background-color: #e6e0e9;
+}
+
+.mission-new-header-area > select {
+  width: 150px;
+  height: 49px;
+  padding: 1px 2px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: solid 1px;
+  border-radius: 4px 4px 0 0;
+  text-indent: 7px;
+  font-size: 16px;
+  background-color: #e6e0e9;
+}
+
+.mission-new-content-area {
+  padding: 15px;
+  padding-right: 45px;
+  height: Calc(100vh - 190px);
+}
