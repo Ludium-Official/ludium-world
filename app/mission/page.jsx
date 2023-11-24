@@ -14,12 +14,11 @@ export default async function MissionListPage() {
     const missions = await getMissions();
     const links = [{
         href: "/mission/new",
-        text: "글쓰기"
+        text: "미션 추가"
     }];
 
     return <>
         <ContentNavigation links={links} />
-        <h1>글 목록</h1>
         <MissionList missions={missions} />
     </>
 }
