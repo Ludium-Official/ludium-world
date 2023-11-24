@@ -10,7 +10,7 @@ export default function RootLayout({
     return <html lang="en">
         <head>
         </head>
-        <body>
+        <body style={{margin: 0}}>
             <main style={{ display: "flex" }}>
                 <Navigation googleAuthInfo={cookieStore.get("access_token")} gglId={cookieStore.get("ggl_id")} />
                 <MainWrapper>
