@@ -1,4 +1,5 @@
 .wrapper {
   width: Calc(100vw - 362px);
-  margin: 0 0 0 15px;
+  padding: 0;
+  background-color: #fef7ff;
 }
