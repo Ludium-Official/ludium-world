@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import "tui-grid/dist/tui-grid.css";
 import Editor from "../../../../../../components/Editor";
 import fetchWithRetry from "../../../../../../functions/api";
+import coursestyle from "../../../../course.module.css";
 
 class CustomButtonRenderer {
   constructor(props) {
@@ -137,26 +138,42 @@ export default function EditModuleContent({
   }, [missionAndArticles]);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Link href={`/course/${courseId}/module/${moduleId}`}>뒤로가기</Link>
-      <input type="submit" value="저장하기" />
-      <hr />
-      <input type="text" name="title" id="title" defaultValue={module.title} />
-      <input
-        type="text"
-        name="category"
-        id="category"
-        defaultValue={module.category}
-        placeholder="카테고리를 입력해주세요"
-      />
-      <hr />
-      <h1>모듈 참고 링크</h1>
-      <button onClick={handleFetchMissionAndArticle}>
-        미션, 아티클 불러오기
-      </button>
-      <div ref={gridRef} className="ref-grid"></div>
-      <hr />
-      <Editor editorRef={editorRef} content={module.content} />
+    <form className={coursestyle["course-edit-wrapper"]} onSubmit={handleSubmit}>
+      <div className={coursestyle["course-edit-button-area"]}>
+        <input
+          className={coursestyle["course-edit-button"]}
+          type="submit"
+          value="저장하기"
+        />
+      </div>
+      <div className={coursestyle["course-edit-header-area"]}>
+        <input
+          type="text"
+          name="title"
+          id="title"
+          defaultValue={module.title}
+          placeholder="제목을 입력해주세요"
+        />
+        <input
+          type="text"
+          name="category"
+          id="category"
+          defaultValue={module.category}
+          placeholder="카테고리를 입력해주세요"
+        />
+      </div>
+      <div className={coursestyle["course-edit-reference-area"]}>
+        <h1>모듈 참고 링크</h1>
+        <div className={coursestyle["course-edit-reference-button-area"]}>
+          <button type="button" onClick={handleFetchMissionAndArticle}>
+            미션, 아티클 불러오기
+          </button>
+        </div>
+        <div ref={gridRef} className="ref-grid"></div>
+      </div>
+      <div className={coursestyle["course-edit-content-area"]}>
+      <Editor editorRef={editorRef} content={module.content} height={"100%"} />
+      </div>
     </form>
   );
 }

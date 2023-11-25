@@ -1,6 +1,8 @@
 import Link from "next/link";
+import ContentNavigation from "../../../../../components/ContentNavigation";
 import Viewer from "../../../../../components/Viewer";
 import fetchWithRetry from "../../../../../functions/api";
+import coursestyle from "../../../course.module.css";
 
 async function getModule(courseId, moduleId) {
   const getModuleResponse = await fetchWithRetry(
@@ -12,10 +14,15 @@ async function getModule(courseId, moduleId) {
 
 export default async function ModulePage({ params: { courseId, moduleId } }) {
   const module = await getModule(courseId, moduleId);
+  const links = [{
+    href: `/course/${courseId}/module/${moduleId}/edit`,
+    text: "수정하기"
+  }]
 
   return (
     <>
-      <Link href={`/course/${courseId}/module/${moduleId}/edit`}>수정하기</Link>
+    <ContentNavigation links={links}></ContentNavigation>
+    <article className={coursestyle.wrapper}>
       <hr />
       <input type="text" defaultValue={module.title} readOnly />
       <input
@@ -35,6 +42,7 @@ export default async function ModulePage({ params: { courseId, moduleId } }) {
       ))}
       <hr />
       <Viewer content={module.content} />
+    </article>
     </>
   );
 }
