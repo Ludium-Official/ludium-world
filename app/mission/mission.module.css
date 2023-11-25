@@ -47,42 +47,46 @@
 
 .mission-new-header-area {
   display: flex;
-  height: 50px;
-  padding: 15px;
-  gap: 70px;
+  flex-direction: column;
+  padding: 15px 45px 0 15px;
+  gap: 7px;
 }
 
 .mission-new-header-area > input {
-  width: 800px;
-  height: 45px;
+  width: 100%;
+  height: 77px;
   border-top: none;
   border-left: none;
   border-right: none;
-  border-bottom: solid 1px;
+  border-bottom: solid 1px #cfbcda;
   border-radius: 4px 4px 0 0;
   text-indent: 15px;
-  font-size: 16px;
+  font-size: 3em;
   background-color: #e6e0e9;
 }
 
+.mission-new-header-area > input:focus {
+  outline: none;
+}
+
 .mission-new-header-area > select {
-  width: 150px;
-  height: 49px;
+  width: 100%;
+  height: 65px;
   padding: 1px 2px;
   border-top: none;
   border-left: none;
   border-right: none;
-  border-bottom: solid 1px;
+  border-bottom: solid 1px #cfbcda;
   border-radius: 4px 4px 0 0;
   text-indent: 7px;
-  font-size: 16px;
+  font-size: 1.5em;
   background-color: #e6e0e9;
 }
 
 .mission-new-content-area {
-  padding: 15px;
+  padding: 7px 15px 15px;
   padding-right: 45px;
-  height: Calc(100vh - 190px);
+  height: Calc(100vh - 270px);
 }
 
 .mission-view-wrapper {
@@ -91,7 +95,7 @@
   height: calc(100vh - 135px);
 }
 
-.mission-view-wrapper>h1 {
+.mission-view-wrapper > h1 {
   margin: 15px;
   background-color: #e6e0e9;
   height: 45px;
@@ -107,4 +111,53 @@
   border: solid 1px #e6e2e6;
   border-radius: 5px;
   overflow-y: auto;
+}
+
+.mission-submit-wrapper {
+  margin-left: 360px;
+  padding: 15px 17px 40px 44px;
+  height: calc(100vh - 55px);
+}
+
+.mission-submit-wrapper > h1 {
+  margin: 0;
+  height: 50px;
+  padding: 0 0 15px 15px;
+}
+
+.mission-submit-list {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: 44px;
+  margin: 0 15px;
+  height: calc(100% - 81px);
+  overflow-y: auto;
+  border: 1px solid;
+  border-radius: 5px;
+}
+
+.mission-submit-item {
+  margin: 0;
+  height: 30px;
+  padding: 7px 8px;
+  border-bottom: 1px solid;
+}
+
+.mission-submit-item-vertical-center {
+  display: flex;
+  align-items: center;
+}
+
+.mission-submit-list > :nth-child(-n + 7) {
+  border-left: 1px solid;
+}
+
+.mission-submit-list > :first-child {
+  border-left: none;
+}
+
+.mission-submit-item-button {
+  width: 150px;
+  align-self: center;
+  justify-self: center;
 }
