@@ -14,35 +14,38 @@ async function getModule(courseId, moduleId) {
 
 export default async function ModulePage({ params: { courseId, moduleId } }) {
   const module = await getModule(courseId, moduleId);
-  const links = [{
-    href: `/course/${courseId}/module/${moduleId}/edit`,
-    text: "수정하기"
-  }]
+  const links = [
+    {
+      href: `/course/${courseId}/module/${moduleId}/edit`,
+      text: "수정하기",
+    },
+  ];
 
   return (
     <>
-    <ContentNavigation links={links}></ContentNavigation>
-    <article className={coursestyle.wrapper}>
-      <hr />
-      <input type="text" defaultValue={module.title} readOnly />
-      <input
-        type="text"
-        defaultValue={module.category}
-        placeholder="카테고리 값 없음"
-        readOnly
-      />
-      <hr />
-      <h1>모듈 참고 링크</h1>
-      {module.moduleReferences.map((moduleReference) => (
-        <div key={moduleReference.artId}>
-          <Link href={`/mission/${moduleReference.artId}`}>
-            {moduleReference.artId}
-          </Link>
+      <ContentNavigation links={links}></ContentNavigation>
+      <article className={coursestyle.wrapper}>
+        <div className={coursestyle["module-header-area"]}>
+          <input type="text" defaultValue={module.title} readOnly />
+          <input
+            type="text"
+            defaultValue={module.category}
+            placeholder="카테고리 값 없음"
+            readOnly
+          />
         </div>
-      ))}
-      <hr />
-      <Viewer content={module.content} />
-    </article>
+        <hr />
+        <h1>모듈 참고 링크</h1>
+        {module.moduleReferences.map((moduleReference) => (
+          <div key={moduleReference.artId}>
+            <Link href={`/mission/${moduleReference.artId}`}>
+              {moduleReference.artId}
+            </Link>
+          </div>
+        ))}
+        <hr />
+        <Viewer content={module.content} />
+      </article>
     </>
   );
 }
