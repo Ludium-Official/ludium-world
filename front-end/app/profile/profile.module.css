@@ -1,0 +1,38 @@
+.profile-wrapper {
+  margin-left: 360px;
+  padding: 15px 17px 40px 44px;
+}
+
+.content-navigation {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.profile-title {
+  margin: 15px;
+  height: 45px;
+  border: none;
+  display: inline-block;
+}
+
+.profile-info {
+    margin: 15px;
+}
+
+.profile-content {
+    display: none;
+}
+
+.profile-title-tab {
+    padding: 7px 5px 0;
+    cursor: pointer;
+}
+
+.profile-title-tab > a {
+    text-decoration: none;
+    color: black;
+}
+
+.profile-title-active {
+    /* background-color: blue; */
+}
