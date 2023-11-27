@@ -1,20 +1,37 @@
 import fetchWithRetry from "../../../../../../functions/api";
 import CommentList from "./CommentList";
+import missionstyle from "../../../../mission.module.css";
+import ContentNavigation from "../../../../../../components/ContentNavigation";
 
 async function getComments(missionId, submitId) {
-  const getCommentsResponse = await fetchWithRetry(`/mission/${missionId}/submit/${submitId}/comment`);
+  const getCommentsResponse = await fetchWithRetry(
+    `/mission/${missionId}/submit/${submitId}/comment`
+  );
 
   if (!getCommentsResponse.ok) return [];
 
   return await getCommentsResponse.json();
 }
 
-export default async function SubmitCommentPage({ params: { missionId, submitId } }) {
-  const commentList = await getComments(missionId, submitId)
+export default async function SubmitCommentPage({
+  params: { missionId, submitId },
+}) {
+  const commentList = await getComments(missionId, submitId);
+  const links = [{
+    href: `/mission/${missionId}/submit`,
+    text: "돌아가기"
+  }]
 
-  return <>
-    <h1>댓글 이력</h1>
-    <hr />
-    <CommentList comments={commentList} missionId={missionId} submitId={submitId} />
-  </>
+  return (
+    <>
+      <ContentNavigation links={links} />
+      <article className={missionstyle["mission-view-wrapper"]}>
+        <CommentList
+          comments={commentList}
+          missionId={missionId}
+          submitId={submitId}
+          />
+      </article>
+    </>
+  );
 }

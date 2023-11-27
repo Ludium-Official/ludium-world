@@ -33,19 +33,32 @@ export default function NewMissionSubmitPage({ params }) {
     }
   };
 
+  const handleBack = () => {
+    router.push(`/mission/${missionId}`);
+  };
+
   return (
     <form
       className={missionstyle["form-wrapper"]}
       onSubmit={handleSaveSubmitMission}
     >
       <div className={missionstyle["form-button-area"]}>
+        <button
+          className={missionstyle["form-button"]}
+          type="button"
+          onClick={handleBack}
+        >
+          돌아가기
+        </button>
         <input
           className={missionstyle["form-button"]}
           type="submit"
           value="제출하기"
         />
       </div>
-      <div className={`${missionstyle["form-content-area"]} ${missionstyle["mission-submit-content-area"]}`}>
+      <div
+        className={`${missionstyle["form-content-area"]} ${missionstyle["mission-submit-content-area"]}`}
+      >
         <Editor editorRef={editorRef} height={"100%"} />
       </div>
     </form>

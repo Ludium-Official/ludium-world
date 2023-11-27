@@ -5,52 +5,77 @@ import SubmitComment from "../../../../../../components/mission/SubmitComment";
 import Editor from "../../../../../../components/Editor";
 import fetchWithRetry from "../../../../../../functions/api";
 import missionstyle from "../../../../mission.module.css";
+import { useRouter } from "next/navigation";
 
 export default function CommentList({ comments, missionId, submitId }) {
   const [commentList, setCommentList] = useState(comments);
-  const [isUpdated, setIsUpdated] = useState(false);
   const editorRef = useRef(null);
+  const router = useRouter();
 
   const refreshComments = () => {
-    setIsUpdated(true)
-  }
+    router.refresh();
+  };
 
-  const handleNewSubmitComment = async () => {
+  const handleNewSubmitComment = async (e) => {
+    e.preventDefault();
     const formData = new FormData();
 
     formData.append("content", editorRef.current.editorInstance.getMarkdown());
 
-    const createSubmitCommentResponse = await fetchWithRetry(`/mission/${missionId}/submit/${submitId}`, {
-      method: "POST",
-      body: formData,
-    });
+    const createSubmitCommentResponse = await fetchWithRetry(
+      `/mission/${missionId}/submit/${submitId}`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
 
     if (createSubmitCommentResponse.ok) {
       editorRef.current.editorInstance.setMarkdown();
       refreshComments();
     }
-  }
+  };
 
   useEffect(() => {
-    if (!isUpdated) return;
-
     const getComments = async () => {
-      const getCommentsResponse = await fetchWithRetry(`/mission/${missionId}/submit/${submitId}/comment`);
+      const getCommentsResponse = await fetchWithRetry(
+        `/mission/${missionId}/submit/${submitId}/comment`
+      );
 
       if (!getCommentsResponse.ok) return;
 
       setCommentList(await getCommentsResponse.json());
-      setIsUpdated(false);
-    }
+    };
 
     getComments();
-  }, [isUpdated]);
+  });
 
-  return <>
-    <button onClick={handleNewSubmitComment}>댓글 추가</button>
-    <Editor editorRef={editorRef} height={"400px"} />
-    <div className={missionstyle["comment-list"]}>
-      {commentList.map(comment => <SubmitComment key={comment.id} {...comment} missionId={missionId} submitId={submitId} handleCallback={refreshComments} />)}
-    </div>
-  </>
-};
+  return (
+    <>
+      <form onSubmit={handleNewSubmitComment}>
+        <div className={`${missionstyle["form-button-area"]} ${missionstyle["form-button-end"]}`}>
+          <input
+            className={missionstyle["form-button"]}
+            type="submit"
+            value="댓글 추가하기"
+          />
+        </div>
+        <div className={`${missionstyle["form-content-area"]} ${missionstyle["mission-comment"]}`}>
+          <Editor editorRef={editorRef} height={"100%"} />
+        </div>
+      </form>
+      <div className={missionstyle["comment-list"]}>
+        <h1>댓글 이력</h1>
+        {commentList.map((comment) => (
+          <SubmitComment
+            key={comment.id}
+            {...comment}
+            missionId={missionId}
+            submitId={submitId}
+            handleCallback={refreshComments}
+          />
+        ))}
+      </div>
+    </>
+  );
+}
