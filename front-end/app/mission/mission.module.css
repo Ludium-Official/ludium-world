@@ -95,7 +95,7 @@
   height: calc(100vh - 135px);
 }
 
-.mission-view-wrapper > h1 {
+.mission-view-title {
   margin: 15px;
   background-color: #e6e0e9;
   height: 45px;
@@ -170,9 +170,9 @@
 
 .form-button-area {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   height: 50px;
-  padding: 15px;
+  padding: 15px 15px 15px 0;
 }
 
 .form-button {
@@ -204,4 +204,17 @@
 
 .mission-submit-content-area {
   height: Calc(100vh - 105px);
+}
+
+.mission-view-title-no-background {
+  background-color: transparent;
+  border: none;
+}
+
+.mission-comment {
+  height: 300px;
+}
+
+.form-button-end {
+  justify-content: flex-end;
 }
