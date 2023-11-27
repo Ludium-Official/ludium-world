@@ -1,75 +1,152 @@
 import { cookies } from "next/headers";
-import fetchWithRetry from "../../functions/api";
+import ContentNavigation from "../../components/ContentNavigation";
 import Viewer from "../../components/Viewer";
+import fetchWithRetry from "../../functions/api";
+import profilestyle from "./profile.module.css";
 import Link from "next/link";
 
 export async function getProfile() {
-    const cookieStore = cookies();
+  const cookieStore = cookies();
 
-    const getProfileResopnse = await fetchWithRetry(`/profile`, {
-        headers: {
-            cookie: cookieStore
-        },
-    });
+  const getProfileResopnse = await fetchWithRetry(`/profile`, {
+    headers: {
+      cookie: cookieStore,
+    },
+  });
 
-    if (!getProfileResopnse.ok) return null;
+  if (!getProfileResopnse.ok) return null;
 
-    return await getProfileResopnse.json();
+  return await getProfileResopnse.json();
 }
 
 export default async function ProfilePage() {
-    const profile = await getProfile();
+  const profile = await getProfile();
+  const links = [
+    {
+      href: "/profile/edit",
+      text: "내 정보 수정하기",
+    },
+  ];
 
-    return <div>
-        <h1>내 정보</h1>
-        <Link href="/profile/edit">내 정보 수정하기</Link>
-        <hr />
-        <p>닉네임: {profile.user.nick}</p>
-        <p>핸드폰 번호: {profile.user.phnNmb}</p>
-        <p>자기소개</p>
-        <Viewer content={profile.user.selfIntro}></Viewer>
-        <h1>내가 쓴 아티클</h1>
-        {profile.articles.map(article =>
-            <div key={article.id} style={{ display: "flex", flexDirection: "column", border: "solid 1px", margin: "0 0 10px 0" }}>
-                <p>{article.title}</p>
-                <p>{article.content}</p>
+  return (
+    <>
+      <div className={profilestyle["content-navigation"]}>
+        <ContentNavigation links={links} />
+      </div>
+      <div className={profilestyle["profile-wrapper"]}>
+        <h1 className={profilestyle["profile-title"]}>내 정보</h1>
+        <article className={profilestyle["profile-info"]}>
+          <p>닉네임: {profile.user.nick}</p>
+          <p>핸드폰 번호: {profile.user.phnNmb}</p>
+          <p>자기소개</p>
+          <Viewer content={profile.user.selfIntro} />
+        </article>
+        <h2
+          className={`${profilestyle["profile-title"]} ${profilestyle["profile-title-tab"]} ${profilestyle["profile-title-active"]}`}
+        >
+          <Link href="/profile?active=article">내가 쓴 아티클</Link>
+        </h2>
+        <article className={`${profilestyle["profile-content"]}`}>
+          {profile.articles.map((article) => (
+            <div
+              key={article.id}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                border: "solid 1px",
+                margin: "0 0 10px 0",
+              }}
+            >
+              <p>{article.title}</p>
+              <p>{article.content}</p>
             </div>
-        )}
-        <hr />
-        <h1>내가 쓴 미션</h1>
-        {profile.missions.map(article =>
-            <div key={article.id} style={{ display: "flex", flexDirection: "column", border: "solid 1px", margin: "0 0 10px 0" }}>
-                <p>{article.title}</p>
-                <p>{article.content}</p>
+          ))}
+        </article>
+        <h2
+          className={`${profilestyle["profile-title"]} ${profilestyle["profile-title-tab"]}`}
+        >
+          <Link href="/profile?active=mission">미션</Link>
+        </h2>
+        <article className={`${profilestyle["profile-content"]}`}>
+          {profile.missions.map((article) => (
+            <div
+              key={article.id}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                border: "solid 1px",
+                margin: "0 0 10px 0",
+              }}
+            >
+              <p>{article.title}</p>
+              <p>{article.content}</p>
             </div>
-        )}
-        <hr />
-        <h1>내가 쓴 자유게시글</h1>
-        {profile.freeBoards.map(article =>
-            <div key={article.id} style={{ display: "flex", flexDirection: "column", border: "solid 1px", margin: "0 0 10px 0" }}>
-                <p>{article.title}</p>
-                <p>{article.content}</p>
+          ))}
+        </article>
+        <h2
+          className={`${profilestyle["profile-title"]} ${profilestyle["profile-title-tab"]}`}
+        >
+          <Link href="/profile?active=free_board">자유게시글</Link>
+        </h2>
+        <article className={`${profilestyle["profile-content"]}`}>
+          {profile.freeBoards.map((article) => (
+            <div
+              key={article.id}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                border: "solid 1px",
+                margin: "0 0 10px 0",
+              }}
+            >
+              <p>{article.title}</p>
+              <p>{article.content}</p>
             </div>
-        )}
-        <hr />
-        <h1>내가 제출한 미션</h1>
-        <hr />
-        {profile.submits.map(submit =>
-            <div key={submit.id} style={{ display: "flex", flexDirection: "column" }}>
-                <span>{submit.content}
-                    <p style={{ color: submit.vldStt === true ? "green" : "red" }}>{submit.vldStt === true ? "검증됨" : "검증되지 않음"}</p>
-                </span>
+          ))}
+        </article>
+        <h2
+          className={`${profilestyle["profile-title"]} ${profilestyle["profile-title-tab"]}`}
+        >
+          <Link href="/profile?active=submit_mission">제출한 미션</Link>
+        </h2>
+        <article className={`${profilestyle["profile-content"]}`}>
+          {profile.submits.map((submit) => (
+            <div
+              key={submit.id}
+              style={{ display: "flex", flexDirection: "column" }}
+            >
+              <span>
+                {submit.content}
+                <p style={{ color: submit.vldStt === true ? "green" : "red" }}>
+                  {submit.vldStt === true ? "검증됨" : "검증되지 않음"}
+                </p>
+              </span>
             </div>
-        )}
-        <h1>내 댓글</h1>
-        <hr />
-        {profile.comments.map(comment =>
-            <p key={comment.id} >{comment.content}</p>
-        )}
-        <h1>내 미션에 달린 댓글</h1>
-        <hr />
-        {profile.userCommentsByMyMission.map(comment =>
+          ))}
+        </article>
+        <h2
+          className={`${profilestyle["profile-title"]} ${profilestyle["profile-title-tab"]}`}
+        >
+          <Link href="/profile?active=comments">댓글</Link>
+        </h2>
+        <article className={`${profilestyle["profile-content"]}`}>
+          {profile.comments.map((comment) => (
             <p key={comment.id}>{comment.content}</p>
-        )}
-    </div>;
+          ))}
+        </article>
+        <h2
+          className={`${profilestyle["profile-title"]} ${profilestyle["profile-title-tab"]}`}
+        >
+          <Link href="/profile?active=replay_comments">
+            내 미션에 달린 댓글
+          </Link>
+        </h2>
+        <article className={`${profilestyle["profile-content"]}`}>
+          {profile.userCommentsByMyMission.map((comment) => (
+            <p key={comment.id}>{comment.content}</p>
+          ))}
+        </article>
+      </div>
+    </>
+  );
 }
