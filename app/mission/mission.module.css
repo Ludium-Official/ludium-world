@@ -4,11 +4,9 @@
 }
 
 .comment-list {
-  margin: 15px 0;
   height: 600px;
   overflow: auto;
-  border: solid 1px;
-  border-radius: 5px;
+  padding: 7px 15px 15px;
 }
 
 .mission-new-wrapper {

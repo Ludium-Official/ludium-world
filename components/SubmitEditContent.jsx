@@ -30,9 +30,20 @@ export default function SubmitEditContent({ missionId, submitId, content }) {
     }
   };
 
+  const handleBack = () => {
+    router.push(`/mission/${missionId}/submit`);
+  }
+
   return (
     <form className={missionstyle["form-wrapper"]} onSubmit={handleEditSubmit}>
       <div className={missionstyle["form-button-area"]}>
+      <button
+          className={missionstyle["form-button"]}
+          type="button"
+          onClick={handleBack}
+        >
+          돌아가기
+        </button>
         <input
           className={missionstyle["form-button"]}
           type="submit"

@@ -30,12 +30,23 @@ export default function NewMissionPage() {
     }
   };
 
+  const handleBack = () => {
+    router.push("/mission");
+  }
+
   return (
     <form
       className={missionstyle["mission-new-wrapper"]}
       onSubmit={handleSaveMission}
     >
-      <div className={missionstyle["mission-new-button-area"]}>
+      <div className={missionstyle["form-button-area"]}>
+        <button
+          className={missionstyle["form-button"]}
+          type="button"
+          onClick={handleBack}
+        >
+          돌아가기
+        </button>
         <input
           className={missionstyle["mission-new-button"]}
           type="submit"
