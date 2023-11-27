@@ -20,6 +20,10 @@ export default async function MissionPage({ params }) {
   const mission = await getMission(missionId);
   const links = [
     {
+      href: `/mission`,
+      text: "돌아가기",
+    },
+    {
       href: `/mission/${missionId}/submit/new`,
       text: "미션제출하러가기",
     },
@@ -33,7 +37,7 @@ export default async function MissionPage({ params }) {
     <>
       <ContentNavigation links={links} />
       <div className={missionstyle["mission-view-wrapper"]}>
-        <h1>{mission.title}</h1>
+        <h1 className={missionstyle["mission-view-title"]}>{mission.title}</h1>
         <div className={missionstyle.content}>
           <Viewer content={mission.content} height={"100%"} />
         </div>
