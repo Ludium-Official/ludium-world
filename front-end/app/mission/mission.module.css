@@ -15,13 +15,6 @@
   height: 100vh;
 }
 
-.mission-new-button-area {
-  display: flex;
-  justify-content: flex-end;
-  height: 50px;
-  padding: 15px;
-}
-
 .mission-new-button {
   margin: 0 10px;
   border: solid 1px #6750a4;
