@@ -48,7 +48,7 @@ export default function NewMissionForm() {
                     돌아가기
                 </button>
                 <input
-                    className={missionstyle["mission-new-button"]}
+                    className={missionstyle["form-button"]}
                     type="submit"
                     value="저장하기"
                 />
