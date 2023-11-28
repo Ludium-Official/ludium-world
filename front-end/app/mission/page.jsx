@@ -2,6 +2,10 @@ import ContentNavigation from "../../components/ContentNavigation";
 import MissionList from "../../components/mission/MissionList";
 import fetchWithRetry from "../../functions/api";
 
+export const metadata = {
+    title: "미션"
+}
+
 async function getMissions() {
     const getMissionsResponse = await fetchWithRetry(`/mission`);
 
