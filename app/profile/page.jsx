@@ -5,6 +5,10 @@ import fetchWithRetry from "../../functions/api";
 import profilestyle from "./profile.module.css";
 import Link from "next/link";
 
+export const metadata = {
+  title: "프로필"
+}
+
 export async function getProfile() {
   const cookieStore = cookies();
 
@@ -39,7 +43,9 @@ export default async function ProfilePage() {
           <p>닉네임: {profile.user.nick}</p>
           <p>핸드폰 번호: {profile.user.phnNmb}</p>
           <p>자기소개</p>
-          <Viewer content={profile.user.selfIntro} />
+          <div className={profilestyle["profile-self-intro-wrapper"]}>
+            <Viewer content={profile.user.selfIntro} />
+          </div>
         </article>
         <h2
           className={`${profilestyle["profile-title"]} ${profilestyle["profile-title-tab"]} ${profilestyle["profile-title-active"]}`}
