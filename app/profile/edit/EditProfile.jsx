@@ -2,9 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
-import fetchWithRetry from "../../../functions/api";
 import Editor from "../../../components/Editor";
-import Link from "next/link";
+import fetchWithRetry from "../../../functions/api";
+import profilestyle from "../profile.module.css";
 
 export default function EditProfile({ profile }) {
     const editorRef = useRef(null);
@@ -37,14 +37,24 @@ export default function EditProfile({ profile }) {
         }
     }
 
-    return <form onSubmit={handleSubmit}>
-        <label htmlFor="nick">닉네임</label>
-        <input type="text" name="nick" id="nick" placeholder="닉네임을 입력하세요" defaultValue={profile.user.nick} />
-        <label htmlFor="phone_number">핸드폰번호</label>
-        <input type="number" name="phone_number" id="phone_number" placeholder="'-' 없이 숫자만 입력해주세요." defaultValue={profile.user.phnNmb} />
-        <p>자기소개</p>
-        <Editor editorRef={editorRef} content={profile.user.selfIntro} />
-        <Link href="/profile">취소하기</Link>
-        <input type="submit" value="저장하기" />
+    const handleBack = () => {
+        router.push("/profile");
+    }
+
+    return <form className={profilestyle["form-wrapper"]} onSubmit={handleSubmit}>
+        <div className={profilestyle["form-button-area"]}>
+            <button className={profilestyle["form-button"]} type="button" onClick={handleBack}>돌아가기</button>
+            <input className={profilestyle["form-button"]} type="submit" value="저장하기" />
+        </div>
+        <div className={profilestyle["form-info"]}>
+            <label className={profilestyle["form-label"]} htmlFor="nick">닉네임</label>
+            <input className={profilestyle["form-text-field"]} type="text" name="nick" id="nick" placeholder="닉네임을 입력하세요" defaultValue={profile.user.nick} />
+            <label className={profilestyle["form-label"]} htmlFor="phone_number">핸드폰번호</label>
+            <input className={profilestyle["form-text-field"]} type="number" name="phone_number" id="phone_number" placeholder="'-' 없이 숫자만 입력해주세요." defaultValue={profile.user.phnNmb} />
+            <label className={profilestyle["form-label"]}>자기소개</label>
+        </div>
+        <div className={profilestyle["form-content"]}>
+            <Editor editorRef={editorRef} content={profile.user.selfIntro} height="100%" />
+        </div>
     </form>
 }
