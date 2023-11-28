@@ -23,7 +23,7 @@ export default function SignUP() {
             })
 
             if (createUserSignResponse.ok) {
-                router.push("/main");
+                router.push("/");
                 router.refresh();
             }
 
