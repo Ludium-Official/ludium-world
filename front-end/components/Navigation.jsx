@@ -5,24 +5,7 @@ import GoogleButton from "./GoogleButton";
 import navigationstyle from "./Navigation.module.css";
 import { usePathname } from "next/navigation";
 
-const links = [{
-    dir: "/profile",
-    text: "프로필"
-},{
-    dir: "/mission",
-    text: "미션"
-}, {
-    dir: "/article",
-    text: "아티클"
-}, {
-    dir: "/post",
-    text: "자유게시판"
-}, {
-    dir: "/course",
-    text: "교육"
-}]
-
-export default function Navigation({ googleAuthInfo, gglId }) {
+export default function Navigation({ googleAuthInfo, gglId, links }) {
   const pathName = usePathname();
 
   if (pathName === "/sign-up") return null;
@@ -43,12 +26,10 @@ export default function Navigation({ googleAuthInfo, gglId }) {
     );
   }
 
-  console.log()
-
   return (
     <nav className={navigationstyle.wrapper}>
       <ul className={navigationstyle.list}>
-        {links.map(({dir, text}) => <li key={crypto.randomUUID()}>
+        {links.map(({id ,dir, text}) => <li key={id}>
             <Link className={(pathName.split("/")[1] === dir.split("/")[1])? `${navigationstyle.link} ${navigationstyle.active}`: navigationstyle.link} href={dir}>{text}</Link>
         </li>)}
         {/* <li>
