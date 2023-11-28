@@ -17,6 +17,10 @@
   background-color: #fcfcfc;
 }
 
+.mission-wrapper:hover {
+  background-color: #fcfcfc;
+}
+
 .mission-title {
   margin: 0;
   padding: 15px 15px 10px;

@@ -173,7 +173,7 @@
   list-style-type: none;
   border-radius: 100px;
   height: 40px;
-  padding: 9.2px 24px;
+  padding: 0 24px;
   color: #fff;
   font-size: 16px;
 }
@@ -207,5 +207,10 @@
 }
 
 .form-button-end {
+  justify-content: flex-end;
+}
+
+.content-navigation {
+  display: flex;
   justify-content: flex-end;
 }
