@@ -25,11 +25,13 @@ export default async function CoursePage() {
       <ContentNavigation links={courseLinks} />
       <article className={coursestyle.wrapper}>
         <h1>교육 목록</h1>
-        <div style={{ display: "flex", flexDirection: "column" }}>
+        <div className={coursestyle["course-list"]}>
           {courses.map((course) => (
-            <Link key={course.id} href={`/course/${course.id}`}>
-              {course.title}
-            </Link>
+            <h2 className={coursestyle["course-list-item"]}>
+              <Link key={course.id} href={`/course/${course.id}`}>
+                {course.title}
+              </Link>
+            </h2>
           ))}
         </div>
       </article>
