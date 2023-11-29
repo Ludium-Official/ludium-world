@@ -156,7 +156,7 @@
   overflow-y: auto;
   height: calc(100vh - 210px);
   border: 1px solid;
-  border-radius: 12px 0 0 12px;
+  margin: 0 15px;
 }
 
 .course-list-item {
@@ -177,4 +177,46 @@
 .course-list-item>a:hover {
   background-color: #6750a4;
   color: #fff;
+}
+
+.course-list-item:last-child>a {
+  border: none;
+}
+
+.module-list {
+  height: 150px;
+}
+
+.content-area {
+  margin: 15px;
+  padding: 0;
+  height: calc(100vh - 463px);
+  min-height: 300px;
+  border: 1px solid;
+}
+
+.title {
+  display: block;
+  font-size: 2em;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+  background-color: #e6e0e9;
+  height: 45px;
+  border-bottom: solid 1px;
+  border-radius: 4px 4px 0 0;
+  margin: 20px 15px;
+}
+
+.title-label {
+  display: block;
+  font-size: 1.5em;
+  margin-block-start: 0.83em;
+  margin-block-end: 0.83em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+  margin: 15px;
 }

@@ -24,7 +24,7 @@ export default async function CoursePage() {
     <>
       <ContentNavigation links={courseLinks} />
       <article className={coursestyle.wrapper}>
-        <h1>교육 목록</h1>
+        <h1 className={coursestyle["title-label"]}>교육 목록</h1>
         <div className={coursestyle["course-list"]}>
           {courses.map((course) => (
             <h2 className={coursestyle["course-list-item"]} key={crypto.randomUUID()}>
