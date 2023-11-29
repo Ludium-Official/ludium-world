@@ -3,6 +3,10 @@ import fetchWithRetry from "../../functions/api";
 import coursestyle from "./course.module.css";
 import ContentNavigation from "../../components/ContentNavigation";
 
+export const metadata = {
+  title: "교육"
+}
+
 async function getCourseList() {
   const getCoursesResponse = await fetchWithRetry(`/course`);
 
@@ -22,7 +26,9 @@ export default async function CoursePage() {
 
   return (
     <>
-      <ContentNavigation links={courseLinks} />
+      <div className={coursestyle["content-navigation"]}>
+        <ContentNavigation links={courseLinks} />
+      </div>
       <article className={coursestyle.wrapper}>
         <h1 className={coursestyle["title-label"]}>교육 목록</h1>
         <div className={coursestyle["course-list"]}>
