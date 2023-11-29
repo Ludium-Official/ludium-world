@@ -82,12 +82,12 @@
 
 .course-edit-content-area {
   padding: 15px 45px 15px 15px;
-  height: calc(100vh - 790px);
+  height: 500px;
 }
 
 .course-edit-button-area {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   height: 50px;
   padding: 15px;
 }
@@ -190,7 +190,8 @@
 .content-area {
   margin: 15px;
   padding: 0;
-  height: calc(100vh - 463px);
+  height: 300px;
+  /* height: calc(100vh - 463px); */
   min-height: 300px;
   border: 1px solid;
 }
@@ -219,4 +220,12 @@
   margin-inline-end: 0px;
   font-weight: bold;
   margin: 15px;
+}
+
+.ref-grid {
+  min-height: 150px;
+}
+
+.form-wrapper {
+  height: 100%;
 }
