@@ -5,7 +5,7 @@ import Navigation from "../components/Navigation";
 async function getNavigationLinks() {
     return [{
         id: crypto.randomUUID(),
-        dir: "/profile",
+        dir: "/profile?active=article",
         text: "프로필"
     },{
         id: crypto.randomUUID(),

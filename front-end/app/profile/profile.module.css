@@ -19,10 +19,6 @@
   margin: 15px;
 }
 
-.profile-content {
-  /* display: none; */
-}
-
 .profile-title-tab {
   padding: 7px 5px 0;
   cursor: pointer;
@@ -31,6 +27,10 @@
 .profile-title-tab>a {
   text-decoration: none;
   color: black;
+}
+
+.profile-title-tab-active {
+  background-color: #e9e6e9;
 }
 
 .profile-self-intro-wrapper {
