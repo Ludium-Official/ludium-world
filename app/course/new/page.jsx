@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 import Editor from "../../../components/Editor";
 import fetchWithRetry from "../../../functions/api";
 import { useRouter } from "next/navigation";
@@ -10,6 +10,7 @@ export default function NewCoursePage() {
     const editorRef = useRef(null);
     const [modules, setModules] = useState([]);
     const router = useRouter();
+    const id = useId();
 
     const handleSave = async (e) => {
         e.preventDefault();
@@ -54,7 +55,7 @@ export default function NewCoursePage() {
     <div style={{display: "flex", flexDirection: "column"}}>
         <button type="button" onClick={handleCreateModule}>모듈 추가하기</button>
         {modules.map((_, index) =>
-            <input key={1} type="text" name={`module-${index}`} id={`module-${index}`} placeholder="모듈 제목을 입력해주세요" />
+            <input key={`${id}-${index}`} type="text" name={`module-${index}`} id={`module-${index}`} placeholder="모듈 제목을 입력해주세요" />
         )}
     </div>
     <Editor editorRef={editorRef} />
