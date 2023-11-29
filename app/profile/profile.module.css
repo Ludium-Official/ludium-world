@@ -97,3 +97,7 @@
   border-radius: 4px 4px 0 0;
   background-color: #e6e0e9;
 }
+
+.profile-content {
+  margin: 15px;
+}
