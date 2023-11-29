@@ -99,7 +99,7 @@ export default function EditModuleContent({
       if (!gridRef.current.instance) {
         const grid = new Grid({
           el: gridRef.current,
-          bodyHeight: 300,
+          bodyHeight: "fitToParent",
           columns: [
             {
               header: "제목",
@@ -137,9 +137,14 @@ export default function EditModuleContent({
     getGrid();
   }, [missionAndArticles]);
 
+  const handleBack = () => {
+    router.push(`/course/${courseId}/module/${moduleId}`);
+  }
+
   return (
-    <form className={coursestyle["course-edit-wrapper"]} onSubmit={handleSubmit}>
+    <form className={`${coursestyle["course-edit-wrapper"]} ${coursestyle["form-wrapper"]}`} onSubmit={handleSubmit}>
       <div className={coursestyle["course-edit-button-area"]}>
+        <button className={coursestyle["course-edit-button"]} type="button" onClick={handleBack}>돌아가기</button>
         <input
           className={coursestyle["course-edit-button"]}
           type="submit"
@@ -169,10 +174,12 @@ export default function EditModuleContent({
             미션, 아티클 불러오기
           </button>
         </div>
-        <div ref={gridRef} className="ref-grid"></div>
+        <div className={coursestyle["ref-grid"]}>
+          <div ref={gridRef} />
+        </div>
       </div>
       <div className={coursestyle["course-edit-content-area"]}>
-      <Editor editorRef={editorRef} content={module.content} height={"100%"} />
+        <Editor editorRef={editorRef} content={module.content} height={"100%"} />
       </div>
     </form>
   );
