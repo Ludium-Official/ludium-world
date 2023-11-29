@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import Editor from "../../../components/Editor";
 import fetchWithRetry from "../../../functions/api";
 import { useRouter } from "next/navigation";
+import coursestyle from "../course.module.css";
 
 export default function NewCoursePage() {
     const editorRef = useRef(null);
@@ -47,13 +48,13 @@ export default function NewCoursePage() {
         setModules([...modules, { title: "" }])
     }
 
-    return <form onSubmit={handleSave}>
+    return <form className={coursestyle["course-edit-wrapper"]} onSubmit={handleSave}>
     <input type="text" name="title" id="title" placeholder="제목을 입력해주세요" />
     <input type="submit" value="저장하기" />
     <div style={{display: "flex", flexDirection: "column"}}>
         <button type="button" onClick={handleCreateModule}>모듈 추가하기</button>
         {modules.map((_, index) =>
-            <input key={crypto.randomUUID()} type="text" name={`module-${index}`} id={`module-${index}`} placeholder="모듈 제목을 입력해주세요" />
+            <input key={1} type="text" name={`module-${index}`} id={`module-${index}`} placeholder="모듈 제목을 입력해주세요" />
         )}
     </div>
     <Editor editorRef={editorRef} />
