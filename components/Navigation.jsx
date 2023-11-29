@@ -15,13 +15,22 @@ export default function Navigation({ googleAuthInfo, gglId, links }) {
     return (
       <nav className={navigationstyle.wrapper}>
         <ul className={navigationstyle.list}>
+          <li className={navigationstyle.logo}>
+            <Image src="/logo_purple.png" alt="ludium" width={156} height={70} priority />
+          </li>
           <GoogleButton />
           <li>
-            <Link href="/mission">미션</Link>
+            <Link className={navigationstyle.link} href="/mission">미션</Link>
           </li>
-          <Link href="/article">아티클</Link>
-          <Link href="/post">자유게시판</Link>
-          <Link href="/course">교육</Link>
+          <li>
+            <Link className={navigationstyle.link} href="/article">아티클</Link>
+          </li>
+          <li>
+            <Link className={navigationstyle.link} href="/post">자유게시판</Link>
+          </li>
+          <li>
+            <Link className={navigationstyle.link} href="/course">교육</Link>
+          </li>
         </ul>
       </nav>
     );
@@ -33,8 +42,8 @@ export default function Navigation({ googleAuthInfo, gglId, links }) {
         <li className={navigationstyle.logo}>
           <Image src="/logo_purple.png" alt="ludium" width={156} height={70} priority />
         </li>
-        {links.map(({id ,dir, text}) => <li key={id}>
-            <Link className={(pathName.split("/")[1] === dir.split("/")[1])? `${navigationstyle.link} ${navigationstyle.active}`: navigationstyle.link} href={dir}>{text}</Link>
+        {links.map(({ id, dir, text }) => <li key={id}>
+          <Link className={(pathName.split("/")[1] === dir.split("/")[1]) ? `${navigationstyle.link} ${navigationstyle.active}` : navigationstyle.link} href={dir}>{text}</Link>
         </li>)}
       </ul>
     </nav>
