@@ -102,6 +102,7 @@
   border: solid 1px #e6e2e6;
   border-radius: 5px;
   overflow-y: auto;
+  min-height: min-content;
 }
 
 .mission-submit-wrapper {
