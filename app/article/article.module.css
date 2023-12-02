@@ -190,7 +190,7 @@
 
 .content-area {
   margin: 15px;
-  padding: 0;
+  padding: 10px 15px;
   height: 300px;
   height: calc(100vh - 240px);
   min-height: 500px;
@@ -212,6 +212,7 @@
   border-radius: 4px 4px 0 0;
   margin: 20px 15px;
   line-height: 45px;
+  padding-left: 15px;
 }
 
 .title-label {
