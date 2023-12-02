@@ -80,7 +80,7 @@ export default function NewCourse() {
           placeholder="제목을 입력해주세요"
         />
       </div>
-      <div className={`${coursestyle["form-button-area"]} ${coursestyle["form-list-add-button-area"]}`}>
+      {/* <div className={`${coursestyle["form-button-area"]} ${coursestyle["form-list-add-button-area"]}`}>
         <button
           className={coursestyle["form-button"]}
           type="button"
@@ -88,8 +88,8 @@ export default function NewCourse() {
         >
           모듈 추가하기
         </button>
-      </div>
-      <div className={coursestyle["form-list-area"]}>
+      </div> */}
+      {/* <div className={coursestyle["form-list-area"]}>
         <div className={coursestyle["form-list-inner"]}>
           {modules.map((_, index) => (
             <input
@@ -102,7 +102,7 @@ export default function NewCourse() {
             />
           ))}
         </div>
-      </div>
+      </div> */}
       <div className={coursestyle["form-content-area"]}>
         <Editor editorRef={editorRef} height="100%" />
       </div>
