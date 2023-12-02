@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import world.ludium.education.article.Article;
 import world.ludium.education.article.ArticleService;
+import world.ludium.education.article.Category;
 import world.ludium.education.auth.LoginService;
 import world.ludium.education.auth.ludium.LudiumUser;
 import world.ludium.education.auth.ludium.LudiumUserService;
@@ -175,5 +176,50 @@ public class CourseController {
                     }});
         }
         return ResponseEntity.ok(courseId);
+    }
+
+    @PutMapping("/{courseId}")
+    public ResponseEntity updateCourse(@PathVariable UUID courseId,
+                                       @RequestParam String title,
+                                       @RequestParam String content,
+                                       @CookieValue(name = "access_token", required = false) String accessToken) {
+        JsonNode googleUserApiData = null;
+
+        try {
+            googleUserApiData = loginService.getUserResource(accessToken, "google");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    new HashMap<String, String>() {
+                        {
+                            put("message", "인증에 실패했습니다.");
+                            put("debug", e.getMessage());
+                        }
+                    });
+        }
+
+        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+
+        Article article = new Article();
+        article.setId(courseId);
+        article.setTitle(title);
+        article.setContent(content);
+        article.setUsrId(ludiumUser.getId());
+        article.setCategory(Category.COURSE);
+
+        try {
+            articleService.updateArticle(article);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new HashMap<String, String>() {{
+                        put("message", "수업을 수정하는 중에 에러가 발생했습니다.");
+                        put("debug", e.getMessage());
+                    }}
+            );
+        }
+
+        return ResponseEntity.ok(new HashMap<String, String>() {{
+            put("title", title);
+            put("content", content);
+        }});
     }
 }
