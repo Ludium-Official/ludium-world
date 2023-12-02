@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface MissionSubmitHistoryRepository extends JpaRepository<MissionSubmitHistory, UUID> {
     List<MissionSubmitHistory> findAllByMsnSbmId(UUID msnSbmId);
+    void deleteAllByMsnSbmId(UUID msnSbmId);
 }

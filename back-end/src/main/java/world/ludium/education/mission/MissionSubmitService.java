@@ -107,4 +107,14 @@ public class MissionSubmitService {
     public List<MissionSubmitComment> getAllMissionSubmitCommentByUsrId(UUID usrId) {
         return missionSubmitCommentRepository.findAllByUsrId(usrId);
     }
+
+    public void deleteMissionSubmit(UUID missionId) {
+        List<MissionSubmit> missionSubmits = getMissionSubmits(missionId);
+
+        for(MissionSubmit missionSubmit: missionSubmits) {
+            missionSubmitCommentRepository.deleteAllByMsnSbmId(missionSubmit.getId());
+            missionSubmitHistoryRepository.deleteAllByMsnSbmId(missionSubmit.getId());
+            missionSubmitRepository.delete(missionSubmit);
+        }
+    }
 }

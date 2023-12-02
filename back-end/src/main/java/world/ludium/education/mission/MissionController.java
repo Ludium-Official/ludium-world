@@ -382,4 +382,19 @@ public class MissionController {
 
         return ResponseEntity.ok(commentId);
     }
+
+    @DeleteMapping("/{missionId}")
+    public ResponseEntity DeleteMission(@PathVariable UUID missionId) {
+        try {
+            articleService.deleteArticle(missionId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new HashMap<>() {{
+                        put("message", "교육을 삭제 중에 에러가 발생했습니다.");
+                        put("debug", e.getMessage());
+                    }});
+        }
+
+        return ResponseEntity.ok(missionId);
+    }
 }

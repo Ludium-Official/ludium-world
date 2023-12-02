@@ -2,6 +2,7 @@ import ContentNavigation from "../../../components/ContentNavigation";
 import Viewer from "../../../components/Viewer";
 import fetchWithRetry from "../../../functions/api";
 import missionstyle from "../mission.module.css";
+import DeleteMission from "./DeleteMission";
 
 async function getMission(missionId) {
   const getMissionResponse = await fetchWithRetry(`/mission/${missionId}`);
@@ -31,11 +32,17 @@ export default async function MissionPage({ params }) {
       href: `/mission/${missionId}/submit`,
       text: "미션제출보기",
     },
+    {
+      href: `/mission/${missionId}/edit`,
+      text: "수정하기"
+    },
   ];
 
   return (
     <>
-      <ContentNavigation links={links} />
+      <ContentNavigation links={links}>
+        <DeleteMission missionId={missionId} />
+      </ContentNavigation>
       <div className={missionstyle["mission-view-wrapper"]}>
         <h1 className={missionstyle["mission-view-title"]}>{mission.title}</h1>
         <div className={missionstyle.content}>
