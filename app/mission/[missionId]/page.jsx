@@ -40,7 +40,7 @@ export default async function MissionPage({ params: { missionId } }) {
   return (
     <>
       <ContentNavigation links={links}>
-        <DeleteMission missionId={missionId} />
+        {/* <DeleteMission missionId={missionId} /> */}
       </ContentNavigation>
       <div className={missionstyle["mission-view-wrapper"]}>
         <h1 className={missionstyle["mission-view-title"]}>{mission.title}</h1>
