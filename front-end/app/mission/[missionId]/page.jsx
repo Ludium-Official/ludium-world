@@ -4,7 +4,7 @@ import fetchWithRetry from "../../../functions/api";
 import missionstyle from "../mission.module.css";
 import DeleteMission from "./DeleteMission";
 
-async function getMission(missionId) {
+export async function getMission(missionId) {
   const getMissionResponse = await fetchWithRetry(`/mission/${missionId}`);
 
   if (!getMissionResponse.ok)
@@ -16,8 +16,7 @@ async function getMission(missionId) {
   return await getMissionResponse.json();
 }
 
-export default async function MissionPage({ params }) {
-  const { missionId } = params;
+export default async function MissionPage({ params: { missionId } }) {
   const mission = await getMission(missionId);
   const links = [
     {

@@ -64,4 +64,8 @@ public class ArticleService {
     public void deleteArticle(UUID articleId) {
         articleRepository.deleteById(articleId);
     }
+
+    public Article updateArticle(Article article) {
+        return articleRepository.save(article);
+    }
 }

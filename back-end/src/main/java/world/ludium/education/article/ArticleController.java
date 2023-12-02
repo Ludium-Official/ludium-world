@@ -48,11 +48,12 @@ public class ArticleController {
             googleUserApiData = loginService.getUserResource(accessToken, "google");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                    new HashMap<String, String>() {{
-                        put("message", "인증에 실패했습니다.");
-                        put("debug", e.getMessage());
-                    }
-            });
+                    new HashMap<String, String>() {
+                        {
+                            put("message", "인증에 실패했습니다.");
+                            put("debug", e.getMessage());
+                        }
+                    });
         }
 
         LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
@@ -75,8 +76,53 @@ public class ArticleController {
         }
 
         return ResponseEntity.ok(new HashMap<String, String>() {{
-                put("title", title);
-                put("content", content);
-            }});
+            put("title", title);
+            put("content", content);
+        }});
+    }
+
+    @PutMapping("/{articleId}")
+    public ResponseEntity updateMission(@PathVariable UUID articleId,
+                                        @RequestParam String title,
+                                        @RequestParam String content,
+                                        @RequestParam String category,
+                                        @CookieValue(name = "access_token", required = false) String accessToken) {
+        JsonNode googleUserApiData = null;
+        try {
+            googleUserApiData = loginService.getUserResource(accessToken, "google");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    new HashMap<String, String>() {
+                        {
+                            put("message", "인증에 실패했습니다.");
+                            put("debug", e.getMessage());
+                        }
+                    });
+        }
+
+        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+
+        Article article = new Article();
+        article.setId(articleId);
+        article.setTitle(title);
+        article.setContent(content);
+        article.setUsrId(ludiumUser.getId());
+        article.setCategory(Category.valueOf(category));
+
+        try {
+            articleService.updateArticle(article);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new HashMap<String, String>() {{
+                        put("message", "아티클을 수정하는 중에 에러가 발생했습니다.");
+                        put("debug", e.getMessage());
+                    }}
+            );
+        }
+
+        return ResponseEntity.ok(new HashMap<String, String>() {{
+            put("title", title);
+            put("content", content);
+        }});
     }
 }
