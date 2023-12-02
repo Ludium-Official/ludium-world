@@ -8,11 +8,11 @@ export const metadata = {
 }
 
 async function getArticleList() {
-  const getCoursesResponse = await fetchWithRetry(`/article`);
+  const getArticlesResponse = await fetchWithRetry(`/article`);
 
-  if (!getCoursesResponse.ok) return [];
+  if (!getArticlesResponse.ok) return [];
 
-  return await getCoursesResponse.json();
+  return await getArticlesResponse.json();
 }
 
 export default async function ArticlePage() {

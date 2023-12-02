@@ -19,12 +19,12 @@ export default function NewArticleForm() {
 
         formData.append("content", editorInstance.getMarkdown());
 
-        const createMissionResponse = await fetchWithRetry(`/article`, {
+        const createArticleResponse = await fetchWithRetry(`/article`, {
             method: "POST",
             body: formData,
         });
 
-        if (createMissionResponse.ok) {
+        if (createArticleResponse.ok) {
             router.push("/article");
             router.refresh();
         }
