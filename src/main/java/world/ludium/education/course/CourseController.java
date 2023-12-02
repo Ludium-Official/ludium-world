@@ -161,4 +161,18 @@ public class CourseController {
     public ResponseEntity getMissionAndArticles(@PathVariable UUID moduleId) {
         return ResponseEntity.ok(articleService.getAllMissionsAndArticles(moduleId));
     }
+
+    @DeleteMapping("/{courseId}")
+    public ResponseEntity deleteCourse(@PathVariable UUID courseId) {
+        try {
+            moduleService.deleteModule(courseId);
+            articleService.deleteArticle(courseId);
+        } catch (Exception e) {
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new HashMap<>() {{
+                put("message", "교육을 삭제 중에 에러가 발생했습니다.");
+                put("debug", e.getMessage());
+            }});
+        }
+        return ResponseEntity.ok(courseId);
+    }
 }

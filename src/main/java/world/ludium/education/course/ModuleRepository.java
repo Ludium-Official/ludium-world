@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface ModuleRepository extends JpaRepository<Module, UUID> {
     List<Module> findAllByCrsId(UUID crsId);
+    void deleteAllByCrsId(UUID crsId);
 }
