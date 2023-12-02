@@ -384,7 +384,7 @@ public class MissionController {
     }
 
     @DeleteMapping("/{missionId}")
-    public ResponseEntity DeleteMission(@PathVariable UUID missionId) {
+    public ResponseEntity deleteMission(@PathVariable UUID missionId) {
         try {
             missionSubmitService.deleteMissionSubmit(missionId);
             articleService.deleteArticle(missionId);
