@@ -1,9 +1,11 @@
-import Link from "next/link";
+import ContentNavigation from "../../../components/ContentNavigation";
 import Viewer from "../../../components/Viewer";
 import fetchWithRetry from "../../../functions/api";
 import coursestyle from "../course.module.css";
-import ContentNavigation from "../../../components/ContentNavigation";
-import DeleteCourse from "./DeleteCourse";
+
+export const metadata = {
+    title: "교육"
+}
 
 export async function getCourse(courseId) {
     const getCourseResponse = await fetchWithRetry(`/course/${courseId}`);
