@@ -192,9 +192,10 @@
   margin: 15px;
   padding: 0;
   height: 300px;
-  /* height: calc(100vh - 463px); */
-  min-height: 300px;
+  height: calc(100vh - 240px);
+  min-height: 500px;
   border: 1px solid;
+  overflow-y: auto;
 }
 
 .title {

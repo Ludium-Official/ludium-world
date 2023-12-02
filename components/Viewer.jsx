@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef } from "react";
+import "@toast-ui/editor/dist/toastui-editor.css";
 
 export default function Viewer({ content, height }) {
     const viewerRef = useRef(null);

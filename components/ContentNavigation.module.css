@@ -21,13 +21,18 @@
     height: 38.4px;
 }
 
-.list>li>a {
+.list>li>a, .list>li>button {
+    all: unset;
     display: flex;
     padding: 7.2px 24px;
     text-decoration: none;
     color: #fff;
     gap: 8px;
     flex: 1 0 0;
+    border: none;
+    background-color: transparent;
+    font-size: 1em;
+    appearance: none;
 }
 
 .list>li:hover {
@@ -38,6 +43,6 @@
     background-color: #f7f2fa;
 }
 
-.list>li>a:active {
+.list>li>a:active, .list>li>button:active {
     color: #8b78b9;
 }
