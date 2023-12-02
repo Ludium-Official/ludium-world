@@ -5,13 +5,13 @@ import { useRef } from "react";
 import Editor from "../../../../components/Editor";
 import Category from "../../../../enums/Category";
 import fetchWithRetry from "../../../../functions/api";
-import missionstyle from "../../mission.module.css";
+import articlestyle from "../../article.module.css";
 
-export default function EditMissionForm({ id, title, content, category}) {
+export default function EditArticleForm({ id, title, content, category }) {
     const router = useRouter();
     const editorRef = useRef(null);
 
-    const handleSaveMission = async (e) => {
+    const handleSaveArticle = async (e) => {
         e.preventDefault();
 
         const { editorInstance } = editorRef.current;
@@ -19,54 +19,56 @@ export default function EditMissionForm({ id, title, content, category}) {
 
         formData.append("content", editorInstance.getMarkdown());
 
-        const createMissionResponse = await fetchWithRetry(`/article/${id}`, {
+        const createArticleResponse = await fetchWithRetry(`/article/${id}`, {
             method: "PUT",
             body: formData,
         });
 
-        if (createMissionResponse.ok) {
-            router.push(`/mission/${id}`);
+        if (createArticleResponse.ok) {
+            router.push(`/article/${id}`);
             router.refresh();
         }
     };
 
     const handleBack = () => {
-        router.push(`/mission/${id}`);
+        router.push(`/article/${id}`);
     }
 
     return (
         <form
-            className={missionstyle["mission-new-wrapper"]}
-            onSubmit={handleSaveMission}
+            className={articlestyle["form-wrapper"]}
+            onSubmit={handleSaveArticle}
         >
-            <div className={missionstyle["form-button-area"]}>
+            <div className={articlestyle["form-button-area"]}>
                 <button
-                    className={missionstyle["form-button"]}
+                    className={articlestyle["form-button"]}
                     type="button"
                     onClick={handleBack}
                 >
                     돌아가기
                 </button>
                 <input
-                    className={missionstyle["form-button"]}
+                    className={articlestyle["form-button"]}
                     type="submit"
                     value="저장하기"
                 />
             </div>
-            <div className={missionstyle["mission-new-header-area"]}>
+            <div className={articlestyle["form-header"]}>
                 <input
+                    className={articlestyle["form-textfield"]}
                     type="text"
                     name="title"
                     id="title"
                     placeholder="제목을 입력해주세요"
                     defaultValue={title}
                 />
-                <select name="category" id="category">
-                    <option value={Category.MISSION} selected>미션</option>
-                    <option value={Category.ARTICLE}>아티클</option>
+                <select className={articlestyle["form-textfield"]}
+                    name="category" id="category">
+                    <option value={Category.MISSION}>미션</option>
+                    <option value={Category.ARTICLE} selected>아티클</option>
                 </select>
             </div>
-            <div className={missionstyle["mission-new-content-area"]}>
+            <div className={articlestyle["form-content-area"]}>
                 <Editor editorRef={editorRef} content={content} height={"100%"} />
             </div>
         </form>
