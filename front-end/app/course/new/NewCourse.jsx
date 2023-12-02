@@ -32,7 +32,7 @@ export default function NewCourse() {
 
     const formData = new FormData();
 
-    formData.append("title", editorInstance.getMarkdown());
+    formData.append("title", e.target.title.value);
     formData.append("content", editorInstance.getMarkdown());
     formData.append("modules", modules);
 
@@ -60,7 +60,7 @@ export default function NewCourse() {
       <div className={coursestyle["form-button-area"]}>
         <button
           className={coursestyle["form-button"]}
-          type="type"
+          type="button"
           onClick={handleBack}
         >
           돌아가기
