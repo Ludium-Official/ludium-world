@@ -5,7 +5,7 @@ import coursestyle from "../course.module.css";
 import ContentNavigation from "../../../components/ContentNavigation";
 import DeleteCourse from "./DeleteCourse";
 
-async function getCourse(courseId) {
+export async function getCourse(courseId) {
     const getCourseResponse = await fetchWithRetry(`/course/${courseId}`);
 
     if (!getCourseResponse.ok) return null;
@@ -18,6 +18,9 @@ export default async function CoursePage({ params: { courseId } }) {
     const links = [{
         href: "/course",
         text: "돌아가기"
+    }, {
+        href: `/course/${courseId}/edit`,
+        text: "수정하기"
     }]
 
     return <>
