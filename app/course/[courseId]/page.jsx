@@ -25,7 +25,7 @@ export default async function CoursePage({ params: { courseId } }) {
 
     return <>
         <ContentNavigation links={links}>
-            <DeleteCourse courseId={courseId} />
+            {/* <DeleteCourse courseId={courseId} /> */}
         </ContentNavigation>
         <article className={coursestyle.wrapper}>
             <h1 className={coursestyle.title}>{course.title}</h1>
