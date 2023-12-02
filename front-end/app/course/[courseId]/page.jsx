@@ -26,12 +26,12 @@ export default async function CoursePage({ params: { courseId } }) {
             <section className={coursestyle["content-area"]}>
                 <Viewer content={course.content} height="100%" />
             </section>
-            <h2 className={coursestyle["title-label"]}>모듈 목록</h2>
+            {/* <h2 className={coursestyle["title-label"]}>모듈 목록</h2>
             <section className={`${coursestyle["course-list"]} ${coursestyle["module-list"]}`}>
                 {course.modules.map(module => <h2 className={coursestyle["course-list-item"]} key={module.id}>
                     <Link href={`/course/${courseId}/module/${module.id}`}>{module.title}</Link>
                 </h2>)}
-            </section>
+            </section> */}
         </article>
     </>
 }
