@@ -321,7 +321,7 @@
 .form-content-area {
   padding: 7px 15px 15px;
   padding-right: 45px;
-  height: Calc(100vh - 515px);
+  height: Calc(100vh - 270px);
   min-height: 500px;
 }
 
