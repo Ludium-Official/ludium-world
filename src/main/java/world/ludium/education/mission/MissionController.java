@@ -386,6 +386,7 @@ public class MissionController {
     @DeleteMapping("/{missionId}")
     public ResponseEntity DeleteMission(@PathVariable UUID missionId) {
         try {
+            missionSubmitService.deleteMissionSubmit(missionId);
             articleService.deleteArticle(missionId);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
