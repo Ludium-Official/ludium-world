@@ -391,7 +391,7 @@ public class MissionController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new HashMap<>() {{
-                        put("message", "교육을 삭제 중에 에러가 발생했습니다.");
+                        put("message", "미션 삭제 중에 에러가 발생했습니다.");
                         put("debug", e.getMessage());
                     }});
         }

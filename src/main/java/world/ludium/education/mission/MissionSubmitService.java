@@ -1,6 +1,7 @@
 package world.ludium.education.mission;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -108,6 +109,7 @@ public class MissionSubmitService {
         return missionSubmitCommentRepository.findAllByUsrId(usrId);
     }
 
+    @Transactional
     public void deleteMissionSubmit(UUID missionId) {
         List<MissionSubmit> missionSubmits = getMissionSubmits(missionId);
 
