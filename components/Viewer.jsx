@@ -33,5 +33,5 @@ export default function Viewer({ content, height }) {
         viewerRef.current.viewerInstance.setMarkdown(content);
     }, [content])
 
-    return <div ref={viewerRef}>Loading</div>
+    return <div ref={viewerRef}>뷰어를 불러오는 중입니다...</div>
 }
