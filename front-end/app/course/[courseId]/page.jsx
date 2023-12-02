@@ -3,6 +3,7 @@ import Viewer from "../../../components/Viewer";
 import fetchWithRetry from "../../../functions/api";
 import coursestyle from "../course.module.css";
 import ContentNavigation from "../../../components/ContentNavigation";
+import DeleteCourse from "./DeleteCourse";
 
 async function getCourse(courseId) {
     const getCourseResponse = await fetchWithRetry(`/course/${courseId}`);
@@ -20,7 +21,9 @@ export default async function CoursePage({ params: { courseId } }) {
     }]
 
     return <>
-        <ContentNavigation links={links} />
+        <ContentNavigation links={links}>
+            <DeleteCourse courseId={courseId} />
+        </ContentNavigation>
         <article className={coursestyle.wrapper}>
             <h1 className={coursestyle.title}>{course.title}</h1>
             <section className={coursestyle["content-area"]}>

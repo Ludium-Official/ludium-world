@@ -60,4 +60,8 @@ public class ArticleService {
     public List<ModuleReferenceArticleDTO> getAllMissionsAndArticles(UUID moduleId) {
         return articleRepository.getArtWithStatusAndFilter(moduleId);
     }
+
+    public void deleteArticle(UUID articleId) {
+        articleRepository.deleteById(articleId);
+    }
 }
