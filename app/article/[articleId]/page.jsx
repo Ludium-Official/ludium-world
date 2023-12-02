@@ -3,6 +3,10 @@ import Viewer from "../../../components/Viewer";
 import fetchWithRetry from "../../../functions/api";
 import articlestyle from "../article.module.css";
 
+export const metadata = {
+    title: "아티클"
+}
+
 export async function getArticle(articleId) {
     const getArticleResponse = await fetchWithRetry(`/article/${articleId}`);
 
