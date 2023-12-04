@@ -17,17 +17,17 @@ public class LoginService {
         this.env = env;
     }
 
-    public JsonNode socialLogin(String code, String registrationId) {
-        return getAccessToken(code, registrationId);
+    public JsonNode socialLogin(String code, String registrationId, String type) {
+        return getAccessToken(code, registrationId, type);
     }
 
-    private JsonNode getAccessToken(String authorizationCode, String registrationId) {
+    private JsonNode getAccessToken(String authorizationCode, String registrationId, String type) {
         String clientId = env.getProperty("spring.security.oauth2.client.registration." + registrationId + ".client-id");
         String clientSecret = env.getProperty("spring.security.oauth2.client.registration." + registrationId + ".client-secret");
-        String redirectUri = env.getProperty("spring.security.oauth2.client.registration." + registrationId + ".redirect-uri");
+        String redirectUri = type.equals("provider") ? env.getProperty("spring.security.oauth2.client.registration." + registrationId + ".provider.redirect-uri") : env.getProperty("spring.security.oauth2.client.registration." + registrationId + ".admin.redirect-uri");
         String tokenUri = env.getProperty("spring.security.oauth2.client.provider." + registrationId + ".token-uri");
 
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>(){
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>() {
             {
                 add("code", authorizationCode);
                 add("client_id", clientId);
@@ -54,7 +54,7 @@ public class LoginService {
         String clientSecret = env.getProperty("spring.security.oauth2.client.registration.google.client-secret");
         String tokenUri = env.getProperty("spring.security.oauth2.client.provider.google.token-uri");
 
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>(){
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>() {
             {
                 add("client_id", clientId);
                 add("client_secret", clientSecret);
