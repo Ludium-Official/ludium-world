@@ -39,7 +39,7 @@ public class OAuth2Controller {
         Cookie cookie = new Cookie("access_token", accessToken);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
-        cookie.setSecure(true);
+        cookie.setSecure(false);
         response.addCookie(cookie);
 
         JsonNode googleUserInfo = loginService.getUserResource(accessToken, registrationId);
@@ -47,7 +47,7 @@ public class OAuth2Controller {
         Cookie cookie1 = new Cookie("ggl_id", googleUserInfo.get("id").toString().replaceAll("\"", ""));
         cookie1.setPath("/");
         cookie1.setHttpOnly(true);
-        cookie1.setSecure(true);
+        cookie1.setSecure(false);
         response.addCookie(cookie1);
 
 
@@ -98,7 +98,7 @@ public class OAuth2Controller {
         Cookie cookie = new Cookie("access_token", tokenInfo.get("access_token").asText());
         cookie.setPath("/");
         cookie.setHttpOnly(true);
-        cookie.setSecure(true);
+        cookie.setSecure(false);
         response.addCookie(cookie);
 
         return ResponseEntity.ok(new HashMap<>() {{
