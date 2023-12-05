@@ -39,8 +39,14 @@ public class OAuth2Controller {
         Cookie cookie = new Cookie("access_token", accessToken);
         cookie.setPath("/");
         cookie.setAttribute("SameSite", "None");
-//        cookie.setHttpOnly(true);
+        cookie.setHttpOnly(true);
         cookie.setSecure(true);
+        cookie.setMaxAge(3600);
+        if(type.equals("provider")) {
+            cookie.setDomain(env.getProperty("ludium.world.provider.redirect-uri"));
+        } else {
+            cookie.setDomain(env.getProperty("ludium.world.admin.redirect-uri"));
+        }
         response.addCookie(cookie);
 
         JsonNode googleUserInfo = loginService.getUserResource(accessToken, registrationId);
@@ -48,8 +54,14 @@ public class OAuth2Controller {
         Cookie cookie1 = new Cookie("ggl_id", googleUserInfo.get("id").toString().replaceAll("\"", ""));
         cookie1.setPath("/");
         cookie1.setAttribute("SameSite", "None");
-//        cookie1.setHttpOnly(true);
+        cookie1.setHttpOnly(true);
         cookie1.setSecure(true);
+        cookie1.setMaxAge(3600);
+        if(type.equals("provider")) {
+            cookie1.setDomain(env.getProperty("ludium.world.provider.redirect-uri"));
+        } else {
+            cookie1.setDomain(env.getProperty("ludium.world.admin.redirect-uri"));
+        }
         response.addCookie(cookie1);
 
 
@@ -100,8 +112,14 @@ public class OAuth2Controller {
         Cookie cookie = new Cookie("access_token", tokenInfo.get("access_token").asText());
         cookie.setPath("/");
         cookie.setAttribute("SameSite", "None");
-//        cookie.setHttpOnly(true);
+        cookie.setHttpOnly(true);
         cookie.setSecure(true);
+        cookie.setMaxAge(3600);
+//        if(type.equals("provider")) {
+//            cookie.setDomain(env.getProperty("ludium.world.provider.redirect-uri");
+//        } else {
+//            cookie.setDomain(env.getProperty("ludium.world.admin.redirect-uri");
+//        }
         response.addCookie(cookie);
 
         return ResponseEntity.ok(new HashMap<>() {{
