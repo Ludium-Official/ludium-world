@@ -1,3 +1,4 @@
+import BackButton from "../../../components/BackButton";
 import ContentNavigation from "../../../components/ContentNavigation";
 import Viewer from "../../../components/Viewer";
 import fetchWithRetry from "../../../functions/api";
@@ -17,18 +18,11 @@ export async function getArticle(articleId) {
 
 export default async function ArticlePage({ params: { articleId } }) {
     const article = await getArticle(articleId);
-    const links = [{
-        href: "/article",
-        text: "돌아가기"
-    }, {
-        href: `/article/${articleId}/edit`,
-        text: "수정하기"
-    }];
-
-    console.log(article);
 
     return <>
-        <ContentNavigation links={links} />
+        <ContentNavigation links={[]}>
+            <BackButton />
+        </ContentNavigation>
         <article className={articlestyle.wrapper}>
             <h1 className={articlestyle.title}>{article.title}</h1>
             <section className={articlestyle["content-area"]}>
