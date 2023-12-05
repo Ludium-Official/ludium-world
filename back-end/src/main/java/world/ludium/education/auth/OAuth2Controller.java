@@ -42,6 +42,7 @@ public class OAuth2Controller {
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setMaxAge(3600);
+        cookie.setDomain(env.getProperty("ludium.world.cookie-domain"));
         response.addCookie(cookie);
 
         JsonNode googleUserInfo = loginService.getUserResource(accessToken, registrationId);
@@ -52,6 +53,7 @@ public class OAuth2Controller {
         cookie1.setHttpOnly(true);
         cookie1.setSecure(true);
         cookie1.setMaxAge(3600);
+        cookie1.setDomain(env.getProperty("ludium.world.cookie-domain"));
         response.addCookie(cookie1);
 
 
@@ -105,6 +107,7 @@ public class OAuth2Controller {
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setMaxAge(3600);
+        cookie.setDomain(env.getProperty("ludium.world.cookie-domain"));
         response.addCookie(cookie);
 
         return ResponseEntity.ok(new HashMap<>() {{
