@@ -20,15 +20,6 @@ export default function Navigation({ googleAuthInfo, gglId, links }) {
           </li>
           <GoogleButton />
           <li>
-            <Link className={navigationstyle.link} href="/mission">미션</Link>
-          </li>
-          <li>
-            <Link className={navigationstyle.link} href="/article">아티클</Link>
-          </li>
-          <li>
-            <Link className={navigationstyle.link} href="/post">자유게시판</Link>
-          </li>
-          <li>
             <Link className={navigationstyle.link} href="/course">교육</Link>
           </li>
         </ul>
