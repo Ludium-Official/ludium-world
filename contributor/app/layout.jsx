@@ -7,18 +7,6 @@ async function getNavigationLinks() {
         id: crypto.randomUUID(),
         dir: "/profile?active=article",
         text: "프로필"
-    },{
-        id: crypto.randomUUID(),
-        dir: "/mission",
-        text: "미션"
-    }, {
-        id: crypto.randomUUID(),
-        dir: "/article",
-        text: "아티클"
-    }, {
-        id: crypto.randomUUID(),
-        dir: "/post",
-        text: "자유게시판"
     }, {
         id: crypto.randomUUID(),
         dir: "/course",
@@ -35,7 +23,7 @@ export default async function RootLayout({
     return <html lang="en">
         <head>
         </head>
-        <body style={{margin: 0}}>
+        <body style={{ margin: 0 }}>
             <main style={{ display: "flex" }}>
                 <Navigation googleAuthInfo={cookieStore.get("access_token")} gglId={cookieStore.get("ggl_id")} links={links} />
                 <MainWrapper>
