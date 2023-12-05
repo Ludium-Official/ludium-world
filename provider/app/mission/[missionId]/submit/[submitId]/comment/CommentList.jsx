@@ -51,7 +51,7 @@ export default function CommentList({ comments, missionId, submitId }) {
   });
 
   const handleBack = () => {
-    router.push(`/mission/${missionId}/submit`);
+    router.back();
   };
 
   return (
