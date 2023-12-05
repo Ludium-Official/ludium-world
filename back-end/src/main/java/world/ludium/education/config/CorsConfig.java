@@ -18,7 +18,10 @@ public class CorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedOrigins(env.getProperty("ludium.world.admin.redirect-uri"), env.getProperty("ludium.world.provider.redirect-uri"))
+                .allowedOrigins(
+                        env.getProperty("ludium.world.admin.redirect-uri"),
+                        env.getProperty("ludium.world.provider.redirect-uri"),
+                        env.getProperty("ludium.world.contributor.redirect-uri"))
                 .maxAge(3600)
                 .allowCredentials(true);
     }
