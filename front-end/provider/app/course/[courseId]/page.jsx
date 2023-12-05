@@ -20,26 +20,15 @@ export default async function CoursePage({ params: { courseId } }) {
     const links = [{
         href: "/course",
         text: "돌아가기"
-    }, {
-        href: `/course/${courseId}/edit`,
-        text: "수정하기"
     }]
 
     return <>
-        <ContentNavigation links={links}>
-            {/* <DeleteCourse courseId={courseId} /> */}
-        </ContentNavigation>
+        <ContentNavigation links={links} />
         <article className={coursestyle.wrapper}>
             <h1 className={coursestyle.title}>{course.title}</h1>
             <section className={coursestyle["content-area"]}>
                 <Viewer content={course.content} height="100%" />
             </section>
-            {/* <h2 className={coursestyle["title-label"]}>모듈 목록</h2>
-            <section className={`${coursestyle["course-list"]} ${coursestyle["module-list"]}`}>
-                {course.modules.map(module => <h2 className={coursestyle["course-list-item"]} key={module.id}>
-                    <Link href={`/course/${courseId}/module/${module.id}`}>{module.title}</Link>
-                </h2>)}
-            </section> */}
         </article>
     </>
 }
