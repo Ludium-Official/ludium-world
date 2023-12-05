@@ -17,17 +17,11 @@ async function getCourseList() {
 
 export default async function CoursePage() {
   const courses = await getCourseList();
-  const courseLinks = [
-    {
-      href: "/course/new",
-      text: "교육 만들기",
-    },
-  ];
 
   return (
     <>
       <div className={coursestyle["content-navigation"]}>
-        <ContentNavigation links={courseLinks} />
+        <ContentNavigation links={[]} />
       </div>
       <article className={coursestyle.wrapper}>
         <h1 className={coursestyle["title-label"]}>교육 목록</h1>
