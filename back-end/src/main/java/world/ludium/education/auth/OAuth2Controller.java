@@ -43,9 +43,9 @@ public class OAuth2Controller {
         cookie.setSecure(true);
         cookie.setMaxAge(3600);
         if(type.equals("provider")) {
-            cookie.setDomain(env.getProperty("ludium.world.provider.redirect-uri"));
+            cookie.setDomain(env.getProperty("ludium.world.provider.redirect-uri").replaceAll("https://", ""));
         } else {
-            cookie.setDomain(env.getProperty("ludium.world.admin.redirect-uri"));
+            cookie.setDomain(env.getProperty("ludium.world.admin.redirect-uri").replaceAll("https://", ""));
         }
         response.addCookie(cookie);
 
@@ -58,9 +58,9 @@ public class OAuth2Controller {
         cookie1.setSecure(true);
         cookie1.setMaxAge(3600);
         if(type.equals("provider")) {
-            cookie1.setDomain(env.getProperty("ludium.world.provider.redirect-uri"));
+            cookie1.setDomain(env.getProperty("ludium.world.provider.redirect-uri").replaceAll("https://", ""));
         } else {
-            cookie1.setDomain(env.getProperty("ludium.world.admin.redirect-uri"));
+            cookie1.setDomain(env.getProperty("ludium.world.admin.redirect-uri").replaceAll("https://", ""));
         }
         response.addCookie(cookie1);
 
