@@ -18,7 +18,7 @@ export async function getArticle(articleId) {
 export default async function ArticlePage({ params: { articleId } }) {
     const article = await getArticle(articleId);
     const links = [{
-        href: "/article",
+        href: "../",
         text: "돌아가기"
     }, {
         href: `/article/${articleId}/edit`,

@@ -31,7 +31,7 @@ export default function EditMissionForm({ id, title, content, category}) {
     };
 
     const handleBack = () => {
-        router.push(`/mission/${id}`);
+        router.back();
     }
 
     return (
@@ -61,8 +61,8 @@ export default function EditMissionForm({ id, title, content, category}) {
                     placeholder="제목을 입력해주세요"
                     defaultValue={title}
                 />
-                <select name="category" id="category">
-                    <option value={Category.MISSION} selected>미션</option>
+                <select name="category" id="category" defaultValue={Category.MISSION}>
+                    <option value={Category.MISSION}>미션</option>
                     <option value={Category.ARTICLE}>아티클</option>
                 </select>
             </div>

@@ -83,12 +83,6 @@ export default function SubmitContent({
       )}
       <Link
         className={submitstyle["mission-submit-item"]}
-        href={`/mission/${missionId}/submit/${id}/edit`}
-      >
-        수정
-      </Link>
-      <Link
-        className={submitstyle["mission-submit-item"]}
         href={`/mission/${missionId}/submit/${id}/history`}
       >
         이력 확인
