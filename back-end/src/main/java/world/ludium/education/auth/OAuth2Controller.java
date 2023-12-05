@@ -42,11 +42,6 @@ public class OAuth2Controller {
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setMaxAge(3600);
-        if(type.equals("provider")) {
-            cookie.setDomain(env.getProperty("ludium.world.provider.cookie-domain"));
-        } else {
-            cookie.setDomain(env.getProperty("ludium.world.admin.cookie-domain"));
-        }
         response.addCookie(cookie);
 
         JsonNode googleUserInfo = loginService.getUserResource(accessToken, registrationId);
@@ -57,11 +52,6 @@ public class OAuth2Controller {
         cookie1.setHttpOnly(true);
         cookie1.setSecure(true);
         cookie1.setMaxAge(3600);
-        if(type.equals("provider")) {
-            cookie1.setDomain(env.getProperty("ludium.world.provider.cookie-domain"));
-        } else {
-            cookie1.setDomain(env.getProperty("ludium.world.admin.cookie-domain"));
-        }
         response.addCookie(cookie1);
 
 
@@ -115,11 +105,6 @@ public class OAuth2Controller {
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setMaxAge(3600);
-//        if(type.equals("provider")) {
-//            cookie.setDomain(env.getProperty("ludium.world.provider.redirect-uri");
-//        } else {
-//            cookie.setDomain(env.getProperty("ludium.world.admin.redirect-uri");
-//        }
         response.addCookie(cookie);
 
         return ResponseEntity.ok(new HashMap<>() {{
