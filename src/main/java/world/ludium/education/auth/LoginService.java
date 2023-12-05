@@ -24,7 +24,9 @@ public class LoginService {
     private JsonNode getAccessToken(String authorizationCode, String registrationId, String type) {
         String clientId = env.getProperty("spring.security.oauth2.client.registration." + registrationId + ".client-id");
         String clientSecret = env.getProperty("spring.security.oauth2.client.registration." + registrationId + ".client-secret");
-        String redirectUri = type.equals("provider") ? env.getProperty("spring.security.oauth2.client.registration." + registrationId + ".provider.redirect-uri") : env.getProperty("spring.security.oauth2.client.registration." + registrationId + ".admin.redirect-uri");
+        String redirectUri = type.equals("provider") ? env.getProperty("spring.security.oauth2.client.registration." + registrationId + ".provider.redirect-uri")
+                : type.equals("contributor") ? env.getProperty("spring.security.oauth2.client.registration." + registrationId + ".contributor.redirect-uri")
+                : env.getProperty("spring.security.oauth2.client.registration." + registrationId + ".admin.redirect-uri");
         String tokenUri = env.getProperty("spring.security.oauth2.client.provider." + registrationId + ".token-uri");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>() {

@@ -65,20 +65,9 @@ public class OAuth2Controller {
             googleUserService.createUserRefreshToken(googleRefreshToken);
         }
 
-        if (type.equals("provider")) {
-            String uri = env.getProperty("ludium.world.provider.redirect-uri");
-            if (googleUserService.getUserById(new BigInteger(googleUserInfo.get("id").toString().replaceAll("\"", ""))) == null) {
-                return new RedirectView() {{
-                    setUrl(uri + "/sign-up");
-                }};
-            }
-
-            return new RedirectView() {{
-                setUrl(uri);
-            }};
-        }
-
-        String uri = env.getProperty("ludium.world.admin.redirect-uri");
+        String uri = type.equals("provider") ? env.getProperty("ludium.world.provider.redirect-uri") :
+                type.equals("contributor") ? env.getProperty("ludium.world.contributor.redirect-uri") :
+                        env.getProperty("ludium.world.admin.redirect-uri");
         if (googleUserService.getUserById(new BigInteger(googleUserInfo.get("id").toString().replaceAll("\"", ""))) == null) {
             return new RedirectView() {{
                 setUrl(uri + "/sign-up");
