@@ -7,7 +7,10 @@ spring:
           google:
             client-id: google-oauth2-client-registration-id
             client-secret: google-oauth2-client-registration-secret
-            redirect-uri: google-oauth2-client-registration-redirect-uri
+            provider:
+              redirect-uri: google-oauth2-client-registration-redirect-uri
+            admin:
+              redirect-uri: google-oauth2-client-registration-redirect-uri
             scope:
               - profile
               - email
@@ -32,5 +35,18 @@ logging:
 
 ludium:
   world:
-    redirect-uri: frontend-uri
+    provider:
+      redirect-uri: provider frontend url (Must be the same as the backend domain address)
+    admin:
+      redirect-uri: admin frontend url (Must be the same as the backend domain address)
+    cookie-domain: cookie domain
+
+server:
+  port: 8080
+  ssl:
+    key-store: jks file path
+    key-store-password: password
+    key-password: password
+    key-store-type: key store type
+    key-alias: key alias
 ```
