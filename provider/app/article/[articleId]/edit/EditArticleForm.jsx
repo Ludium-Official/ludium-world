@@ -31,7 +31,7 @@ export default function EditArticleForm({ id, title, content, category }) {
     };
 
     const handleBack = () => {
-        router.push(`/article/${id}`);
+        router.back();
     }
 
     return (
