@@ -22,6 +22,10 @@ public class ModuleService {
         return moduleRepository.findAllByCrsId(courseId);
     }
 
+    public List<Module> getAllModulesByAnnouncement(UUID announcementId) {
+        return moduleRepository.findAllByCrsId(announcementId);
+    }
+
     public Module getModule(UUID moduleId) {
         return moduleRepository.findById(moduleId)
                 .orElseThrow(() -> new EntityNotFoundException("모듈을 찾을 수 없습니다. ID: " + moduleId));
