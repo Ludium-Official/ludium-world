@@ -7,23 +7,37 @@ async function getNavigationLinks() {
         id: crypto.randomUUID(),
         dir: "/profile?active=article",
         text: "프로필"
-    },{
-        id: crypto.randomUUID(),
-        dir: "/mission",
-        text: "미션"
     }, {
         id: crypto.randomUUID(),
-        dir: "/article",
-        text: "아티클"
+        dir: "/announcement",
+        text: "공고"
     }, {
         id: crypto.randomUUID(),
-        dir: "/post",
-        text: "자유게시판"
+        dir: "/make",
+        text: "제작"
     }, {
         id: crypto.randomUUID(),
-        dir: "/course",
-        text: "교육"
-    }];
+        dir: "/validate",
+        text: "검증"
+    }
+    // , {
+    //     id: crypto.randomUUID(),
+    //     dir: "/mission",
+    //     text: "미션"
+    // }, {
+    //     id: crypto.randomUUID(),
+    //     dir: "/article",
+    //     text: "아티클"
+    // }, {
+    //     id: crypto.randomUUID(),
+    //     dir: "/post",
+    //     text: "자유게시판"
+    // }, {
+    //     id: crypto.randomUUID(),
+    //     dir: "/course",
+    //     text: "교육"
+    // }
+];
 }
 
 export default async function RootLayout({
