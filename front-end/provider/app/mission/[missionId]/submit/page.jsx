@@ -2,7 +2,7 @@ import ContentNavigation from "../../../../components/ContentNavigation";
 import SubmitContent from "../../../../components/mission/SubmitContent";
 import fetchWithRetry from "../../../../functions/api";
 import submitstyle from "../../mission.module.css";
-import BackButton from "../BackButton";
+import BackButton from "../../../../components/BackButton";
 
 async function getSubmitList(missionId) {
   const getMissionSumitResponse = await fetchWithRetry(

@@ -25,7 +25,7 @@ public class ArticleService {
     }
 
     public Article getArticle(UUID id) {
-        return articleRepository.findById(id).orElse(null);
+        return articleRepository.findById(id).orElseThrow();
     }
 
     public Article createArticle(Article article) {
