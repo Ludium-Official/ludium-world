@@ -68,6 +68,8 @@ public class ArticleService {
 
     public List<Article> getAllAnnouncement() { return articleRepository.findAllByCategory(Category.ANNOUNCEMENT); }
 
+    public List<Article> getAllMake() { return articleRepository.findAllByCategory(Category.MAKE); }
+
     public List<Article> getAllMissionsAndArticles() { return articleRepository.findAllByCategoryIn(Arrays.asList(Category.MISSION, Category.ARTICLE)); }
 
     public List<ModuleReferenceArticleDTO> getAllMissionsAndArticles(UUID moduleId) {
