@@ -45,6 +45,17 @@ public class ArticleService {
         }
     }
 
+    @Transactional
+    public void createAnnouncementWithModule(Article article, List<Module> modules) {
+        article.setId(UUID.randomUUID());
+        article.setCategory(Category.ANNOUNCEMENT);
+
+        articleRepository.save(article);
+        for(Module module: modules) {
+            moduleService.createModule(module, article.getId());
+        }
+    }
+
     public List<Article> getAllArticlesByUsrId(UUID usrId) {
         return articleRepository.findAllByUsrId(usrId);
     }
@@ -54,6 +65,8 @@ public class ArticleService {
     public List<Article> getAllPost() { return articleRepository.findAllByCategory(Category.FREE_BOARD); }
 
     public List<Article> getAllCourse() { return articleRepository.findAllByCategory(Category.COURSE); }
+
+    public List<Article> getAllAnnouncement() { return articleRepository.findAllByCategory(Category.ANNOUNCEMENT); }
 
     public List<Article> getAllMissionsAndArticles() { return articleRepository.findAllByCategoryIn(Arrays.asList(Category.MISSION, Category.ARTICLE)); }
 

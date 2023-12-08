@@ -20,6 +20,15 @@ export default function Navigation({ googleAuthInfo, gglId, links }) {
           </li>
           <GoogleButton />
           <li>
+            <Link className={navigationstyle.link} href="/announcement">공고</Link>
+          </li>
+          <li>
+            <Link className={navigationstyle.link} href="/make">제작</Link>
+          </li>
+          <li>
+            <Link className={navigationstyle.link} href="/validate">검증</Link>
+          </li>
+          {/* <li>
             <Link className={navigationstyle.link} href="/mission">미션</Link>
           </li>
           <li>
@@ -30,7 +39,7 @@ export default function Navigation({ googleAuthInfo, gglId, links }) {
           </li>
           <li>
             <Link className={navigationstyle.link} href="/course">교육</Link>
-          </li>
+          </li> */}
         </ul>
       </nav>
     );

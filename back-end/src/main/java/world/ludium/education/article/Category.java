@@ -4,5 +4,6 @@ public enum Category {
     MISSION,
     ARTICLE,
     FREE_BOARD,
-    COURSE
+    COURSE,
+    ANNOUNCEMENT
 }
