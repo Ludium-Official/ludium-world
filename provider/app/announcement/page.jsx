@@ -4,7 +4,7 @@ import announcementstyle from "./announcement.module.css";
 import ContentNavigation from "../../components/ContentNavigation";
 
 export const metadata = {
-  title: "교육"
+  title: "공고 목록"
 }
 
 async function getAnnouncementList() {
@@ -20,9 +20,6 @@ export default async function AnnouncementPage() {
 
   return (
     <>
-      <div className={announcementstyle["content-navigation"]}>
-        <ContentNavigation links={[]} />
-      </div>
       <article className={announcementstyle.wrapper}>
         <h1 className={announcementstyle["title-label"]}>공고 목록</h1>
         <div className={announcementstyle["announcement-list"]}>
