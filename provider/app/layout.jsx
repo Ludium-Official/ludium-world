@@ -9,8 +9,16 @@ async function getNavigationLinks() {
         text: "프로필"
     }, {
         id: crypto.randomUUID(),
-        dir: "/course",
-        text: "교육"
+        dir: "/announcement",
+        text: "공고"
+    }, {
+        id: crypto.randomUUID(),
+        dir: "/make",
+        text: "제작"
+    }, {
+        id: crypto.randomUUID(),
+        dir: "/validate",
+        text: "검증"
     }];
 }
 

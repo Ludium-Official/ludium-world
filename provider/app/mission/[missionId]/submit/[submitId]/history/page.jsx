@@ -2,7 +2,7 @@ import ContentNavigation from "../../../../../../components/ContentNavigation";
 import SubmitHistory from "../../../../../../components/mission/SubmitHistory";
 import fetchWithRetry from "../../../../../../functions/api";
 import missinostyle from "../../../../mission.module.css";
-import BackButton from "../../../BackButton";
+import BackButton from "../../../../../../components/BackButton";
 
 async function getSubmitHistory(missionId, submitId) {
   const getSubmitHistoryResponse = await fetchWithRetry(

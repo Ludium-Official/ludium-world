@@ -1,7 +1,7 @@
 import ContentNavigation from "../../../components/ContentNavigation";
 import Viewer from "../../../components/Viewer";
 import fetchWithRetry from "../../../functions/api";
-import BackButton from "../../mission/[missionId]/BackButton";
+import BackButton from "../../../components/BackButton";
 import articlestyle from "../article.module.css";
 
 export const metadata = {

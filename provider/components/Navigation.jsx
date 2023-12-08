@@ -16,11 +16,19 @@ export default function Navigation({ googleAuthInfo, gglId, links }) {
       <nav className={navigationstyle.wrapper}>
         <ul className={navigationstyle.list}>
           <li className={navigationstyle.logo}>
-            <Image src="/logo_purple.png" alt="ludium" width={156} height={70} priority />
+            <Link href="/">
+              <Image src="/logo_purple.png" alt="ludium" width={156} height={70} priority />
+            </Link>
           </li>
           <GoogleButton />
           <li>
-            <Link className={navigationstyle.link} href="/course">교육</Link>
+            <Link className={navigationstyle.link} href="/announcement">공고</Link>
+          </li>
+          <li>
+            <Link className={navigationstyle.link} href="/make">제작</Link>
+          </li>
+          <li>
+            <Link className={navigationstyle.link} href="/validate">검증</Link>
           </li>
         </ul>
       </nav>
@@ -31,7 +39,9 @@ export default function Navigation({ googleAuthInfo, gglId, links }) {
     <nav className={navigationstyle.wrapper}>
       <ul className={navigationstyle.list}>
         <li className={navigationstyle.logo}>
-          <Image src="/logo_purple.png" alt="ludium" width={156} height={70} priority />
+          <Link href="/">
+            <Image src="/logo_purple.png" alt="ludium" width={156} height={70} priority />
+          </Link>
         </li>
         {links.map(({ id, dir, text }) => <li key={id}>
           <Link className={(pathName.split("/")[1] === dir.split("/")[1]) ? `${navigationstyle.link} ${navigationstyle.active}` : navigationstyle.link} href={dir}>{text}</Link>

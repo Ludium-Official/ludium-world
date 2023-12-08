@@ -2,7 +2,7 @@ import ContentNavigation from "../../../components/ContentNavigation";
 import Viewer from "../../../components/Viewer";
 import fetchWithRetry from "../../../functions/api";
 import missionstyle from "../mission.module.css";
-import BackButton from "./BackButton";
+import BackButton from "../../../components/BackButton";
 
 export async function getMission(missionId) {
   const getMissionResponse = await fetchWithRetry(`/mission/${missionId}`);
