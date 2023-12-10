@@ -1,26 +1,36 @@
 package world.ludium.education.auth.ludium;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public class LudiumUserService {
     private final LudiumUserRepository ludiumUserRepository;
+    private final LudiumUserRightRepository ludiumUserRightRepository;
 
-    public LudiumUserService(LudiumUserRepository ludiumUserRepository) {
+    public LudiumUserService(LudiumUserRepository ludiumUserRepository
+            , LudiumUserRightRepository ludiumUserRightRepository) {
         this.ludiumUserRepository = ludiumUserRepository;
+        this.ludiumUserRightRepository = ludiumUserRightRepository;
     }
 
     public LudiumUser getUserByGglId(BigInteger ggl_id) {
         return ludiumUserRepository.findByGglId(ggl_id);
     }
 
+    @Transactional
     public LudiumUser createUser(LudiumUser ludiumUser) {
-        ludiumUser.setId(UUID.randomUUID());
+        ludiumUserRepository.save(ludiumUser);
+        LudiumUserRight contributor = LudiumUserRight.Contributor();
+        contributor.setId(ludiumUser.getId());
 
-        return ludiumUserRepository.save(ludiumUser);
+        ludiumUserRightRepository.save(contributor);
+
+        return ludiumUser;
     }
 
     public LudiumUser getUserById(UUID id) {
@@ -29,5 +39,17 @@ public class LudiumUserService {
 
     public void updateUser(LudiumUser ludiumUser) {
         ludiumUserRepository.save(ludiumUser);
+    }
+
+    public List<LudiumUser> getAllUser() {
+        return ludiumUserRepository.findAll();
+    }
+
+    public LudiumUserRight getUserRight(UUID userid) {
+        return ludiumUserRightRepository.findById(userid).orElseThrow();
+    }
+
+    public void updateUserRight(LudiumUserRight ludiumUserRight) {
+        ludiumUserRightRepository.save(ludiumUserRight);
     }
 }

@@ -25,8 +25,6 @@ export default async function ArticlePage({ params: { articleId } }) {
         text: "수정하기"
     }];
 
-    console.log(article);
-
     return <>
         <ContentNavigation links={links} />
         <article className={articlestyle.wrapper}>

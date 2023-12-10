@@ -28,6 +28,9 @@ export default function Navigation({ googleAuthInfo, gglId, links }) {
           <li>
             <Link className={navigationstyle.link} href="/validate">검증</Link>
           </li>
+          <li>
+            <Link className={navigationstyle.link} href="/management">사용자 관리</Link>
+          </li>
           {/* <li>
             <Link className={navigationstyle.link} href="/mission">미션</Link>
           </li>
