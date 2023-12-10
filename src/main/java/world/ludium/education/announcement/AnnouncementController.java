@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import world.ludium.education.article.Article;
 import world.ludium.education.article.ArticleService;
+import world.ludium.education.article.Category;
 import world.ludium.education.auth.LoginService;
 import world.ludium.education.auth.ludium.LudiumUser;
 import world.ludium.education.auth.ludium.LudiumUserService;
@@ -60,13 +61,13 @@ public class AnnouncementController {
 
         LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
-        Article article = Article.Announcement();
-        article.setTitle(title);
-        article.setContent(content);
-        article.setUsrId(ludiumUser.getId());
+        Article announcement = Article.Announcement();
+        announcement.setTitle(title);
+        announcement.setContent(content);
+        announcement.setUsrId(ludiumUser.getId());
 
         try {
-            articleService.createArticle(article);
+            articleService.createArticle(announcement);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     new HashMap<String, String>() {{
@@ -139,5 +140,94 @@ public class AnnouncementController {
         module.setCrsId(announcementId);
 
         return ResponseEntity.ok(moduleService.updateModule(module));
+    }
+
+    @PutMapping("/{announcementId}")
+    public ResponseEntity updateAnnouncement(@PathVariable UUID announcementId,
+                                       @RequestParam String title,
+                                       @RequestParam String content,
+                                       @CookieValue(name = "access_token", required = false) String accessToken) {
+        JsonNode googleUserApiData = null;
+
+        try {
+            googleUserApiData = loginService.getUserResource(accessToken, "google");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    new HashMap<String, String>() {
+                        {
+                            put("message", "인증에 실패했습니다.");
+                            put("debug", e.getMessage());
+                        }
+                    });
+        }
+
+        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+
+        Article announcement = Article.Announcement();
+        announcement.setId(announcementId);
+        announcement.setTitle(title);
+        announcement.setContent(content);
+        announcement.setUsrId(ludiumUser.getId());
+
+        try {
+            articleService.updateArticle(announcement);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new HashMap<String, String>() {{
+                        put("message", "공고를 수정하는 중에 에러가 발생했습니다.");
+                        put("debug", e.getMessage());
+                    }}
+            );
+        }
+
+        return ResponseEntity.ok(new HashMap<String, String>() {{
+            put("title", title);
+            put("content", content);
+        }});
+    }
+
+    @PostMapping("{announcementId}")
+    public ResponseEntity createModule(@PathVariable UUID announcementId,
+                                       @RequestParam String title,
+                                       @CookieValue(name = "access_token", required = false) String accessToken) {
+        JsonNode googleUserApiData = null;
+
+        try {
+            googleUserApiData = loginService.getUserResource(accessToken, "google");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    new HashMap<String, String>() {
+                        {
+                            put("message", "인증에 실패했습니다.");
+                            put("debug", e.getMessage());
+                        }
+                    });
+        }
+
+        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+
+        Article module1 = Article.Module();
+        module1.setTitle(title);
+        module1.setContent("");
+        module1.setUsrId(ludiumUser.getId());
+
+        Module module2 = new Module();
+        module2.setTitle(title);
+
+        try {
+            articleService.createModule(module1, module2, announcementId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new HashMap<String, String>() {{
+                        put("message", "모듈을 만드는 중에 에러가 발생했습니다.");
+                        put("debug", e.getMessage());
+                    }}
+            );
+        }
+
+        return ResponseEntity.ok(new HashMap<String, String>() {{
+            put("title", title);
+            put("content", "");
+        }});
     }
 }
