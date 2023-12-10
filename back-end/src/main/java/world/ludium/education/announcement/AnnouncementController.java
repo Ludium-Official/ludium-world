@@ -41,7 +41,7 @@ public class AnnouncementController {
     }
 
     @PostMapping("")
-    public ResponseEntity createCourse(@RequestParam String title,
+    public ResponseEntity createAnnouncement(@RequestParam String title,
                                        @RequestParam String content,
                                        @RequestParam String modules,
                                        @CookieValue(name = "access_token", required = false) String accessToken) {

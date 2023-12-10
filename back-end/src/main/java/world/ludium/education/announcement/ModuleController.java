@@ -2,10 +2,7 @@ package world.ludium.education.announcement;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import world.ludium.education.course.Module;
 import world.ludium.education.course.ModuleDTO;
 import world.ludium.education.course.ModuleReference;
@@ -47,5 +44,25 @@ public class ModuleController {
         }
 
         return ResponseEntity.ok(moduleDTO);
+    }
+
+    @PostMapping("/{parentId}")
+    public ResponseEntity createModule(@PathVariable UUID parentId,
+                                       @RequestParam String title
+    ) {
+        Module module = new Module();
+        module.setTitle(title);
+
+        try {
+            moduleService.createModule(module, parentId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new HashMap<>() {{
+                        put("message", "모듈을 만드는 중에 에러가 발생했습니다.");
+                        put("debug", e.getMessage());
+                    }});
+        }
+
+        return ResponseEntity.ok(module);
     }
 }

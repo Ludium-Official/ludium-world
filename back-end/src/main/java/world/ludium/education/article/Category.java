@@ -6,5 +6,6 @@ public enum Category {
     FREE_BOARD,
     COURSE,
     ANNOUNCEMENT,
-    MAKE
+    MAKE,
+    MODULE
 }

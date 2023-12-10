@@ -51,4 +51,13 @@ public class Article {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    public static Article Module() {
+        Article module = new Article();
+
+        module.setContent("");
+        module.setTitle("");
+        module.setCategory(Category.MODULE);
+        return module;
+    }
 }
