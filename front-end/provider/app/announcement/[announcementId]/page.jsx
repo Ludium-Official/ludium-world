@@ -33,7 +33,7 @@ export default async function AnnouncementPage({ params: { announcementId } }) {
             <section className={`${announcementstyle["announcement-list"]} ${announcementstyle["module-list"]}`}>
                 {announcement.modules.map(module => <>
                     <ContentNavigation links={[{
-                        href: `/make/${module.id}`,
+                        href: `/make/${module.id}/edit`,
                         text: "제작하기"
                     }, {
                         href: `/validate/${module.id}`,
