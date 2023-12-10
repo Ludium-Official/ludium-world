@@ -60,4 +60,12 @@ public class Article {
         module.setCategory(Category.MODULE);
         return module;
     }
+
+    public static Article Announcement() {
+        Article announcement = new Article();
+
+        announcement.setCategory(Category.ANNOUNCEMENT);
+
+        return announcement;
+    }
 }
