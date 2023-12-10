@@ -33,6 +33,7 @@
     background-color: transparent;
     font-size: 1em;
     appearance: none;
+    cursor: pointer;
 }
 
 .list>li:hover {

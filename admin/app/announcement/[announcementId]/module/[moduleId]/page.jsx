@@ -20,7 +20,7 @@ async function getMake(moduleId) {
   return await getModuleResponse.json();
 }
 
-export async function ModuleViewer({announcementId, moduleId}) {
+export async function ModuleViewer({ announcementId, moduleId }) {
   const module = await getModule(announcementId, moduleId);
 
   return <>
@@ -44,8 +44,7 @@ export default async function ModulePage({ params: { announcementId, moduleId } 
   }, {
     href: `/announcement/${announcementId}/module/${moduleId}/edit`,
     text: "수정하기",
-  },
-  ];
+  }];
 
   return (
     <>
@@ -55,15 +54,15 @@ export default async function ModulePage({ params: { announcementId, moduleId } 
         <MakeCreateButton moduleId={moduleId} />
         {
           makes.map((make) =>
-            <section>
+            <section key={crypto.randomUUID()}>
               <ContentNavigation links={[{
                 href: `/announcement/${announcementId}/module/${moduleId}/make/${make.id}/edit`,
                 text: "수정하기"
               }, {
-                href: `/make/${module.id}/edit`,
+                href: `/make/${make.id}/edit`,
                 text: "제작하기"
               }, {
-                href: `/validate/${module.id}`,
+                href: `/validate/${make.id}`,
                 text: "검증하기"
               }]} />
               <h2>{make.title}</h2>
