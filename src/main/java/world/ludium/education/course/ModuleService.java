@@ -3,6 +3,7 @@ package world.ludium.education.course;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import world.ludium.education.article.Article;
 
 import java.util.List;
 import java.util.UUID;
