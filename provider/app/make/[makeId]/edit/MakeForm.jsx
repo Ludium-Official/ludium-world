@@ -2,10 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
-import Editor from "../../../components/Editor";
-import Category from "../../../enums/Category";
-import fetchWithRetry from "../../../functions/api";
-import makestyle from "../make.module.css";
+import Editor from "../../../../components/Editor";
+import Category from "../../../../enums/Category";
+import fetchWithRetry from "../../../../functions/api";
+import makestyle from "../../make.module.css";
 
 export default function MakeForm({ id, title, content, shareable }) {
     const router = useRouter();
@@ -25,7 +25,7 @@ export default function MakeForm({ id, title, content, shareable }) {
         });
 
         if (createmakeResponse.ok) {
-            router.back();
+            router.push(`/make/${id}`);
             router.refresh();
         }
     };
