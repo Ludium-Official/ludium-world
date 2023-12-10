@@ -8,33 +8,16 @@ import announcementstyle from "../../announcement.module.css";
 
 export default function EditAnnouncement({ id, title, content }) {
   const editorRef = useRef(null);
-  const [modules, setModules] = useState([]);
   const router = useRouter();
 
   const handleSave = async (e) => {
     e.preventDefault();
 
     const { editorInstance } = editorRef.current;
-    const moduleFields = e.target.querySelectorAll(`[name^="module-"]`);
 
-    const modules = Array.from(moduleFields).reduce(
-      (acc, moduleField, index) => {
-        const value = moduleField.value;
+    const formData = new FormData(e.target);
 
-        if (index === 0) {
-          return `${value}`;
-        }
-
-        return `${acc}|${value}`;
-      },
-      ""
-    );
-
-    const formData = new FormData();
-
-    formData.append("title", e.target.title.value);
     formData.append("content", editorInstance.getMarkdown());
-    formData.append("modules", modules);
 
     const createAnnouncementResponse = await fetchWithRetry(`/announcement/${id}`, {
       method: "PUT",
@@ -45,10 +28,6 @@ export default function EditAnnouncement({ id, title, content }) {
       router.push(`/announcement/${id}`);
       router.refresh();
     }
-  };
-
-  const handleCreateModule = () => {
-    setModules([...modules, { title: "" }]);
   };
 
   const handleBack = () => {
@@ -80,29 +59,6 @@ export default function EditAnnouncement({ id, title, content }) {
           placeholder="제목을 입력해주세요"
           defaultValue={title}
         />
-      </div>
-      <div className={`${announcementstyle["form-button-area"]} ${announcementstyle["form-list-add-button-area"]}`}>
-        <button
-          className={announcementstyle["form-button"]}
-          type="button"
-          onClick={handleCreateModule}
-        >
-          모듈 추가하기
-        </button>
-      </div>
-      <div className={announcementstyle["form-list-area"]}>
-        <div className={announcementstyle["form-list-inner"]}>
-          {modules.map((_, index) => (
-            <input
-              className={announcementstyle["form-textfield"]}
-              key={crypto.randomUUID()}
-              type="text"
-              name={`module-${index}`}
-              id={`module-${index}`}
-              placeholder="모듈 제목을 입력해주세요"
-            />
-          ))}
-        </div>
       </div>
       <div className={announcementstyle["form-content-area"]}>
         <Editor editorRef={editorRef} content={content} height="100%" />
