@@ -19,7 +19,11 @@ async function getNavigationLinks() {
         id: crypto.randomUUID(),
         dir: "/validate",
         text: "검증"
-    }
+    }, {
+        id: crypto.randomUUID(),
+        dir: "/management",
+        text: "사용자 관리"
+    }, 
     // , {
     //     id: crypto.randomUUID(),
     //     dir: "/mission",
