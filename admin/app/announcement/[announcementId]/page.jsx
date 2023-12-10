@@ -6,7 +6,7 @@ import announcementstyle from "../announcement.module.css";
 import { ModuleViewer } from "./module/[moduleId]/page";
 
 export const metadata = {
-    title: "교육"
+    title: "공고"
 }
 
 export async function getAnnouncement(announcementId) {
@@ -38,14 +38,8 @@ export default async function AnnouncementPage({ params: { announcementId } }) {
             <section className={`${announcementstyle["announcement-list"]} ${announcementstyle["module-list"]}`}>
                 {announcement.modules.map(module => <>
                     <ContentNavigation links={[{
-                        href: `/announcement/${announcementId}/module/${module.id}/edit`,
-                        text: "수정하기"
-                    }, {
-                        href: "/",
-                        text: "제작하기"
-                    }, {
-                        href: "/",
-                        text: "검증하기"
+                        href: `/announcement/${announcementId}/module/${module.id}`,
+                        text: "모듈보기"
                     }]}/>
                     <ModuleViewer announcementId={announcementId} moduleId={module.id} />
                 </>)}
