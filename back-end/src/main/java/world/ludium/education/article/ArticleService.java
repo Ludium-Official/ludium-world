@@ -46,21 +46,12 @@ public class ArticleService {
     }
 
     @Transactional
-    public void createAnnouncementWithModule(Article announcement, List<Module> modules) {
-        announcement.setId(UUID.randomUUID());
-        announcement.setCategory(Category.ANNOUNCEMENT);
+    public void createModule(Article moduleTypeArticle, Module module, UUID announcementId) {
+            moduleService.createModule(module, announcementId);
 
-        articleRepository.save(announcement);
-        for(Module module: modules) {
-            moduleService.createModule(module, announcement.getId());
+            moduleTypeArticle.setId(module.getId());
 
-            Article announcementInModule = Article.Module();
-            announcementInModule.setId(module.getId());
-            announcementInModule.setTitle(module.getTitle());
-            announcementInModule.setUsrId(announcement.getUsrId());
-
-            articleRepository.save(announcementInModule);
-        }
+            articleRepository.save(moduleTypeArticle);
     }
 
     public List<Article> getAllArticlesByUsrId(UUID usrId) {
