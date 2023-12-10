@@ -1,9 +1,11 @@
+import BackButton from "../../../../../components/BackButton";
 import ContentNavigation from "../../../../../components/ContentNavigation";
 import Viewer from "../../../../../components/Viewer";
 import fetchWithRetry from "../../../../../functions/api";
+import ModuleNavigation from "../../../ModuleNavigation";
 import announcementstyle from "../../../announcement.module.css";
 
-export async function getModule(announcementId, moduleId) {
+async function getModule(announcementId, moduleId) {
   const getModuleResponse = await fetchWithRetry(
     `/announcement/${announcementId}/${moduleId}`
   );
@@ -11,35 +13,55 @@ export async function getModule(announcementId, moduleId) {
   return await getModuleResponse.json();
 }
 
-export async function ModuleViewer({announcementId, moduleId}) {
-  const module = await getModule(announcementId, moduleId);
+async function getMake(moduleId) {
+  const getModuleResponse = await fetchWithRetry(`/announcement/${moduleId}`);
 
-  return <>
-    <div className={announcementstyle["module-header-area"]}>
-      <input type="text" defaultValue={module.title} readOnly />
-    </div>
-    <hr />
-    <div style={{ border: "1px solid", minHeight: "626px" }}>
-      <Viewer content={module.content} />
-    </div>
-  </>;
+  return await getModuleResponse.json();
 }
 
-export default async function ModulePage({ params: { announcementId, moduleId } }) {
-  const links = [{
-    href: `/announcement/${announcementId}`,
-    text: "돌아가기"
-  }, {
-    href: `/announcement/${announcementId}/module/${moduleId}/edit`,
-    text: "수정하기",
-  },
-  ];
+export async function ModuleViewer({ announcementId, moduleId }) {
+  const module = await getModule(announcementId, moduleId);
 
   return (
     <>
-      <ContentNavigation links={links}></ContentNavigation>
+      <div className={announcementstyle["module-header-area"]}>
+        <input type="text" defaultValue={module.title} readOnly />
+      </div>
+      <div className={announcementstyle["module-content"]}>
+        <Viewer content={module.content} />
+      </div>
+    </>
+  );
+}
+
+export default async function ModulePage({
+  params: { announcementId, moduleId },
+}) {
+  const module = await getMake(moduleId);
+  const makes = module.modules;
+
+  return (
+    <>
+      <ContentNavigation links={[]}>
+        <BackButton />
+      </ContentNavigation>
       <article className={announcementstyle.wrapper}>
         <ModuleViewer announcementId={announcementId} moduleId={moduleId} />
+        <h2>제작 목록</h2>
+        {makes.map((make) => (
+          <section className={announcementstyle["make-wrapper"]} key={crypto.randomUUID()}>
+            <ModuleNavigation
+              links={[{
+                  href: `/make/${make.id}/edit`,
+                  text: "제작하기",
+                },{
+                  href: `/validate/${make.id}`,
+                  text: "검증하기",
+                }]}
+            />
+            <h3 className={announcementstyle["make-title"]}>{make.title}</h3>
+          </section>
+        ))}
       </article>
     </>
   );
