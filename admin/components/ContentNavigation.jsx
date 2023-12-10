@@ -7,9 +7,11 @@ export default function ContentNavigation({ links, children }) {
             {links.map(link => <li key={`${crypto.randomUUID()}`}>
                 <Link href={link.href}>{link.text}</Link>
             </li>)}
-            {children ? <li>
-                {children}
-            </li> : null}
+            {children ? Array.isArray(children) ? children.map(child => <li>
+                {child}
+            </li>) : <li>
+            {children}
+        </li> : null}
         </ul>
     </nav>
 }
