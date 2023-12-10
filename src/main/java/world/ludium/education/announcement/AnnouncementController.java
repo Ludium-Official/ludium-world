@@ -43,7 +43,6 @@ public class AnnouncementController {
     @PostMapping("")
     public ResponseEntity createAnnouncement(@RequestParam String title,
                                        @RequestParam String content,
-                                       @RequestParam String modules,
                                        @CookieValue(name = "access_token", required = false) String accessToken) {
         JsonNode googleUserApiData = null;
 
@@ -61,25 +60,17 @@ public class AnnouncementController {
 
         LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
-        Article article = new Article();
+        Article article = Article.Announcement();
         article.setTitle(title);
         article.setContent(content);
         article.setUsrId(ludiumUser.getId());
 
         try {
-            List<Module> moduleList = Arrays.stream(modules.split("\\|"))
-                    .map(moduleTitle -> {
-                        Module module = new Module();
-                        module.setTitle(moduleTitle);
-                        return module;
-                    })
-                    .collect(Collectors.toList());
-
-            articleService.createAnnouncementWithModule(article, moduleList);
+            articleService.createArticle(article);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     new HashMap<String, String>() {{
-                        put("message", "수업을 만드는 중에 에러가 발생했습니다.");
+                        put("message", "공고를 만드는 중에 에러가 발생했습니다.");
                         put("debug", e.getMessage());
                     }}
             );
