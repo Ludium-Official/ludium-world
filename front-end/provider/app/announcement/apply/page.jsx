@@ -3,6 +3,10 @@ import fetchWithRetry from "../../../functions/api";
 import ApplyForm from "./ApplyForm";
 import applystyle from "./apply.module.css";
 
+export const metadata = {
+    title: "지원서 작성하기"
+}
+
 async function getApply(providerApply) {
     if(providerApply !== null) return providerApply;
 
