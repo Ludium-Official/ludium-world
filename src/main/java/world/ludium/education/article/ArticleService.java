@@ -81,4 +81,8 @@ public class ArticleService {
     public Article updateArticle(Article article) {
         return articleRepository.save(article);
     }
+
+    public Article getApply() {
+        return articleRepository.findByCategory(Category.APPLY).orElseThrow();
+    }
 }
