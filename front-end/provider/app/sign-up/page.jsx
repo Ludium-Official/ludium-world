@@ -5,5 +5,5 @@ export const metadata = {
 }
 
 export default function SignUpPage() {
-    return <SignUp apply={apply} />
+    return <SignUp />
 }  
