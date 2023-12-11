@@ -76,4 +76,12 @@ public class Article {
 
         return apply;
     }
+
+    public static Article ApplyProvider() {
+        Article apply = new Article();
+
+        apply.setCategory(Category.PROVIDER_APPLY);
+
+        return apply;
+    }
 }

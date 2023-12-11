@@ -85,4 +85,8 @@ public class ArticleService {
     public Article getApply() {
         return articleRepository.findByCategory(Category.APPLY).orElseThrow();
     }
+
+    public Article getProviderApply(UUID usrId) {
+        return articleRepository.findByCategoryAndUsrId(Category.PROVIDER_APPLY, usrId).orElseThrow();
+    }
 }

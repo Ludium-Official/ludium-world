@@ -5,6 +5,7 @@ import announcementstyle from "../announcement.module.css";
 import { ModuleViewer } from "./module/[moduleId]/page";
 import BackButton from "../../../components/BackButton";
 import ModuleNavigation from "../ModuleNavigation";
+import Link from "next/link";
 
 export const metadata = {
   title: "공고",
@@ -27,6 +28,7 @@ export default async function AnnouncementPage({ params: { announcementId } }) {
     <>
       <ContentNavigation links={[]}>
         <BackButton />
+        <Link href="/announcement/apply">지원서 작성하기</Link>
       </ContentNavigation>
       <article className={announcementstyle.wrapper}>
         <h1 className={announcementstyle.title}>{announcement.title}</h1>
@@ -43,7 +45,10 @@ export default async function AnnouncementPage({ params: { announcementId } }) {
               key={crypto.randomUUID()}
             >
               <ModuleNavigation
-                links={[
+                links={[{
+                  href: `/announcement/apply`,
+                  text: "지원서 작성하기",
+                },
                   {
                     href: `/announcement/${announcementId}/module/${module.id}`,
                     text: "모듈보기",

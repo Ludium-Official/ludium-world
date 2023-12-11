@@ -36,7 +36,7 @@ public class ApplyController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     new HashMap<String, String>() {
                         {
-                            put("message", "신청서를 조회하는 중에 에러가 발생하였습니다.");
+                            put("message", "지원서를 조회하는 중에 에러가 발생하였습니다.");
                             put("debug", e.getMessage());
                         }
                     });
@@ -73,7 +73,7 @@ public class ApplyController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     new HashMap<String, String>() {{
-                        put("message", "공고를 만드는 중에 에러가 발생했습니다.");
+                        put("message", "지원서를 만드는 중에 에러가 발생했습니다.");
                         put("debug", e.getMessage());
                     }}
             );
@@ -117,7 +117,136 @@ public class ApplyController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     new HashMap<String, String>() {{
-                        put("message", "공고를 만드는 중에 에러가 발생했습니다.");
+                        put("message", "지원서를 수정하는 중에 에러가 발생했습니다.");
+                        put("debug", e.getMessage());
+                    }}
+            );
+        }
+
+        return ResponseEntity.ok(new HashMap<String, String>() {{
+            put("title", title);
+            put("content", content);
+        }});
+    }
+
+    @GetMapping("/provider")
+    public ResponseEntity getProviderApply(@CookieValue(name = "access_token", required = false) String accessToken) {
+        System.out.println("accessToken : " + accessToken);
+        JsonNode googleUserApiData = null;
+
+        if (accessToken == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new HashMap<String, String>() {
+                        {
+                            put("message", "로그인을 먼저 해주세요");
+                            put("debug", "로그인을 안했음");
+                        }
+                    });
+        }
+
+        try {
+            googleUserApiData = loginService.getUserResource(accessToken, "google");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    new HashMap<String, String>() {
+                        {
+                            put("message", "인증에 실패했습니다.");
+                            put("debug", e.getMessage());
+                        }
+                    });
+        }
+
+        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+
+        try {
+            var apply = articleService.getProviderApply(ludiumUser.getId());
+            return ResponseEntity.ok(apply);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new HashMap<String, String>() {
+                        {
+                            put("message", "지원서를 조회하는 중에 에러가 발생하였습니다.");
+                            put("debug", e.getMessage());
+                        }
+                    });
+        }
+    }
+
+    @PostMapping("/provider")
+    public ResponseEntity createApplyProvider(@RequestParam String title,
+                                      @RequestParam String content,
+                                      @CookieValue(name = "access_token", required = false) String accessToken) {
+        JsonNode googleUserApiData = null;
+
+        try {
+            googleUserApiData = loginService.getUserResource(accessToken, "google");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    new HashMap<String, String>() {
+                        {
+                            put("message", "인증에 실패했습니다.");
+                            put("debug", e.getMessage());
+                        }
+                    });
+        }
+
+        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+
+        Article applyProvider = Article.ApplyProvider();
+        applyProvider.setTitle(title);
+        applyProvider.setContent(content);
+        applyProvider.setUsrId(ludiumUser.getId());
+
+        try {
+            articleService.createArticle(applyProvider);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new HashMap<String, String>() {{
+                        put("message", "지원서를 만드는 중에 에러가 발생했습니다.");
+                        put("debug", e.getMessage());
+                    }}
+            );
+        }
+
+        return ResponseEntity.ok(new HashMap<String, String>() {{
+            put("title", title);
+            put("content", content);
+        }});
+    }
+
+    @PutMapping("/provider/{applyId}")
+    public ResponseEntity createApplyProvider(@PathVariable UUID applyId,
+                                      @RequestParam String title,
+                                      @RequestParam String content,
+                                      @CookieValue(name = "access_token", required = false) String accessToken) {
+        JsonNode googleUserApiData = null;
+
+        try {
+            googleUserApiData = loginService.getUserResource(accessToken, "google");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    new HashMap<String, String>() {
+                        {
+                            put("message", "인증에 실패했습니다.");
+                            put("debug", e.getMessage());
+                        }
+                    });
+        }
+
+        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+
+        Article applyProvider = Article.ApplyProvider();
+        applyProvider.setId(applyId);
+        applyProvider.setTitle(title);
+        applyProvider.setContent(content);
+        applyProvider.setUsrId(ludiumUser.getId());
+
+        try {
+            articleService.updateArticle(applyProvider);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new HashMap<String, String>() {{
+                        put("message", "지원서를 수정하는 중에 에러가 발생했습니다.");
                         put("debug", e.getMessage());
                     }}
             );

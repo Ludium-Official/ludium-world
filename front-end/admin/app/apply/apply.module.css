@@ -3,7 +3,7 @@
     padding: 15px 17px 40px 44px;
     height: fit-content;
     min-height: calc(100vh - 135px);
-  }
+}
 
 .form {
     height: Calc(100vh - 85px);
