@@ -41,7 +41,7 @@ public class OAuth2Controller {
         cookie.setAttribute("SameSite", "None");
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
-        cookie.setMaxAge(3600);
+        cookie.setMaxAge(604800);
         cookie.setAttribute("Domain", env.getProperty("ludium.world.cookie-domain"));
         response.addCookie(cookie);
 
@@ -52,7 +52,7 @@ public class OAuth2Controller {
         cookie1.setAttribute("SameSite", "None");
         cookie1.setHttpOnly(true);
         cookie1.setSecure(true);
-        cookie1.setMaxAge(3600);
+        cookie1.setMaxAge(604800);
         cookie1.setAttribute("Domain", env.getProperty("ludium.world.cookie-domain"));
         response.addCookie(cookie1);
 
@@ -95,7 +95,7 @@ public class OAuth2Controller {
         cookie.setAttribute("SameSite", "None");
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
-        cookie.setMaxAge(3600);
+        cookie.setMaxAge(604800);
         cookie.setAttribute("Domain", env.getProperty("ludium.world.cookie-domain"));
         response.addCookie(cookie);
 
