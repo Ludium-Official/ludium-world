@@ -21,11 +21,11 @@ public class ArticleService {
     }
 
     public List<Article> getAllArticle() {
-        return articleRepository.findAllByCategory(Category.ARTICLE);
+        return articleRepository.findAllByCategoryAndIsVisible(Category.ARTICLE, true);
     }
 
     public Article getArticle(UUID id) {
-        return articleRepository.findById(id).orElseThrow();
+        return articleRepository.findByIdAndIsVisible(id, true).orElseThrow();
     }
 
     public Article createArticle(Article article) {
@@ -55,18 +55,18 @@ public class ArticleService {
     }
 
     public List<Article> getAllArticlesByUsrId(UUID usrId) {
-        return articleRepository.findAllByUsrId(usrId);
+        return articleRepository.findAllByUsrIdAndIsVisible(usrId, true);
     }
 
-    public List<Article> getAllMission() { return articleRepository.findAllByCategory(Category.MISSION); }
+    public List<Article> getAllMission() { return articleRepository.findAllByCategoryAndIsVisible(Category.MISSION, true); }
 
-    public List<Article> getAllPost() { return articleRepository.findAllByCategory(Category.FREE_BOARD); }
+    public List<Article> getAllPost() { return articleRepository.findAllByCategoryAndIsVisible(Category.FREE_BOARD, true); }
 
-    public List<Article> getAllCourse() { return articleRepository.findAllByCategory(Category.COURSE); }
+    public List<Article> getAllCourse() { return articleRepository.findAllByCategoryAndIsVisible(Category.COURSE, true); }
 
-    public List<Article> getAllAnnouncement() { return articleRepository.findAllByCategory(Category.ANNOUNCEMENT); }
+    public List<Article> getAllAnnouncement() { return articleRepository.findAllByCategoryAndIsVisible(Category.ANNOUNCEMENT, true); }
 
-    public List<Article> getAllMake() { return articleRepository.findAllByCategory(Category.MAKE); }
+    public List<Article> getAllMake() { return articleRepository.findAllByCategoryAndIsVisible(Category.MAKE, true); }
 
     public List<Article> getAllMissionsAndArticles() { return articleRepository.findAllByCategoryIn(Arrays.asList(Category.MISSION, Category.ARTICLE)); }
 

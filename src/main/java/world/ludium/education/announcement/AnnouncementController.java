@@ -85,7 +85,7 @@ public class AnnouncementController {
 
     @GetMapping("/{announcementId}")
     public ResponseEntity getAnnouncement(@PathVariable UUID announcementId) {
-        CourseDTO courseDTO = new CourseDTO();
+        var courseDTO = new CourseDTO();
         try {
             Article announce = articleService.getArticle(announcementId);
             List<Module> modules = moduleService.getAllModulesByCourse(announcementId);
@@ -95,7 +95,7 @@ public class AnnouncementController {
             courseDTO.setContent(announce.getContent());
             courseDTO.setModules(modules);
         } catch (Exception e) {
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new HashMap<>() {{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new HashMap<>() {{
                 put("message", "수업을 불러오는 중에 에러가 발생했습니다.");
                 put("debug", e.getMessage());
             }});
@@ -228,6 +228,27 @@ public class AnnouncementController {
         return ResponseEntity.ok(new HashMap<String, String>() {{
             put("title", title);
             put("content", "");
+        }});
+    }
+
+    @DeleteMapping("{announcementId}")
+    public ResponseEntity disableAnnouncement(@PathVariable UUID announcementId) {
+        var disabledAnnouncemen = articleService.getArticle(announcementId);
+
+        disabledAnnouncemen.setVisible(false);
+        try {
+            articleService.updateArticle(disabledAnnouncemen);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new HashMap<String, String>() {{
+                        put("message", "공고를 비활성화하는 중에 에러가 발생했습니다.");
+                        put("debug", e.getMessage());
+                    }});
+        }
+
+        return ResponseEntity.ok(new HashMap<>() {{
+            put("id", announcementId);
         }});
     }
 }

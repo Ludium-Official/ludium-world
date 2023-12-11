@@ -15,6 +15,7 @@ public class Article {
     private UUID usrId;
     @Enumerated(EnumType.STRING)
     private Category category;
+    private boolean isVisible;
 
     public UUID getId() {
         return id;
@@ -52,12 +53,22 @@ public class Article {
         this.category = category;
     }
 
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+    }
+
     public static Article Module() {
         Article module = new Article();
 
         module.setContent("");
         module.setTitle("");
         module.setCategory(Category.MODULE);
+        module.setVisible(true);
+
         return module;
     }
 
@@ -65,6 +76,7 @@ public class Article {
         Article announcement = new Article();
 
         announcement.setCategory(Category.ANNOUNCEMENT);
+        announcement.setVisible(true);
 
         return announcement;
     }
@@ -73,15 +85,18 @@ public class Article {
         Article apply = new Article();
 
         apply.setCategory(Category.APPLY);
+        apply.setVisible(true);
 
         return apply;
     }
 
     public static Article ApplyProvider() {
-        Article apply = new Article();
+        Article applyProvider = new Article();
 
-        apply.setCategory(Category.PROVIDER_APPLY);
+        applyProvider.setCategory(Category.PROVIDER_APPLY);
+        applyProvider.setVisible(true);
 
-        return apply;
+
+        return applyProvider;
     }
 }
