@@ -7,5 +7,6 @@ public enum Category {
     COURSE,
     ANNOUNCEMENT,
     MAKE,
-    MODULE
+    MODULE,
+    APPLY
 }

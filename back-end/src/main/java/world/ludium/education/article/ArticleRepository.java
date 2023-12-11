@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface ArticleRepository extends JpaRepository<Article, UUID> {
@@ -27,4 +28,6 @@ public interface ArticleRepository extends JpaRepository<Article, UUID> {
              WHERE a.category IN ('MISSION', 'ARTICLE')
             """)
     List<ModuleReferenceArticleDTO> getArtWithStatusAndFilter(@Param("mdlId") UUID mdlId);
+
+    Optional<Article> findByCategory(Category category);
 }

@@ -68,4 +68,12 @@ public class Article {
 
         return announcement;
     }
+
+    public static Article Apply() {
+        Article apply = new Article();
+
+        apply.setCategory(Category.APPLY);
+
+        return apply;
+    }
 }
