@@ -24,15 +24,20 @@ async function getApply(providerApply) {
 async function getProviderApply() {
     const cookieStore = cookies();
 
-    const applyResponse = await fetchWithRetry("/apply/provider", {
+    if(cookieStore.get("access_token") === undefined) throw new Error(401);
+
+    const providerApplyResponse = await fetchWithRetry("/apply/provider", {
         headers: {
             cookie: cookieStore,
           },
     });
 
-    if(!applyResponse.ok) return null;
 
-    return await applyResponse.json();
+    if(!providerApplyResponse.ok) 
+        if(providerApplyResponse.status === 403) throw new Error(403);
+        else return null;
+
+    return await providerApplyResponse.json();
 }
 
 export default async function ApplyPage() {
