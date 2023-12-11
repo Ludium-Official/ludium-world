@@ -6,7 +6,7 @@ import fetchWithRetry from "../../functions/api";
 import { useRouter } from "next/navigation";
 import signupstyle from "./signup.module.css";
 
-export default function SignUp() {
+export default function SignUp({apply}) {
     const router = useRouter();
     const editorRef = useRef(null);
     const handleSubmit = async (e) => {
@@ -45,7 +45,7 @@ export default function SignUp() {
                 <label className={signupstyle["form-label"]}>자기소개</label>
             </div>
             <div className={signupstyle["form-content"]}>
-                <Editor editorRef={editorRef} height="100%" />
+                <Editor editorRef={editorRef} height="100%" content={apply===null? "": apply.content}/>
             </div>
         </form>
     )
