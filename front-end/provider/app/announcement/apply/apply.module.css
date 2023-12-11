@@ -38,3 +38,7 @@
 .content-area {
   height: calc(100vh - 135px);
 }
+
+.error{
+  height: calc(100vh - 55px);
+}
