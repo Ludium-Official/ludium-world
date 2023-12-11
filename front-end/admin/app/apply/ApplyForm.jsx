@@ -24,7 +24,7 @@ export default function ApplyForm({ apply }) {
                 body: applyForm
             });
 
-            if(createApplyResponse.ok) alert("신청서 작성이 완료되었습니다.");
+            if(createApplyResponse.ok) alert("지원서 작성이 완료되었습니다.");
             router.refresh();
         } else {
             const updateApplyResponse = await fetchWithRetry(`/apply/${id}`, {
@@ -32,7 +32,7 @@ export default function ApplyForm({ apply }) {
                 body: applyForm
             })
 
-            if(updateApplyResponse.ok) alert("신청서 변경이 완료되었습니다.");
+            if(updateApplyResponse.ok) alert("지원서 변경이 완료되었습니다.");
             router.refresh();
         }
     }
@@ -41,7 +41,7 @@ export default function ApplyForm({ apply }) {
         <div className={applystyle["form-header"]}>
             <button >저장하기</button>
         </div>
-        <input type="hidden" name="title" defaultValue="신청서" />
+        <input type="hidden" name="title" defaultValue="지원서" />
         <Editor editorRef={editorRef} height="100%" content={content} />
     </form>
 }

@@ -26,7 +26,7 @@ async function getNavigationLinks() {
     }, {
         id: crypto.randomUUID(),
         dir: "/apply",
-        text: "신청서 관리"
+        text: "지원서 관리"
     }, 
     // , {
     //     id: crypto.randomUUID(),
