@@ -30,4 +30,6 @@ public interface ArticleRepository extends JpaRepository<Article, UUID> {
     List<ModuleReferenceArticleDTO> getArtWithStatusAndFilter(@Param("mdlId") UUID mdlId);
 
     Optional<Article> findByCategory(Category category);
+
+    Optional<Article> findByCategoryAndUsrId(Category category, UUID usrId);
 }

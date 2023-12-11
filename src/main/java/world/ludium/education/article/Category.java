@@ -8,5 +8,6 @@ public enum Category {
     ANNOUNCEMENT,
     MAKE,
     MODULE,
-    APPLY
+    APPLY,
+    PROVIDER_APPLY,
 }
