@@ -1,0 +1,17 @@
+.wrapper {
+    margin-left: 360px;
+    padding: 15px 17px 40px 44px;
+    height: fit-content;
+    min-height: calc(100vh - 135px);
+  }
+
+.form {
+    height: Calc(100vh - 85px);
+}
+
+.form-header {
+    margin: 0;
+    padding: 15px 0;
+    display: flex;
+    justify-content: flex-end;
+}
