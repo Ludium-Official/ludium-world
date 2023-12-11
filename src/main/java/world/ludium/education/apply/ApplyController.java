@@ -131,7 +131,6 @@ public class ApplyController {
 
     @GetMapping("/provider")
     public ResponseEntity getProviderApply(@CookieValue(name = "access_token", required = false) String accessToken) {
-        System.out.println("accessToken : " + accessToken);
         JsonNode googleUserApiData = null;
 
         if (accessToken == null) {
@@ -156,7 +155,17 @@ public class ApplyController {
                     });
         }
 
-        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        var ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+
+        if (ludiumUser == null) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                    new HashMap<String, String>() {
+                        {
+                            put("message", "회원정보를 조회하는 중에 에러가 발생하였습니다.");
+                            put("debug", "403");
+                        }
+                    });
+        }
 
         try {
             var apply = articleService.getProviderApply(ludiumUser.getId());
@@ -174,8 +183,8 @@ public class ApplyController {
 
     @PostMapping("/provider")
     public ResponseEntity createApplyProvider(@RequestParam String title,
-                                      @RequestParam String content,
-                                      @CookieValue(name = "access_token", required = false) String accessToken) {
+                                              @RequestParam String content,
+                                              @CookieValue(name = "access_token", required = false) String accessToken) {
         JsonNode googleUserApiData = null;
 
         try {
@@ -216,9 +225,9 @@ public class ApplyController {
 
     @PutMapping("/provider/{applyId}")
     public ResponseEntity createApplyProvider(@PathVariable UUID applyId,
-                                      @RequestParam String title,
-                                      @RequestParam String content,
-                                      @CookieValue(name = "access_token", required = false) String accessToken) {
+                                              @RequestParam String title,
+                                              @RequestParam String content,
+                                              @CookieValue(name = "access_token", required = false) String accessToken) {
         JsonNode googleUserApiData = null;
 
         try {

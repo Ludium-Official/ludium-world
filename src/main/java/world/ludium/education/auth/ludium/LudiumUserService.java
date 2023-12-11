@@ -19,7 +19,7 @@ public class LudiumUserService {
     }
 
     public LudiumUser getUserByGglId(BigInteger ggl_id) {
-        return ludiumUserRepository.findByGglId(ggl_id);
+        return ludiumUserRepository.findByGglId(ggl_id).orElse(null);
     }
 
     @Transactional
