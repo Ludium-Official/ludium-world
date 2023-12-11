@@ -7,7 +7,7 @@ export default function ContentNavigation({ links, children }) {
             {links.map(link => <li key={`${crypto.randomUUID()}`}>
                 <Link href={link.href}>{link.text}</Link>
             </li>)}
-            {children ? Array.isArray(children) ? children.map(child => <li>
+            {children ? Array.isArray(children) ? children.map(child => <li key={`${crypto.randomUUID()}`}>
                 {child}
             </li>) : <li>
             {children}
