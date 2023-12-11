@@ -1,8 +1,9 @@
+import dynamic from "next/dynamic";
 import ContentNavigation from "../../../../../components/ContentNavigation";
-import Viewer from "../../../../../components/Viewer";
 import fetchWithRetry from "../../../../../functions/api";
 import announcementstyle from "../../../announcement.module.css";
 import MakeCreateButton from "./MakeCreateButton";
+const Viewer = dynamic(()=> import("../../../../../components/Viewer"), {ssr: false});
 
 async function getModule(announcementId, moduleId) {
   const getModuleResponse = await fetchWithRetry(
