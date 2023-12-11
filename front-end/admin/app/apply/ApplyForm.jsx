@@ -4,9 +4,11 @@ import { useRef } from "react";
 import Editor from "../../components/Editor";
 import applystyle from "./apply.module.css";
 import fetchWithRetry from "../../functions/api";
+import { useRouter } from "next/navigation";
 
 export default function ApplyForm({ apply }) {
     const {id, content} = apply === null ? {id: null, content: "" } : apply;
+    const router = useRouter();
 
     const editorRef = useRef();
     const handleApplyForm = async (e) => {
@@ -17,15 +19,21 @@ export default function ApplyForm({ apply }) {
         applyForm.append("content", editorInstance.getMarkdown());
 
         if(id === null) {
-            const createModuleWithArticle = await fetchWithRetry(`/apply`, {
+            const createApplyResponse = await fetchWithRetry(`/apply`, {
                 method: "POST",
                 body: applyForm
             });
+
+            if(createApplyResponse.ok) alert("신청서 작성이 완료되었습니다.");
+            router.refresh();
         } else {
-            await fetchWithRetry(`/apply/${id}`, {
+            const updateApplyResponse = await fetchWithRetry(`/apply/${id}`, {
                 method: "PUT",
                 body: applyForm
             })
+
+            if(updateApplyResponse.ok) alert("신청서 변경이 완료되었습니다.");
+            router.refresh();
         }
     }
 
