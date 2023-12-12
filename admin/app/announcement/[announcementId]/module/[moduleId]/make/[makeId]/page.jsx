@@ -16,7 +16,6 @@ async function getMake(moduleId, makeId) {
 
 export async function ModuleViewer({ moduleId, makeId }) {
     const make = await getMake(moduleId, makeId);
-    console.log(make)
 
     return <>
         <div className={announcementstyle["module-header-area"]}>
