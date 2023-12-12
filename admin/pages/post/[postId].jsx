@@ -1,6 +1,8 @@
 import { useRef } from "react";
-import Viewer from "../../components/Viewer";
 import fetchWithRetry from "../../functions/api";
+import dynamic from "next/dynamic";
+
+const Viewer = dynamic(() => import("../../components/Viewer"), {ssr: false});
 
 export async function getServerSideProps(context) {
     const { postId } = context.query;

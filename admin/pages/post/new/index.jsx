@@ -1,7 +1,9 @@
 import { useRouter } from "next/router";
 import { useRef } from "react";
-import Editor from "../../../components/Editor";
 import fetchWithRetry from "../../../functions/api";
+import dynamic from "next/dynamic";
+
+const Editor = dynamic(() => import("../../../components/Editor"), { ssr: false });
 
 export default function NewPost() {
   const router = useRouter();
