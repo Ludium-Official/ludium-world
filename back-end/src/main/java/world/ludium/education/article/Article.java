@@ -16,6 +16,7 @@ public class Article {
     @Enumerated(EnumType.STRING)
     private Category category;
     private boolean isVisible;
+    private int orderNo;
 
     public UUID getId() {
         return id;
@@ -61,6 +62,14 @@ public class Article {
         isVisible = visible;
     }
 
+    public int getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(int orderNo) {
+        this.orderNo = orderNo;
+    }
+
     public static Article Module() {
         Article module = new Article();
 
@@ -68,6 +77,7 @@ public class Article {
         module.setTitle("");
         module.setCategory(Category.MODULE);
         module.setVisible(true);
+        module.setOrderNo(0);
 
         return module;
     }
@@ -77,6 +87,7 @@ public class Article {
 
         announcement.setCategory(Category.ANNOUNCEMENT);
         announcement.setVisible(true);
+        announcement.setOrderNo(0);
 
         return announcement;
     }
@@ -86,6 +97,7 @@ public class Article {
 
         apply.setCategory(Category.APPLY);
         apply.setVisible(true);
+        apply.setOrderNo(0);
 
         return apply;
     }
@@ -95,7 +107,7 @@ public class Article {
 
         applyProvider.setCategory(Category.PROVIDER_APPLY);
         applyProvider.setVisible(true);
-
+        applyProvider.setOrderNo(0);
 
         return applyProvider;
     }

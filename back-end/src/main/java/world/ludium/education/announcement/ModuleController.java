@@ -3,6 +3,7 @@ package world.ludium.education.announcement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import world.ludium.education.article.ArticleService;
 import world.ludium.education.course.Module;
 import world.ludium.education.course.ModuleDTO;
 import world.ludium.education.course.ModuleReference;
@@ -17,9 +18,12 @@ import java.util.UUID;
 public class ModuleController {
 
     private ModuleService moduleService;
+    private ArticleService articleService;
 
-    public ModuleController(ModuleService moduleService) {
+    public ModuleController(ModuleService moduleService,
+                            ArticleService articleService) {
         this.moduleService = moduleService;
+        this.articleService = articleService;
     }
 
     @GetMapping("/{moduleId}")
@@ -64,5 +68,47 @@ public class ModuleController {
         }
 
         return ResponseEntity.ok(module);
+    }
+
+    @DeleteMapping("/{moduleId}")
+    public ResponseEntity deleteModule(@PathVariable UUID moduleId) {
+        var disabledModule = articleService.getArticle(moduleId);
+
+        disabledModule.setVisible(false);
+        try {
+            articleService.updateArticle(disabledModule);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new HashMap<>() {{
+                        put("message", "모듈을 삭제하는 중에 에러가 발생했습니다.");
+                        put("debug", e.getMessage());
+                    }});
+        }
+
+        return ResponseEntity.ok(new HashMap<>() {{
+            put("id", moduleId);
+        }});
+    }
+
+    @PutMapping("/{moduleId}/order")
+    public ResponseEntity updateModuleOrder(@PathVariable UUID moduleId,
+                                            @RequestParam int orderNo) {
+        var module = articleService.getArticle(moduleId);
+
+        module.setOrderNo(orderNo);
+
+        try {
+            articleService.updateArticle(module);
+        } catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new HashMap<>() {{
+                        put("message", "모듈을 순서를 변경하는 중에 에러가 발생했습니다.");
+                        put("debug", e.getMessage());
+                    }});
+        }
+
+        return ResponseEntity.ok(new HashMap<>() {{
+            put("id", moduleId);
+        }});
     }
 }

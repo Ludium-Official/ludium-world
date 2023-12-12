@@ -14,10 +14,7 @@ import world.ludium.education.course.*;
 import world.ludium.education.course.Module;
 
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -25,9 +22,9 @@ import java.util.stream.Collectors;
 public class AnnouncementController {
     private LoginService loginService;
 
-    private ArticleService articleService;
-    private LudiumUserService ludiumUserService;
-    private ModuleService moduleService;
+    private final ArticleService articleService;
+    private final LudiumUserService ludiumUserService;
+    private final ModuleService moduleService;
 
     public AnnouncementController(LoginService loginService, ArticleService articleService, LudiumUserService ludiumUserService, ModuleService moduleService) {
         this.loginService = loginService;
@@ -43,8 +40,8 @@ public class AnnouncementController {
 
     @PostMapping("")
     public ResponseEntity createAnnouncement(@RequestParam String title,
-                                       @RequestParam String content,
-                                       @CookieValue(name = "access_token", required = false) String accessToken) {
+                                             @RequestParam String content,
+                                             @CookieValue(name = "access_token", required = false) String accessToken) {
         JsonNode googleUserApiData = null;
 
         try {
@@ -88,7 +85,20 @@ public class AnnouncementController {
         var courseDTO = new CourseDTO();
         try {
             Article announce = articleService.getArticle(announcementId);
-            List<Module> modules = moduleService.getAllModulesByCourse(announcementId);
+            var modules = moduleService.getAllModulesByCourse(announcementId)
+                    .stream()
+                    .map(module -> {
+                        UUID moduleId = module.getId();
+
+                        try {
+                            return articleService.getArticle(moduleId);
+                        } catch (Exception e) {
+                            return null;
+                        }
+                    })
+                    .filter(module -> module != null)
+                    .sorted(Comparator.comparingInt(Article::getOrderNo))
+                    .collect(Collectors.toList());
 
             courseDTO.setId(announce.getId());
             courseDTO.setTitle(announce.getTitle());
@@ -144,9 +154,9 @@ public class AnnouncementController {
 
     @PutMapping("/{announcementId}")
     public ResponseEntity updateAnnouncement(@PathVariable UUID announcementId,
-                                       @RequestParam String title,
-                                       @RequestParam String content,
-                                       @CookieValue(name = "access_token", required = false) String accessToken) {
+                                             @RequestParam String title,
+                                             @RequestParam String content,
+                                             @CookieValue(name = "access_token", required = false) String accessToken) {
         JsonNode googleUserApiData = null;
 
         try {

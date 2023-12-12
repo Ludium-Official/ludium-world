@@ -325,3 +325,85 @@
 .form-list-add-button-area {
   justify-content: flex-end;
 }
+
+.navigation-wrapper {
+  margin-left: 360px;
+  height: 50px;
+  padding: 15px 15px 15px 44px;
+}
+
+.navigation-list {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.navigation-list>li {
+  margin: 0 10px;
+  border: solid 1px #6750a4;
+  background-color: #6750a4;
+  list-style-type: none;
+  border-radius: 100px;
+  height: 38.4px;
+}
+
+.navigation-list>li>a, .navigation-list>li>button {
+  all: unset;
+  display: flex;
+  padding: 7.2px 24px;
+  text-decoration: none;
+  color: #fff;
+  gap: 8px;
+  flex: 1 0 0;
+  border: none;
+  background-color: transparent;
+  font-size: 1em;
+  appearance: none;
+  cursor: pointer;
+}
+
+.navigation-list>li:hover {
+  background-color: #7965af;
+}
+
+.navigation-list>li:active {
+  background-color: #f7f2fa;
+}
+
+.navigation-list>li>a:active, .navigation-list>li>button:active {
+  color: #8b78b9;
+}
+
+.make-wrapper {
+  background-color: #f7f2fa;
+  border: 1px solid #f2dcff;
+  border-radius: 12px;
+  padding: 0 15px 30px 30px;
+  margin-bottom: 15px;
+}
+
+.module {
+  background-color: #f7f2fa;
+  border: 1px solid #f2dcff;
+  border-radius: 12px;
+  padding: 0 15px 30px 30px;
+}
+
+.module-content {
+  border: 1px solid #e6e0e9;
+  min-height: 626px;
+  margin: 15px 0;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 15px;
+}
+
+.make-title {
+  background-color: #e6e0e9;
+  margin: 0;
+  padding: 1em 1em;
+  border-radius: 12px;
+  margin-right: 15px;
+}

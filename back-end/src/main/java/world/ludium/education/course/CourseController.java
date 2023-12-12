@@ -51,7 +51,7 @@ public class CourseController {
             courseDTO.setId(course.getId());
             courseDTO.setTitle(course.getTitle());
             courseDTO.setContent(course.getContent());
-            courseDTO.setModules(modules);
+            courseDTO.setModules(null);
         } catch (Exception e) {
             ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new HashMap<>() {{
                 put("message", "수업을 불러오는 중에 에러가 발생했습니다.");
@@ -166,7 +166,6 @@ public class CourseController {
     @DeleteMapping("/{courseId}")
     public ResponseEntity deleteCourse(@PathVariable UUID courseId) {
         try {
-            moduleService.deleteModule(courseId);
             articleService.deleteArticle(courseId);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
