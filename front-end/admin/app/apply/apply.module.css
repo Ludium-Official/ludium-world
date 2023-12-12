@@ -15,3 +15,49 @@
     display: flex;
     justify-content: flex-end;
 }
+
+.form-button {
+    margin: 0 10px;
+    border: solid 1px #6750a4;
+    background-color: #6750a4;
+    list-style-type: none;
+    border-radius: 100px;
+    height: 40px;
+    padding: 0 24px;
+    color: #fff;
+    font-size: 16px;
+}
+
+.form-button:hover {
+    background-color: #7965af;
+}
+
+.form-button:active {
+    background-color: #f7f2fa;
+    color: #8b78b9;
+}
+
+.title {
+    display: block;
+    font-size: 2em;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+    background-color: #e6e0e9;
+    height: 45px;
+    border-bottom: solid 1px;
+    border-radius: 4px 4px 0 0;
+    margin: 20px 15px;
+    line-height: 45px;
+}
+
+.content-area {
+    margin: 15px;
+    padding: 0;
+    height: calc(100vh - 155px);
+    min-height: 500px;
+    border: 1px solid;
+    overflow-y: auto;
+  }

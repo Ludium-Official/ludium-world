@@ -86,7 +86,15 @@ public class ArticleService {
         return articleRepository.findByCategory(Category.APPLY).orElseThrow();
     }
 
-    public Article getProviderApply(UUID usrId) {
+    public Article getProviderApplyByUsrId(UUID usrId) {
         return articleRepository.findByCategoryAndUsrId(Category.PROVIDER_APPLY, usrId).orElseThrow();
+    }
+
+    public List<Article> getAllProviderApply() {
+        return articleRepository.findAllByCategoryAndIsVisible(Category.PROVIDER_APPLY, true);
+    }
+
+    public Article getProviderApply(UUID providerApplyId) {
+        return articleRepository.findByIdAndIsVisible(providerApplyId, true).orElseThrow();
     }
 }
