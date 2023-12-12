@@ -66,9 +66,4 @@ public class ModuleService {
     public Module updateModule(Module module) {
         return moduleRepository.save(module);
     }
-
-    public void deleteModule(UUID courseId) {
-        moduleReferenceRepository.deleteAll();
-        moduleRepository.deleteAll();
-    }
 }

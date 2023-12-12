@@ -1,5 +1,7 @@
 package world.ludium.education.course;
 
+import world.ludium.education.article.Article;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -7,7 +9,7 @@ public class CourseDTO {
     private UUID id;
     private String title;
     private String content;
-    private List<Module> modules;
+    private List<Article> modules;
 
     public CourseDTO() {
     }
@@ -36,11 +38,11 @@ public class CourseDTO {
         this.content = content;
     }
 
-    public List<Module> getModules() {
+    public List<Article> getModules() {
         return modules;
     }
 
-    public void setModules(List<Module> modules) {
+    public void setModules(List<Article> modules) {
         this.modules = modules;
     }
 }
