@@ -13,6 +13,7 @@ import world.ludium.education.auth.ludium.LudiumUserService;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/apply", produces = "application/json")
@@ -168,7 +169,7 @@ public class ApplyController {
         }
 
         try {
-            var apply = articleService.getProviderApply(ludiumUser.getId());
+            var apply = articleService.getProviderApplyByUsrId(ludiumUser.getId());
             return ResponseEntity.ok(apply);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
@@ -265,5 +266,48 @@ public class ApplyController {
             put("title", title);
             put("content", content);
         }});
+    }
+
+    @GetMapping("/provider/all")
+    public ResponseEntity getProviderApplyList() {
+        var providerDTOList = articleService.getAllProviderApply().stream().map(providerApply -> {
+            var usrId = providerApply.getUsrId();
+            var ludiumUser = ludiumUserService.getUserById(usrId);
+            var ludiumProviderDTO = new LudiumProviderDTO();
+
+            ludiumProviderDTO.setId(ludiumUser.getId());
+            ludiumProviderDTO.setNick(ludiumUser.getNick());
+            ludiumProviderDTO.setContent(providerApply.getContent());
+            ludiumProviderDTO.setApplyId(providerApply.getId());
+
+            return ludiumProviderDTO;
+        }).collect(Collectors.toList());
+
+        return ResponseEntity.ok(providerDTOList);
+    }
+
+    @GetMapping("/provider/{providerApplyId}")
+    public ResponseEntity getProviderApply(@PathVariable UUID providerApplyId) {
+        try {
+            var providerApply = articleService.getProviderApply(providerApplyId);
+            var usrId = providerApply.getUsrId();
+            var ludiumUser = ludiumUserService.getUserById(usrId);
+            var ludiumProviderDTO = new LudiumProviderDTO();
+
+            ludiumProviderDTO.setId(ludiumUser.getId());
+            ludiumProviderDTO.setNick(ludiumUser.getNick());
+            ludiumProviderDTO.setContent(providerApply.getContent());
+            ludiumProviderDTO.setApplyId(providerApply.getId());
+
+            return ResponseEntity.ok(ludiumProviderDTO);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(new HashMap<>() {{
+                        put("message", "지원서를 조회하는 중에 에러가 발생했습니다.");
+                        put("debug", e.getMessage());
+                      }}
+                    );
+        }
     }
 }
