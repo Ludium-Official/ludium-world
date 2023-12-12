@@ -6,7 +6,10 @@ import DeleteButton from "../../../components/DeleteButton";
 import fetchWithRetry from "../../../functions/api";
 import announcementstyle from "../announcement.module.css";
 import ModuleCreateButton from "./ModuleCreateButton";
+import ModuleNavigation from "./ModuleNavigation";
 import { ModuleViewer } from "./module/[moduleId]/page";
+import ModuleDeleteButton from "./ModuleDeleteButton";
+import ModuleOrderNoForm from "./ModuleOrderNoForm";
 
 const Viewer = dynamic(() => import("../../../components/Viewer"), {
   ssr: false,
@@ -48,14 +51,18 @@ export default async function AnnouncementPage({ params: { announcementId } }) {
         >
           {announcement.modules.map((module) => (
             <div key={crypto.randomUUID()}>
-              <ContentNavigation
-                links={[
-                  {
-                    href: `/announcement/${announcementId}/module/${module.id}`,
-                    text: "모듈보기",
-                  },
-                ]}
-              />
+              <ModuleOrderNoForm moduleId={module.id} orderNo={module.orderNo} />
+              <ModuleNavigation links={[]}>
+                <ModuleDeleteButton
+                  announcementId={announcementId}
+                  moduleId={module.id}
+                />
+                <Link
+                  href={`/announcement/${announcementId}/module/${module.id}`}
+                >
+                  모듈보기
+                </Link>
+              </ModuleNavigation>
               <ModuleViewer
                 announcementId={announcementId}
                 moduleId={module.id}
