@@ -95,4 +95,8 @@ public class ArticleService {
     public Article getProviderApply(UUID providerApplyId) {
         return articleRepository.findByIdAndIsVisible(providerApplyId, true).orElseThrow();
     }
+
+    public List<Article> getAllModule() {
+        return articleRepository.findAllByCategoryAndIsVisible(Category.MODULE, true);
+    }
 }

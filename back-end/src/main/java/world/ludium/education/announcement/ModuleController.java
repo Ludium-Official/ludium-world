@@ -26,6 +26,11 @@ public class ModuleController {
         this.articleService = articleService;
     }
 
+    @GetMapping("")
+    public ResponseEntity getModuleList() {
+        return ResponseEntity.ok(articleService.getAllModule());
+    }
+
     @GetMapping("/{moduleId}")
     public ResponseEntity getModule(@PathVariable UUID moduleId) {
         ModuleDTO moduleDTO = new ModuleDTO();
