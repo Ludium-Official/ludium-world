@@ -70,6 +70,8 @@ public class ArticleService {
 
     public List<Article> getAllMissionsAndArticles() { return articleRepository.findAllByCategoryIn(Arrays.asList(Category.MISSION, Category.ARTICLE)); }
 
+    public List<Article> getAllApply() { return articleRepository.findAllByCategoryAndIsVisible(Category.APPLY, true); }
+
     public List<ModuleReferenceArticleDTO> getAllMissionsAndArticles(UUID moduleId) {
         return articleRepository.getArtWithStatusAndFilter(moduleId);
     }
@@ -80,10 +82,6 @@ public class ArticleService {
 
     public Article updateArticle(Article article) {
         return articleRepository.save(article);
-    }
-
-    public Article getApply() {
-        return articleRepository.findByCategory(Category.APPLY).orElseThrow();
     }
 
     public Article getProviderApplyByUsrId(UUID usrId) {

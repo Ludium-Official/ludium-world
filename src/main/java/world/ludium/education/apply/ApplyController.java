@@ -29,9 +29,25 @@ public class ApplyController {
     }
 
     @GetMapping("")
-    public ResponseEntity getApply() {
+    public ResponseEntity getApplyList() {
         try {
-            var apply = articleService.getApply();
+            var applyList = articleService.getAllApply();
+            return ResponseEntity.ok(applyList);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new HashMap<String, String>() {
+                        {
+                            put("message", "지원서 목록을 조회하는 중에 에러가 발생하였습니다.");
+                            put("debug", e.getMessage());
+                        }
+                    });
+        }
+    }
+
+    @GetMapping("/{applyId}")
+    public ResponseEntity getApply(@PathVariable UUID applyId) {
+        try {
+            var apply = articleService.getArticle(applyId);
             return ResponseEntity.ok(apply);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
