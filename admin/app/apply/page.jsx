@@ -1,19 +1,34 @@
-import fetchWithRetry from "../../functions/api";
-import ApplyForm from "./ApplyForm";
-import applystyle from "./apply.module.css";
+import Link from "next/link";
+import fetchWithRetry from "../../functions/api"
+import applystyle from "./apply.module.css"
+import ContentNavigation from "../../components/ContentNavigation"
 
-async function getApply() {
-    const applyResponse = await fetchWithRetry("/apply");
+async function getApplyList() {
+    const getApplyListResponse = await fetchWithRetry("/apply");
 
-    if(!applyResponse.ok) return null;
+    if (!getApplyListResponse.ok) return [];
 
-    return await applyResponse.json();
+    return await getApplyListResponse.json();
 }
 
-export default async function ApplyPage() {
-    const apply = await getApply();
+export default async function ApplyListPage() {
+    const applies = await getApplyList();
+    const links = [{
+        href: "/apply/new",
+        text: "지원서 만들기"
+    }]
 
-    return <article className={applystyle.wrapper}>
-        <ApplyForm apply={apply} />
-    </article>
+    return <>
+        <div className={applystyle["content-navigation"]}>
+            <ContentNavigation links={links} />
+        </div>
+        <article className={applystyle.wrapper}>
+            <section className={applystyle["apply-list"]}>
+            {applies.map(({ id, title }) => <h2 className={applystyle["apply-list-item"]} key={crypto.randomUUID()}>
+                <Link href={`/apply/${id}`}>{title}</Link>
+            </h2>)}
+
+            </section>
+        </article>
+    </>;
 }
