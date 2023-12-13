@@ -4,6 +4,7 @@ import BackButton from "../../../components/BackButton";
 import ContentNavigation from "../../../components/ContentNavigation";
 import fetchWithRetry from "../../../functions/api";
 import applystyle from "../apply.module.css";
+import ApplyModule from "./ApplyModule";
 
 const Viewer = dynamic(() => import("../../../components/Viewer"), { ssr: false });
 
@@ -23,15 +24,10 @@ async function getModuleList() {
     return await moduleListResponse.json();
 }
 
-async function ModuleList() {
-    const moduleList = await getModuleList();
+async function ModuleList({ applyId }) {
+    const modules = await getModuleList();
 
-    return <>
-        <select name="module" id="module">
-            {moduleList.map(({ id, title }) => <option value={`${id}`}>{title}</option>)}
-        </select>
-        <button>적용하기</button>
-    </>
+    return <ApplyModule applyId={applyId} modules={modules} />
 }
 
 export default async function ApplyPage({ params: { applyId } }) {
@@ -43,10 +39,7 @@ export default async function ApplyPage({ params: { applyId } }) {
             <Link href={`/apply/${applyId}/edit`}>수정하기</Link>
         </ContentNavigation>
         <article className={applystyle.wrapper}>
-            <ModuleList>
-
-            </ModuleList>
-
+            <ModuleList applyId={applyId} />
             <h1 className={applystyle.title}>{apply.title}</h1>
             <section className={applystyle["content-area"]}>
                 <Viewer content={apply.content} height="100%" />
