@@ -103,7 +103,7 @@ public class ApplyController {
     }
 
     @PutMapping("{applyId}")
-    public ResponseEntity createApply(@PathVariable UUID applyId,
+    public ResponseEntity updateApply(@PathVariable UUID applyId,
                                       @RequestParam String title,
                                       @RequestParam String content,
                                       @CookieValue(name = "access_token", required = false) String accessToken) {
@@ -196,6 +196,13 @@ public class ApplyController {
                         }
                     });
         }
+    }
+
+    @PutMapping("/{applyId}/{moduleId}")
+    public ResponseEntity updateApplyModule(@PathVariable UUID applyId,
+                                            @PathVariable UUID moduleId
+                                            ) {
+        return ResponseEntity.ok(true);
     }
 
     @PostMapping("/provider")
