@@ -195,11 +195,12 @@
 .content-area {
   margin: 15px;
   padding: 0;
-  height: 300px;
-  height: calc(100vh - 240px);
+  height: calc(100vh - 290px);
   min-height: 500px;
   border: 1px solid;
   overflow-y: auto;
+  padding: 15px;
+  background-color: #fff;
 }
 
 .title {
@@ -216,6 +217,7 @@
   border-radius: 4px 4px 0 0;
   margin: 20px 15px;
   line-height: 45px;
+  padding: 10px 15px;
 }
 
 .title-label {
