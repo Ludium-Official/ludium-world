@@ -149,6 +149,9 @@ public class AnnouncementController {
         module.setCategory("");
         module.setCrsId(announcementId);
 
+        Article module2 = articleService.getArticle(moduleId);
+        module2.setTitle(title);
+
         return ResponseEntity.ok(moduleService.updateModule(module));
     }
 
