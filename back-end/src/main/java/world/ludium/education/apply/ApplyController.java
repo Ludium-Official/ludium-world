@@ -226,6 +226,22 @@ public class ApplyController {
         return ResponseEntity.ok(moduleApplyReference);
     }
 
+    @GetMapping("{applyId}/moduleReference")
+    public ResponseEntity getModuleReferenceByApplyId(@PathVariable UUID applyId) {
+        try {
+            return ResponseEntity.ok(applyService.getModuleApplyReference(applyId));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(new HashMap<String, String>() {
+                        {
+                            put("message", "지원서를 조회하는 중에 에러가 발생하였습니다.");
+                            put("debug", e.getMessage());
+                        }
+                    });
+        }
+    }
+
     @PostMapping("/provider")
     public ResponseEntity createApplyProvider(@RequestParam String title,
                                               @RequestParam String content,
