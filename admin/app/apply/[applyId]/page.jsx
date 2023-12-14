@@ -24,10 +24,19 @@ async function getModuleList() {
     return await moduleListResponse.json();
 }
 
+async function getModuleReference(applyId) {
+    const ModuleReferenceResponse = await fetchWithRetry(`/apply/${applyId}/moduleReference`);
+
+    if (!ModuleReferenceResponse.ok) return null;
+
+    return await ModuleReferenceResponse.json();
+}
+
 async function ModuleList({ applyId }) {
     const modules = await getModuleList();
+    const selectedModuleReferenece = await getModuleReference(applyId);
 
-    return <ApplyModule applyId={applyId} modules={modules} />
+    return <ApplyModule applyId={applyId} modules={modules} moduleReferenece={selectedModuleReferenece} />
 }
 
 export default async function ApplyPage({ params: { applyId } }) {
