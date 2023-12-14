@@ -21,11 +21,16 @@ public class ApplyController {
     private ArticleService articleService;
     private LudiumUserService ludiumUserService;
     private LoginService loginService;
+    private ApplyService applyService;
 
-    public ApplyController(ArticleService articleService, LudiumUserService ludiumUserService, LoginService loginService) {
+    public ApplyController(ArticleService articleService,
+                           LudiumUserService ludiumUserService,
+                           LoginService loginService,
+                           ApplyService applyService) {
         this.articleService = articleService;
         this.ludiumUserService = ludiumUserService;
         this.loginService = loginService;
+        this.applyService = applyService;
     }
 
     @GetMapping("")
@@ -199,10 +204,26 @@ public class ApplyController {
     }
 
     @PutMapping("/{applyId}/{moduleId}")
-    public ResponseEntity updateApplyModule(@PathVariable UUID applyId,
+    public ResponseEntity updateModuleApplyReference(@PathVariable UUID applyId,
                                             @PathVariable UUID moduleId
                                             ) {
-        return ResponseEntity.ok(true);
+        ModuleApplyReference moduleApplyReference = new ModuleApplyReference();
+        moduleApplyReference.setAplId(applyId);
+        moduleApplyReference.setMdlId(moduleId);
+
+        try {
+            applyService.saveModuleApplyReference(moduleApplyReference);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new HashMap<String, String>() {
+                        {
+                            put("message", "지원서를 모듈과 연결하는 중에 에러가 발생하였습니다.");
+                            put("debug", e.getMessage());
+                        }
+                    });
+        }
+        return ResponseEntity.ok(moduleApplyReference);
     }
 
     @PostMapping("/provider")
