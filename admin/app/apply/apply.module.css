@@ -109,3 +109,18 @@
 .apply-list-item:last-child>a {
     border: none;
 }
+
+.label {
+    width: 100%;
+    height: 40px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: solid 1px #cfbcda;
+    border-radius: 4px 4px 0 0;
+    text-indent: 15px;
+    font-size: 1.17em;
+    background-color: #e6e0e9;
+    margin: 0;
+    line-height: 200%;
+}
