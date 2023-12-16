@@ -3,6 +3,8 @@ package world.ludium.education.course;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import world.ludium.education.apply.ModuleApplyReference;
+import world.ludium.education.apply.ModuleApplyReferenceRepository;
 import world.ludium.education.article.Article;
 
 import java.util.List;
@@ -12,11 +14,14 @@ import java.util.UUID;
 public class ModuleService {
     private final ModuleRepository moduleRepository;
     private final ModuleReferenceRepository moduleReferenceRepository;
+    private final ModuleApplyReferenceRepository moduleApplyReferenceRepository;
 
     public ModuleService(ModuleRepository moduleRepository,
-                         ModuleReferenceRepository moduleReferenceRepository) {
+                         ModuleReferenceRepository moduleReferenceRepository,
+                         ModuleApplyReferenceRepository moduleApplyReferenceRepository) {
         this.moduleRepository = moduleRepository;
         this.moduleReferenceRepository = moduleReferenceRepository;
+        this.moduleApplyReferenceRepository = moduleApplyReferenceRepository;
     }
 
     public List<Module> getAllModulesByCourse(UUID courseId) {
@@ -65,5 +70,9 @@ public class ModuleService {
 
     public Module updateModule(Module module) {
         return moduleRepository.save(module);
+    }
+
+    public ModuleApplyReference getApply(UUID moduleId) {
+        return moduleApplyReferenceRepository.findByMdlId(moduleId).orElseThrow();
     }
 }

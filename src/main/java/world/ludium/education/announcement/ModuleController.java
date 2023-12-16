@@ -104,7 +104,7 @@ public class ModuleController {
 
         try {
             articleService.updateArticle(module);
-        } catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new HashMap<>() {{
                         put("message", "모듈을 순서를 변경하는 중에 에러가 발생했습니다.");
@@ -115,5 +115,21 @@ public class ModuleController {
         return ResponseEntity.ok(new HashMap<>() {{
             put("id", moduleId);
         }});
+    }
+
+    @GetMapping("/{moduleId}/apply")
+    public ResponseEntity getModuleApply(@PathVariable UUID moduleId) {
+        try {
+            var applyReference =  moduleService.getApply(moduleId);
+
+            return ResponseEntity.ok(articleService.getArticle(applyReference.getAplId()));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(new HashMap<>() {{
+                        put("message", "모듈의 지원서를 조회하는 중에 에러가 발생했습니다.");
+                        put("debug", e.getMessage());
+                    }});
+        }
     }
 }
