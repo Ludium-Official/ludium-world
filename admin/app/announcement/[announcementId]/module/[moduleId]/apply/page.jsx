@@ -7,7 +7,7 @@ export const metadata = {
     title: "지원서 작성하기"
 }
 
-async function getApply(moduleId) {
+export async function getApply(moduleId) {
     const applyResponse = await fetchWithRetry(`/module/${moduleId}/apply`);
 
     if (!applyResponse.ok) return null;
@@ -17,7 +17,7 @@ async function getApply(moduleId) {
     return apply;
 }
 
-async function getSubmitApply(applyId) {
+export async function getSubmitApplyReference(applyId) {
     const cookieStore = cookies();
 
     if (cookieStore.get("access_token") === undefined) throw new Error(401);
@@ -33,17 +33,15 @@ async function getSubmitApply(applyId) {
         if (submitApplyResponse.status === 403) throw new Error(403);
         else return null;
 
-    const submit = await submitApplyResponse.json();
-
-    return submit.aplId !== null;
+    return await submitApplyResponse.json();
 }
 
 export default async function ApplyPage({ params: { moduleId } }) {
     const apply = await getApply(moduleId);
 
-    const isSubmit = await getSubmitApply(apply.id);
+    const submit = await getSubmitApplyReference(apply.id);
 
-    if (isSubmit) throw new Error(423);
+    if (submit.aplId !== null) throw new Error(423);
 
     return <ApplyForm apply={apply} />
 }
