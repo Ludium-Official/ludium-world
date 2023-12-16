@@ -34,4 +34,6 @@ public interface ArticleRepository extends JpaRepository<Article, UUID> {
     Optional<Article> findByCategoryAndUsrId(Category category, UUID usrId);
 
     Optional<Article> findByIdAndIsVisible(UUID id, boolean visibility);
+
+    List<Article> findAllByIdInAndIsVisible(List<UUID> id, boolean visibility);
 }

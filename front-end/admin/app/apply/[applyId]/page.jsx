@@ -47,9 +47,38 @@ async function getSubmitApplyCount(applyId) {
     return await submitApplyCount.json();
 }
 
+async function getSubmitApplyList(applyId) {
+    const submitApplyList = await fetchWithRetry(`/apply/${applyId}/submit/all`);
+
+    if (!submitApplyList.ok) return [];
+
+    return await submitApplyList.json();
+}
+
+async function SubmitCount({ applyId }) {
+    const submitApplyCount = await getSubmitApplyCount(applyId);
+
+    return <h1>현재 제출된 지원서 : {submitApplyCount} 개</h1>
+}
+
+async function SubmitList({ applyId }) {
+    const submits = await getSubmitApplyList(applyId);
+
+    return <>
+        <h2>지원서 제출 목록</h2>
+        <hr />
+        {submits.map(({ nick, content }) => <section key={crypto.randomUUID()}>
+            <h3 className={applystyle.label}>지원자: {nick}</h3>
+            <article className={applystyle["content-area"]}>
+                <Viewer content={content} heihgt="100%" />
+            </article>
+        </section>
+        )}
+    </>
+}
+
 export default async function ApplyPage({ params: { applyId } }) {
     const apply = await getApply(applyId);
-    const submitApplyCount = await getSubmitApplyCount(applyId);
 
     return <>
         <ContentNavigation links={[]}>
@@ -57,12 +86,13 @@ export default async function ApplyPage({ params: { applyId } }) {
             <Link href={`/apply/${applyId}/edit`}>수정하기</Link>
         </ContentNavigation>
         <article className={applystyle.wrapper}>
-            <h1>현재 제출된 지원서 : {submitApplyCount} 개</h1>
+            <SubmitCount applyId={applyId} />
             <ModuleList applyId={applyId} />
             <h1 className={applystyle.title}>{apply.title}</h1>
             <section className={applystyle["content-area"]}>
                 <Viewer content={apply.content} height="100%" />
             </section>
+            <SubmitList applyId={applyId} />
         </article>
     </>
 }

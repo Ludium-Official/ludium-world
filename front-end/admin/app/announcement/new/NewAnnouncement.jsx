@@ -1,10 +1,12 @@
 "use client";
 
-import { useRef, useState } from "react";
-import Editor from "../../../components/Editor";
-import fetchWithRetry from "../../../functions/api";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
+import { useRef } from "react";
+import fetchWithRetry from "../../../functions/api";
 import announcementstyle from "../announcement.module.css";
+
+const Editor = dynamic(() => import("../../../components/Editor"), { ssr: false });
 
 export default function NewAnnouncement() {
   const editorRef = useRef(null);
