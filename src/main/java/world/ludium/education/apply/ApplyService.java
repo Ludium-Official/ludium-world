@@ -1,14 +1,16 @@
 package world.ludium.education.apply;
 
 import org.springframework.stereotype.Service;
+import world.ludium.education.apply.submit.SubmitApplyReferenceRepository;
 
 import java.util.UUID;
 
 @Service
 public class ApplyService {
-    private ModuleApplyReferenceRepository moduleApplyReferenceRepository;
+    private final ModuleApplyReferenceRepository moduleApplyReferenceRepository;
 
-    public ApplyService(ModuleApplyReferenceRepository moduleApplyReferenceRepository) {
+    public ApplyService(ModuleApplyReferenceRepository moduleApplyReferenceRepository,
+                        SubmitApplyReferenceRepository submitApplyReferenceRepository) {
         this.moduleApplyReferenceRepository = moduleApplyReferenceRepository;
     }
 

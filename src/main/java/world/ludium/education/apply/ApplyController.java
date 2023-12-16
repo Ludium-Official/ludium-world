@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import world.ludium.education.apply.submit.SubmitApplyReference;
+import world.ludium.education.apply.submit.SubmitApplyService;
 import world.ludium.education.article.Article;
 import world.ludium.education.article.ArticleService;
 import world.ludium.education.auth.LoginService;
@@ -18,19 +20,22 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(value = "/apply", produces = "application/json")
 public class ApplyController {
-    private ArticleService articleService;
-    private LudiumUserService ludiumUserService;
-    private LoginService loginService;
-    private ApplyService applyService;
+    private final ArticleService articleService;
+    private final LudiumUserService ludiumUserService;
+    private final LoginService loginService;
+    private final ApplyService applyService;
+    private final SubmitApplyService submitApplyService;
 
     public ApplyController(ArticleService articleService,
                            LudiumUserService ludiumUserService,
                            LoginService loginService,
-                           ApplyService applyService) {
+                           ApplyService applyService,
+                           SubmitApplyService submitApplyService) {
         this.articleService = articleService;
         this.ludiumUserService = ludiumUserService;
         this.loginService = loginService;
         this.applyService = applyService;
+        this.submitApplyService = submitApplyService;
     }
 
     @GetMapping("")
@@ -242,8 +247,9 @@ public class ApplyController {
         }
     }
 
-    @PostMapping("/provider")
-    public ResponseEntity createApplyProvider(@RequestParam String title,
+    @PostMapping("/{applyId}")
+    public ResponseEntity createApplyProvider(@PathVariable UUID applyId,
+                                              @RequestParam String title,
                                               @RequestParam String content,
                                               @CookieValue(name = "access_token", required = false) String accessToken) {
         JsonNode googleUserApiData = null;
@@ -267,12 +273,16 @@ public class ApplyController {
         applyProvider.setContent(content);
         applyProvider.setUsrId(ludiumUser.getId());
 
+        SubmitApplyReference submitApplyReference = new SubmitApplyReference();
+        submitApplyReference.setAplId(applyId);
+        submitApplyReference.setUsrId(ludiumUser.getId());
+
         try {
-            articleService.createArticle(applyProvider);
+            submitApplyService.createSubmitApplyReference(submitApplyReference, applyProvider);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     new HashMap<String, String>() {{
-                        put("message", "지원서를 만드는 중에 에러가 발생했습니다.");
+                        put("message", "지원서를 제출하는 중에 에러가 발생했습니다.");
                         put("debug", e.getMessage());
                     }}
             );
@@ -285,7 +295,7 @@ public class ApplyController {
     }
 
     @PutMapping("/provider/{applyId}")
-    public ResponseEntity createApplyProvider(@PathVariable UUID applyId,
+    public ResponseEntity updateApplyProvider(@PathVariable UUID applyId,
                                               @RequestParam String title,
                                               @RequestParam String content,
                                               @CookieValue(name = "access_token", required = false) String accessToken) {
@@ -369,5 +379,32 @@ public class ApplyController {
                       }}
                     );
         }
+    }
+
+    @GetMapping("{applyId}/submit")
+    public ResponseEntity getSubmitApply(@PathVariable UUID applyId,
+                                         @CookieValue(name = "access_token", required = false) String accessToken) {
+        JsonNode googleUserApiData = null;
+
+        try {
+            googleUserApiData = loginService.getUserResource(accessToken, "google");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    new HashMap<String, String>() {
+                        {
+                            put("message", "인증에 실패했습니다.");
+                            put("debug", e.getMessage());
+                        }
+                    });
+        }
+
+        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+
+        return ResponseEntity.ok(submitApplyService.getSubmitApplyReference(applyId, ludiumUser.getId()));
+    }
+
+    @GetMapping("{applyId}/submit/count")
+    public ResponseEntity getSubmitApplyCount(@PathVariable UUID applyId) {
+        return ResponseEntity.ok(submitApplyService.getSubmitApplyCount(applyId));
     }
 }
