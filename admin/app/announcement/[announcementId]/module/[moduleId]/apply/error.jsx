@@ -2,12 +2,22 @@
 
 import { useRouter } from "next/navigation";
 import applystyle from "./apply.module.css";
+import BackButton from "../../../../../../components/BackButton";
 
 export default function ApplyErrorPage({error}) {
     const router = useRouter();
 
     const handleSignUp = () => {
         router.replace("/sign-up");
+    }
+
+    if(error.message === "423") {
+        return <article className={`${applystyle.wrapper} ${applystyle.error}`}>
+            <BackButton />
+            <h1>
+                이미 지원서를 제출했습니다.
+            </h1>
+        </article>
     }
 
     return <article className={`${applystyle.wrapper} ${applystyle.error}`}>

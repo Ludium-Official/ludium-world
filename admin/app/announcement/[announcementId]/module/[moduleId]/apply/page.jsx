@@ -7,43 +7,43 @@ export const metadata = {
     title: "지원서 작성하기"
 }
 
-async function getApply(providerApply, moduleId) {
-    if (providerApply !== null) return providerApply;
-
+async function getApply(moduleId) {
     const applyResponse = await fetchWithRetry(`/module/${moduleId}/apply`);
 
     if (!applyResponse.ok) return null;
 
     const apply = await applyResponse.json();
 
-    apply.id = null;
-
     return apply;
 }
 
-async function getProviderApply() {
+async function getSubmitApply(applyId) {
     const cookieStore = cookies();
 
     if (cookieStore.get("access_token") === undefined) throw new Error(401);
 
-    const providerApplyResponse = await fetchWithRetry("/apply/provider", {
+    const submitApplyResponse = await fetchWithRetry(`/apply/${applyId}/submit`, {
         headers: {
             cookie: cookieStore,
         },
     });
 
 
-    if (!providerApplyResponse.ok)
-        if (providerApplyResponse.status === 403) throw new Error(403);
+    if (!submitApplyResponse.ok)
+        if (submitApplyResponse.status === 403) throw new Error(403);
         else return null;
 
-    return await providerApplyResponse.json();
+    const submit = await submitApplyResponse.json();
+
+    return submit.aplId !== null;
 }
 
 export default async function ApplyPage({ params: { moduleId } }) {
-    const apply = await getApply(await getProviderApply(moduleId), moduleId);
+    const apply = await getApply(moduleId);
 
-    return <article className={applystyle.wrapper}>
-        <ApplyForm apply={apply} />
-    </article>
+    const isSubmit = await getSubmitApply(apply.id);
+
+    if (isSubmit) throw new Error(423);
+
+    return <ApplyForm apply={apply} />
 }

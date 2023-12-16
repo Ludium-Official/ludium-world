@@ -25,11 +25,11 @@ async function getModuleList() {
 }
 
 async function getModuleReference(applyId) {
-    const ModuleReferenceResponse = await fetchWithRetry(`/apply/${applyId}/moduleReference`);
+    const moduleReferenceResponse = await fetchWithRetry(`/apply/${applyId}/moduleReference`);
 
-    if (!ModuleReferenceResponse.ok) return null;
+    if (!moduleReferenceResponse.ok) return null;
 
-    return await ModuleReferenceResponse.json();
+    return await moduleReferenceResponse.json();
 }
 
 async function ModuleList({ applyId }) {
@@ -39,8 +39,17 @@ async function ModuleList({ applyId }) {
     return <ApplyModule applyId={applyId} modules={modules} moduleReferenece={selectedModuleReferenece} />
 }
 
+async function getSubmitApplyCount(applyId) {
+    const submitApplyCount = await fetchWithRetry(`/apply/${applyId}/submit/count`);
+
+    if (!submitApplyCount.ok) return 0;
+
+    return await submitApplyCount.json();
+}
+
 export default async function ApplyPage({ params: { applyId } }) {
     const apply = await getApply(applyId);
+    const submitApplyCount = await getSubmitApplyCount(applyId);
 
     return <>
         <ContentNavigation links={[]}>
@@ -48,6 +57,7 @@ export default async function ApplyPage({ params: { applyId } }) {
             <Link href={`/apply/${applyId}/edit`}>수정하기</Link>
         </ContentNavigation>
         <article className={applystyle.wrapper}>
+            <h1>현재 제출된 지원서 : {submitApplyCount} 개</h1>
             <ModuleList applyId={applyId} />
             <h1 className={applystyle.title}>{apply.title}</h1>
             <section className={applystyle["content-area"]}>
