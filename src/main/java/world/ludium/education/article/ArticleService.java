@@ -99,4 +99,8 @@ public class ArticleService {
     public List<Article> getAllModule() {
         return articleRepository.findAllByCategoryAndIsVisible(Category.MODULE, true);
     }
+
+    public List<Article> getAllArticle(List<UUID> idList) {
+        return articleRepository.findAllByIdInAndIsVisible(idList, true);
+    }
 }

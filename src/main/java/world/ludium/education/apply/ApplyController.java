@@ -407,4 +407,23 @@ public class ApplyController {
     public ResponseEntity getSubmitApplyCount(@PathVariable UUID applyId) {
         return ResponseEntity.ok(submitApplyService.getSubmitApplyCount(applyId));
     }
+
+    @GetMapping("{applyId}/submit/all")
+    public ResponseEntity getSubmitApplyList(@PathVariable UUID applyId) {
+        var submitList = submitApplyService
+                .getSubmitApplyReference(applyId)
+                .stream()
+                .map(submit -> {
+                    LudiumProviderDTO ludiumProviderDTO = new LudiumProviderDTO();
+                    ludiumProviderDTO.setId(submit.getId());
+                    ludiumProviderDTO.setContent(submit.getContent());
+                    ludiumProviderDTO.setApplyId(applyId);
+                    ludiumProviderDTO.setNick(ludiumUserService.getUserById(submit.getUsrId()).getNick());
+
+                    return ludiumProviderDTO;
+                })
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(submitList);
+    }
 }
