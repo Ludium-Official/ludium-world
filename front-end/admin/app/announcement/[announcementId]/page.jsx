@@ -57,6 +57,9 @@ export default async function AnnouncementPage({ params: { announcementId } }) {
                   announcementId={announcementId}
                   moduleId={module.id}
                 />
+                <Link href={`/announcement/${announcementId}/module/${module.id}/apply`}>
+                  지원서 작성하기
+                </Link>
                 <Link
                   href={`/announcement/${announcementId}/module/${module.id}`}
                 >
