@@ -24,10 +24,9 @@ export default async function ApplyListPage() {
         </div>
         <article className={applystyle.wrapper}>
             <section className={applystyle["apply-list"]}>
-            {applies.map(({ id, title }) => <h2 className={applystyle["apply-list-item"]} key={crypto.randomUUID()}>
-                <Link href={`/apply/${id}`}>{title}</Link>
-            </h2>)}
-
+                {applies.map(({ id, title }) => <h2 className={applystyle["apply-list-item"]} key={crypto.randomUUID()}>
+                    <Link href={`/apply/${id}`}>{title}</Link>
+                </h2>)}
             </section>
         </article>
     </>;
