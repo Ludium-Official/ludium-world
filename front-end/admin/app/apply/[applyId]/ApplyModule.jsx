@@ -18,7 +18,7 @@ export default function ApplyModule({ applyId, modules, moduleReferenece }) {
     }
 
     return <form onSubmit={handleApplyModule}>
-        <p>현재 적용된 모듈: {moduleReferenece === null? "없음": modules.filter(({id}) => id === moduleReferenece.mdlId)[0].title}</p>
+        <h2>현재 적용된 모듈: {moduleReferenece === null? "없음": modules.filter(({id}) => id === moduleReferenece.mdlId)[0].title}</h2>
         <select name="module" id="module">
             {modules.map(({ id, title }) => <option key={id} value={`${id}`}>{title}</option>)}
         </select>
