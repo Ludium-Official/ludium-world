@@ -156,58 +156,6 @@ public class ApplyController {
         }});
     }
 
-    @GetMapping("/provider")
-    public ResponseEntity getProviderApply(@CookieValue(name = "access_token", required = false) String accessToken) {
-        JsonNode googleUserApiData = null;
-
-        if (accessToken == null) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new HashMap<String, String>() {
-                        {
-                            put("message", "로그인을 먼저 해주세요");
-                            put("debug", "로그인을 안했음");
-                        }
-                    });
-        }
-
-        try {
-            googleUserApiData = loginService.getUserResource(accessToken, "google");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                    new HashMap<String, String>() {
-                        {
-                            put("message", "인증에 실패했습니다.");
-                            put("debug", e.getMessage());
-                        }
-                    });
-        }
-
-        var ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
-
-        if (ludiumUser == null) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-                    new HashMap<String, String>() {
-                        {
-                            put("message", "회원정보를 조회하는 중에 에러가 발생하였습니다.");
-                            put("debug", "403");
-                        }
-                    });
-        }
-
-        try {
-            var apply = articleService.getProviderApplyByUsrId(ludiumUser.getId());
-            return ResponseEntity.ok(apply);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new HashMap<String, String>() {
-                        {
-                            put("message", "지원서를 조회하는 중에 에러가 발생하였습니다.");
-                            put("debug", e.getMessage());
-                        }
-                    });
-        }
-    }
-
     @PutMapping("/{applyId}/{moduleId}")
     public ResponseEntity updateModuleApplyReference(@PathVariable UUID applyId,
                                             @PathVariable UUID moduleId
@@ -294,8 +242,9 @@ public class ApplyController {
         }});
     }
 
-    @PutMapping("/provider/{applyId}")
+    @PutMapping("/{applyId}/submit/{submitId}")
     public ResponseEntity updateApplyProvider(@PathVariable UUID applyId,
+                                              @PathVariable UUID submitId,
                                               @RequestParam String title,
                                               @RequestParam String content,
                                               @CookieValue(name = "access_token", required = false) String accessToken) {
@@ -316,7 +265,7 @@ public class ApplyController {
         LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
         Article applyProvider = Article.ApplyProvider();
-        applyProvider.setId(applyId);
+        applyProvider.setId(submitId);
         applyProvider.setTitle(title);
         applyProvider.setContent(content);
         applyProvider.setUsrId(ludiumUser.getId());
@@ -336,24 +285,6 @@ public class ApplyController {
             put("title", title);
             put("content", content);
         }});
-    }
-
-    @GetMapping("/provider/all")
-    public ResponseEntity getProviderApplyList() {
-        var providerDTOList = articleService.getAllProviderApply().stream().map(providerApply -> {
-            var usrId = providerApply.getUsrId();
-            var ludiumUser = ludiumUserService.getUserById(usrId);
-            var ludiumProviderDTO = new LudiumProviderDTO();
-
-            ludiumProviderDTO.setId(ludiumUser.getId());
-            ludiumProviderDTO.setNick(ludiumUser.getNick());
-            ludiumProviderDTO.setContent(providerApply.getContent());
-            ludiumProviderDTO.setApplyId(providerApply.getId());
-
-            return ludiumProviderDTO;
-        }).collect(Collectors.toList());
-
-        return ResponseEntity.ok(providerDTOList);
     }
 
     @GetMapping("/provider/{providerApplyId}")
@@ -382,7 +313,7 @@ public class ApplyController {
     }
 
     @GetMapping("{applyId}/submit")
-    public ResponseEntity getSubmitApply(@PathVariable UUID applyId,
+    public ResponseEntity getSubmitApplyReference(@PathVariable UUID applyId,
                                          @CookieValue(name = "access_token", required = false) String accessToken) {
         JsonNode googleUserApiData = null;
 
@@ -425,5 +356,10 @@ public class ApplyController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(submitList);
+    }
+
+    @GetMapping("{applyId}/submit/{submitId}")
+    public ResponseEntity getSubmit(@PathVariable UUID submitId) {
+        return ResponseEntity.ok(articleService.getArticle(submitId));
     }
 }
