@@ -13,12 +13,14 @@ async function getModule(announcementId, moduleId) {
   return await getModuleResponse.json();
 }
 
-async function getMake(moduleId) {
-  const getModuleResponse = await fetchWithRetry(
-    `/announcement/${moduleId}`
+async function getMake(announcementId, moduleId) {
+  const getMakeResponse = await fetchWithRetry(
+    `/announcement/${announcementId}/${moduleId}/make`
   );
 
-  return await getModuleResponse.json();
+  if(!getMakeResponse.ok) return [];
+
+  return await getMakeResponse.json();
 }
 
 export async function ModuleViewer({ announcementId, moduleId }) {
@@ -36,8 +38,7 @@ export async function ModuleViewer({ announcementId, moduleId }) {
 }
 
 export default async function ModulePage({ params: { announcementId, moduleId } }) {
-  const module = await getMake(moduleId);
-  const makes = module.modules;
+  const makes = await getMake(announcementId, moduleId);
 
   const links = [{
     href: `/announcement/${announcementId}`,
