@@ -17,6 +17,7 @@ import world.ludium.education.mission.MissionSubmitService;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -127,5 +128,10 @@ public class ProfileController {
             put("self_intro", self_intro);
             put("phn_nmb", phone_number);
         }});
+    }
+
+    @GetMapping("{userId}")
+    public ResponseEntity getUserProfile(@PathVariable UUID userId) {
+        return ResponseEntity.ok(ludiumUserService.getUserById(userId));
     }
 }
