@@ -1,8 +1,11 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
+import Grid from "tui-grid";
 import "tui-grid/dist/tui-grid.css";
 import fetchWithRetry from "../../functions/api";
+import managementstyle from "./management.module.css";
 
 class CustomCheckBoxRenderer {
     constructor(props) {
@@ -25,9 +28,32 @@ class CustomCheckBoxRenderer {
     }
 }
 
+class CustomRouterButton {
+    constructor(props) {
+        this.el = document.createElement("button");
+        this.el.type = "button";
+        this.el.onclick = () => {
+            props.columnInfo
+                .renderer
+                .options
+                .onClick(props.grid.getRow(props.rowKey));
+        };
+        this.render(props);
+    }
 
-export default function ManagementForm({users}) {
+    getElement() {
+        return this.el;
+    }
+
+    render(props) {
+        this.el.innerText = "보러가기";
+    }
+}
+
+
+export default function ManagementForm({ users }) {
     const gridRef = useRef();
+    const router = useRouter();
 
     const handleEditProviderAuth = async (user, isChecked) => {
         const formData = new FormData();
@@ -49,9 +75,12 @@ export default function ManagementForm({users}) {
         });
     }
 
-    const getGrid = async () => {
-        const Grid = (await import("tui-grid")).default;
+    const handleRouterProfile = (user) => {
+        router.push(`/management/${user.id}`);
+        router.refresh();
+    }
 
+    const getGrid = () => {
         if (!gridRef.current.instance) {
             const grid = new Grid({
                 el: gridRef.current,
@@ -86,7 +115,18 @@ export default function ManagementForm({users}) {
                             onClick: handleEditAdminAuth,
                         },
                     },
-                },
+                }, {
+                    header: "프로필",
+                    name: "profile",
+                    width: 120,
+                    align: "center",
+                    renderer: {
+                        type: CustomRouterButton,
+                        options: {
+                            onClick: handleRouterProfile
+                        }
+                    }
+                }
                 ],
                 data: users,
             });
@@ -99,7 +139,7 @@ export default function ManagementForm({users}) {
         getGrid();
     }, []);
 
-    return <>
+    return <div className={managementstyle["ref-grid"]}>
         <div ref={gridRef} />
-    </>
+    </div>
 }
