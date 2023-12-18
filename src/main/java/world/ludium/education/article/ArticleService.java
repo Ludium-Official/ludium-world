@@ -21,7 +21,7 @@ public class ArticleService {
     }
 
     public List<Article> getAllArticle() {
-        return articleRepository.findAllByCategoryAndIsVisible(Category.ARTICLE, true);
+        return articleRepository.findAllByCategoryAndIsVisibleOrderByOrderNoAsc(Category.ARTICLE, true);
     }
 
     public Article getArticle(UUID id) {
@@ -58,19 +58,19 @@ public class ArticleService {
         return articleRepository.findAllByUsrIdAndIsVisible(usrId, true);
     }
 
-    public List<Article> getAllMission() { return articleRepository.findAllByCategoryAndIsVisible(Category.MISSION, true); }
+    public List<Article> getAllMission() { return articleRepository.findAllByCategoryAndIsVisibleOrderByOrderNoAsc(Category.MISSION, true); }
 
-    public List<Article> getAllPost() { return articleRepository.findAllByCategoryAndIsVisible(Category.FREE_BOARD, true); }
+    public List<Article> getAllPost() { return articleRepository.findAllByCategoryAndIsVisibleOrderByOrderNoAsc(Category.FREE_BOARD, true); }
 
-    public List<Article> getAllCourse() { return articleRepository.findAllByCategoryAndIsVisible(Category.COURSE, true); }
+    public List<Article> getAllCourse() { return articleRepository.findAllByCategoryAndIsVisibleOrderByOrderNoAsc(Category.COURSE, true); }
 
-    public List<Article> getAllAnnouncement() { return articleRepository.findAllByCategoryAndIsVisible(Category.ANNOUNCEMENT, true); }
+    public List<Article> getAllAnnouncement() { return articleRepository.findAllByCategoryAndIsVisibleOrderByOrderNoAsc(Category.ANNOUNCEMENT, true); }
 
-    public List<Article> getAllMake() { return articleRepository.findAllByCategoryAndIsVisible(Category.MAKE, true); }
+    public List<Article> getAllMake() { return articleRepository.findAllByCategoryAndIsVisibleOrderByOrderNoAsc(Category.MAKE, true); }
 
     public List<Article> getAllMissionsAndArticles() { return articleRepository.findAllByCategoryIn(Arrays.asList(Category.MISSION, Category.ARTICLE)); }
 
-    public List<Article> getAllApply() { return articleRepository.findAllByCategoryAndIsVisible(Category.APPLY, true); }
+    public List<Article> getAllApply() { return articleRepository.findAllByCategoryAndIsVisibleOrderByOrderNoAsc(Category.APPLY, true); }
 
     public List<ModuleReferenceArticleDTO> getAllMissionsAndArticles(UUID moduleId) {
         return articleRepository.getArtWithStatusAndFilter(moduleId);
@@ -89,7 +89,7 @@ public class ArticleService {
     }
 
     public List<Article> getAllProviderApply() {
-        return articleRepository.findAllByCategoryAndIsVisible(Category.PROVIDER_APPLY, true);
+        return articleRepository.findAllByCategoryAndIsVisibleOrderByOrderNoAsc(Category.PROVIDER_APPLY, true);
     }
 
     public Article getProviderApply(UUID providerApplyId) {
@@ -97,7 +97,7 @@ public class ArticleService {
     }
 
     public List<Article> getAllModule() {
-        return articleRepository.findAllByCategoryAndIsVisible(Category.MODULE, true);
+        return articleRepository.findAllByCategoryAndIsVisibleOrderByOrderNoAsc(Category.MODULE, true);
     }
 
     public List<Article> getAllArticle(List<UUID> idList) {

@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface ArticleRepository extends JpaRepository<Article, UUID> {
     List<Article> findAllByUsrIdAndIsVisible(UUID UsrId, boolean visibility);
-    List<Article> findAllByCategoryAndIsVisible(Category category, boolean visibility);
+    List<Article> findAllByCategoryAndIsVisibleOrderByOrderNoAsc(Category category, boolean visibility);
 
     List<Article> findAllByCategoryIn(List<Category> categoryList);
 
