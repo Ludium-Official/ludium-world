@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import fetchWithRetry from "../../../../../../functions/api";
 import ApplyForm from "./ApplyForm";
 import applystyle from "./apply.module.css";
+import RedirectEditPage from "./RedirectEditPage";
 
 export const metadata = {
     title: "지원서 작성하기"
@@ -41,7 +42,7 @@ export default async function ApplyPage({ params: { moduleId } }) {
 
     const submit = await getSubmitApplyReference(apply.id);
 
-    if (submit.aplId !== null) throw new Error(423);
+    if (submit.aplId !== null) return <RedirectEditPage />;
 
     return <ApplyForm apply={apply} />
 }
