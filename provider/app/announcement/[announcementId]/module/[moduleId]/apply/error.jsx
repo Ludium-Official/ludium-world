@@ -1,11 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import applystyle from "./apply.module.css";
 
-export default function ApplyErrorPage({error}) {
-    const router = useRouter();
-
+export default function ApplyErrorPage({ error }) {
     const handleSignUp = () => {
         router.replace("/sign-up");
     }
