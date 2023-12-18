@@ -137,6 +137,12 @@ public class AnnouncementController {
         return ResponseEntity.ok(moduleDTO);
     }
 
+    @GetMapping("/{announcementId}/{moduleId}/make")
+    public ResponseEntity getMake(@PathVariable UUID moduleId) {
+        return ResponseEntity.ok(moduleService.getAllModulesByCourse(moduleId));
+    }
+
+
     @PutMapping("/{announcementId}/module/{moduleId}")
     public ResponseEntity updateModule(@PathVariable UUID announcementId,
                                        @PathVariable UUID moduleId,
@@ -148,9 +154,6 @@ public class AnnouncementController {
         module.setContent(content);
         module.setCategory("");
         module.setCrsId(announcementId);
-
-        Article module2 = articleService.getArticle(moduleId);
-        module2.setTitle(title);
 
         return ResponseEntity.ok(moduleService.updateModule(module));
     }
