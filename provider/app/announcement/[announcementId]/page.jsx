@@ -6,6 +6,7 @@ import { ModuleViewer } from "./module/[moduleId]/page";
 import BackButton from "../../../components/BackButton";
 import ModuleNavigation from "../ModuleNavigation";
 import Link from "next/link";
+import RedirectApply from "./RedirectApply";
 
 export const metadata = {
   title: "공고",
@@ -28,9 +29,9 @@ export default async function AnnouncementPage({ params: { announcementId } }) {
     <>
       <ContentNavigation links={[]}>
         <BackButton />
-        <Link href="/announcement/apply">지원서 작성하기</Link>
       </ContentNavigation>
       <article className={announcementstyle.wrapper}>
+        <RedirectApply modules={announcement.modules} announcementId={announcementId} />
         <h1 className={announcementstyle.title}>{announcement.title}</h1>
         <section className={announcementstyle["content-area"]}>
           <Viewer content={announcement.content} height="100%" />
@@ -46,7 +47,7 @@ export default async function AnnouncementPage({ params: { announcementId } }) {
             >
               <ModuleNavigation
                 links={[{
-                  href: `/announcement/apply`,
+                  href: `/announcement/${announcementId}/module/${module.id}/apply`,
                   text: "지원서 작성하기",
                 },
                   {

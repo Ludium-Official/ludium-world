@@ -1,13 +1,15 @@
 "use client";
 
 import { useRef } from "react";
-import Editor from "../../../components/Editor";
-import applystyle from "./apply.module.css";
+import applystyle from "../apply.module.css";
 import { useRouter } from "next/navigation";
-import fetchWithRetry from "../../../functions/api";
+import fetchWithRetry from "../../../../../../../functions/api";
+import dynamic from "next/dynamic";
 
-export default function ApplyForm({ apply }) {
-    const { id, content } = apply;
+const Editor = dynamic(() => import("../../../../../../../components/Editor"), { ssr: false });
+
+export default function EditApplyForm({ submit, applyId }) {
+    const { id, content } = submit;
     const router = useRouter();
 
     const editorRef = useRef();
@@ -18,25 +20,13 @@ export default function ApplyForm({ apply }) {
         const applyForm = new FormData(e.target);
         applyForm.append("content", editorInstance.getMarkdown());
 
-        if (id === null) {
-            const createApplyResponse = await fetchWithRetry(`/apply/provider`, {
-                method: "POST",
-                body: applyForm
-            });
+        const updateApplyResponse = await fetchWithRetry(`/apply/${applyId}/submit/${id}`, {
+            method: "PUT",
+            body: applyForm
+        });
 
-            if (createApplyResponse.ok) alert("지원서 작성이 완료되었습니다.");
-            router.back();
-            router.refresh();
-        } else {
-            const updateApplyResponse = await fetchWithRetry(`/apply/provider/${id}`, {
-                method: "PUT",
-                body: applyForm
-            })
-
-            if (updateApplyResponse.ok) alert("지원서 변경이 완료되었습니다.");
-            router.back();
-            router.refresh();
-        }
+        if (updateApplyResponse.ok) alert("지원서 수정이 완료되었습니다.");
+        router.refresh();
     }
 
     const handleBack = () => {
@@ -57,7 +47,9 @@ export default function ApplyForm({ apply }) {
                 type="submit"
                 value="지원서 제출하기" />
         </div>
-        <input type="hidden" name="title" defaultValue="지원서" />
+        <div className={applystyle["form-header"]}>
+            <input className={applystyle["form-title"]} type="text" name="title" defaultValue={submit.title} readOnly />
+        </div>
         <div className={applystyle["content-area"]}>
             <Editor editorRef={editorRef} height="100%" content={content} />
         </div>
