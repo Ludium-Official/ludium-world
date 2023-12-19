@@ -54,6 +54,15 @@ public class ArticleService {
             articleRepository.save(moduleTypeArticle);
     }
 
+    @Transactional
+    public void createMake(Article makeTypeArticle, Module makeTypeModule, UUID moduleId) {
+        moduleService.createModule(makeTypeModule, moduleId);
+
+        makeTypeArticle.setId(makeTypeModule.getId());
+
+        articleRepository.save(makeTypeArticle);
+    }
+
     public List<Article> getAllArticlesByUsrId(UUID usrId) {
         return articleRepository.findAllByUsrIdAndIsVisible(usrId, true);
     }

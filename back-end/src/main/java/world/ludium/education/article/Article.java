@@ -111,4 +111,14 @@ public class Article {
 
         return applyProvider;
     }
+
+    public static Article Make() {
+        Article make = new Article();
+
+        make.setCategory(Category.MAKE);
+        make.setVisible(true);
+        make.setOrderNo(0);
+
+        return make;
+    }
 }

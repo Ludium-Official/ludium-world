@@ -53,7 +53,7 @@ export default async function ModulePage({ params: { announcementId, moduleId } 
       <ContentNavigation links={links}></ContentNavigation>
       <article className={announcementstyle.wrapper}>
         <ModuleViewer announcementId={announcementId} moduleId={moduleId} />
-        <MakeCreateButton moduleId={moduleId} />
+        <MakeCreateButton announcementId={announcementId} moduleId={moduleId} />
         {
           makes.map((make) =>
             <section key={crypto.randomUUID()}>
