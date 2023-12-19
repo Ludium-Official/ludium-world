@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import fetchWithRetry from "../../../../../functions/api";
 
-export default function MakeCreateButton({ moduleId }) {
+export default function MakeCreateButton({ announcementId, moduleId }) {
     const router = useRouter();
 
     const handleCreateMake = async () => {
@@ -11,7 +11,7 @@ export default function MakeCreateButton({ moduleId }) {
 
         makeFormData.append("title", "제작 제목을 입력해주세요");
 
-        const createMake = await fetchWithRetry(`/module/${moduleId}`, {
+        await fetchWithRetry(`/announcement/${announcementId}/${moduleId}`, {
             method: "POST",
             body: makeFormData
         });
