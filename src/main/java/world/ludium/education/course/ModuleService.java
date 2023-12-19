@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import world.ludium.education.apply.ModuleApplyReference;
 import world.ludium.education.apply.ModuleApplyReferenceRepository;
-import world.ludium.education.article.Article;
 
 import java.util.List;
 import java.util.UUID;
