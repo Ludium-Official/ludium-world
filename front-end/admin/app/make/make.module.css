@@ -350,7 +350,6 @@
 }
 
 .make-list-item>a {
-  display: block;
   width: calc(100% - 32px);
   height: 30px;
   padding: 15px;
@@ -394,4 +393,14 @@
   margin-inline-end: 0px;
   font-weight: bold;
   margin: 15px;
+}
+
+.make-item-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.make-item-nick {
+  font-size: 0.5em;
+  padding: 7px 0;
 }

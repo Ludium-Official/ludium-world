@@ -14,16 +14,35 @@ async function getMakeList() {
     return await getMakeResponse.json();
 }
 
+async function getUser(userId) {
+    const getUserReponse = await fetchWithRetry(`/profile/${userId}`);
+
+    if(!getUserReponse.ok) return null;
+
+    return await getUserReponse.json();
+}
+
+async function UserNick({usrId}) {
+    const {nick} = await getUser(usrId);
+
+    return <span className={makestyle["make-item-nick"]}>제작자- {nick}</span>
+}
+
 export default async function MakePage() {
     const makes = await getMakeList();
+
+    console.log(makes);
 
     return <article className={makestyle.wrapper}>
         <h1 className={makestyle["title-label"]}>제작 목록</h1>
         <div className={makestyle["make-list"]}>
             {makes.map((make) => (
                 <h2 className={makestyle["make-list-item"]} key={crypto.randomUUID()}>
-                    <Link key={make.id} href={`/make/${make.id}`}>
-                        {make.title}
+                    <Link className={makestyle["make-item-wrapper"]} key={make.id} href={`/make/${make.id}`}>
+                        <span>
+                            {make.title}
+                        </span>
+                        <UserNick usrId={make.usrId} />
                     </Link>
                 </h2>
             ))}
