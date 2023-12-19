@@ -108,6 +108,7 @@ public class ArticleController {
         article.setContent(content);
         article.setUsrId(ludiumUser.getId());
         article.setCategory(Category.valueOf(category));
+        article.setVisible(true);
 
         try {
             articleService.updateArticle(article);
