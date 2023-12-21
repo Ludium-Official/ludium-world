@@ -120,7 +120,7 @@ public class ModuleController {
     @GetMapping("/{moduleId}/apply")
     public ResponseEntity getModuleApply(@PathVariable UUID moduleId) {
         try {
-            var applyReference =  moduleService.getApply(moduleId);
+            var applyReference = moduleService.getApply(moduleId);
 
             return ResponseEntity.ok(articleService.getArticle(applyReference.getAplId()));
         } catch (Exception e) {
@@ -131,5 +131,31 @@ public class ModuleController {
                         put("debug", e.getMessage());
                     }});
         }
+    }
+
+    @GetMapping("/{moduleId}/make")
+    public ResponseEntity getMakeList(@PathVariable UUID moduleId) {
+        return ResponseEntity.ok(moduleService.getAllModulesByCourse(moduleId));
+    }
+
+    @PutMapping("/{moduleId}/{makeId}/{ownerId}")
+    public ResponseEntity updateMakeOwner(@PathVariable UUID makeId,
+                                          @PathVariable UUID ownerId) {
+        var updatedMake = articleService.getArticle(makeId);
+
+        updatedMake.setUsrId(ownerId);
+
+        try {
+            articleService.updateArticle(updatedMake);
+        } catch(Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(new HashMap<>() {{
+                        put("message", "제작자 권한을 할당하는 중에 에러가 발생했습니다.");
+                        put("debug", e.getMessage());
+                    }});
+        }
+
+        return ResponseEntity.ok(updatedMake);
     }
 }

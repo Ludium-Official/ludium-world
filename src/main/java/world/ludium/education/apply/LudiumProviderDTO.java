@@ -7,6 +7,7 @@ public class LudiumProviderDTO {
     private String nick;
     private String content;
     private UUID applyId;
+    private UUID usrId;
 
     public LudiumProviderDTO() {
     }
@@ -41,5 +42,13 @@ public class LudiumProviderDTO {
 
     public void setApplyId(UUID applyId) {
         this.applyId = applyId;
+    }
+
+    public UUID getUsrId() {
+        return usrId;
+    }
+
+    public void setUsrId(UUID usrId) {
+        this.usrId = usrId;
     }
 }

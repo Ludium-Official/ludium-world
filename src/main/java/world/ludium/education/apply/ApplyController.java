@@ -299,6 +299,7 @@ public class ApplyController {
             ludiumProviderDTO.setNick(ludiumUser.getNick());
             ludiumProviderDTO.setContent(providerApply.getContent());
             ludiumProviderDTO.setApplyId(providerApply.getId());
+            ludiumProviderDTO.setUsrId(usrId);
 
             return ResponseEntity.ok(ludiumProviderDTO);
         } catch (Exception e) {
@@ -345,11 +346,12 @@ public class ApplyController {
                 .getSubmitApplyReference(applyId)
                 .stream()
                 .map(submit -> {
-                    LudiumProviderDTO ludiumProviderDTO = new LudiumProviderDTO();
+                    var ludiumProviderDTO = new LudiumProviderDTO();
                     ludiumProviderDTO.setId(submit.getId());
                     ludiumProviderDTO.setContent(submit.getContent());
                     ludiumProviderDTO.setApplyId(applyId);
                     ludiumProviderDTO.setNick(ludiumUserService.getUserById(submit.getUsrId()).getNick());
+                    ludiumProviderDTO.setUsrId(submit.getUsrId());
 
                     return ludiumProviderDTO;
                 })
