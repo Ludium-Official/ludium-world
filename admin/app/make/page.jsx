@@ -31,8 +31,6 @@ async function UserNick({usrId}) {
 export default async function MakePage() {
     const makes = await getMakeList();
 
-    console.log(makes);
-
     return <article className={makestyle.wrapper}>
         <h1 className={makestyle["title-label"]}>제작 목록</h1>
         <div className={makestyle["make-list"]}>
