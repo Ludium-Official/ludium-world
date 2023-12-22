@@ -10,6 +10,7 @@ import world.ludium.education.auth.ludium.LudiumUser;
 import world.ludium.education.auth.ludium.LudiumUserService;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -65,5 +66,27 @@ public class MakeController {
         updatedMake.setContent(content);
 
         return ResponseEntity.ok(articleService.updateArticle(updatedMake));
+    }
+
+    @GetMapping("/own")
+    public ResponseEntity getOwnMakeList(@CookieValue(name = "access_token", required = false) String accessToken) {
+        if(accessToken == null) return ResponseEntity.ok(new ArrayList<>());
+
+        JsonNode googleUserApiData = null;
+
+        try {
+            googleUserApiData = loginService.getUserResource(accessToken, "google");
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(new HashMap<String, String>() {{
+                        put("message", "인증에 실패했습니다.");
+                        put("debug", e.getMessage());
+                    }});
+        }
+
+        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+
+        return ResponseEntity.ok(articleService.getAllMakeByUsrId(ludiumUser.getId()));
     }
 }
