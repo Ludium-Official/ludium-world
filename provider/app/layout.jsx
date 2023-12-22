@@ -32,7 +32,7 @@ export default async function RootLayout({
         <head>
         </head>
         <body style={{ margin: 0 }}>
-            <main style={{ display: "flex" }}>
+            <main>
                 <Navigation googleAuthInfo={cookieStore.get("access_token")} gglId={cookieStore.get("ggl_id")} links={links} />
                 <MainWrapper>
                     {children}
