@@ -54,11 +54,11 @@ export default function MakeForm({ id, title, content, shareable }) {
         >
           돌아가기
         </button>
-        {shareable ? (
+        {/* {shareable ? (
           <button className={makestyle["form-button"]} type="button">
             공유하기
           </button>
-        ) : null}
+        ) : null} */}
         <input
           className={makestyle["form-button"]}
           type="submit"
