@@ -77,6 +77,8 @@ public class ArticleService {
 
     public List<Article> getAllMake() { return articleRepository.findAllByCategoryAndIsVisibleOrderByOrderNoAsc(Category.MAKE, true); }
 
+    public List<Article> getAllMakeByUsrId(UUID usrId) { return articleRepository.findAllByUsrIdAndCategoryAndIsVisible(usrId, Category.MAKE ,true); }
+
     public List<Article> getAllMissionsAndArticles() { return articleRepository.findAllByCategoryIn(Arrays.asList(Category.MISSION, Category.ARTICLE)); }
 
     public List<Article> getAllApply() { return articleRepository.findAllByCategoryAndIsVisibleOrderByOrderNoAsc(Category.APPLY, true); }

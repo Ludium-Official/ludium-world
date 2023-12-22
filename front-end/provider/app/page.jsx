@@ -1,9 +1,15 @@
-import AnnouncementPage from "./announcement/page"
+import AnnouncementPage from "./announcement/page";
+import MyMakePage from "./make/MyMake";
 
 export const metadata = {
-    title: "Ludium"
-}
+  title: "Ludium",
+};
 
 export default function Page() {
-    return <AnnouncementPage />
+  return (
+    <>
+        <AnnouncementPage />
+        <MyMakePage />
+    </>
+  );
 }
