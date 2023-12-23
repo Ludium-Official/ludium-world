@@ -11,7 +11,7 @@ export default function GoogleButton() {
     const router = useRouter();
 
     const handleGoogleButtonClick = () => {
-        router.push(`https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}&access_type=offline`);
+        router.push(`https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}&access_type=offline&prompt=consent`);
         router.refresh();
     }
 
