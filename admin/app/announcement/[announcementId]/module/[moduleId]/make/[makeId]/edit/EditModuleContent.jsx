@@ -63,7 +63,7 @@ export default function EditMakeContent({
           placeholder="제목을 입력해주세요"
         />
       </div>
-      <select name="category" id="category">
+      <select name="category" id="category" defaultValue={module.category}>
         <option value={Category.MISSION}>미션</option>
         <option value={Category.ARTICLE}>아티클</option>
       </select>
