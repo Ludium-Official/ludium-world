@@ -8,6 +8,7 @@ import world.ludium.education.course.Module;
 import world.ludium.education.course.ModuleDTO;
 import world.ludium.education.course.ModuleReference;
 import world.ludium.education.course.ModuleService;
+import world.ludium.education.make.Category;
 
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +43,7 @@ public class ModuleController {
             moduleDTO.setId(moduleId);
             moduleDTO.setTitle(module.getTitle());
             moduleDTO.setContent(module.getContent());
-            moduleDTO.setCategory(module.getCategory());
+            moduleDTO.setCategory(module.getCategory().toString());
             moduleDTO.setModuleReferences(moduleReferences);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -61,6 +62,7 @@ public class ModuleController {
     ) {
         Module module = new Module();
         module.setTitle(title);
+        module.setCategory(Category.MODULE);
 
         try {
             moduleService.createModule(module, parentId);

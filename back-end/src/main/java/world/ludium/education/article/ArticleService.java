@@ -41,12 +41,14 @@ public class ArticleService {
 
         articleRepository.save(article);
         for(Module module: modules) {
+            module.setCategory(world.ludium.education.make.Category.MODULE);
             moduleService.createModule(module, article.getId());
         }
     }
 
     @Transactional
     public void createModule(Article moduleTypeArticle, Module module, UUID announcementId) {
+            module.setCategory(world.ludium.education.make.Category.MODULE);
             moduleService.createModule(module, announcementId);
 
             moduleTypeArticle.setId(module.getId());
@@ -56,6 +58,7 @@ public class ArticleService {
 
     @Transactional
     public void createMake(Article makeTypeArticle, Module makeTypeModule, UUID moduleId) {
+        makeTypeModule.setCategory(world.ludium.education.make.Category.MISSION);
         moduleService.createModule(makeTypeModule, moduleId);
 
         makeTypeArticle.setId(makeTypeModule.getId());
