@@ -123,7 +123,7 @@ public class CourseController {
             moduleDTO.setId(moduleId);
             moduleDTO.setTitle(module.getTitle());
             moduleDTO.setContent(module.getContent());
-            moduleDTO.setCategory(module.getCategory());
+            moduleDTO.setCategory(module.getCategory().toString());
             moduleDTO.setModuleReferences(moduleReferences);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -146,7 +146,7 @@ public class CourseController {
         module.setId(moduleId);
         module.setTitle(title);
         module.setContent(content);
-        module.setCategory(category);
+        module.setCategory(world.ludium.education.make.Category.valueOf(category));
         module.setCrsId(courseId);
 
         return ResponseEntity.ok(moduleService.updateModule(module));

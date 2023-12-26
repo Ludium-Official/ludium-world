@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import world.ludium.education.apply.ModuleApplyReference;
 import world.ludium.education.apply.ModuleApplyReferenceRepository;
+import world.ludium.education.make.Category;
 
 import java.util.List;
 import java.util.UUID;
@@ -40,7 +41,6 @@ public class ModuleService {
     public Module createModule(Module module, UUID articleId) {
         module.setContent("");
         module.setId(UUID.randomUUID());
-        module.setCategory("");
         module.setCrsId(articleId);
 
         return moduleRepository.save(module);

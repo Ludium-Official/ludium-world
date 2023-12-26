@@ -1,8 +1,7 @@
 package world.ludium.education.course;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import world.ludium.education.make.Category;
 
 import java.util.UUID;
 
@@ -13,7 +12,8 @@ public class Module {
     private UUID id;
     private String title;
     private String content;
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private Category category;
     private UUID crsId;
 
     public UUID getId() {
@@ -40,11 +40,11 @@ public class Module {
         this.content = content;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 

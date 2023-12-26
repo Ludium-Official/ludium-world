@@ -6,15 +6,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import world.ludium.education.article.Article;
 import world.ludium.education.article.ArticleService;
-import world.ludium.education.article.Category;
 import world.ludium.education.auth.LoginService;
 import world.ludium.education.auth.ludium.LudiumUser;
 import world.ludium.education.auth.ludium.LudiumUserService;
-import world.ludium.education.course.*;
 import world.ludium.education.course.Module;
+import world.ludium.education.course.*;
+import world.ludium.education.make.Category;
 
 import java.math.BigInteger;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -106,7 +109,7 @@ public class AnnouncementController {
             courseDTO.setModules(modules);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new HashMap<>() {{
-                put("message", "수업을 불러오는 중에 에러가 발생했습니다.");
+                put("message", "제작을 불러오는 중에 에러가 발생했습니다.");
                 put("debug", e.getMessage());
             }});
         }
@@ -124,7 +127,7 @@ public class AnnouncementController {
             moduleDTO.setId(moduleId);
             moduleDTO.setTitle(module.getTitle());
             moduleDTO.setContent(module.getContent());
-            moduleDTO.setCategory(module.getCategory());
+            moduleDTO.setCategory(module.getCategory().toString());
             moduleDTO.setModuleReferences(moduleReferences);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -147,12 +150,13 @@ public class AnnouncementController {
     public ResponseEntity updateModule(@PathVariable UUID announcementId,
                                        @PathVariable UUID moduleId,
                                        @RequestParam String title,
-                                       @RequestParam String content) {
+                                       @RequestParam String content,
+                                       @RequestParam String category) {
         Module module = new Module();
         module.setId(moduleId);
         module.setTitle(title);
         module.setContent(content);
-        module.setCategory("");
+        module.setCategory(Category.valueOf(category));
         module.setCrsId(announcementId);
 
         Article module2 = articleService.getArticle(moduleId);
@@ -252,7 +256,7 @@ public class AnnouncementController {
     }
 
     @PostMapping("{announcementId}/{moduleId}")
-    public ResponseEntity createModule(@PathVariable UUID announcementId,
+    public ResponseEntity createMake(@PathVariable UUID announcementId,
                                        @PathVariable UUID moduleId,
                                        @RequestParam String title,
                                        @CookieValue(name = "access_token", required = false) String accessToken) {
