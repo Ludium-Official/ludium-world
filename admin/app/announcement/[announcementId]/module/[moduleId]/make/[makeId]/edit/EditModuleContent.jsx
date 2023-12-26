@@ -6,6 +6,7 @@ import "tui-grid/dist/tui-grid.css";
 import Editor from "../../../../../../../../components/Editor";
 import fetchWithRetry from "../../../../../../../../functions/api";
 import announcementstyle from "../../../../../../announcement.module.css";
+import Category from "../../../../../../../../enums/Category";
 
 export default function EditMakeContent({
   module,
@@ -62,6 +63,10 @@ export default function EditMakeContent({
           placeholder="제목을 입력해주세요"
         />
       </div>
+      <select name="category" id="category">
+        <option value={Category.MISSION}>미션</option>
+        <option value={Category.ARTICLE}>아티클</option>
+      </select>
       <div className={announcementstyle["announcement-edit-content-area"]}>
         <Editor editorRef={editorRef} content={module.content} height={"100%"} />
       </div>

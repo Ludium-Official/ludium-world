@@ -6,6 +6,7 @@ import "tui-grid/dist/tui-grid.css";
 import Editor from "../../../../../../components/Editor";
 import fetchWithRetry from "../../../../../../functions/api";
 import announcementstyle from "../../../../announcement.module.css";
+import Category from "../../../../../../enums/Category"
 
 export default function EditModuleContent({
   module,
@@ -61,6 +62,7 @@ export default function EditModuleContent({
           placeholder="제목을 입력해주세요"
         />
       </div>
+      <input type="hidden" name="category" id="category" defaultValue={Category.MODULE} />
       <div className={announcementstyle["announcement-edit-content-area"]}>
         <Editor editorRef={editorRef} content={module.content} height={"100%"} />
       </div>
