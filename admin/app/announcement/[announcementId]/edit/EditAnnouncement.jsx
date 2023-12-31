@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Editor from "../../../../components/Editor";
 import fetchWithRetry from "../../../../functions/api";
 import announcementstyle from "../../announcement.module.css";
@@ -19,10 +19,13 @@ export default function EditAnnouncement({ id, title, content }) {
 
     formData.append("content", editorInstance.getMarkdown());
 
-    const createAnnouncementResponse = await fetchWithRetry(`/announcement/${id}`, {
-      method: "PUT",
-      body: formData,
-    });
+    const createAnnouncementResponse = await fetchWithRetry(
+      `/announcement/${id}`,
+      {
+        method: "PUT",
+        body: formData,
+      }
+    );
 
     if (createAnnouncementResponse.ok) {
       router.push(`/announcement/${id}`);

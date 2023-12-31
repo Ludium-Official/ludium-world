@@ -1,14 +1,14 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import BackButton from "../../../components/BackButton";
-import ContentNavigation from "../../../components/ContentNavigation";
-import DeleteButton from "../../../components/DeleteButton";
-import fetchWithRetry from "../../../functions/api";
+import BackButton from "@/components/BackButton";
+import ContentNavigation from "@/components/ContentNavigation";
+import DeleteButton from "@/components/DeleteButton";
+import fetchWithRetry from "@/functions/api";
 import announcementstyle from "../announcement.module.css";
 import ModuleCreateButton from "./ModuleCreateButton";
 import ModuleNavigation from "./ModuleNavigation";
 
-const Viewer = dynamic(() => import("../../../components/Viewer"), {
+const Viewer = dynamic(() => import("@/components/Viewer"), {
   ssr: false,
 });
 
@@ -76,7 +76,7 @@ async function DetailedAnnouncementList({ announcementId }) {
               >
                 검증자 지원서 양식 작성하기
               </Link>
-              <Link href={`/announcement/${announcementId}/module/${detailId}`}>
+              <Link href={`/announcement/${announcementId}/${detailId}`}>
                 수정하기
               </Link>
             </ModuleNavigation>
@@ -124,7 +124,7 @@ export default async function AnnouncementPage({ params: { announcementId } }) {
     <>
       <ContentNavigation links={[]}>
         <BackButton />
-        <DeleteButton deleteUrl={`/announcement/${announcementId}`} />
+        {/* <DeleteButton deleteUrl={`/announcement/${announcementId}`} /> */}
         <Link href={`/announcement/${announcementId}/edit`}>수정하기</Link>
       </ContentNavigation>
       <AnnoucementContent announcementId={announcementId} />
