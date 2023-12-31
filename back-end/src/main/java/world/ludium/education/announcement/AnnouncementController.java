@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import world.ludium.education.announcement.model.Announcement;
 import world.ludium.education.article.Article;
 import world.ludium.education.article.ArticleService;
 import world.ludium.education.auth.LoginService;
@@ -29,16 +30,23 @@ public class AnnouncementController {
     private final LudiumUserService ludiumUserService;
     private final ModuleService moduleService;
 
-    public AnnouncementController(LoginService loginService, ArticleService articleService, LudiumUserService ludiumUserService, ModuleService moduleService) {
+    private final AnnouncementService announcementService;
+
+    public AnnouncementController(LoginService loginService,
+                                  ArticleService articleService,
+                                  LudiumUserService ludiumUserService,
+                                  ModuleService moduleService,
+                                  AnnouncementService announcementService) {
         this.loginService = loginService;
         this.articleService = articleService;
         this.ludiumUserService = ludiumUserService;
         this.moduleService = moduleService;
+        this.announcementService = announcementService;
     }
 
     @GetMapping("")
-    public ResponseEntity getAllAnnouncement() {
-        return ResponseEntity.ok(articleService.getAllAnnouncement());
+    public ResponseEntity<List<Announcement>> getAllAnnouncement() {
+        return ResponseEntity.ok(announcementService.getAllAnnouncement());
     }
 
     @PostMapping("")
