@@ -21,8 +21,12 @@ public class AnnouncementService {
     }
     public Optional<Announcement> getAnnouncement(UUID announcementId) { return announcementRepository.findById(announcementId); }
 
-    public void createAnnouncement(Announcement announcement) {
+    public Announcement createAnnouncement(Announcement announcement) {
         announcement.setPostingId(UUID.randomUUID());
-        announcementRepository.save(announcement);
+        return announcementRepository.save(announcement);
+    }
+
+    public Announcement updateAnnouncement(Announcement announcement) {
+        return announcementRepository.save(announcement);
     }
 }

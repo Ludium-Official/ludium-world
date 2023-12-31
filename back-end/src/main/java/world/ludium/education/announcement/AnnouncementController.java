@@ -97,12 +97,12 @@ public class AnnouncementController {
         detailedAnnouncement.setPostingId(announcementId);
 
         try {
-            detailedAnnouncementService.createDetailedAnnouncement(detailedAnnouncement);
+            return ResponseEntity.ok(detailedAnnouncementService.createDetailedAnnouncement(detailedAnnouncement));
         } catch (Exception e) {
             return getExceptionMessage("세부 공고를 만드는 중에 에러가 발생했습니다.", e.getMessage());
         }
 
-        return ResponseEntity.ok(detailedAnnouncement);
+
     }
 
     @GetMapping("/{announcementId}/{moduleId}/make")
@@ -110,58 +110,35 @@ public class AnnouncementController {
         return ResponseEntity.ok(moduleService.getAllModulesByCourse(moduleId));
     }
 
+    @PutMapping("/{announcementId}")
+    public ResponseEntity<Object> updateAnnouncement(@RequestBody Announcement announcement,
+                                             @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = getLudiumUser(accessToken);
+
+        if (ludiumUser == null)
+            return getUnAuthorizedMessage();
+
+        try {
+            return ResponseEntity.ok(announcementService.updateAnnouncement(announcement));
+        } catch (Exception e) {
+            return getExceptionMessage("공고를 수정하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
 
     @PutMapping("/{announcementId}/{detailedAnnouncementId}")
-    public ResponseEntity<Object> updateModule(@RequestBody DetailedAnnouncement detailedAnnouncement) {
+    public ResponseEntity<Object> updateModule(@RequestBody DetailedAnnouncement detailedAnnouncement,
+                                               @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = getLudiumUser(accessToken);
+
+        if (ludiumUser == null)
+            return getUnAuthorizedMessage();
+
         try {
             return ResponseEntity.ok(detailedAnnouncementService.updateDetailedAnnouncement(detailedAnnouncement));
         } catch(Exception e) {
             return getExceptionMessage("세부 공고를 수정하는 중에 에러가 발생했습니다.", e.getMessage());
         }
-    }
-
-    @PutMapping("/{announcementId}")
-    public ResponseEntity updateAnnouncement(@PathVariable UUID announcementId,
-                                             @RequestParam String title,
-                                             @RequestParam String content,
-                                             @CookieValue(name = "access_token", required = false) String accessToken) {
-        JsonNode googleUserApiData = null;
-
-        try {
-            googleUserApiData = loginService.getUserResource(accessToken, "google");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                    new HashMap<String, String>() {
-                        {
-                            put("message", "인증에 실패했습니다.");
-                            put("debug", e.getMessage());
-                        }
-                    });
-        }
-
-        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
-
-        Article announcement = Article.Announcement();
-        announcement.setId(announcementId);
-        announcement.setTitle(title);
-        announcement.setContent(content);
-        announcement.setUsrId(ludiumUser.getId());
-
-        try {
-            articleService.updateArticle(announcement);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new HashMap<String, String>() {{
-                        put("message", "공고를 수정하는 중에 에러가 발생했습니다.");
-                        put("debug", e.getMessage());
-                    }}
-            );
-        }
-
-        return ResponseEntity.ok(new HashMap<String, String>() {{
-            put("title", title);
-            put("content", content);
-        }});
     }
 
     @PostMapping("{announcementId}/{moduleId}")
