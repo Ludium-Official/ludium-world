@@ -1,27 +1,32 @@
 "use client";
 
+import fetchWithRetry from "@/functions/api";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
-import fetchWithRetry from "../../../functions/api";
+import { useRef, useState } from "react";
 import announcementstyle from "../announcement.module.css";
 
-const Editor = dynamic(() => import("../../../components/Editor"), { ssr: false });
+const Editor = dynamic(() => import("@/components/Editor"), {
+  ssr: false,
+});
 
 export default function NewAnnouncement() {
   const editorRef = useRef(null);
   const router = useRouter();
+  const [pending, setPending] = useState(false);
 
   const handleSave = async (e) => {
     e.preventDefault();
+    setPending(true);
 
     const { editorInstance } = editorRef.current;
-    const formData = new FormData(e.target);
-    formData.append("content", editorInstance.getMarkdown());
 
     const createAnnouncementResponse = await fetchWithRetry(`/announcement`, {
       method: "POST",
-      body: formData,
+      body: JSON.stringify({
+        title: e.target.title.value,
+        description: editorInstance.getMarkdown(),
+      }),
     });
 
     if (createAnnouncementResponse.ok) {
@@ -47,7 +52,8 @@ export default function NewAnnouncement() {
         <input
           className={announcementstyle["form-button"]}
           type="submit"
-          value="저장하기"
+          value={pending ? "공고를 만드는 중입니다..." : "저장하기"}
+          disabled={pending}
         />
       </div>
       <div className={announcementstyle["form-header"]}>

@@ -1,9 +1,9 @@
-import fetchWithRetry from "../../../../../../functions/api";
+import fetchWithRetry from "@/functions/api";
 import EditModuleContent from "./EditModuleContent";
 
 export const metadata = {
-  title: "모듈 수정"
-}
+  title: "모듈 수정",
+};
 
 async function getModule(announcementId, moduleId) {
   const getModuleResponse = await fetchWithRetry(

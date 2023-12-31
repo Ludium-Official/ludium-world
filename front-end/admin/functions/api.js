@@ -3,10 +3,10 @@ const refreshAccessToken = async (options) => {
   const fetchInit = {
     method: "POST",
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
+      "Content-Type": "application/json",
     },
     credentials: "include",
-    cache: "no-store"
+    cache: "no-store",
   };
 
   if (options.headers !== undefined) {
@@ -34,7 +34,10 @@ const fetchWithRetry = (url, options, maxRetry = 3) => {
     const response = await fetch(`${serverUri}${url}`, {
       ...options,
       credentials: "include",
-      cache: "no-store"
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
     if (response.status === 401 && retryCount < maxRetry) {
       const refreshAccessTokenResponse = await refreshAccessToken(options);
