@@ -114,6 +114,10 @@
   color: #8b78b9;
 }
 
+.announcement-edit-button:disabled {
+  background-color: #8773bc;
+}
+
 .module-header-area {
   display: flex;
   flex-direction: column;
@@ -196,8 +200,9 @@
   height: 300px;
   height: calc(100vh - 240px);
   min-height: 500px;
-  border: 1px solid;
+  border: 1px solid #cbcbcb;
   overflow-y: auto;
+  background-color: #fff;
 }
 
 .title {
@@ -268,6 +273,10 @@
 .form-button:active {
   background-color: #f7f2fa;
   color: #8b78b9;
+}
+
+.form-button:disabled {
+  background-color: #8773bc;
 }
 
 .form-header {
@@ -413,7 +422,7 @@
 
 .detailed-announcement-wrapper {
   margin: 10px;
-  border: 1px solid;
+  border: 1px solid #cbcbcb;
 }
 
 .detailed-announcement-title {
@@ -441,8 +450,9 @@
 }
 
 .detailed-announcement-content-wrapper {
-  border: 1px solid;
+  border: 1px solid #cbcbcb;
   min-height: 626px;
   padding: 15px;
   margin: 10px;
+  background-color: #fff;
 }
