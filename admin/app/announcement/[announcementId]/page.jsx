@@ -7,9 +7,6 @@ import fetchWithRetry from "../../../functions/api";
 import announcementstyle from "../announcement.module.css";
 import ModuleCreateButton from "./ModuleCreateButton";
 import ModuleNavigation from "./ModuleNavigation";
-import { ModuleViewer } from "./module/[moduleId]/page";
-import ModuleDeleteButton from "./ModuleDeleteButton";
-import ModuleOrderNoForm from "./ModuleOrderNoForm";
 
 const Viewer = dynamic(() => import("../../../components/Viewer"), {
   ssr: false,
@@ -19,19 +16,110 @@ export const metadata = {
   title: "공고",
 };
 
-export async function getAnnouncement(announcementId) {
+async function getAnnouncement(announcementId) {
   const getAnnouncementResponse = await fetchWithRetry(
     `/announcement/${announcementId}`
   );
 
-  if (!getAnnouncementResponse.ok) return null;
+  if (!getAnnouncementResponse.ok)
+    throw new Error("공고를 불러오는 중에 에러가 발생했습니다.");
 
   return await getAnnouncementResponse.json();
 }
 
-export default async function AnnouncementPage({ params: { announcementId } }) {
+async function getDetailedAnnouncementList(announcementId) {
+  const getDetailedAnnouncementListResponse = await fetchWithRetry(
+    `/announcement/${announcementId}/detail`
+  );
+
+  if (!getDetailedAnnouncementListResponse.ok)
+    throw new Error("세부 공고를 불러오는 중에 에러가 발생했습니다.");
+
+  return await getDetailedAnnouncementListResponse.json();
+}
+
+async function DetailedAnnouncementList({ announcementId }) {
+  const detailedAnnouncementList = await getDetailedAnnouncementList(
+    announcementId
+  );
+
+  return (
+    <>
+      <h2 className={announcementstyle["title-label"]}>세부 공고 목록</h2>
+      <ModuleCreateButton announceId={announcementId} />
+      <section
+        className={`${announcementstyle["announcement-list"]} ${announcementstyle["module-list"]}`}
+      >
+        {detailedAnnouncementList.map(({ detailId, title, description }) => (
+          <details
+            className={announcementstyle["detailed-announcement-wrapper"]}
+            key={detailId}
+            open={true}
+          >
+            <summary
+              className={announcementstyle["detailed-announcement-summary"]}
+            >
+              {title === "" ? "세부 공고" : title} 펼치고 닫기
+            </summary>
+            <ModuleNavigation links={[]}>
+              {/* <ModuleDeleteButton
+                announcementId={announcementId}
+                moduleId={detailId}
+              /> */}
+              <Link
+                href={`/announcement/${announcementId}/module/${detailId}/apply`}
+              >
+                제작자 지원서 양식 작성하기
+              </Link>
+              <Link
+                href={`/announcement/${announcementId}/module/${detailId}/apply`}
+              >
+                검증자 지원서 양식 작성하기
+              </Link>
+              <Link href={`/announcement/${announcementId}/module/${detailId}`}>
+                수정하기
+              </Link>
+            </ModuleNavigation>
+            <div className={announcementstyle["detailed-announcement-title"]}>
+              <input
+                type="text"
+                defaultValue={
+                  title === ""
+                    ? "수정하기 버튼을 눌러 세부 공고 내용을 변경해주세요"
+                    : title
+                }
+                readOnly
+              />
+            </div>
+            <div
+              className={
+                announcementstyle["detailed-announcement-content-wrapper"]
+              }
+            >
+              <Viewer content={description} />
+            </div>
+          </details>
+        ))}
+      </section>
+    </>
+  );
+}
+
+async function AnnoucementContent({ announcementId }) {
   const announcement = await getAnnouncement(announcementId);
 
+  return (
+    <article className={announcementstyle.wrapper}>
+      <h1 className={announcementstyle.title}>{announcement.title}</h1>
+      <section className={announcementstyle["content-area"]}>
+        <Viewer content={announcement.content} height="100%" />
+      </section>
+      <DetailedAnnouncementList announcementId={announcementId} />
+    </article>
+  );
+}
+
+export default async function AnnouncementPage({ params: { announcementId } }) {
   return (
     <>
       <ContentNavigation links={[]}>
@@ -39,41 +127,7 @@ export default async function AnnouncementPage({ params: { announcementId } }) {
         <DeleteButton deleteUrl={`/announcement/${announcementId}`} />
         <Link href={`/announcement/${announcementId}/edit`}>수정하기</Link>
       </ContentNavigation>
-      <article className={announcementstyle.wrapper}>
-        <h1 className={announcementstyle.title}>{announcement.title}</h1>
-        <section className={announcementstyle["content-area"]}>
-          <Viewer content={announcement.content} height="100%" />
-        </section>
-        <h2 className={announcementstyle["title-label"]}>모듈 목록</h2>
-        <ModuleCreateButton announceId={announcementId} />
-        <section
-          className={`${announcementstyle["announcement-list"]} ${announcementstyle["module-list"]}`}
-        >
-          {announcement.modules.map((module) => (
-            <div key={crypto.randomUUID()}>
-              <ModuleOrderNoForm moduleId={module.id} orderNo={module.orderNo} />
-              <ModuleNavigation links={[]}>
-                <ModuleDeleteButton
-                  announcementId={announcementId}
-                  moduleId={module.id}
-                />
-                <Link href={`/announcement/${announcementId}/module/${module.id}/apply`}>
-                  지원서 작성하기
-                </Link>
-                <Link
-                  href={`/announcement/${announcementId}/module/${module.id}`}
-                >
-                  모듈보기
-                </Link>
-              </ModuleNavigation>
-              <ModuleViewer
-                announcementId={announcementId}
-                moduleId={module.id}
-              />
-            </div>
-          ))}
-        </section>
-      </article>
+      <AnnoucementContent announcementId={announcementId} />
     </>
   );
 }
