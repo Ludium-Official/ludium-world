@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import world.ludium.education.announcement.model.Announcement;
+import world.ludium.education.announcement.model.DetailedAnnouncement;
 import world.ludium.education.article.Article;
 import world.ludium.education.article.ArticleService;
 import world.ludium.education.auth.LoginService;
@@ -15,11 +16,10 @@ import world.ludium.education.course.*;
 import world.ludium.education.make.Category;
 
 import java.math.BigInteger;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/announcement", produces = "application/json")
@@ -31,22 +31,35 @@ public class AnnouncementController {
     private final ModuleService moduleService;
 
     private final AnnouncementService announcementService;
+    private final DetailedAnnouncementService detailedAnnouncementService;
 
     public AnnouncementController(LoginService loginService,
                                   ArticleService articleService,
                                   LudiumUserService ludiumUserService,
                                   ModuleService moduleService,
-                                  AnnouncementService announcementService) {
+                                  AnnouncementService announcementService,
+                                  DetailedAnnouncementService detailedAnnouncementService) {
         this.loginService = loginService;
         this.articleService = articleService;
         this.ludiumUserService = ludiumUserService;
         this.moduleService = moduleService;
         this.announcementService = announcementService;
+        this.detailedAnnouncementService = detailedAnnouncementService;
     }
 
     @GetMapping("")
     public ResponseEntity<List<Announcement>> getAllAnnouncement() {
         return ResponseEntity.ok(announcementService.getAllAnnouncement());
+    }
+
+    @GetMapping("/{announcementId}")
+    public ResponseEntity<Announcement> getAnnouncement(@PathVariable UUID announcementId) {
+        return ResponseEntity.ok(announcementService.getAnnouncement(announcementId).orElseThrow());
+    }
+
+    @GetMapping("/{announcementId}/detail")
+    public ResponseEntity<List<DetailedAnnouncement>> getDetailedAnnouncementByAnnouncement(@PathVariable UUID announcementId) {
+        return ResponseEntity.ok(detailedAnnouncementService.getDetailedAnnouncementByAnnouncement(announcementId));
     }
 
     @PostMapping("")
@@ -91,41 +104,34 @@ public class AnnouncementController {
         }});
     }
 
-    @GetMapping("/{announcementId}")
-    public ResponseEntity getAnnouncement(@PathVariable UUID announcementId) {
-        var courseDTO = new CourseDTO();
+    @PostMapping("{announcementId}")
+    public ResponseEntity<Object> createDetailsAnnouncement(@PathVariable UUID announcementId,
+                                                            @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = getLudiumUser(accessToken);
+
+        if (ludiumUser == null)
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(getUnAuthorizedMessage());
+
+        var detailedAnnouncement = new DetailedAnnouncement();
+        detailedAnnouncement.setTitle("");
+        detailedAnnouncement.setDescription("");
+        detailedAnnouncement.setPostingId(announcementId);
+
         try {
-            Article announce = articleService.getArticle(announcementId);
-            var modules = moduleService.getAllModulesByCourse(announcementId)
-                    .stream()
-                    .map(module -> {
-                        UUID moduleId = module.getId();
-
-                        try {
-                            return articleService.getArticle(moduleId);
-                        } catch (Exception e) {
-                            return null;
-                        }
-                    })
-                    .filter(module -> module != null)
-                    .sorted(Comparator.comparingInt(Article::getOrderNo))
-                    .collect(Collectors.toList());
-
-            courseDTO.setId(announce.getId());
-            courseDTO.setTitle(announce.getTitle());
-            courseDTO.setContent(announce.getContent());
-            courseDTO.setModules(modules);
+            detailedAnnouncementService.createDetailedAnnouncement(detailedAnnouncement);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new HashMap<>() {{
-                put("message", "제작을 불러오는 중에 에러가 발생했습니다.");
-                put("debug", e.getMessage());
-            }});
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(getExceptionMessage("세부 공고를 만드는 중에 에러가 발생했습니다.", e.getMessage()));
         }
-        return ResponseEntity.ok(courseDTO);
+
+        return ResponseEntity.ok(detailedAnnouncement);
     }
 
     @GetMapping("/{announcementId}/{moduleId}")
-    public ResponseEntity getModule(@PathVariable UUID moduleId) {
+    public ResponseEntity<Object> getModule(@PathVariable UUID moduleId) {
         ModuleDTO moduleDTO = new ModuleDTO();
 
         try {
@@ -218,56 +224,11 @@ public class AnnouncementController {
         }});
     }
 
-    @PostMapping("{announcementId}")
-    public ResponseEntity createModule(@PathVariable UUID announcementId,
-                                       @RequestParam String title,
-                                       @CookieValue(name = "access_token", required = false) String accessToken) {
-        JsonNode googleUserApiData = null;
-
-        try {
-            googleUserApiData = loginService.getUserResource(accessToken, "google");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                    new HashMap<String, String>() {
-                        {
-                            put("message", "인증에 실패했습니다.");
-                            put("debug", e.getMessage());
-                        }
-                    });
-        }
-
-        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
-
-        Article module1 = Article.Module();
-        module1.setTitle(title);
-        module1.setContent("");
-        module1.setUsrId(ludiumUser.getId());
-
-        Module module2 = new Module();
-        module2.setTitle(title);
-
-        try {
-            articleService.createModule(module1, module2, announcementId);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new HashMap<String, String>() {{
-                        put("message", "모듈을 만드는 중에 에러가 발생했습니다.");
-                        put("debug", e.getMessage());
-                    }}
-            );
-        }
-
-        return ResponseEntity.ok(new HashMap<String, String>() {{
-            put("title", title);
-            put("content", "");
-        }});
-    }
-
     @PostMapping("{announcementId}/{moduleId}")
     public ResponseEntity createMake(@PathVariable UUID announcementId,
-                                       @PathVariable UUID moduleId,
-                                       @RequestParam String title,
-                                       @CookieValue(name = "access_token", required = false) String accessToken) {
+                                     @PathVariable UUID moduleId,
+                                     @RequestParam String title,
+                                     @CookieValue(name = "access_token", required = false) String accessToken) {
         JsonNode googleUserApiData = null;
 
         try {
@@ -328,5 +289,32 @@ public class AnnouncementController {
         return ResponseEntity.ok(new HashMap<>() {{
             put("id", announcementId);
         }});
+    }
+
+    public LudiumUser getLudiumUser(String accessToken) {
+        try {
+            var googleUserApiData = loginService.getUserResource(accessToken, "google");
+            return ludiumUserService
+                    .getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public Map<String, String> getUnAuthorizedMessage() {
+        var unAuthorizedResponse = new HashMap<String, String>();
+
+        unAuthorizedResponse.put("message", "인증에 실패했습니다.");
+
+        return unAuthorizedResponse;
+    }
+
+    public Map<String, String> getExceptionMessage(String message, String debugMessage) {
+        var exceptionResponse = new HashMap<String, String>();
+
+        exceptionResponse.put("message", message);
+        exceptionResponse.put("debug", debugMessage);
+
+        return exceptionResponse;
     }
 }

@@ -5,6 +5,8 @@ import world.ludium.education.announcement.model.Announcement;
 import world.ludium.education.announcement.model.AnnouncementRepository;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AnnouncementService {
@@ -17,4 +19,5 @@ public class AnnouncementService {
     public List<Announcement> getAllAnnouncement() {
         return announcementRepository.findAll();
     }
+    public Optional<Announcement> getAnnouncement(UUID announcementId) { return announcementRepository.findById(announcementId); }
 }
