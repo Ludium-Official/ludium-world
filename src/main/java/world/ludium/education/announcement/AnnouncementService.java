@@ -20,4 +20,9 @@ public class AnnouncementService {
         return announcementRepository.findAll();
     }
     public Optional<Announcement> getAnnouncement(UUID announcementId) { return announcementRepository.findById(announcementId); }
+
+    public void createAnnouncement(Announcement announcement) {
+        announcement.setPostingId(UUID.randomUUID());
+        announcementRepository.save(announcement);
+    }
 }
