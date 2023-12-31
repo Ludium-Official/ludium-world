@@ -4,8 +4,8 @@ import announcementstyle from "./announcement.module.css";
 import ContentNavigation from "../../components/ContentNavigation";
 
 export const metadata = {
-  title: "교육"
-}
+  title: "교육",
+};
 
 async function getAnnouncementList() {
   const getannouncementsResponse = await fetchWithRetry(`/announcement`);
@@ -15,8 +15,26 @@ async function getAnnouncementList() {
   return await getannouncementsResponse.json();
 }
 
-export default async function AnnouncementPage() {
+async function AnnouncementList() {
   const announcements = await getAnnouncementList();
+
+  return (
+    <div className={announcementstyle["announcement-list"]}>
+      {announcements.map((announcement) => (
+        <h2
+          className={announcementstyle["announcement-list-item"]}
+          key={announcement.postingId}
+        >
+          <Link href={`/announcement/${announcement.postingId}`}>
+            {announcement.title}
+          </Link>
+        </h2>
+      ))}
+    </div>
+  );
+}
+
+export default async function AnnouncementPage() {
   const announcementLinks = [
     {
       href: "/announcement/new",
@@ -31,15 +49,7 @@ export default async function AnnouncementPage() {
       </div>
       <article className={announcementstyle.wrapper}>
         <h1 className={announcementstyle["title-label"]}>공고 목록</h1>
-        <div className={announcementstyle["announcement-list"]}>
-          {announcements.map((announcement) => (
-            <h2 className={announcementstyle["announcement-list-item"]} key={crypto.randomUUID()}>
-              <Link key={announcement.id} href={`/announcement/${announcement.id}`}>
-                {announcement.title}
-              </Link>
-            </h2>
-          ))}
-        </div>
+        <AnnouncementList />
       </article>
     </>
   );
