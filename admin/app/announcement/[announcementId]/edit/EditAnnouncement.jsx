@@ -1,34 +1,40 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
-import Editor from "../../../../components/Editor";
+import { useRef, useState } from "react";
 import fetchWithRetry from "../../../../functions/api";
 import announcementstyle from "../../announcement.module.css";
+import dynamic from "next/dynamic";
 
-export default function EditAnnouncement({ id, title, content }) {
+const Editor = dynamic(() => import("@/components/Editor"), {
+  ssr: false,
+});
+
+export default function EditAnnouncement({ postingId, title, description }) {
   const editorRef = useRef(null);
   const router = useRouter();
+  const [pending, setPending] = useState(false);
 
   const handleSave = async (e) => {
     e.preventDefault();
+    setPending(true);
 
     const { editorInstance } = editorRef.current;
 
-    const formData = new FormData(e.target);
-
-    formData.append("content", editorInstance.getMarkdown());
-
     const createAnnouncementResponse = await fetchWithRetry(
-      `/announcement/${id}`,
+      `/announcement/${postingId}`,
       {
         method: "PUT",
-        body: formData,
+        body: JSON.stringify({
+          postingId: postingId,
+          title: e.target.title.value,
+          description: editorInstance.getMarkdown(),
+        }),
       }
     );
 
     if (createAnnouncementResponse.ok) {
-      router.push(`/announcement/${id}`);
+      router.back();
       router.refresh();
     }
   };
@@ -50,7 +56,8 @@ export default function EditAnnouncement({ id, title, content }) {
         <input
           className={announcementstyle["form-button"]}
           type="submit"
-          value="저장하기"
+          value={pending ? "공고를 저장하는 중입니다..." : "저장하기"}
+          disabled={pending}
         />
       </div>
       <div className={announcementstyle["form-header"]}>
@@ -64,7 +71,7 @@ export default function EditAnnouncement({ id, title, content }) {
         />
       </div>
       <div className={announcementstyle["form-content-area"]}>
-        <Editor editorRef={editorRef} content={content} height="100%" />
+        <Editor editorRef={editorRef} content={description} height="100%" />
       </div>
     </form>
   );

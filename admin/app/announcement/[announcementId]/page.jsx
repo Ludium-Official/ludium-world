@@ -12,9 +12,13 @@ const Viewer = dynamic(() => import("@/components/Viewer"), {
   ssr: false,
 });
 
-export const metadata = {
-  title: "공고",
-};
+export async function generateMetadata({ params: { announcementId } }) {
+  const announcement = await getAnnouncement(announcementId);
+
+  return {
+    title: announcement.title,
+  };
+}
 
 async function getAnnouncement(announcementId) {
   const getAnnouncementResponse = await fetchWithRetry(
@@ -59,7 +63,7 @@ async function DetailedAnnouncementList({ announcementId }) {
             <summary
               className={announcementstyle["detailed-announcement-summary"]}
             >
-              {title === "" ? "세부 공고" : title} 펼치고 닫기
+              {title === "" ? "세부 공고" : title} 펼치기 / 닫기
             </summary>
             <ModuleNavigation links={[]}>
               {/* <ModuleDeleteButton
@@ -112,7 +116,7 @@ async function AnnoucementContent({ announcementId }) {
     <article className={announcementstyle.wrapper}>
       <h1 className={announcementstyle.title}>{announcement.title}</h1>
       <section className={announcementstyle["content-area"]}>
-        <Viewer content={announcement.content} height="100%" />
+        <Viewer content={announcement.description} height="100%" />
       </section>
       <DetailedAnnouncementList announcementId={announcementId} />
     </article>
