@@ -5,8 +5,9 @@ import ContentNavigation from "@/components/ContentNavigation";
 import DeleteButton from "@/components/DeleteButton";
 import fetchWithRetry from "@/functions/api";
 import announcementstyle from "../announcement.module.css";
-import ModuleCreateButton from "./ModuleCreateButton";
+import ModuleCreateButton from "./button/ModuleCreateButton";
 import ModuleNavigation from "./ModuleNavigation";
+import APPLY_CATEGORY from "@/enums/APPLY_CATEGORY";
 
 const Viewer = dynamic(() => import("@/components/Viewer"), {
   ssr: false,
@@ -71,12 +72,12 @@ async function DetailedAnnouncementList({ announcementId }) {
                 moduleId={detailId}
               /> */}
               <Link
-                href={`/announcement/${announcementId}/module/${detailId}/apply`}
+                href={`/announcement/${announcementId}/${detailId}/application-template?role=${APPLY_CATEGORY.PROVIDER}`}
               >
                 제작자 지원서 양식 작성하기
               </Link>
               <Link
-                href={`/announcement/${announcementId}/module/${detailId}/apply`}
+                href={`/announcement/${announcementId}/${detailId}/application-template?role=${APPLY_CATEGORY.VALIDATOR}`}
               >
                 검증자 지원서 양식 작성하기
               </Link>

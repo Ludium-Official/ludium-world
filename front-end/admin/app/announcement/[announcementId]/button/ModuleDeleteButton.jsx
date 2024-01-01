@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import fetchWithRetry from "../../../functions/api";
+import fetchWithRetry from "@/functions/api";
 
 export default function ModuleDeleteButton({ moduleId }) {
   const router = useRouter();
