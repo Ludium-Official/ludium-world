@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import fetchWithRetry from "../../../functions/api";
+import fetchWithRetry from "@/functions/api";
 
 export default function ModuleCreateButton({ announceId }) {
   const router = useRouter();
