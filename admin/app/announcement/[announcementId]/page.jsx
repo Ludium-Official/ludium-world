@@ -76,11 +76,11 @@ async function DetailedAnnouncementList({ announcementId }) {
               >
                 제작자 지원서 양식 작성하기
               </Link>
-              <Link
+              {/* <Link
                 href={`/announcement/${announcementId}/${detailId}/application-template?role=${APPLY_CATEGORY.VALIDATOR}`}
               >
                 검증자 지원서 양식 작성하기
-              </Link>
+              </Link> */}
               <Link href={`/announcement/${announcementId}/${detailId}`}>
                 수정하기
               </Link>
