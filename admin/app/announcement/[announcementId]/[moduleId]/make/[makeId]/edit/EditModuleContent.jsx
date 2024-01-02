@@ -3,16 +3,18 @@
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import "tui-grid/dist/tui-grid.css";
-import Editor from "../../../../../../../../components/Editor";
-import fetchWithRetry from "../../../../../../../../functions/api";
-import announcementstyle from "../../../../../../announcement.module.css";
-import Category from "../../../../../../../../enums/Category";
+import fetchWithRetry from "@/functions/api";
+import announcementstyle from "@/app/announcement/announcement.module.css";
+import Category from "@/enums/Category";
+import dynamic from "next/dynamic";
+
+const Editor = dynamic(() => import("@/components/Editor"), { ssr: false });
 
 export default function EditMakeContent({
   module,
   announcementId,
   moduleId,
-  makeId
+  makeId,
 }) {
   const editorRef = useRef(null);
   const router = useRouter();
@@ -42,12 +44,21 @@ export default function EditMakeContent({
 
   const handleBack = () => {
     router.back();
-  }
+  };
 
   return (
-    <form className={`${announcementstyle["announcement-edit-wrapper"]} ${announcementstyle["form-wrapper"]}`} onSubmit={handleSubmit}>
+    <form
+      className={`${announcementstyle["announcement-edit-wrapper"]} ${announcementstyle["form-wrapper"]}`}
+      onSubmit={handleSubmit}
+    >
       <div className={announcementstyle["announcement-edit-button-area"]}>
-        <button className={announcementstyle["announcement-edit-button"]} type="button" onClick={handleBack}>돌아가기</button>
+        <button
+          className={announcementstyle["announcement-edit-button"]}
+          type="button"
+          onClick={handleBack}
+        >
+          돌아가기
+        </button>
         <input
           className={announcementstyle["announcement-edit-button"]}
           type="submit"
@@ -68,7 +79,11 @@ export default function EditMakeContent({
         <option value={Category.ARTICLE}>아티클</option>
       </select>
       <div className={announcementstyle["announcement-edit-content-area"]}>
-        <Editor editorRef={editorRef} content={module.content} height={"100%"} />
+        <Editor
+          editorRef={editorRef}
+          content={module.content}
+          height={"100%"}
+        />
       </div>
     </form>
   );

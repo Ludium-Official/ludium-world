@@ -3,10 +3,10 @@
 import { useRef } from "react";
 import applystyle from "./apply.module.css";
 import { useRouter } from "next/navigation";
-import fetchWithRetry from "../../../../../../functions/api";
+import fetchWithRetry from "@/functions/api";
 import dynamic from "next/dynamic";
 
-const Editor = dynamic(() => import("../../../../../../components/Editor"), { ssr: false });
+const Editor = dynamic(() => import("@/components/Editor"), { ssr: false });
 
 export default function ApplyForm({ apply }) {
     const { id, content } = apply;
