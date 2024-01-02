@@ -11,7 +11,7 @@ export default function ModuleDeleteButton({ moduleId }) {
     });
 
     if (!deleteModuleResponse.ok)
-      alert("모듈을 삭제하는 중에 에러가 발생했습니다.");
+      alert("모듈을 삭제하는 중 에러가 발생했습니다.");
     else {
       alert("모듈이 삭제되었습니다.");
       router.refresh();

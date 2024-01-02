@@ -41,7 +41,7 @@ export default function CreateApplicationTemplateForm({
 
     if (!createApplicationTemplateResponse.ok) {
       setPending(false);
-      throw new Error("지원서 양식을 저장하는 중에 에러가 발생했습니다.");
+      throw new Error("지원서 양식을 저장하는 중 에러가 발생했습니다.");
     }
 
     router.back();
