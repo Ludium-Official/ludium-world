@@ -14,7 +14,7 @@ async function getAnnouncement(announcementId) {
   );
 
   if (!getAnnouncementResponse.ok)
-    throw new Error("공고를 불러오는 중에 에러가 발생했습니다.");
+    throw new Error("공고를 불러오는 중 에러가 발생했습니다.");
 
   return await getAnnouncementResponse.json();
 }

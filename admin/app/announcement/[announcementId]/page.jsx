@@ -27,7 +27,7 @@ async function getAnnouncement(announcementId) {
   );
 
   if (!getAnnouncementResponse.ok)
-    throw new Error("공고를 불러오는 중에 에러가 발생했습니다.");
+    throw new Error("공고를 불러오는 중 에러가 발생했습니다.");
 
   return await getAnnouncementResponse.json();
 }
@@ -38,7 +38,7 @@ async function getDetailedAnnouncementList(announcementId) {
   );
 
   if (!getDetailedAnnouncementListResponse.ok)
-    throw new Error("세부 공고를 불러오는 중에 에러가 발생했습니다.");
+    throw new Error("세부 공고를 불러오는 중 에러가 발생했습니다.");
 
   return await getDetailedAnnouncementListResponse.json();
 }
@@ -72,15 +72,15 @@ async function DetailedAnnouncementList({ announcementId }) {
                 moduleId={detailId}
               /> */}
               <Link
+                href={`/announcement/${announcementId}/${detailId}/application?role=${APPLY_CATEGORY.PROVIDER}`}
+              >
+                제작자 지원자 보기
+              </Link>
+              <Link
                 href={`/announcement/${announcementId}/${detailId}/application-template?role=${APPLY_CATEGORY.PROVIDER}`}
               >
                 제작자 지원서 양식 작성하기
               </Link>
-              {/* <Link
-                href={`/announcement/${announcementId}/${detailId}/application-template?role=${APPLY_CATEGORY.VALIDATOR}`}
-              >
-                검증자 지원서 양식 작성하기
-              </Link> */}
               <Link href={`/announcement/${announcementId}/${detailId}`}>
                 수정하기
               </Link>
