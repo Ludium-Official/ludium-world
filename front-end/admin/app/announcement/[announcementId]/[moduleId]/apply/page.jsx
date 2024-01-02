@@ -1,48 +1,47 @@
 import { cookies } from "next/headers";
-import fetchWithRetry from "../../../../../../functions/api";
+import fetchWithRetry from "@/functions/api";
 import ApplyForm from "./ApplyForm";
 import applystyle from "./apply.module.css";
 import RedirectEditPage from "./RedirectEditPage";
 
 export const metadata = {
-    title: "지원서 작성하기"
-}
+  title: "지원서 작성하기",
+};
 
 export async function getApply(moduleId) {
-    const applyResponse = await fetchWithRetry(`/module/${moduleId}/apply`);
+  const applyResponse = await fetchWithRetry(`/module/${moduleId}/apply`);
 
-    if (!applyResponse.ok) return null;
+  if (!applyResponse.ok) return null;
 
-    const apply = await applyResponse.json();
+  const apply = await applyResponse.json();
 
-    return apply;
+  return apply;
 }
 
 export async function getSubmitApplyReference(applyId) {
-    const cookieStore = cookies();
+  const cookieStore = cookies();
 
-    if (cookieStore.get("access_token") === undefined) throw new Error(401);
+  if (cookieStore.get("access_token") === undefined) throw new Error(401);
 
-    const submitApplyResponse = await fetchWithRetry(`/apply/${applyId}/submit`, {
-        headers: {
-            cookie: cookieStore,
-        },
-    });
+  const submitApplyResponse = await fetchWithRetry(`/apply/${applyId}/submit`, {
+    headers: {
+      cookie: cookieStore,
+    },
+  });
 
+  if (!submitApplyResponse.ok)
+    if (submitApplyResponse.status === 403) throw new Error(403);
+    else return null;
 
-    if (!submitApplyResponse.ok)
-        if (submitApplyResponse.status === 403) throw new Error(403);
-        else return null;
-
-    return await submitApplyResponse.json();
+  return await submitApplyResponse.json();
 }
 
 export default async function ApplyPage({ params: { moduleId } }) {
-    const apply = await getApply(moduleId);
+  const apply = await getApply(moduleId);
 
-    const submit = await getSubmitApplyReference(apply.id);
+  const submit = await getSubmitApplyReference(apply.id);
 
-    if (submit.aplId !== null) return <RedirectEditPage />;
+  if (submit.aplId !== null) return <RedirectEditPage />;
 
-    return <ApplyForm apply={apply} />
+  return <ApplyForm apply={apply} />;
 }
