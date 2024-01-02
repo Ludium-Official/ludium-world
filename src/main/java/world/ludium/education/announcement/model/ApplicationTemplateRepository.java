@@ -6,5 +6,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ApplicationTemplateRepository extends JpaRepository<ApplicationTemplate, UUID> {
-    public Optional<ApplicationTemplate> findByDetailIdAndRole(UUID detailId, String role);
+    Optional<ApplicationTemplate> findByDetailIdAndRole(UUID detailId, String role);
 }

@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import world.ludium.education.announcement.model.Announcement;
-import world.ludium.education.announcement.model.ApplicationTemplate;
-import world.ludium.education.announcement.model.DetailedAnnouncement;
+import world.ludium.education.announcement.model.*;
 import world.ludium.education.article.Article;
 import world.ludium.education.article.ArticleService;
 import world.ludium.education.auth.LoginService;
@@ -18,7 +16,9 @@ import world.ludium.education.course.ModuleService;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/announcement", produces = "application/json")
@@ -32,6 +32,7 @@ public class AnnouncementController {
     private final AnnouncementService announcementService;
     private final DetailedAnnouncementService detailedAnnouncementService;
     private final ApplicationTemplateService applicationTemplateService;
+    private final ApplicationService applicationService;
 
     public AnnouncementController(LoginService loginService,
                                   ArticleService articleService,
@@ -39,7 +40,8 @@ public class AnnouncementController {
                                   ModuleService moduleService,
                                   AnnouncementService announcementService,
                                   DetailedAnnouncementService detailedAnnouncementService,
-                                  ApplicationTemplateService applicationTemplateService) {
+                                  ApplicationTemplateService applicationTemplateService,
+                                  ApplicationService applicationService) {
         this.loginService = loginService;
         this.articleService = articleService;
         this.ludiumUserService = ludiumUserService;
@@ -47,6 +49,7 @@ public class AnnouncementController {
         this.announcementService = announcementService;
         this.detailedAnnouncementService = detailedAnnouncementService;
         this.applicationTemplateService = applicationTemplateService;
+        this.applicationService = applicationService;
     }
 
     @GetMapping("")
@@ -75,6 +78,31 @@ public class AnnouncementController {
         return ResponseEntity.ok(applicationTemplateService.getApplicationTemplate(detailedAnnouncementId, role));
     }
 
+    @GetMapping("/{announcementId}/{detailedAnnouncementId}/application")
+    public ResponseEntity<Object> getApplication(@PathVariable UUID detailedAnnouncementId,
+                                                 @RequestParam String role) {
+        return ResponseEntity.ok(applicationService
+                .getApplication(detailedAnnouncementId, role)
+                .stream()
+                .map((application) -> new ApplicationDTO(application, ludiumUserService.getUserById(application.getUsrId())))
+                .collect(Collectors.toList()));
+    }
+
+    @GetMapping("{announcementId}/{detailedAnnouncementId}/worker")
+    public ResponseEntity<Object> updateDetailsAnnouncementWorker(@PathVariable UUID detailedAnnouncementId,
+                                                                  @RequestParam String role) {
+        try {
+            var detailedAnnouncementWorker = detailedAnnouncementService.getDetailedAnnouncementWorker(detailedAnnouncementId, role);
+            var detailedAnnouncementWorkerDTO = new DetailedAnnouncementWorkerDTO(detailedAnnouncementWorker, ludiumUserService.getUserById(detailedAnnouncementWorker.getUsrId()));
+
+            return ResponseEntity.ok(detailedAnnouncementWorkerDTO);
+        } catch (NoSuchElementException nse) {
+            return getNoSuchElementExceptionMessage("작업자 데이터가 없습니다.", nse.getMessage());
+        } catch (Exception e) {
+            return getExceptionMessage("작업자를 수정하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
     @PostMapping("")
     public ResponseEntity<Object> createAnnouncement(@RequestBody Announcement announcement,
                                                      @CookieValue(name = "access_token", required = false) String accessToken) {
@@ -88,7 +116,6 @@ public class AnnouncementController {
         } catch (Exception e) {
             return getExceptionMessage("공고를 만드는 중에 에러가 발생했습니다.", e.getMessage());
         }
-
     }
 
     @PostMapping("{announcementId}")
@@ -123,6 +150,21 @@ public class AnnouncementController {
             return ResponseEntity.ok(applicationTemplateService.createApplicationTemplate(applicationTemplate));
         } catch (Exception e) {
             return getExceptionMessage("지원서 양식을 만드는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @PostMapping("{announcementId}/{detailedAnnouncementId}/worker")
+    public ResponseEntity<Object> createDetailsAnnouncementWorker(@RequestBody DetailedAnnouncementWorker detailedAnnouncementWorker,
+                                                                  @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = getLudiumUser(accessToken);
+
+        if (ludiumUser == null)
+            return getUnAuthorizedMessage();
+
+        try {
+            return ResponseEntity.ok(detailedAnnouncementService.createDetailedAnnouncementWorker(detailedAnnouncementWorker));
+        } catch (Exception e) {
+            return getExceptionMessage("작업자를 만드는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
@@ -174,6 +216,21 @@ public class AnnouncementController {
             return ResponseEntity.ok(applicationTemplateService.updateApplicationTemplate(applicationTemplate));
         } catch (Exception e) {
             return getExceptionMessage("지원서 양식을 수정하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @PutMapping("{announcementId}/{detailedAnnouncementId}/worker")
+    public ResponseEntity<Object> updateDetailsAnnouncementWorker(@RequestBody DetailedAnnouncementWorker detailedAnnouncementWorker,
+                                                                  @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = getLudiumUser(accessToken);
+
+        if (ludiumUser == null)
+            return getUnAuthorizedMessage();
+
+        try {
+            return ResponseEntity.ok(detailedAnnouncementService.updateDetailedAnnouncementWorker(detailedAnnouncementWorker));
+        } catch (Exception e) {
+            return getExceptionMessage("작업자를 수정하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
@@ -272,6 +329,17 @@ public class AnnouncementController {
 
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(exceptionResponse);
+    }
+
+    public ResponseEntity<Object> getNoSuchElementExceptionMessage(String message, String debugMessage) {
+        var exceptionResponse = new HashMap<String, String>();
+
+        exceptionResponse.put("message", message);
+        exceptionResponse.put("debug", debugMessage);
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
                 .body(exceptionResponse);
     }
 }
