@@ -61,7 +61,7 @@ export default async function ApplicationPage({
 
   if (!applicationTemplate)
     throw new Error(
-      "제작자 지원서 양식이 없습니다. 지원서 양식을 먼저 만들어주세요."
+      "작업자 지원서 양식이 없습니다. 지원서 양식을 먼저 만들어주세요."
     );
 
   const applicationList = await getApplicationList(

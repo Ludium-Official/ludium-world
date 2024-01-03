@@ -61,7 +61,7 @@ export default function EditModuleContent({ module }) {
         <input
           className={announcementstyle["announcement-edit-button"]}
           type="submit"
-          value={pending ? "세부 공고를 저장하는 중입니다..." : "저장하기"}
+          value={pending ? "작업을 저장하는 중입니다..." : "저장하기"}
           disabled={pending}
         />
       </div>

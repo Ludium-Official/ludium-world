@@ -20,7 +20,7 @@ async function getDetailedAnnouncement(announcementId, moduleId) {
   );
 
   if (!getModuleResponse.ok)
-    throw new Error("세부 공고를 불러오는 중 에러가 발생했습니다.");
+    throw new Error("작업을 불러오는 중 에러가 발생했습니다.");
 
   return await getModuleResponse.json();
 }
