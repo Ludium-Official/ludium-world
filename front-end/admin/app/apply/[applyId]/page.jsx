@@ -144,7 +144,7 @@ async function getProfile(usrId) {
   return await getProfileResponse.json();
 }
 
-async function MakeItem({ id, title , submits, moduleId }) {
+async function MakeItem({ id, title, submits, moduleId }) {
   const make = await getMake(id);
   const profile = await getProfile(make.usrId);
 
