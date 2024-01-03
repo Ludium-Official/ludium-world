@@ -12,6 +12,7 @@ import world.ludium.education.auth.ludium.LudiumUser;
 import world.ludium.education.auth.ludium.LudiumUserService;
 import world.ludium.education.course.Module;
 import world.ludium.education.course.ModuleService;
+import world.ludium.education.util.ResponseUtil;
 
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -33,6 +34,7 @@ public class AnnouncementController {
     private final DetailedAnnouncementService detailedAnnouncementService;
     private final ApplicationTemplateService applicationTemplateService;
     private final ApplicationService applicationService;
+    private final ResponseUtil responseUtil;
 
     public AnnouncementController(LoginService loginService,
                                   ArticleService articleService,
@@ -41,7 +43,8 @@ public class AnnouncementController {
                                   AnnouncementService announcementService,
                                   DetailedAnnouncementService detailedAnnouncementService,
                                   ApplicationTemplateService applicationTemplateService,
-                                  ApplicationService applicationService) {
+                                  ApplicationService applicationService,
+                                  ResponseUtil responseUtil) {
         this.loginService = loginService;
         this.articleService = articleService;
         this.ludiumUserService = ludiumUserService;
@@ -50,6 +53,7 @@ public class AnnouncementController {
         this.detailedAnnouncementService = detailedAnnouncementService;
         this.applicationTemplateService = applicationTemplateService;
         this.applicationService = applicationService;
+        this.responseUtil = responseUtil;
     }
 
     @GetMapping("")
@@ -64,7 +68,7 @@ public class AnnouncementController {
 
     @GetMapping("/{announcementId}/detail")
     public ResponseEntity<List<DetailedAnnouncement>> getAllDetailedAnnouncementByAnnouncement(@PathVariable UUID announcementId) {
-        return ResponseEntity.ok(detailedAnnouncementService.getAllDetailedAnnouncementByAnnouncement(announcementId));
+        return ResponseEntity.ok(detailedAnnouncementService.getAllDetailedAnnouncement(announcementId));
     }
 
     @GetMapping("/{announcementId}/{detailedAnnouncementId}")
@@ -78,9 +82,9 @@ public class AnnouncementController {
         try {
             return ResponseEntity.ok(applicationTemplateService.getApplicationTemplate(detailedAnnouncementId, role));
         } catch (NoSuchElementException nse) {
-            return getNoSuchElementExceptionMessage("지원서 양식 데이터가 없습니다.", nse.getMessage());
+            return responseUtil.getNoSuchElementExceptionMessage("지원서 양식 데이터가 없습니다.", nse.getMessage());
         } catch (Exception e) {
-            return getExceptionMessage("지원서 양식을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+            return responseUtil.getExceptionMessage("지원서 양식을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
@@ -102,15 +106,15 @@ public class AnnouncementController {
         var ludiumUser = getLudiumUser(accessToken);
 
         if (ludiumUser == null)
-            return getUnAuthorizedMessage();
+            return responseUtil.getUnAuthorizedMessage();
 
         try {
             return ResponseEntity
                     .ok(applicationService.getApplication(detailedAnnouncementId, role, ludiumUser.getId()));
         } catch(NoSuchElementException nse) {
-            return getNoSuchElementExceptionMessage("지원서 데이터가 없습니다.", nse.getMessage());
+            return responseUtil.getNoSuchElementExceptionMessage("지원서 데이터가 없습니다.", nse.getMessage());
         } catch (Exception e) {
-            return getExceptionMessage("지원서를 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+            return responseUtil.getExceptionMessage("지원서를 조회하는 중에 에러가 발생했습니다.", e.getMessage());
         }
 
     }
@@ -124,9 +128,9 @@ public class AnnouncementController {
 
             return ResponseEntity.ok(detailedAnnouncementWorkerDTO);
         } catch (NoSuchElementException nse) {
-            return getNoSuchElementExceptionMessage("작업자 데이터가 없습니다.", nse.getMessage());
+            return responseUtil.getNoSuchElementExceptionMessage("작업자 데이터가 없습니다.", nse.getMessage());
         } catch (Exception e) {
-            return getExceptionMessage("작업자를 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+            return responseUtil.getExceptionMessage("작업자를 조회하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
@@ -136,12 +140,12 @@ public class AnnouncementController {
         var ludiumUser = getLudiumUser(accessToken);
 
         if (ludiumUser == null)
-            return getUnAuthorizedMessage();
+            return responseUtil.getUnAuthorizedMessage();
 
         try {
             return ResponseEntity.ok(announcementService.createAnnouncement(announcement));
         } catch (Exception e) {
-            return getExceptionMessage("공고를 만드는 중에 에러가 발생했습니다.", e.getMessage());
+            return responseUtil.getExceptionMessage("공고를 만드는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
@@ -151,7 +155,7 @@ public class AnnouncementController {
         var ludiumUser = getLudiumUser(accessToken);
 
         if (ludiumUser == null)
-            return getUnAuthorizedMessage();
+            return responseUtil.getUnAuthorizedMessage();
 
         var detailedAnnouncement = new DetailedAnnouncement();
         detailedAnnouncement.setTitle("");
@@ -161,7 +165,7 @@ public class AnnouncementController {
         try {
             return ResponseEntity.ok(detailedAnnouncementService.createDetailedAnnouncement(detailedAnnouncement));
         } catch (Exception e) {
-            return getExceptionMessage("세부 공고를 만드는 중에 에러가 발생했습니다.", e.getMessage());
+            return responseUtil.getExceptionMessage("세부 공고를 만드는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
@@ -171,12 +175,12 @@ public class AnnouncementController {
         var ludiumUser = getLudiumUser(accessToken);
 
         if (ludiumUser == null)
-            return getUnAuthorizedMessage();
+            return responseUtil.getUnAuthorizedMessage();
 
         try {
             return ResponseEntity.ok(applicationTemplateService.createApplicationTemplate(applicationTemplate));
         } catch (Exception e) {
-            return getExceptionMessage("지원서 양식을 만드는 중에 에러가 발생했습니다.", e.getMessage());
+            return responseUtil.getExceptionMessage("지원서 양식을 만드는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
@@ -186,12 +190,12 @@ public class AnnouncementController {
         var ludiumUser = getLudiumUser(accessToken);
 
         if (ludiumUser == null)
-            return getUnAuthorizedMessage();
+            return responseUtil.getUnAuthorizedMessage();
 
         try {
             return ResponseEntity.ok(detailedAnnouncementService.createDetailedAnnouncementWorker(detailedAnnouncementWorker));
         } catch (Exception e) {
-            return getExceptionMessage("작업자를 만드는 중에 에러가 발생했습니다.", e.getMessage());
+            return responseUtil.getExceptionMessage("작업자를 만드는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
@@ -201,14 +205,14 @@ public class AnnouncementController {
         var ludiumUser = getLudiumUser(accessToken);
 
         if (ludiumUser == null)
-            return getUnAuthorizedMessage();
+            return responseUtil.getUnAuthorizedMessage();
 
         application.setUsrId(ludiumUser.getId());
 
         try {
             return ResponseEntity.ok(applicationService.createApplication(application));
         } catch (Exception e) {
-            return getExceptionMessage("지원서를 만드는 중에 에러가 발생했습니다.", e.getMessage());
+            return responseUtil.getExceptionMessage("지원서를 만드는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
@@ -223,12 +227,12 @@ public class AnnouncementController {
         var ludiumUser = getLudiumUser(accessToken);
 
         if (ludiumUser == null)
-            return getUnAuthorizedMessage();
+            return responseUtil.getUnAuthorizedMessage();
 
         try {
             return ResponseEntity.ok(announcementService.updateAnnouncement(announcement));
         } catch (Exception e) {
-            return getExceptionMessage("공고를 수정하는 중에 에러가 발생했습니다.", e.getMessage());
+            return responseUtil.getExceptionMessage("공고를 수정하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
@@ -239,12 +243,12 @@ public class AnnouncementController {
         var ludiumUser = getLudiumUser(accessToken);
 
         if (ludiumUser == null)
-            return getUnAuthorizedMessage();
+            return responseUtil.getUnAuthorizedMessage();
 
         try {
             return ResponseEntity.ok(detailedAnnouncementService.updateDetailedAnnouncement(detailedAnnouncement));
         } catch (Exception e) {
-            return getExceptionMessage("세부 공고를 수정하는 중에 에러가 발생했습니다.", e.getMessage());
+            return responseUtil.getExceptionMessage("세부 공고를 수정하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
@@ -254,12 +258,12 @@ public class AnnouncementController {
         var ludiumUser = getLudiumUser(accessToken);
 
         if (ludiumUser == null)
-            return getUnAuthorizedMessage();
+            return responseUtil.getUnAuthorizedMessage();
 
         try {
             return ResponseEntity.ok(applicationTemplateService.updateApplicationTemplate(applicationTemplate));
         } catch (Exception e) {
-            return getExceptionMessage("지원서 양식을 수정하는 중에 에러가 발생했습니다.", e.getMessage());
+            return responseUtil.getExceptionMessage("지원서 양식을 수정하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
@@ -269,12 +273,12 @@ public class AnnouncementController {
         var ludiumUser = getLudiumUser(accessToken);
 
         if (ludiumUser == null)
-            return getUnAuthorizedMessage();
+            return responseUtil.getUnAuthorizedMessage();
 
         try {
             return ResponseEntity.ok(detailedAnnouncementService.updateDetailedAnnouncementWorker(detailedAnnouncementWorker));
         } catch (Exception e) {
-            return getExceptionMessage("작업자를 수정하는 중에 에러가 발생했습니다.", e.getMessage());
+            return responseUtil.getExceptionMessage("작업자를 수정하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
@@ -284,12 +288,12 @@ public class AnnouncementController {
         var ludiumUser = getLudiumUser(accessToken);
 
         if (ludiumUser == null)
-            return getUnAuthorizedMessage();
+            return responseUtil.getUnAuthorizedMessage();
 
         try {
             return ResponseEntity.ok(applicationService.updateApplication(application));
         } catch(Exception e) {
-            return getExceptionMessage("지원서를 수정하는 중에 에러가 발생했습니다.", e.getMessage());
+            return responseUtil.getExceptionMessage("지원서를 수정하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
@@ -368,37 +372,5 @@ public class AnnouncementController {
         } catch (Exception e) {
             return null;
         }
-    }
-
-    public ResponseEntity<Object> getUnAuthorizedMessage() {
-        var unAuthorizedResponse = new HashMap<String, String>();
-
-        unAuthorizedResponse.put("message", "인증에 실패했습니다.");
-
-        return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .body(unAuthorizedResponse);
-    }
-
-    public ResponseEntity<Object> getExceptionMessage(String message, String debugMessage) {
-        var exceptionResponse = new HashMap<String, String>();
-
-        exceptionResponse.put("message", message);
-        exceptionResponse.put("debug", debugMessage);
-
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(exceptionResponse);
-    }
-
-    public ResponseEntity<Object> getNoSuchElementExceptionMessage(String message, String debugMessage) {
-        var exceptionResponse = new HashMap<String, String>();
-
-        exceptionResponse.put("message", message);
-        exceptionResponse.put("debug", debugMessage);
-
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(exceptionResponse);
     }
 }
