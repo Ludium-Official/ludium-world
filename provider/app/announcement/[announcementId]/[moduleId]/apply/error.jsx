@@ -4,6 +4,7 @@ import BackButton from "@/components/BackButton";
 import applystyle from "./apply.module.css";
 
 export default function ApplyErrorPage({ error }) {
+  console.log(error);
   const handleSignUp = () => {
     router.replace("/sign-up");
   };
