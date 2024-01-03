@@ -1,11 +1,10 @@
 import Link from "next/link";
 import fetchWithRetry from "../../functions/api";
 import announcementstyle from "./announcement.module.css";
-import ContentNavigation from "../../components/ContentNavigation";
 
 export const metadata = {
-  title: "공고 목록"
-}
+  title: "공고 목록",
+};
 
 async function getAnnouncementList() {
   const getannouncementsResponse = await fetchWithRetry(`/announcement`);
@@ -15,23 +14,30 @@ async function getAnnouncementList() {
   return await getannouncementsResponse.json();
 }
 
-export default async function AnnouncementPage() {
+async function AnnouncementList() {
   const announcements = await getAnnouncementList();
 
   return (
     <>
-      <article className={announcementstyle.wrapper}>
-        <h1 className={announcementstyle["title-label"]}>공고 목록</h1>
-        <div className={announcementstyle["announcement-list"]}>
-          {announcements.map((announcement) => (
-            <h2 className={announcementstyle["announcement-list-item"]} key={crypto.randomUUID()}>
-              <Link key={announcement.id} href={`/announcement/${announcement.id}`}>
-                {announcement.title}
-              </Link>
-            </h2>
-          ))}
-        </div>
-      </article>
+      {announcements.map(({ postingId, title }) => (
+        <h2
+          className={announcementstyle["announcement-list-item"]}
+          key={postingId}
+        >
+          <Link href={`/announcement/${postingId}`}>{title}</Link>
+        </h2>
+      ))}
     </>
+  );
+}
+
+export default async function AnnouncementPage() {
+  return (
+    <article className={announcementstyle.wrapper}>
+      <h1 className={announcementstyle["title-label"]}>공고 목록</h1>
+      <div className={announcementstyle["announcement-list"]}>
+        <AnnouncementList />
+      </div>
+    </article>
   );
 }
