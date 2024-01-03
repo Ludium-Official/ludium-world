@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import applystyle from "../apply.module.css";
 import { useRouter } from "next/navigation";
 import fetchWithRetry from "@/functions/api";
@@ -14,11 +14,12 @@ export default function EditApplyForm({
   application,
 }) {
   const router = useRouter();
+  const [pending, setPending] = useState(false);
 
-  console.log(application);
   const editorRef = useRef();
   const handleApplyForm = async (e) => {
     e.preventDefault();
+    setPending(true);
     const { editorInstance } = editorRef.current;
 
     const updateApplyResponse = await fetchWithRetry(
@@ -37,7 +38,7 @@ export default function EditApplyForm({
 
       alert(message);
     } else {
-      alert("지원서 수정이 완료되었습니다.");
+      alert("지원서 제출이 완료되었습니다.");
       router.refresh();
     }
   };
@@ -59,7 +60,8 @@ export default function EditApplyForm({
         <input
           className={applystyle["form-button"]}
           type="submit"
-          value="지원서 제출하기"
+          value={pending ? "지원서를 제출하는 중입니다..." : "지원서 제출하기"}
+          disabled={pending}
         />
       </div>
       <div className={applystyle["form-header"]}>
