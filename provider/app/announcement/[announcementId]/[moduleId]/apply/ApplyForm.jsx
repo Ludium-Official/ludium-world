@@ -38,7 +38,9 @@ export default function ApplyForm({
       setPending(false);
     } else {
       alert("지원서 제출이 완료되었습니다.");
-      router.back();
+      router.replace(
+        `/announcement/${announcementId}/${detailId}/apply/edit?role=${applicationTemplate.role}`
+      );
       router.refresh();
     }
   };
