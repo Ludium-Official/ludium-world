@@ -75,7 +75,13 @@ public class AnnouncementController {
     @GetMapping("/{announcementId}/{detailedAnnouncementId}/application-template")
     public ResponseEntity<Object> getApplicationTemplate(@PathVariable UUID detailedAnnouncementId,
                                                          @RequestParam String role) {
-        return ResponseEntity.ok(applicationTemplateService.getApplicationTemplate(detailedAnnouncementId, role));
+        try {
+            return ResponseEntity.ok(applicationTemplateService.getApplicationTemplate(detailedAnnouncementId, role));
+        } catch (NoSuchElementException nse) {
+            return getNoSuchElementExceptionMessage("지원서 양식 데이터가 없습니다.", nse.getMessage());
+        } catch (Exception e) {
+            return getExceptionMessage("지원서 양식을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
     }
 
     @GetMapping("/{announcementId}/{detailedAnnouncementId}/application")
@@ -86,6 +92,27 @@ public class AnnouncementController {
                 .stream()
                 .map((application) -> new ApplicationDTO(application, ludiumUserService.getUserById(application.getUsrId())))
                 .collect(Collectors.toList()));
+    }
+
+    @GetMapping("/{announcementId}/{detailedAnnouncementId}/application/submit")
+    public ResponseEntity<Object> getApplication(@PathVariable UUID detailedAnnouncementId,
+                                                 @RequestParam String role,
+                                                 @CookieValue(name = "access_token", required = false) String accessToken) {
+
+        var ludiumUser = getLudiumUser(accessToken);
+
+        if (ludiumUser == null)
+            return getUnAuthorizedMessage();
+
+        try {
+            return ResponseEntity
+                    .ok(applicationService.getApplication(detailedAnnouncementId, role, ludiumUser.getId()));
+        } catch(NoSuchElementException nse) {
+            return getNoSuchElementExceptionMessage("지원서 데이터가 없습니다.", nse.getMessage());
+        } catch (Exception e) {
+            return getExceptionMessage("지원서를 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+
     }
 
     @GetMapping("{announcementId}/{detailedAnnouncementId}/worker")
@@ -99,7 +126,7 @@ public class AnnouncementController {
         } catch (NoSuchElementException nse) {
             return getNoSuchElementExceptionMessage("작업자 데이터가 없습니다.", nse.getMessage());
         } catch (Exception e) {
-            return getExceptionMessage("작업자를 수정하는 중에 에러가 발생했습니다.", e.getMessage());
+            return getExceptionMessage("작업자를 조회하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
@@ -168,6 +195,23 @@ public class AnnouncementController {
         }
     }
 
+    @PostMapping("{announcementId}/{detailedAnnouncementId}/application")
+    public ResponseEntity<Object> createApplication(@RequestBody Application application,
+                                                    @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = getLudiumUser(accessToken);
+
+        if (ludiumUser == null)
+            return getUnAuthorizedMessage();
+
+        application.setUsrId(ludiumUser.getId());
+
+        try {
+            return ResponseEntity.ok(applicationService.createApplication(application));
+        } catch (Exception e) {
+            return getExceptionMessage("지원서를 만드는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
     @GetMapping("/{announcementId}/{moduleId}/make")
     public ResponseEntity getMake(@PathVariable UUID moduleId) {
         return ResponseEntity.ok(moduleService.getAllModulesByCourse(moduleId));
@@ -231,6 +275,21 @@ public class AnnouncementController {
             return ResponseEntity.ok(detailedAnnouncementService.updateDetailedAnnouncementWorker(detailedAnnouncementWorker));
         } catch (Exception e) {
             return getExceptionMessage("작업자를 수정하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @PutMapping("/{announcementId}/{detailedAnnouncementId}/application")
+    public ResponseEntity<Object> updateApplication(@RequestBody Application application,
+                                                    @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = getLudiumUser(accessToken);
+
+        if (ludiumUser == null)
+            return getUnAuthorizedMessage();
+
+        try {
+            return ResponseEntity.ok(applicationService.updateApplication(application));
+        } catch(Exception e) {
+            return getExceptionMessage("지원서를 수정하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 

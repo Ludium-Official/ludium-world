@@ -1,3 +1,4 @@
+import APPLY_CATEGORY from "@/enums/APPLY_CATEGORY";
 import BackButton from "../../../components/BackButton";
 import ContentNavigation from "../../../components/ContentNavigation";
 import Viewer from "../../../components/Viewer";
@@ -49,7 +50,7 @@ async function DetailedAnnouncementList({ announcementId }) {
           <ModuleNavigation
             links={[
               {
-                href: `/announcement/${announcementId}/module/${detailId}/apply`,
+                href: `/announcement/${announcementId}/${detailId}/apply?role=${APPLY_CATEGORY.PROVIDER}`,
                 text: "지원서 작성하기",
               },
             ]}

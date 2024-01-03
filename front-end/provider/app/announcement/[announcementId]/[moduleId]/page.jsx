@@ -1,9 +1,9 @@
-import BackButton from "../../../../../components/BackButton";
-import ContentNavigation from "../../../../../components/ContentNavigation";
-import Viewer from "../../../../../components/Viewer";
-import fetchWithRetry from "../../../../../functions/api";
-import ModuleNavigation from "../../../ModuleNavigation";
-import announcementstyle from "../../../announcement.module.css";
+import BackButton from "@/components/BackButton";
+import ContentNavigation from "@/components/ContentNavigation";
+import Viewer from "@/components/Viewer";
+import fetchWithRetry from "@/functions/api";
+import ModuleNavigation from "../../ModuleNavigation";
+import announcementstyle from "@/app/announcement/announcement.module.css";
 
 async function getModule(announcementId, moduleId) {
   const getModuleResponse = await fetchWithRetry(
