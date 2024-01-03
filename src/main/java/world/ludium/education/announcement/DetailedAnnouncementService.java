@@ -21,7 +21,11 @@ public class DetailedAnnouncementService {
         this.detailedAnnouncementWorkerRepository = detailedAnnouncementWorkerRepository;
     }
 
-    public List<DetailedAnnouncement> getAllDetailedAnnouncementByAnnouncement(UUID announcementId) {
+    public List<DetailedAnnouncement> getAllDetailedAnnouncement() {
+        return detailedAnnouncementRepository.findAll();
+    }
+
+    public List<DetailedAnnouncement> getAllDetailedAnnouncement(UUID announcementId) {
         return detailedAnnouncementRepository.findAllByPostingId(announcementId);
     }
 
