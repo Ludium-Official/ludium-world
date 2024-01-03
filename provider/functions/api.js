@@ -3,7 +3,7 @@ const refreshAccessToken = async (options) => {
   const fetchInit = {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
     },
     credentials: "include",
     cache: "no-store",
