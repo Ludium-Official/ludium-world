@@ -38,7 +38,7 @@ async function getDetailedAnnouncementList(announcementId) {
   );
 
   if (!getDetailedAnnouncementListResponse.ok)
-    throw new Error("세부 공고를 불러오는 중 에러가 발생했습니다.");
+    throw new Error("작업을 불러오는 중 에러가 발생했습니다.");
 
   return await getDetailedAnnouncementListResponse.json();
 }
@@ -50,7 +50,7 @@ async function DetailedAnnouncementList({ announcementId }) {
 
   return (
     <>
-      <h2 className={announcementstyle["title-label"]}>세부 공고 목록</h2>
+      <h2 className={announcementstyle["title-label"]}>작업 목록</h2>
       <ModuleCreateButton announceId={announcementId} />
       <section
         className={`${announcementstyle["announcement-list"]} ${announcementstyle["module-list"]}`}
@@ -64,7 +64,7 @@ async function DetailedAnnouncementList({ announcementId }) {
             <summary
               className={announcementstyle["detailed-announcement-summary"]}
             >
-              {title === "" ? "세부 공고" : title} 펼치기 / 닫기
+              {title === "" ? "작업" : title} 펼치기 / 닫기
             </summary>
             <ModuleNavigation links={[]}>
               {/* <ModuleDeleteButton
@@ -74,12 +74,12 @@ async function DetailedAnnouncementList({ announcementId }) {
               <Link
                 href={`/announcement/${announcementId}/${detailId}/application?role=${APPLY_CATEGORY.PROVIDER}`}
               >
-                제작자 지원자 보기
+                작업 지원자 보기
               </Link>
               <Link
                 href={`/announcement/${announcementId}/${detailId}/application-template?role=${APPLY_CATEGORY.PROVIDER}`}
               >
-                제작자 지원서 양식 작성하기
+                작업자 지원서 양식 작성하기
               </Link>
               <Link href={`/announcement/${announcementId}/${detailId}`}>
                 수정하기
@@ -90,7 +90,7 @@ async function DetailedAnnouncementList({ announcementId }) {
                 type="text"
                 defaultValue={
                   title === ""
-                    ? "수정하기 버튼을 눌러 세부 공고 내용을 변경해주세요"
+                    ? "수정하기 버튼을 눌러 작업 내용을 변경해주세요"
                     : title
                 }
                 readOnly
