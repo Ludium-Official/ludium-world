@@ -20,7 +20,7 @@ export default function WorkContentCreateButton({ workId }) {
     );
 
     setPending(false);
-    if (!createWorkContentResponse.onClick)
+    if (!createWorkContentResponse.ok)
       throw new Error("작업물을 추가하는 중 에러가 발생했습니다.");
 
     router.refresh();
