@@ -61,7 +61,7 @@ public class MissionController {
                     });
         }
 
-        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        LudiumUser ludiumUser = ludiumUserService.getUser(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
         Article mission = new Article();
         mission.setTitle(title);
@@ -104,7 +104,7 @@ public class MissionController {
                     });
         }
 
-        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        LudiumUser ludiumUser = ludiumUserService.getUser(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
         MissionSubmit missionSubmit = new MissionSubmit();
 
@@ -141,7 +141,7 @@ public class MissionController {
 
         return ResponseEntity.ok(missionSubmits.stream()
                 .map(submit -> {
-                    LudiumUser ludiumUser = ludiumUserService.getUserById(submit.getUsrId());
+                    LudiumUser ludiumUser = ludiumUserService.getUser(submit.getUsrId());
 
                     return new MissionSubmitDTO(submit.getId(),
                             submit.getContent(),
@@ -236,7 +236,7 @@ public class MissionController {
 
         return ResponseEntity.ok(missionSubmitComments.stream()
                 .map(comment -> {
-                    LudiumUser ludiumUser = ludiumUserService.getUserById(comment.getUsrId());
+                    LudiumUser ludiumUser = ludiumUserService.getUser(comment.getUsrId());
                     MissionSubmitCommentDTO missionSubmitCommentDTO = new MissionSubmitCommentDTO();
 
                     missionSubmitCommentDTO.setId(comment.getId());
@@ -266,7 +266,7 @@ public class MissionController {
                     });
         }
 
-        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        LudiumUser ludiumUser = ludiumUserService.getUser(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
         MissionSubmitComment missionSubmitComment = new MissionSubmitComment();
 
@@ -309,7 +309,7 @@ public class MissionController {
                     });
         }
 
-        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        LudiumUser ludiumUser = ludiumUserService.getUser(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
         MissionSubmitComment missionSubmitComment = missionSubmitService.getMissionSubmitComment(commentId);
 
@@ -357,7 +357,7 @@ public class MissionController {
                     });
         }
 
-        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        LudiumUser ludiumUser = ludiumUserService.getUser(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
         MissionSubmitComment missionSubmitComment = missionSubmitService.getMissionSubmitComment(commentId);
 
