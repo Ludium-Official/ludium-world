@@ -30,7 +30,7 @@ async function WorkList() {
   );
 }
 
-export default async function WorkPage() {
+export default async function WorkListPage() {
   return (
     <article className={workstyle.wrapper}>
       <h1 className={workstyle["title-label"]}>작업 목록</h1>
