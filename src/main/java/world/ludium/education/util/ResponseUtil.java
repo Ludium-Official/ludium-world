@@ -9,13 +9,9 @@ import java.util.HashMap;
 @Component
 public class ResponseUtil {
     public ResponseEntity<Object> getUnAuthorizedMessage() {
-        var unAuthorizedResponse = new HashMap<String, String>();
-
-        unAuthorizedResponse.put("message", "인증에 실패했습니다.");
-
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(unAuthorizedResponse);
+                .body(new ResponseException("인증에 실패했습니다.", ""));
     }
 
     public ResponseEntity<Object> getExceptionMessage(String message, String debugMessage) {
@@ -38,5 +34,11 @@ public class ResponseUtil {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(exceptionResponse);
+    }
+
+    public ResponseEntity<Object> getForbiddenExceptionMessage(ResponseException responseException) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(responseException);
     }
 }

@@ -49,7 +49,7 @@ public class ProfileController {
                     });
         }
 
-        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        LudiumUser ludiumUser = ludiumUserService.getUser(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
         List<Article> myAllArticles = articleService.getAllArticlesByUsrId(ludiumUser.getId());
 
         List<Article> articles = myAllArticles.stream()
@@ -106,7 +106,7 @@ public class ProfileController {
                     });
         }
 
-        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        LudiumUser ludiumUser = ludiumUserService.getUser(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
         ludiumUser.setNick(nick);
         ludiumUser.setSelfIntro(self_intro);
         ludiumUser.setPhnNmb(phone_number);
@@ -132,6 +132,6 @@ public class ProfileController {
 
     @GetMapping("{userId}")
     public ResponseEntity getUserProfile(@PathVariable UUID userId) {
-        return ResponseEntity.ok(ludiumUserService.getUserById(userId));
+        return ResponseEntity.ok(ludiumUserService.getUser(userId));
     }
 }

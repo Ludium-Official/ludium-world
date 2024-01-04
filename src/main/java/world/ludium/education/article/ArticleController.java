@@ -56,7 +56,7 @@ public class ArticleController {
                     });
         }
 
-        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        LudiumUser ludiumUser = ludiumUserService.getUser(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
         Article article = new Article();
         article.setTitle(title);
@@ -100,7 +100,7 @@ public class ArticleController {
                     });
         }
 
-        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        LudiumUser ludiumUser = ludiumUserService.getUser(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
         Article article = new Article();
         article.setId(articleId);

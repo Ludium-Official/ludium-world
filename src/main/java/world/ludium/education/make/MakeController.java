@@ -51,7 +51,7 @@ public class MakeController {
                     }});
         }
 
-        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        LudiumUser ludiumUser = ludiumUserService.getUser(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
         var updatedMake = articleService.getArticle(makeId);
 
@@ -85,7 +85,7 @@ public class MakeController {
                     }});
         }
 
-        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        LudiumUser ludiumUser = ludiumUserService.getUser(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
         return ResponseEntity.ok(articleService.getAllMakeByUsrId(ludiumUser.getId()));
     }

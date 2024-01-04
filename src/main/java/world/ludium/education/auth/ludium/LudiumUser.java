@@ -58,4 +58,15 @@ public class LudiumUser {
     public void setGglId(BigInteger gglId) {
         this.gglId = gglId;
     }
+
+    @Override
+    public String toString() {
+        return "LudiumUser{" +
+                "id=" + id +
+                ", nick='" + nick + '\'' +
+                ", selfIntro='" + selfIntro + '\'' +
+                ", phnNmb='" + phnNmb + '\'' +
+                ", gglId=" + gglId +
+                '}';
+    }
 }

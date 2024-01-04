@@ -25,11 +25,10 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/announcement", produces = "application/json")
 public class AnnouncementController {
     private final LoginService loginService;
-
     private final ArticleService articleService;
     private final LudiumUserService ludiumUserService;
     private final ModuleService moduleService;
-
+    // 위의 4개 서비스는 최적화 될 예정임
     private final AnnouncementService announcementService;
     private final DetailedAnnouncementService detailedAnnouncementService;
     private final ApplicationTemplateService applicationTemplateService;
@@ -94,7 +93,7 @@ public class AnnouncementController {
         return ResponseEntity.ok(applicationService
                 .getApplication(detailedAnnouncementId, role)
                 .stream()
-                .map((application) -> new ApplicationDTO(application, ludiumUserService.getUserById(application.getUsrId())))
+                .map((application) -> new ApplicationDTO(application, ludiumUserService.getUser(application.getUsrId())))
                 .collect(Collectors.toList()));
     }
 
@@ -103,7 +102,7 @@ public class AnnouncementController {
                                                  @RequestParam String role,
                                                  @CookieValue(name = "access_token", required = false) String accessToken) {
 
-        var ludiumUser = getLudiumUser(accessToken);
+        var ludiumUser = ludiumUserService.getUser(accessToken);
 
         if (ludiumUser == null)
             return responseUtil.getUnAuthorizedMessage();
@@ -124,7 +123,7 @@ public class AnnouncementController {
                                                                   @RequestParam String role) {
         try {
             var detailedAnnouncementWorker = detailedAnnouncementService.getDetailedAnnouncementWorker(detailedAnnouncementId, role);
-            var detailedAnnouncementWorkerDTO = new DetailedAnnouncementWorkerDTO(detailedAnnouncementWorker, ludiumUserService.getUserById(detailedAnnouncementWorker.getUsrId()));
+            var detailedAnnouncementWorkerDTO = new DetailedAnnouncementWorkerDTO(detailedAnnouncementWorker, ludiumUserService.getUser(detailedAnnouncementWorker.getUsrId()));
 
             return ResponseEntity.ok(detailedAnnouncementWorkerDTO);
         } catch (NoSuchElementException nse) {
@@ -137,7 +136,7 @@ public class AnnouncementController {
     @PostMapping("")
     public ResponseEntity<Object> createAnnouncement(@RequestBody Announcement announcement,
                                                      @CookieValue(name = "access_token", required = false) String accessToken) {
-        var ludiumUser = getLudiumUser(accessToken);
+        var ludiumUser = ludiumUserService.getUser(accessToken);
 
         if (ludiumUser == null)
             return responseUtil.getUnAuthorizedMessage();
@@ -152,7 +151,7 @@ public class AnnouncementController {
     @PostMapping("{announcementId}")
     public ResponseEntity<Object> createDetailsAnnouncement(@PathVariable UUID announcementId,
                                                             @CookieValue(name = "access_token", required = false) String accessToken) {
-        var ludiumUser = getLudiumUser(accessToken);
+        var ludiumUser = ludiumUserService.getUser(accessToken);
 
         if (ludiumUser == null)
             return responseUtil.getUnAuthorizedMessage();
@@ -172,7 +171,7 @@ public class AnnouncementController {
     @PostMapping("{announcementId}/{detailedAnnouncementId}/application-template")
     public ResponseEntity<Object> createApplicationTemplate(@RequestBody ApplicationTemplate applicationTemplate,
                                                             @CookieValue(name = "access_token", required = false) String accessToken) {
-        var ludiumUser = getLudiumUser(accessToken);
+        var ludiumUser = ludiumUserService.getUser(accessToken);
 
         if (ludiumUser == null)
             return responseUtil.getUnAuthorizedMessage();
@@ -187,7 +186,7 @@ public class AnnouncementController {
     @PostMapping("{announcementId}/{detailedAnnouncementId}/worker")
     public ResponseEntity<Object> createDetailsAnnouncementWorker(@RequestBody DetailedAnnouncementWorker detailedAnnouncementWorker,
                                                                   @CookieValue(name = "access_token", required = false) String accessToken) {
-        var ludiumUser = getLudiumUser(accessToken);
+        var ludiumUser = ludiumUserService.getUser(accessToken);
 
         if (ludiumUser == null)
             return responseUtil.getUnAuthorizedMessage();
@@ -202,7 +201,7 @@ public class AnnouncementController {
     @PostMapping("{announcementId}/{detailedAnnouncementId}/application")
     public ResponseEntity<Object> createApplication(@RequestBody Application application,
                                                     @CookieValue(name = "access_token", required = false) String accessToken) {
-        var ludiumUser = getLudiumUser(accessToken);
+        var ludiumUser = ludiumUserService.getUser(accessToken);
 
         if (ludiumUser == null)
             return responseUtil.getUnAuthorizedMessage();
@@ -224,7 +223,7 @@ public class AnnouncementController {
     @PutMapping("/{announcementId}")
     public ResponseEntity<Object> updateAnnouncement(@RequestBody Announcement announcement,
                                                      @CookieValue(name = "access_token", required = false) String accessToken) {
-        var ludiumUser = getLudiumUser(accessToken);
+        var ludiumUser = ludiumUserService.getUser(accessToken);
 
         if (ludiumUser == null)
             return responseUtil.getUnAuthorizedMessage();
@@ -240,7 +239,7 @@ public class AnnouncementController {
     @PutMapping("/{announcementId}/{detailedAnnouncementId}")
     public ResponseEntity<Object> updateModule(@RequestBody DetailedAnnouncement detailedAnnouncement,
                                                @CookieValue(name = "access_token", required = false) String accessToken) {
-        var ludiumUser = getLudiumUser(accessToken);
+        var ludiumUser = ludiumUserService.getUser(accessToken);
 
         if (ludiumUser == null)
             return responseUtil.getUnAuthorizedMessage();
@@ -255,7 +254,7 @@ public class AnnouncementController {
     @PutMapping("/{announcementId}/{detailedAnnouncementId}/application-template")
     public ResponseEntity<Object> getApplicationTemplate(@RequestBody ApplicationTemplate applicationTemplate,
                                                          @CookieValue(name = "access_token", required = false) String accessToken) {
-        var ludiumUser = getLudiumUser(accessToken);
+        var ludiumUser = ludiumUserService.getUser(accessToken);
 
         if (ludiumUser == null)
             return responseUtil.getUnAuthorizedMessage();
@@ -270,7 +269,7 @@ public class AnnouncementController {
     @PutMapping("{announcementId}/{detailedAnnouncementId}/worker")
     public ResponseEntity<Object> updateDetailsAnnouncementWorker(@RequestBody DetailedAnnouncementWorker detailedAnnouncementWorker,
                                                                   @CookieValue(name = "access_token", required = false) String accessToken) {
-        var ludiumUser = getLudiumUser(accessToken);
+        var ludiumUser = ludiumUserService.getUser(accessToken);
 
         if (ludiumUser == null)
             return responseUtil.getUnAuthorizedMessage();
@@ -285,7 +284,7 @@ public class AnnouncementController {
     @PutMapping("/{announcementId}/{detailedAnnouncementId}/application")
     public ResponseEntity<Object> updateApplication(@RequestBody Application application,
                                                     @CookieValue(name = "access_token", required = false) String accessToken) {
-        var ludiumUser = getLudiumUser(accessToken);
+        var ludiumUser = ludiumUserService.getUser(accessToken);
 
         if (ludiumUser == null)
             return responseUtil.getUnAuthorizedMessage();
@@ -316,7 +315,7 @@ public class AnnouncementController {
                     });
         }
 
-        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        LudiumUser ludiumUser = ludiumUserService.getUser(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
         Article make = Article.Make();
         make.setTitle(title);
@@ -362,15 +361,5 @@ public class AnnouncementController {
         return ResponseEntity.ok(new HashMap<>() {{
             put("id", announcementId);
         }});
-    }
-
-    public LudiumUser getLudiumUser(String accessToken) {
-        try {
-            var googleUserApiData = loginService.getUserResource(accessToken, "google");
-            return ludiumUserService
-                    .getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
-        } catch (Exception e) {
-            return null;
-        }
     }
 }

@@ -56,7 +56,7 @@ public class PostController {
                     });
         }
 
-        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        LudiumUser ludiumUser = ludiumUserService.getUser(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
         Article freeBoard = new Article();
         freeBoard.setTitle(title);

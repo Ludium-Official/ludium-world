@@ -88,7 +88,7 @@ public class ApplyController {
                     });
         }
 
-        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        LudiumUser ludiumUser = ludiumUserService.getUser(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
         Article apply = Article.Apply();
         apply.setTitle(title);
@@ -131,7 +131,7 @@ public class ApplyController {
                     });
         }
 
-        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        LudiumUser ludiumUser = ludiumUserService.getUser(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
         Article apply = Article.Apply();
         apply.setId(applyId);
@@ -214,7 +214,7 @@ public class ApplyController {
                     });
         }
 
-        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        LudiumUser ludiumUser = ludiumUserService.getUser(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
         Article applyProvider = Article.ApplyProvider();
         applyProvider.setTitle(title);
@@ -262,7 +262,7 @@ public class ApplyController {
                     });
         }
 
-        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        LudiumUser ludiumUser = ludiumUserService.getUser(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
         Article applyProvider = Article.ApplyProvider();
         applyProvider.setId(submitId);
@@ -292,7 +292,7 @@ public class ApplyController {
         try {
             var providerApply = articleService.getProviderApply(providerApplyId);
             var usrId = providerApply.getUsrId();
-            var ludiumUser = ludiumUserService.getUserById(usrId);
+            var ludiumUser = ludiumUserService.getUser(usrId);
             var ludiumProviderDTO = new LudiumProviderDTO();
 
             ludiumProviderDTO.setId(ludiumUser.getId());
@@ -330,7 +330,7 @@ public class ApplyController {
                     });
         }
 
-        LudiumUser ludiumUser = ludiumUserService.getUserByGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        LudiumUser ludiumUser = ludiumUserService.getUser(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
         return ResponseEntity.ok(submitApplyService.getSubmitApplyReference(applyId, ludiumUser.getId()));
     }
@@ -350,7 +350,7 @@ public class ApplyController {
                     ludiumProviderDTO.setId(submit.getId());
                     ludiumProviderDTO.setContent(submit.getContent());
                     ludiumProviderDTO.setApplyId(applyId);
-                    ludiumProviderDTO.setNick(ludiumUserService.getUserById(submit.getUsrId()).getNick());
+                    ludiumProviderDTO.setNick(ludiumUserService.getUser(submit.getUsrId()).getNick());
                     ludiumProviderDTO.setUsrId(submit.getUsrId());
 
                     return ludiumProviderDTO;
