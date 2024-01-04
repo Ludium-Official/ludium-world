@@ -1,19 +1,20 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import HTTP_METHOD from "@/enums/HTTP_METHOD";
 import fetchWithRetry from "@/functions/api";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function ModuleCreateButton({ announceId }) {
   const router = useRouter();
   const [pending, setPending] = useState(false);
 
-  const handleCreateMake = async () => {
+  const handleCreateDetailedAnnouncement = async () => {
     setPending(true);
     const createDetailedAnnouncementResponse = await fetchWithRetry(
       `/announcement/${announceId}`,
       {
-        method: "POST",
+        method: HTTP_METHOD.POST,
       }
     );
 
@@ -24,7 +25,7 @@ export default function ModuleCreateButton({ announceId }) {
     router.refresh();
   };
   return (
-    <button onClick={handleCreateMake} disabled={pending}>
+    <button onClick={handleCreateDetailedAnnouncement} disabled={pending}>
       {pending ? "작업 추가하는 중입니다..." : "작업 추가하기"}
     </button>
   );
