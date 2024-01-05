@@ -4,6 +4,7 @@ import fetchWithRetry from "@/functions/api";
 import dynamic from "next/dynamic";
 import workstyle from "../work.module.css";
 import WorkContentCreateButton from "./WorkContentCreateButton";
+import WorkContentEditor from "./WorkContentEditor";
 
 const Viewer = dynamic(() => import("@/components/Viewer"), {
   ssr: false,
@@ -36,16 +37,13 @@ async function getWorkContentList(workId) {
 async function WorkContentList({ workId }) {
   const workContentList = await getWorkContentList(workId);
 
-  console.log(workContentList);
   return (
     <>
-      {workContentList.map(({ detailContentId, title, description }) => (
-        <article key={detailContentId}>
-          <p>{title === "" ? "작업물 제목을 수정해주세요" : title}</p>
-          <div className={workstyle.content}>
-            <Viewer content={description} height={"100%"} />
-          </div>
-        </article>
+      {workContentList.map((detailContent) => (
+        <WorkContentEditor
+          key={detailContent.detailContentId}
+          detailContent={detailContent}
+        />
       ))}
     </>
   );
