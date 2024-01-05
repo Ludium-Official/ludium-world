@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
@@ -15,6 +16,7 @@ public class DetailedAnnouncementContent {
     private String title;
     private String description;
     private UUID usrId;
+    private Timestamp createAt;
 
     public UUID getDetailContentId() {
         return detailContentId;
@@ -54,5 +56,13 @@ public class DetailedAnnouncementContent {
 
     public void setUsrId(UUID usrId) {
         this.usrId = usrId;
+    }
+
+    public Timestamp getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Timestamp createAt) {
+        this.createAt = createAt;
     }
 }

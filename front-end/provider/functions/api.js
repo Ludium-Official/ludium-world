@@ -44,7 +44,13 @@ const fetchWithRetry = (url, options, maxRetry = 3) => {
 
       return retry(
         url,
-        { ...options, ...refreshAccessTokenResponse },
+        {
+          ...options,
+          ...refreshAccessTokenResponse,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
         retryCount + 1
       );
     }
