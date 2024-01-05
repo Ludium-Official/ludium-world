@@ -92,7 +92,7 @@
 .work-view-wrapper {
   margin-left: 360px;
   padding: 15px 17px 40px 44px;
-  height: calc(100vh - 135px);
+  height: fit-content;
 }
 
 .work-view-title {
@@ -120,7 +120,7 @@
 .content {
   margin: 25px 15px 0;
   padding: 10px 15px;
-  height: calc(100% - 107px);
+  height: 600px;
   background-color: #fff;
   border: solid 1px #e6e2e6;
   border-radius: 5px;
