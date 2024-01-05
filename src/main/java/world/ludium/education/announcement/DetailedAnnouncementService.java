@@ -56,12 +56,16 @@ public class DetailedAnnouncementService {
     }
 
     public List<DetailedAnnouncementContent> getAllDetailedAnnouncementContent(UUID detailedAnnouncementId) {
-        return detailedAnnouncementContentRepository.findAllByDetailId(detailedAnnouncementId);
+        return detailedAnnouncementContentRepository.findAllByDetailIdOrderByCreateAt(detailedAnnouncementId);
     }
 
     public DetailedAnnouncementContent createDetailedAnnouncementContent(DetailedAnnouncementContent detailedAnnouncementContent) {
         detailedAnnouncementContent.setDetailContentId(UUID.randomUUID());
 
+        return detailedAnnouncementContentRepository.save(detailedAnnouncementContent);
+    }
+
+    public DetailedAnnouncementContent updateDetailedAnnouncementContent(DetailedAnnouncementContent detailedAnnouncementContent) {
         return detailedAnnouncementContentRepository.save(detailedAnnouncementContent);
     }
 }

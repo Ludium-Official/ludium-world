@@ -68,8 +68,8 @@ public class DetailedAnnouncementController {
     }
 
     @PostMapping("{detailedAnnouncementId}")
-    public  ResponseEntity<Object> createDetailedAnnouncementContent(@PathVariable UUID detailedAnnouncementId,
-                                                                     @CookieValue(name = "access_token", required = false) String accessToken) {
+    public ResponseEntity<Object> createDetailedAnnouncementContent(@PathVariable UUID detailedAnnouncementId,
+                                                                    @CookieValue(name = "access_token", required = false) String accessToken) {
         var ludiumUser = ludiumUserService.getUser(accessToken);
 
         if (ludiumUser == null)
@@ -78,7 +78,7 @@ public class DetailedAnnouncementController {
         var detailedAnnouncementWorker = detailedAnnouncementService.getDetailedAnnouncementWorker(detailedAnnouncementId, "PROVIDER");
 
         if(!ludiumUser.getId().equals(detailedAnnouncementWorker.getUsrId()))
-            return responseUtil.getForbiddenExceptionMessage(new ResponseException("작업자 정보와 작업물 생성자의 계정이 다릅니다.", ""));
+            return responseUtil.getForbiddenExceptionMessage(new ResponseException("작업자 정보가 일치하지 않습니다.", ""));
 
         var detailedAnnouncementContent = new DetailedAnnouncementContent();
 
@@ -91,6 +91,24 @@ public class DetailedAnnouncementController {
             return ResponseEntity.ok(detailedAnnouncementService.createDetailedAnnouncementContent(detailedAnnouncementContent));
         } catch (Exception e) {
             return responseUtil.getExceptionMessage("작업물을 추가하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @PutMapping("{detailedAnnouncementId}")
+    public ResponseEntity<Object> updateDetailedAnnouncementContent(@RequestBody DetailedAnnouncementContent detailedAnnouncementContent,
+                                                                    @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null)
+            return responseUtil.getUnAuthorizedMessage();
+
+        if(!ludiumUser.getId().equals(detailedAnnouncementContent.getUsrId()))
+            return responseUtil.getForbiddenExceptionMessage(new ResponseException("작업자 정보가 일치하지 않습니다.", ""));
+
+        try {
+            return ResponseEntity.ok(detailedAnnouncementService.updateDetailedAnnouncementContent(detailedAnnouncementContent));
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("작업물을 수정하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 }
