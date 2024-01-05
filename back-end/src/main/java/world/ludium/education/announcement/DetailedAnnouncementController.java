@@ -7,6 +7,7 @@ import world.ludium.education.auth.ludium.LudiumUserService;
 import world.ludium.education.util.ResponseException;
 import world.ludium.education.util.ResponseUtil;
 
+import java.sql.Timestamp;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
@@ -86,6 +87,7 @@ public class DetailedAnnouncementController {
         detailedAnnouncementContent.setUsrId(ludiumUser.getId());
         detailedAnnouncementContent.setTitle("");
         detailedAnnouncementContent.setDescription("");
+        detailedAnnouncementContent.setCreateAt(new Timestamp(System.currentTimeMillis()));
 
         try {
             return ResponseEntity.ok(detailedAnnouncementService.createDetailedAnnouncementContent(detailedAnnouncementContent));
