@@ -76,10 +76,14 @@ public class DetailedAnnouncementController {
         if (ludiumUser == null)
             return responseUtil.getUnAuthorizedMessage();
 
-        var detailedAnnouncementWorker = detailedAnnouncementService.getDetailedAnnouncementWorker(detailedAnnouncementId, "PROVIDER");
+        try {
+            var detailedAnnouncementWorker = detailedAnnouncementService.getDetailedAnnouncementWorker(detailedAnnouncementId, "PROVIDER");
 
-        if(!ludiumUser.getId().equals(detailedAnnouncementWorker.getUsrId()))
-            return responseUtil.getForbiddenExceptionMessage(new ResponseException("작업자 정보가 일치하지 않습니다.", ""));
+            if(!ludiumUser.getId().equals(detailedAnnouncementWorker.getUsrId()))
+                return responseUtil.getForbiddenExceptionMessage(new ResponseException("작업자 정보가 일치하지 않습니다.", ""));
+        } catch (NoSuchElementException nse) {
+            return responseUtil.getNoSuchElementExceptionMessage("작업자 데이터가 없습니다.", nse.getMessage());
+        }
 
         var detailedAnnouncementContent = new DetailedAnnouncementContent();
 
