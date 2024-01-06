@@ -10,10 +10,12 @@ import world.ludium.education.auth.ludium.LudiumUser;
 import world.ludium.education.auth.ludium.LudiumUserRight;
 import world.ludium.education.auth.ludium.LudiumUserService;
 import world.ludium.education.auth.ludium.UserDTO;
+import world.ludium.education.util.ResponseUtil;
 
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -23,11 +25,16 @@ public class UserController {
     LoginService loginService;
     GoogleUserService googleUserService;
     LudiumUserService ludiumUserService;
+    private final ResponseUtil responseUtil;
 
-    public UserController(LoginService loginService, GoogleUserService googleUserService, LudiumUserService ludiumUserService) {
+    public UserController(LoginService loginService,
+                          GoogleUserService googleUserService,
+                          LudiumUserService ludiumUserService,
+                          ResponseUtil responseUtil) {
         this.loginService = loginService;
         this.googleUserService = googleUserService;
         this.ludiumUserService = ludiumUserService;
+        this.responseUtil = responseUtil;
     }
 
     @PostMapping("/sign-up/{registrationId}")
@@ -103,6 +110,21 @@ public class UserController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(userDTOList);
+    }
+
+    @GetMapping("{usrId}")
+    public ResponseEntity<Object> getUser(@PathVariable UUID usrId) {
+        try {
+            var ludiumUser = ludiumUserService.getUser(usrId);
+
+            if(ludiumUser == null) throw new NoSuchElementException();
+
+            return ResponseEntity.ok(ludiumUser);
+        } catch (NoSuchElementException nse) {
+            return responseUtil.getNoSuchElementExceptionMessage("사용자 데이터가 없습니다.", nse.getMessage());
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("사용자를 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
     }
 
     @PutMapping("/{userId}/provider")

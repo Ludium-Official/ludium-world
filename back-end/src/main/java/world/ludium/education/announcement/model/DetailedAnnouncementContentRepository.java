@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface DetailedAnnouncementContentRepository extends JpaRepository<DetailedAnnouncementContent, UUID> {
     List<DetailedAnnouncementContent> findAllByDetailIdOrderByCreateAt(UUID detailId);
+    List<DetailedAnnouncementContent> findAllByDetailIdAndStatusOrderByCreateAt(UUID detailId, String status);
 }
