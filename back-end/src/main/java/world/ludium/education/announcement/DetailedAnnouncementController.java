@@ -3,10 +3,13 @@ package world.ludium.education.announcement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import world.ludium.education.announcement.model.DetailedAnnouncementContent;
+import world.ludium.education.announcement.model.DetailedAnnouncementContentStatus;
+import world.ludium.education.auth.ludium.LudiumUser;
 import world.ludium.education.auth.ludium.LudiumUserService;
 import world.ludium.education.util.ResponseException;
 import world.ludium.education.util.ResponseUtil;
 
+import java.nio.file.AccessDeniedException;
 import java.sql.Timestamp;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -28,10 +31,10 @@ public class DetailedAnnouncementController {
 
     @GetMapping("")
     public ResponseEntity<Object> getDetailedAnnouncement() {
-        try{
+        try {
             var detailedAnnouncementList = detailedAnnouncementService.getAllDetailedAnnouncement();
 
-            if(detailedAnnouncementList.isEmpty()) throw new NoSuchFieldException();
+            if (detailedAnnouncementList.isEmpty()) throw new NoSuchFieldException();
 
             return ResponseEntity.ok(detailedAnnouncementList);
 
@@ -43,7 +46,7 @@ public class DetailedAnnouncementController {
     }
 
     @GetMapping("{detailedAnnouncementId}")
-    public ResponseEntity<Object> getDetailedAnnouncement(@PathVariable UUID detailedAnnouncementId){
+    public ResponseEntity<Object> getDetailedAnnouncement(@PathVariable UUID detailedAnnouncementId) {
         try {
             return ResponseEntity.ok(detailedAnnouncementService.getDetailedAnnouncement(detailedAnnouncementId));
         } catch (NoSuchElementException nse) {
@@ -58,12 +61,12 @@ public class DetailedAnnouncementController {
         try {
             var detailedAnnouncementContentList = detailedAnnouncementService.getAllDetailedAnnouncementContent(detailedAnnouncementId);
 
-            if(detailedAnnouncementContentList.isEmpty()) throw new NoSuchElementException();
+            if (detailedAnnouncementContentList.isEmpty()) throw new NoSuchElementException();
 
             return ResponseEntity.ok(detailedAnnouncementContentList);
-        } catch(NoSuchElementException nse) {
+        } catch (NoSuchElementException nse) {
             return responseUtil.getNoSuchElementExceptionMessage("작업물 데이터가 없습니다.", nse.getMessage());
-        } catch(Exception e) {
+        } catch (Exception e) {
             return responseUtil.getExceptionMessage("작업물을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
@@ -76,15 +79,6 @@ public class DetailedAnnouncementController {
         if (ludiumUser == null)
             return responseUtil.getUnAuthorizedMessage();
 
-        try {
-            var detailedAnnouncementWorker = detailedAnnouncementService.getDetailedAnnouncementWorker(detailedAnnouncementId, "PROVIDER");
-
-            if(!ludiumUser.getId().equals(detailedAnnouncementWorker.getUsrId()))
-                return responseUtil.getForbiddenExceptionMessage(new ResponseException("작업자 정보가 일치하지 않습니다.", ""));
-        } catch (NoSuchElementException nse) {
-            return responseUtil.getNoSuchElementExceptionMessage("작업자 데이터가 없습니다.", nse.getMessage());
-        }
-
         var detailedAnnouncementContent = new DetailedAnnouncementContent();
 
         detailedAnnouncementContent.setDetailId(detailedAnnouncementId);
@@ -92,29 +86,45 @@ public class DetailedAnnouncementController {
         detailedAnnouncementContent.setTitle("");
         detailedAnnouncementContent.setDescription("");
         detailedAnnouncementContent.setCreateAt(new Timestamp(System.currentTimeMillis()));
+        detailedAnnouncementContent.setStatus(DetailedAnnouncementContentStatus.CREATE.toString());
 
         try {
+            checkDetailedAnnouncementWorker(detailedAnnouncementId, ludiumUser);
             return ResponseEntity.ok(detailedAnnouncementService.createDetailedAnnouncementContent(detailedAnnouncementContent));
+        } catch(NoSuchElementException nse) {
+            return responseUtil.getNoSuchElementExceptionMessage("작업자 데이터가 없습니다.", nse.getMessage());
+        } catch(AccessDeniedException ade) {
+            return responseUtil.getForbiddenExceptionMessage(new ResponseException("작업자 정보가 일치하지 않습니다.", ade.getMessage()));
         } catch (Exception e) {
             return responseUtil.getExceptionMessage("작업물을 추가하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
-    @PutMapping("{detailedAnnouncementId}")
-    public ResponseEntity<Object> updateDetailedAnnouncementContent(@RequestBody DetailedAnnouncementContent detailedAnnouncementContent,
+    @PutMapping("{detailedAnnouncementId}/{detailedAnnouncementContentId}")
+    public ResponseEntity<Object> updateDetailedAnnouncementContent(@PathVariable UUID detailedAnnouncementId,
+                                                                    @RequestBody DetailedAnnouncementContent detailedAnnouncementContent,
                                                                     @CookieValue(name = "access_token", required = false) String accessToken) {
         var ludiumUser = ludiumUserService.getUser(accessToken);
 
         if (ludiumUser == null)
             return responseUtil.getUnAuthorizedMessage();
 
-        if(!ludiumUser.getId().equals(detailedAnnouncementContent.getUsrId()))
-            return responseUtil.getForbiddenExceptionMessage(new ResponseException("작업자 정보가 일치하지 않습니다.", ""));
-
         try {
+            checkDetailedAnnouncementWorker(detailedAnnouncementId, ludiumUser);
             return ResponseEntity.ok(detailedAnnouncementService.updateDetailedAnnouncementContent(detailedAnnouncementContent));
+        } catch (NoSuchElementException nse) {
+            return responseUtil.getNoSuchElementExceptionMessage("작업자 데이터가 없습니다.", nse.getMessage());
+        } catch (AccessDeniedException ade) {
+            return responseUtil.getForbiddenExceptionMessage(new ResponseException("작업자 정보가 일치하지 않습니다.", ade.getMessage()));
         } catch (Exception e) {
             return responseUtil.getExceptionMessage("작업물을 수정하는 중에 에러가 발생했습니다.", e.getMessage());
         }
+    }
+
+    public void checkDetailedAnnouncementWorker(UUID detailedAnnouncementId, LudiumUser ludiumUser) throws AccessDeniedException {
+        var detailedAnnouncementWorker = detailedAnnouncementService.getDetailedAnnouncementWorker(detailedAnnouncementId, "PROVIDER");
+
+        if (!ludiumUser.getId().equals(detailedAnnouncementWorker.getUsrId()))
+            throw new AccessDeniedException("작업자 정보가 일치하지 않습니다.");
     }
 }
