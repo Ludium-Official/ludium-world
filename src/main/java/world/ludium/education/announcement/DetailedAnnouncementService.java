@@ -12,13 +12,16 @@ public class DetailedAnnouncementService {
     private final DetailedAnnouncementRepository detailedAnnouncementRepository;
     private final DetailedAnnouncementWorkerRepository detailedAnnouncementWorkerRepository;
     private final DetailedAnnouncementContentRepository detailedAnnouncementContentRepository;
+    private final DetailedAnnouncementContentCommentRepository detailedAnnouncementContentCommentRepository;
 
     public DetailedAnnouncementService(DetailedAnnouncementRepository detailedAnnouncementRepository,
                                        DetailedAnnouncementWorkerRepository detailedAnnouncementWorkerRepository,
-                                       DetailedAnnouncementContentRepository detailedAnnouncementContentRepository) {
+                                       DetailedAnnouncementContentRepository detailedAnnouncementContentRepository,
+                                       DetailedAnnouncementContentCommentRepository detailedAnnouncementContentCommentRepository) {
         this.detailedAnnouncementRepository = detailedAnnouncementRepository;
         this.detailedAnnouncementWorkerRepository = detailedAnnouncementWorkerRepository;
         this.detailedAnnouncementContentRepository = detailedAnnouncementContentRepository;
+        this.detailedAnnouncementContentCommentRepository = detailedAnnouncementContentCommentRepository;
     }
 
     public List<DetailedAnnouncement> getAllDetailedAnnouncement() {
@@ -59,6 +62,10 @@ public class DetailedAnnouncementService {
         return detailedAnnouncementContentRepository.findAllByDetailIdOrderByCreateAt(detailedAnnouncementId);
     }
 
+    public List<DetailedAnnouncementContent> getAllDetailedAnnouncementContent(UUID detailedAnnouncementId, String status) {
+        return detailedAnnouncementContentRepository.findAllByDetailIdAndStatusOrderByCreateAt(detailedAnnouncementId, status);
+    }
+
     public DetailedAnnouncementContent createDetailedAnnouncementContent(DetailedAnnouncementContent detailedAnnouncementContent) {
         detailedAnnouncementContent.setDetailContentId(UUID.randomUUID());
 
@@ -67,5 +74,15 @@ public class DetailedAnnouncementService {
 
     public DetailedAnnouncementContent updateDetailedAnnouncementContent(DetailedAnnouncementContent detailedAnnouncementContent) {
         return detailedAnnouncementContentRepository.save(detailedAnnouncementContent);
+    }
+
+    public List<DetailedAnnouncementContentComment> getAllDetailedAnnouncementContentComment(UUID detailedAnnouncementContentId) {
+        return detailedAnnouncementContentCommentRepository.findAllByDetailedContentIdOrderByCreateAt(detailedAnnouncementContentId);
+    }
+
+    public DetailedAnnouncementContentComment createDetailedAnnouncementContentComment(DetailedAnnouncementContentComment detailedAnnouncementContentComment) {
+        detailedAnnouncementContentComment.setDetailedContentCommentId(UUID.randomUUID());
+
+        return detailedAnnouncementContentCommentRepository.save(detailedAnnouncementContentComment);
     }
 }

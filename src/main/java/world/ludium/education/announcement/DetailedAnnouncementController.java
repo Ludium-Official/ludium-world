@@ -3,6 +3,7 @@ package world.ludium.education.announcement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import world.ludium.education.announcement.model.DetailedAnnouncementContent;
+import world.ludium.education.announcement.model.DetailedAnnouncementContentComment;
 import world.ludium.education.announcement.model.DetailedAnnouncementContentStatus;
 import world.ludium.education.auth.ludium.LudiumUser;
 import world.ludium.education.auth.ludium.LudiumUserService;
@@ -71,6 +72,36 @@ public class DetailedAnnouncementController {
         }
     }
 
+    @GetMapping("{detailedAnnouncementId}/content/submit")
+    public ResponseEntity<Object> getAllSubmittedDetailedAnnouncementContent(@PathVariable UUID detailedAnnouncementId) {
+        try {
+            var detailedAnnouncementContentList = detailedAnnouncementService.getAllDetailedAnnouncementContent(detailedAnnouncementId, DetailedAnnouncementContentStatus.SUBMIT.toString());
+
+            if (detailedAnnouncementContentList.isEmpty()) throw new NoSuchElementException();
+
+            return ResponseEntity.ok(detailedAnnouncementContentList);
+        } catch (NoSuchElementException nse) {
+            return responseUtil.getNoSuchElementExceptionMessage("작업물 데이터가 없습니다.", nse.getMessage());
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("작업물을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @GetMapping("{detailedAnnouncementId}/{detailedAnnouncementContentId}/comment")
+    public ResponseEntity<Object> getAllDetailedAnnouncementContentComment(@PathVariable UUID detailedAnnouncementContentId) {
+        try {
+            var detailedAnnouncementContentCommentList = detailedAnnouncementService.getAllDetailedAnnouncementContentComment(detailedAnnouncementContentId);
+
+            if (detailedAnnouncementContentCommentList.isEmpty()) throw new NoSuchElementException();
+
+            return ResponseEntity.ok(detailedAnnouncementContentCommentList);
+        } catch (NoSuchElementException nse) {
+            return responseUtil.getNoSuchElementExceptionMessage("작업물 댓글 데이터가 없습니다.", nse.getMessage());
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("작업물 댓글을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
     @PostMapping("{detailedAnnouncementId}")
     public ResponseEntity<Object> createDetailedAnnouncementContent(@PathVariable UUID detailedAnnouncementId,
                                                                     @CookieValue(name = "access_token", required = false) String accessToken) {
@@ -91,12 +122,33 @@ public class DetailedAnnouncementController {
         try {
             checkDetailedAnnouncementWorker(detailedAnnouncementId, ludiumUser);
             return ResponseEntity.ok(detailedAnnouncementService.createDetailedAnnouncementContent(detailedAnnouncementContent));
-        } catch(NoSuchElementException nse) {
+        } catch (NoSuchElementException nse) {
             return responseUtil.getNoSuchElementExceptionMessage("작업자 데이터가 없습니다.", nse.getMessage());
-        } catch(AccessDeniedException ade) {
+        } catch (AccessDeniedException ade) {
             return responseUtil.getForbiddenExceptionMessage(new ResponseException("작업자 정보가 일치하지 않습니다.", ade.getMessage()));
         } catch (Exception e) {
             return responseUtil.getExceptionMessage("작업물을 추가하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @PostMapping("{detailedAnnouncementId}/{detailedAnnouncementContentId}")
+    public ResponseEntity<Object> createDetailedAnnouncementContentComment(@PathVariable UUID detailedAnnouncementId,
+                                                                           @PathVariable UUID detailedAnnouncementContentId,
+                                                                           @RequestBody DetailedAnnouncementContentComment detailedAnnouncementContentComment,
+                                                                           @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null)
+            return responseUtil.getUnAuthorizedMessage();
+
+        detailedAnnouncementContentComment.setDetailedContentId(detailedAnnouncementContentId);
+        detailedAnnouncementContentComment.setUsrId(ludiumUser.getId());
+        detailedAnnouncementContentComment.setCreateAt(new Timestamp(System.currentTimeMillis()));
+
+        try {
+            return ResponseEntity.ok(detailedAnnouncementService.createDetailedAnnouncementContentComment(detailedAnnouncementContentComment));
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("작업물에 댓글을 추가하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
