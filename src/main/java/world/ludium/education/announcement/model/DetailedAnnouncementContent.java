@@ -17,6 +17,7 @@ public class DetailedAnnouncementContent {
     private String description;
     private UUID usrId;
     private Timestamp createAt;
+    private String status;
 
     public UUID getDetailContentId() {
         return detailContentId;
@@ -64,5 +65,13 @@ public class DetailedAnnouncementContent {
 
     public void setCreateAt(Timestamp createAt) {
         this.createAt = createAt;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
