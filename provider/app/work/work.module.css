@@ -294,7 +294,7 @@
 .work-edit-reference-button-area {
   display: flex;
   justify-content: flex-end;
-  margin: 0 0 15px 0;
+  margin: 30px 0 30px 0;
 }
 
 .work-edit-reference-button-area > button {
