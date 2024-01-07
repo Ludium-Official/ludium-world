@@ -37,7 +37,16 @@ export default function WorkContentEditor({ detailContent }) {
 
     setPending1(false);
     if (!updateWorkContentResponse.ok) {
-      alert("작업물을 저장하는 중에 에러가 발생했습니다.");
+      switch (updateWorkContentResponse.status) {
+        case 403:
+        case 404: {
+          const { message } = await updateWorkContentResponse.json();
+          alert(message);
+          break;
+        }
+        default:
+          alert("작업물을 제출하는 중에 에러가 발생했습니다.");
+      }
     } else {
       alert("작업물이 저장되었습니다.");
       router.refresh();
@@ -60,7 +69,16 @@ export default function WorkContentEditor({ detailContent }) {
 
     setPending2(false);
     if (!submitWorkContentResponse.ok) {
-      alert("작업물을 제출하는 중에 에러가 발생했습니다.");
+      switch (submitWorkContentResponse.status) {
+        case 403:
+        case 404: {
+          const { message } = await submitWorkContentResponse.json();
+          alert(message);
+          break;
+        }
+        default:
+          alert("작업물을 제출하는 중에 에러가 발생했습니다.");
+      }
     } else {
       alert("작업물이 제출되었습니다.");
       router.refresh();
