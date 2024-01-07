@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import workstyle from "../work.module.css";
 import WorkContentCreateButton from "./WorkContentCreateButton";
 import WorkContentEditor from "./WorkContentEditor";
+import WorkContentCommentEditor from "./WorkContentCommentEditor";
 
 const Viewer = dynamic(() => import("@/components/Viewer"), {
   ssr: false,
@@ -91,17 +92,14 @@ async function WorkContentList({ workId }) {
   return (
     <>
       {workContentList.map((detailContent) => (
-        <>
-          <WorkContentEditor
-            key={detailContent.detailContentId}
-            detailContent={detailContent}
-          />
+        <article key={detailContent.detailContentId}>
+          <WorkContentEditor detailContent={detailContent} />
           <WorkContentCommentList
-            key={detailContent.detailContentId}
             workId={workId}
             workContentId={detailContent.detailContentId}
+            status={detailContent.status}
           />
-        </>
+        </article>
       ))}
     </>
   );
@@ -123,7 +121,9 @@ async function User({ usrId }) {
   return <p>작성자: {user.nick}</p>;
 }
 
-async function WorkContentCommentList({ workId, workContentId }) {
+async function WorkContentCommentList({ workId, workContentId, status }) {
+  if (status === "CREATE") return null;
+
   const workContentCommentList = await getSubmittedWorkContentCommentList(
     workId,
     workContentId
@@ -152,6 +152,10 @@ async function WorkContentCommentList({ workId, workContentId }) {
             </div>
           </details>
         ))}
+        <WorkContentCommentEditor
+          workId={workId}
+          workContentId={workContentId}
+        />
       </details>
     </article>
   );
