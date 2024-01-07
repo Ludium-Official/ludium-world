@@ -54,16 +54,54 @@ async function getUser(usrId) {
   return await getUserResponse.json();
 }
 
+async function getSubmittedWorkContentCommentList(workId, workContentId) {
+  const getSubmittedWorkContentCommentListResponse = await fetchWithRetry(
+    `/detailed-announcement/${workId}/${workContentId}/comment`
+  );
+
+  if (!getSubmittedWorkContentCommentListResponse.ok)
+    if (getSubmittedWorkContentCommentListResponse.status === 404) return [];
+    else throw new Error(500);
+
+  return await getSubmittedWorkContentCommentListResponse.json();
+}
+
+function getCommentTimeStamp(originalDateString) {
+  const originalDate = new Date(originalDateString);
+
+  const formattedDate = new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false, // 24시간 형식 사용
+    timeZone: "Asia/Seoul",
+  }).format(originalDate);
+
+  const splittedDate = formattedDate.replaceAll(", ", "/").split("/");
+
+  return `${splittedDate[2]}-${splittedDate[0]}-${splittedDate[1]} ${splittedDate[3]}`;
+}
+
 async function WorkContentList({ workId }) {
   const workContentList = await getWorkContentList(workId);
 
   return (
     <>
       {workContentList.map((detailContent) => (
-        <WorkContentEditor
-          key={detailContent.detailContentId}
-          detailContent={detailContent}
-        />
+        <>
+          <WorkContentEditor
+            key={detailContent.detailContentId}
+            detailContent={detailContent}
+          />
+          <WorkContentCommentList
+            key={detailContent.detailContentId}
+            workId={workId}
+            workContentId={detailContent.detailContentId}
+          />
+        </>
       ))}
     </>
   );
@@ -77,6 +115,46 @@ async function Worker({ workId }) {
   const user = await getUser(worker.usrId);
 
   return <p>작업자 : {user.nick}</p>;
+}
+
+async function User({ usrId }) {
+  const user = await getUser(usrId);
+
+  return <p>작성자: {user.nick}</p>;
+}
+
+async function WorkContentCommentList({ workId, workContentId }) {
+  const workContentCommentList = await getSubmittedWorkContentCommentList(
+    workId,
+    workContentId
+  );
+
+  return (
+    <article className={workstyle["work-content-comment-wrapper"]}>
+      <h3>댓글 목록</h3>
+      <details className={workstyle["work-content-comment-list"]} open={true}>
+        <summary>댓글 목록 펼치기 / 닫기</summary>
+        {workContentCommentList.map((workContentComment) => (
+          <details
+            className={workstyle["work-content-comment"]}
+            key={workContentComment.detailedContentCommentId}
+            open={true}
+          >
+            <summary>댓글 펼치기 / 닫기</summary>
+            <div className={workstyle["work-content-comment-header"]}>
+              <p>
+                작성 일시: {getCommentTimeStamp(workContentComment.createAt)}
+              </p>
+              <User usrId={workContentComment.usrId} />
+            </div>
+            <div className={workstyle["work-content-comment-description"]}>
+              <Viewer content={workContentComment.description} />
+            </div>
+          </details>
+        ))}
+      </details>
+    </article>
+  );
 }
 
 export default async function WorkPage({ params: { workId } }) {

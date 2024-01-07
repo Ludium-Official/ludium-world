@@ -100,6 +100,7 @@ export default function WorkContentEditor({ detailContent }) {
         </button>
       </div>
       <details className={workstyle["work-edit-wrapper"]} open={true}>
+        <summary>작업물 펼치기 / 닫기</summary>
         <p>
           작업물 상태: {detailContent.status === "SUBMIT" ? "제출됨" : "생성됨"}
         </p>
