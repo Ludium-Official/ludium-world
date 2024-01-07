@@ -102,6 +102,17 @@ public class DetailedAnnouncementController {
         }
     }
 
+    @GetMapping("{detailedAnnouncementId}/worker")
+    public ResponseEntity<Object> getDetailedAnnouncementWorker(@PathVariable UUID detailedAnnouncementId) {
+        try {
+            return ResponseEntity.ok(detailedAnnouncementService.getDetailedAnnouncementWorker(detailedAnnouncementId, "PROVIDER"));
+        } catch(NoSuchElementException nse) {
+            return responseUtil.getNoSuchElementExceptionMessage("작업자 데이터가 없습니다.", nse.getMessage());
+        } catch(Exception e) {
+            return responseUtil.getExceptionMessage("작업자를 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
     @PostMapping("{detailedAnnouncementId}")
     public ResponseEntity<Object> createDetailedAnnouncementContent(@PathVariable UUID detailedAnnouncementId,
                                                                     @CookieValue(name = "access_token", required = false) String accessToken) {
