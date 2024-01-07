@@ -433,3 +433,38 @@
   background-color: #f7f2fa;
   color: #8b78b9;
 }
+
+.work-content-comment {
+  background-color: #fff;
+  padding: 10px 15px;
+  margin: 15px;
+  border: 1px solid #e6e2e6;
+  border-radius: 16px;
+}
+
+.work-content-comment-header {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+}
+
+.work-content-comment-description {
+  padding: 15px;
+  border: 1px solid #e6e2e6;
+  min-height: 40px;
+  overflow-y: auto;
+}
+
+.work-content-comment-wrapper {
+  padding: 15px;
+}
+
+.work-content-comment-list {
+  border: 1px solid #f2dcff;
+  background-color: #f7f2fa;
+  border-radius: 16px;
+}
+
+.work-content-comment-list > summary {
+  margin: 15px;
+}
