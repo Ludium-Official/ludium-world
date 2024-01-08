@@ -13,7 +13,7 @@ export default function ApproveWorkButton({ work }) {
     setPending(true);
 
     const approveWorkResponse = await fetchWithRetry(
-      `/announcement/${work.postingId}/${work.detailId}`,
+      `/detailed-announcement/${work.detailId}`,
       {
         method: HTTP_METHOD.PUT,
         body: JSON.stringify({
@@ -25,7 +25,9 @@ export default function ApproveWorkButton({ work }) {
 
     setPending(false);
     if (!approveWorkResponse.ok)
-      alert("작업을 승인하는 중 에러가 발생했습니다.");
+      if (approveWorkResponse.status === 404)
+        alert((await approveWorkResponse.json()).message);
+      else alert("작업을 승인하는 중 에러가 발생했습니다.");
 
     router.refresh();
   };
