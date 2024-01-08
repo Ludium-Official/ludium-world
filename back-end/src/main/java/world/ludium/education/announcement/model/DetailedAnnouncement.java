@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -16,6 +17,8 @@ public class DetailedAnnouncement {
     private String title;
     private String description;
     private OffsetDateTime deadline;
+    private String status;
+    private Timestamp createAt;
 
     public UUID getDetailId() {
         return detailId;
@@ -55,5 +58,21 @@ public class DetailedAnnouncement {
 
     public void setDeadline(OffsetDateTime deadline) {
         this.deadline = deadline;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Timestamp getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Timestamp createAt) {
+        this.createAt = createAt;
     }
 }
