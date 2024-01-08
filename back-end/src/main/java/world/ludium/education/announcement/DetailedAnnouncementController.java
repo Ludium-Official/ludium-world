@@ -2,6 +2,7 @@ package world.ludium.education.announcement;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import world.ludium.education.announcement.model.DetailedAnnouncement;
 import world.ludium.education.announcement.model.DetailedAnnouncementContent;
 import world.ludium.education.announcement.model.DetailedAnnouncementContentComment;
 import world.ludium.education.announcement.model.DetailedAnnouncementContentStatus;
@@ -160,6 +161,26 @@ public class DetailedAnnouncementController {
             return ResponseEntity.ok(detailedAnnouncementService.createDetailedAnnouncementContentComment(detailedAnnouncementContentComment));
         } catch (Exception e) {
             return responseUtil.getExceptionMessage("작업물에 댓글을 추가하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @PutMapping("{detailedAnnouncementId}")
+    public ResponseEntity<Object> updateDetailedAnnouncement(@PathVariable UUID detailedAnnouncementId,
+                                                             @RequestBody DetailedAnnouncement detailedAnnouncement,
+                                                             @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null)
+            return responseUtil.getUnAuthorizedMessage();
+
+        try {
+            detailedAnnouncementService.getDetailedAnnouncementWorker(detailedAnnouncementId, "PROVIDER");
+
+            return ResponseEntity.ok(detailedAnnouncementService.updateDetailedAnnouncement(detailedAnnouncement));
+        } catch (NoSuchElementException nse) {
+            return responseUtil.getNoSuchElementExceptionMessage("작업자 데이터가 없습니다.", nse.getMessage());
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("작업을 수정하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
