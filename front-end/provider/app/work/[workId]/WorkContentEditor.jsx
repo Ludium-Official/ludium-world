@@ -15,6 +15,7 @@ const Editor = dynamic(() => import("@/components/Editor"), {
 export default function WorkContentEditor({ detailContent }) {
   const router = useRouter();
   const editorRef = useRef();
+  const formRef = useRef();
   const [pending1, setPending1] = useState(false);
   const [pending2, setPending2] = useState(false);
 
@@ -55,6 +56,7 @@ export default function WorkContentEditor({ detailContent }) {
 
   const handleSubmitWorkContent = async () => {
     setPending2(true);
+    const { editorInstance } = editorRef.current;
 
     const submitWorkContentResponse = await fetchWithRetry(
       `/detailed-announcement/${detailContent.detailId}/${detailContent.detailContentId}`,
@@ -62,6 +64,8 @@ export default function WorkContentEditor({ detailContent }) {
         method: HTTP_METHOD.PUT,
         body: JSON.stringify({
           ...detailContent,
+          title: formRef.current.title.value,
+          description: editorInstance.getMarkdown(),
           status: WORK_CONTENT_STATUS.SUBMIT,
         }),
       }
@@ -86,7 +90,7 @@ export default function WorkContentEditor({ detailContent }) {
   };
 
   return (
-    <form onSubmit={handleEditWorkContent}>
+    <form ref={formRef} onSubmit={handleEditWorkContent}>
       <div className={workstyle["work-edit-reference-button-area"]}>
         <button
           type="button"
