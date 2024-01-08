@@ -15,6 +15,9 @@ import world.ludium.education.course.ModuleService;
 import world.ludium.education.util.ResponseUtil;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -119,8 +122,8 @@ public class AnnouncementController {
     }
 
     @GetMapping("{announcementId}/{detailedAnnouncementId}/worker")
-    public ResponseEntity<Object> updateDetailsAnnouncementWorker(@PathVariable UUID detailedAnnouncementId,
-                                                                  @RequestParam String role) {
+    public ResponseEntity<Object> getAnnouncementWorker(@PathVariable UUID detailedAnnouncementId,
+                                                        @RequestParam String role) {
         try {
             var detailedAnnouncementWorker = detailedAnnouncementService.getDetailedAnnouncementWorker(detailedAnnouncementId, role);
             var detailedAnnouncementWorkerDTO = new DetailedAnnouncementWorkerDTO(detailedAnnouncementWorker, ludiumUserService.getUser(detailedAnnouncementWorker.getUsrId()));
@@ -149,8 +152,8 @@ public class AnnouncementController {
     }
 
     @PostMapping("{announcementId}")
-    public ResponseEntity<Object> createDetailsAnnouncement(@PathVariable UUID announcementId,
-                                                            @CookieValue(name = "access_token", required = false) String accessToken) {
+    public ResponseEntity<Object> createDetailedAnnouncement(@PathVariable UUID announcementId,
+                                                             @CookieValue(name = "access_token", required = false) String accessToken) {
         var ludiumUser = ludiumUserService.getUser(accessToken);
 
         if (ludiumUser == null)
@@ -160,6 +163,8 @@ public class AnnouncementController {
         detailedAnnouncement.setTitle("");
         detailedAnnouncement.setDescription("");
         detailedAnnouncement.setPostingId(announcementId);
+        detailedAnnouncement.setStatus(DetailedAnnouncementStatus.CREATE.toString());
+        detailedAnnouncement.setCreateAt(new Timestamp(System.currentTimeMillis()));
 
         try {
             return ResponseEntity.ok(detailedAnnouncementService.createDetailedAnnouncement(detailedAnnouncement));
@@ -184,7 +189,7 @@ public class AnnouncementController {
     }
 
     @PostMapping("{announcementId}/{detailedAnnouncementId}/worker")
-    public ResponseEntity<Object> createDetailsAnnouncementWorker(@RequestBody DetailedAnnouncementWorker detailedAnnouncementWorker,
+    public ResponseEntity<Object> createDetailedAnnouncementWorker(@RequestBody DetailedAnnouncementWorker detailedAnnouncementWorker,
                                                                   @CookieValue(name = "access_token", required = false) String accessToken) {
         var ludiumUser = ludiumUserService.getUser(accessToken);
 
@@ -237,8 +242,8 @@ public class AnnouncementController {
 
 
     @PutMapping("/{announcementId}/{detailedAnnouncementId}")
-    public ResponseEntity<Object> updateModule(@RequestBody DetailedAnnouncement detailedAnnouncement,
-                                               @CookieValue(name = "access_token", required = false) String accessToken) {
+    public ResponseEntity<Object> updateDetailedAnnouncement(@RequestBody DetailedAnnouncement detailedAnnouncement,
+                                                             @CookieValue(name = "access_token", required = false) String accessToken) {
         var ludiumUser = ludiumUserService.getUser(accessToken);
 
         if (ludiumUser == null)
@@ -252,8 +257,8 @@ public class AnnouncementController {
     }
 
     @PutMapping("/{announcementId}/{detailedAnnouncementId}/application-template")
-    public ResponseEntity<Object> getApplicationTemplate(@RequestBody ApplicationTemplate applicationTemplate,
-                                                         @CookieValue(name = "access_token", required = false) String accessToken) {
+    public ResponseEntity<Object> updateApplicationTemplate(@RequestBody ApplicationTemplate applicationTemplate,
+                                                            @CookieValue(name = "access_token", required = false) String accessToken) {
         var ludiumUser = ludiumUserService.getUser(accessToken);
 
         if (ludiumUser == null)
@@ -267,8 +272,8 @@ public class AnnouncementController {
     }
 
     @PutMapping("{announcementId}/{detailedAnnouncementId}/worker")
-    public ResponseEntity<Object> updateDetailsAnnouncementWorker(@RequestBody DetailedAnnouncementWorker detailedAnnouncementWorker,
-                                                                  @CookieValue(name = "access_token", required = false) String accessToken) {
+    public ResponseEntity<Object> updateDetailedAnnouncementWorker(@RequestBody DetailedAnnouncementWorker detailedAnnouncementWorker,
+                                                                   @CookieValue(name = "access_token", required = false) String accessToken) {
         var ludiumUser = ludiumUserService.getUser(accessToken);
 
         if (ludiumUser == null)

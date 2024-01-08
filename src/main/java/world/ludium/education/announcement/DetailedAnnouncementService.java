@@ -25,11 +25,11 @@ public class DetailedAnnouncementService {
     }
 
     public List<DetailedAnnouncement> getAllDetailedAnnouncement() {
-        return detailedAnnouncementRepository.findAll();
+        return detailedAnnouncementRepository.findAllByOrderByCreateAtAsc();
     }
 
     public List<DetailedAnnouncement> getAllDetailedAnnouncement(UUID announcementId) {
-        return detailedAnnouncementRepository.findAllByPostingId(announcementId);
+        return detailedAnnouncementRepository.findAllByPostingIdOrderByCreateAt(announcementId);
     }
 
     public Optional<DetailedAnnouncement> getDetailedAnnouncement(UUID detailedAnnouncementId) {
