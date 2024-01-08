@@ -108,11 +108,11 @@ async function WorkContentList({ workId }) {
 async function Worker({ workId }) {
   const worker = await getWorker(workId);
 
-  if (worker === null) return <p>작업자 없음</p>;
+  if (worker === null) return <p>작업자: 없음</p>;
 
   const user = await getUser(worker.usrId);
 
-  return <p>작업자 : {user.nick}</p>;
+  return <p>작업자: {user.nick}</p>;
 }
 
 async function User({ usrId }) {
@@ -170,7 +170,10 @@ export default async function WorkPage({ params: { workId } }) {
         <BackButton />
       </ContentNavigation>
       <div className={workstyle["work-view-wrapper"]}>
-        <Worker workId={workId} />
+        <div className={workstyle["work-content-comment-header"]}>
+          <Worker workId={workId} />
+          <p>작업 승인 상태: {work.status === "CREATE" ? "미승인" : "승인"}</p>
+        </div>
         <h1 className={workstyle["work-view-title"]}>{work.title}</h1>
         <div className={workstyle.content}>
           <Viewer content={work.description} height={"100%"} />
