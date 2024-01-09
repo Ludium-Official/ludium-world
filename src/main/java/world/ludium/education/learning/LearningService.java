@@ -1,6 +1,8 @@
 package world.ludium.education.learning;
 
 import org.springframework.stereotype.Service;
+import world.ludium.education.learning.model.Learning;
+import world.ludium.education.learning.model.LearningRepository;
 
 import java.sql.Timestamp;
 import java.util.List;
