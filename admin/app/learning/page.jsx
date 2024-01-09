@@ -10,7 +10,6 @@ export const metadata = {
 async function getLearningList() {
   const getLearningListResponse = await fetchWithRetry(`/learning`);
 
-  console.log(getLearningListResponse.status);
   if (!getLearningListResponse.ok)
     if (getLearningListResponse.status === 404) return [];
     else throw new Error("학습을 불러오는 중 에러가 발생했습니다.");
