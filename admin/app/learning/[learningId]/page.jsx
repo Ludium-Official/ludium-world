@@ -5,6 +5,8 @@ import learningstyle from "../learning.module.css";
 import LearningEditor from "./LearningEditor";
 import CreateCurriculumButton from "./CreateCurriculumButton";
 import CurriculumEditor from "./CurriculumEditor";
+import CreateMissionButton from "./CreateMissionButton";
+import MissionEditor from "./MissionEditor";
 
 export async function generateMetadata({ params: { learningId } }) {
   const learning = await getLearning(learningId);
@@ -34,6 +36,34 @@ async function getCurriculumList(learningId) {
   return await getCurriculumListResponse.json();
 }
 
+async function getMissionList(learningId, curriculumId) {
+  const getMissionListResponse = await fetchWithRetry(
+    `/learning/${learningId}/${curriculumId}/mission`
+  );
+
+  if (!getMissionListResponse.ok)
+    if (getMissionListResponse.status === 404) return [];
+    else throw new Error("미션을 조회하는 중 에러가 발생했습니다.");
+
+  return await getMissionListResponse.json();
+}
+
+async function MissionList({ learningId, curriculumId }) {
+  const missions = await getMissionList(learningId, curriculumId);
+
+  return (
+    <>
+      {missions.map((mission) => (
+        <MissionEditor
+          key={mission.missionId}
+          mission={mission}
+          learningId={learningId}
+        />
+      ))}
+    </>
+  );
+}
+
 async function CurriculumList({ learningId }) {
   const curriculums = await getCurriculumList(learningId);
 
@@ -41,10 +71,25 @@ async function CurriculumList({ learningId }) {
     <>
       <h2>커리큘럼 목록</h2>
       {curriculums.map((curriculum) => (
-        <CurriculumEditor
-          key={curriculum.curriculumId}
-          curriculum={curriculum}
-        />
+        <>
+          <CurriculumEditor
+            key={curriculum.curriculumId}
+            curriculum={curriculum}
+          />
+          <div>
+            <CreateMissionButton
+              learningId={learningId}
+              curriculumId={curriculum.curriculumId}
+            />
+            {/* <button>아티클 추가하기</button> */}
+          </div>
+          <div>
+            <MissionList
+              learningId={learningId}
+              curriculumId={curriculum.curriculumId}
+            />
+          </div>
+        </>
       ))}
     </>
   );
