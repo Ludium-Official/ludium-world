@@ -3,6 +3,8 @@ package world.ludium.education.learning;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import world.ludium.education.auth.ludium.LudiumUserService;
+import world.ludium.education.learning.model.Curriculum;
+import world.ludium.education.learning.model.Learning;
 import world.ludium.education.util.ResponseException;
 import world.ludium.education.util.ResponseUtil;
 
@@ -15,13 +17,16 @@ public class LearningController {
     private final LearningService learningService;
     private final LudiumUserService ludiumUserService;
     private final ResponseUtil responseUtil;
+    private final CurriculumService curriculumService;
 
     public LearningController(LearningService learningService,
                               LudiumUserService ludiumUserService,
-                              ResponseUtil responseUtil) {
+                              ResponseUtil responseUtil,
+                              CurriculumService curriculumService) {
         this.learningService = learningService;
         this.ludiumUserService = ludiumUserService;
         this.responseUtil = responseUtil;
+        this.curriculumService = curriculumService;
 
     }
 
@@ -51,6 +56,21 @@ public class LearningController {
         }
     }
 
+    @GetMapping("/{learningId}/curriculum")
+    public ResponseEntity<Object> getAllCurriculum(@PathVariable UUID learningId){
+        try {
+            var curriculumList = curriculumService.getAllCurriculum(learningId);
+
+            if(curriculumList.isEmpty()) throw new NoSuchElementException();
+
+            return ResponseEntity.ok(curriculumList);
+        } catch(NoSuchElementException nse) {
+            return responseUtil.getNoSuchElementExceptionMessage("커리큘럼 데이터가 없습니다.", nse.getMessage());
+        } catch(Exception e) {
+            return responseUtil.getExceptionMessage("커리큘럼을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
     @PostMapping("")
     public ResponseEntity<Object> createLearning(@RequestBody Learning learning,
                                                  @CookieValue(name = "access_token", required = false) String accessToken) {
@@ -68,6 +88,28 @@ public class LearningController {
         }
     }
 
+    @PostMapping("/{learningId}")
+    public ResponseEntity<Object> createCurriculum(@PathVariable UUID learningId,
+                                                   @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null)
+            return responseUtil.getUnAuthorizedMessage();
+
+        var curriculum = new Curriculum();
+        curriculum.setTitle("");
+        curriculum.setDescription("");
+        curriculum.setUsrId(ludiumUser.getId());
+        curriculum.setPostingId(learningId);
+
+
+        try {
+            return ResponseEntity.ok(curriculumService.createCurriculum(curriculum));
+        } catch(Exception e) {
+            return responseUtil.getExceptionMessage("학습을 만드는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
     @PutMapping("/{learningId}")
     public ResponseEntity<Object> updateLearning(@RequestBody Learning learning,
                                                  @CookieValue(name = "access_token", required = false) String accessToken) {
@@ -77,12 +119,30 @@ public class LearningController {
             return responseUtil.getUnAuthorizedMessage();
 
         if(!ludiumUser.getId().equals(learning.getUsrId()))
-            return responseUtil.getForbiddenExceptionMessage(new ResponseException("학습 생성자 정보가 일치하지 않습니다.", ""));
+            return responseUtil.getForbiddenExceptionMessage(new ResponseException("학습 수정자 정보가 일치하지 않습니다.", ""));
 
         try {
             return ResponseEntity.ok(learningService.updateLearning(learning));
         } catch(Exception e) {
             return responseUtil.getExceptionMessage("학습을 수정하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+    
+    @PutMapping("/{learningId}/{curriculumId}")
+    public ResponseEntity<Object> updateCurriculum(@RequestBody Curriculum curriculum,
+                                                   @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null)
+            return responseUtil.getUnAuthorizedMessage();
+
+        if(!ludiumUser.getId().equals(curriculum.getUsrId()))
+            return responseUtil.getForbiddenExceptionMessage(new ResponseException("커리큘럼 수정자 정보가 일치하지 않습니다.", ""));
+
+        try {
+            return ResponseEntity.ok(curriculumService.updateCurriculum(curriculum));
+        } catch(Exception e) {
+            return responseUtil.getExceptionMessage("커리큘럼을 수정하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 }

@@ -1,4 +1,4 @@
-package world.ludium.education.learning;
+package world.ludium.education.learning.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

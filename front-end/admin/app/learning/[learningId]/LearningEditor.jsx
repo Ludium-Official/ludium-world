@@ -11,7 +11,7 @@ const Editor = dynamic(() => import("@/components/Editor"), {
   ssr: false,
 });
 
-export default function LearningContentEditor({ learning }) {
+export default function LearningEditor({ learning }) {
   const router = useRouter();
   const editorRef = useRef();
   const formRef = useRef();
@@ -46,7 +46,6 @@ export default function LearningContentEditor({ learning }) {
         default:
           alert("학습을 저장하는 중 에러가 발생했습니다.");
       }
-      ㅋ;
     } else {
       alert("학습이 저장되었습니다.");
       router.refresh();
