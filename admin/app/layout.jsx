@@ -21,6 +21,11 @@ async function getNavigationLinks() {
     },
     {
       id: crypto.randomUUID(),
+      dir: "/learning",
+      text: "학습제작",
+    },
+    {
+      id: crypto.randomUUID(),
       dir: "/management",
       text: "사용자 관리",
     },
