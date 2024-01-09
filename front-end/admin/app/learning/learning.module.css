@@ -464,3 +464,24 @@
   margin: 10px;
   background-color: #fff;
 }
+
+.learning-add-button {
+  margin: 15px 10px;
+  border: solid 1px #6750a4;
+  background-color: #6750a4;
+  list-style-type: none;
+  border-radius: 100px;
+  height: 40px;
+  padding: 0 24px;
+  color: #fff;
+  font-size: 16px;
+}
+
+.learning-add-button:hover {
+  background-color: #7965af;
+}
+
+.learning-add-button:active {
+  background-color: #f7f2fa;
+  color: #8b78b9;
+}

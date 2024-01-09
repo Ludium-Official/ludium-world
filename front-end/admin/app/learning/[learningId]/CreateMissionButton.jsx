@@ -6,15 +6,15 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import learningstyle from "../learning.module.css";
 
-export default function CreateCurriculumButton({ learningId }) {
+export default function CreateMissionButton({ learningId, curriculumId }) {
   const router = useRouter();
   const [pending, setPending] = useState(false);
 
-  const handleCreateCurriculum = async () => {
+  const handleCreateMission = async () => {
     setPending(true);
 
-    const createCurriculumResponse = await fetchWithRetry(
-      `/learning/${learningId}`,
+    const createMissionResponse = await fetchWithRetry(
+      `/learning/${learningId}/${curriculumId}/mission`,
       {
         method: HTTP_METHOD.POST,
       }
@@ -22,16 +22,16 @@ export default function CreateCurriculumButton({ learningId }) {
 
     setPending(false);
 
-    if (!createCurriculumResponse.ok) {
-      switch (createCurriculumResponse.status) {
+    if (!createMissionResponse.ok) {
+      switch (createMissionResponse.status) {
         case 403:
         case 404: {
-          const { message } = await createCurriculumResponse.json();
+          const { message } = await createMissionResponse.json();
           alert(message);
           break;
         }
         default:
-          alert("커리큘럼을 추가하는 중 에러가 발생했습니다.");
+          alert("미션을 추가하는 중 에러가 발생했습니다.");
       }
     }
 
@@ -41,10 +41,10 @@ export default function CreateCurriculumButton({ learningId }) {
   return (
     <button
       className={learningstyle["learning-add-button"]}
-      onClick={handleCreateCurriculum}
+      onClick={handleCreateMission}
       disabled={pending}
     >
-      {pending ? "커리큘럼을 추가하는 중입니다..." : "커리큘럼 추가하기"}
+      {pending ? "미션을 추가하는 중입니다..." : "미션 추가하기"}
     </button>
   );
 }

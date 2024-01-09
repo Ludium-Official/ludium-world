@@ -14,6 +14,7 @@ export default function Editor({ editorRef, content, height }) {
           initialEditType: "wysiwyg",
           previewStyle: "tab",
           initialValue: content,
+          autofocus: false,
         });
       } catch (error) {
         console.error(error);
