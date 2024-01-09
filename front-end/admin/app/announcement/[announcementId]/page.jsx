@@ -110,7 +110,7 @@ async function DetailedAnnouncementList({ announcementId }) {
   );
 }
 
-async function AnnoucementContent({ announcementId }) {
+async function AnnouncementContent({ announcementId }) {
   const announcement = await getAnnouncement(announcementId);
 
   return (
@@ -132,7 +132,7 @@ export default async function AnnouncementPage({ params: { announcementId } }) {
         {/* <DeleteButton deleteUrl={`/announcement/${announcementId}`} /> */}
         <Link href={`/announcement/${announcementId}/edit`}>수정하기</Link>
       </ContentNavigation>
-      <AnnoucementContent announcementId={announcementId} />
+      <AnnouncementContent announcementId={announcementId} />
     </>
   );
 }
