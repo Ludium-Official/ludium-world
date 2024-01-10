@@ -21,7 +21,7 @@ async function getLearning(learningId) {
   const getLearningResponse = await fetchWithRetry(`/learning/${learningId}`);
 
   if (!getLearningResponse.ok)
-    throw new Error("공고를 조회하는 중 에러가 발생했습니다.");
+    throw new Error("학습을 조회하는 중 에러가 발생했습니다.");
 
   return await getLearningResponse.json();
 }
