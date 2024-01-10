@@ -17,18 +17,30 @@ export default function Navigation({ googleAuthInfo, gglId, links }) {
         <ul className={navigationstyle.list}>
           <li className={navigationstyle.logo}>
             <Link href="/">
-              <Image src="/logo_purple.png" alt="ludium" width={156} height={70} priority />
+              <Image
+                src="/logo_purple.png"
+                alt="ludium"
+                width={156}
+                height={70}
+                priority
+              />
             </Link>
           </li>
           <GoogleButton />
           <li>
-            <Link className={navigationstyle.link} href="/announcement">공고</Link>
+            <Link className={navigationstyle.link} href="/announcement">
+              공고
+            </Link>
           </li>
           <li>
-            <Link className={navigationstyle.link} href="/make">제작</Link>
+            <Link className={navigationstyle.link} href="/work">
+              작업
+            </Link>
           </li>
           <li>
-            <Link className={navigationstyle.link} href="/validate">검증</Link>
+            <Link className={navigationstyle.link} href="/participation">
+              학습 참여
+            </Link>
           </li>
         </ul>
       </nav>
@@ -40,12 +52,29 @@ export default function Navigation({ googleAuthInfo, gglId, links }) {
       <ul className={navigationstyle.list}>
         <li className={navigationstyle.logo}>
           <Link href="/">
-            <Image src="/logo_purple.png" alt="ludium" width={156} height={70} priority />
+            <Image
+              src="/logo_purple.png"
+              alt="ludium"
+              width={156}
+              height={70}
+              priority
+            />
           </Link>
         </li>
-        {links.map(({ id, dir, text }) => <li key={id}>
-          <Link className={(pathName.split("/")[1] === dir.split("/")[1]) ? `${navigationstyle.link} ${navigationstyle.active}` : navigationstyle.link} href={dir}>{text}</Link>
-        </li>)}
+        {links.map(({ id, dir, text }) => (
+          <li key={id}>
+            <Link
+              className={
+                pathName.split("/")[1] === dir.split("/")[1]
+                  ? `${navigationstyle.link} ${navigationstyle.active}`
+                  : navigationstyle.link
+              }
+              href={dir}
+            >
+              {text}
+            </Link>
+          </li>
+        ))}
       </ul>
     </nav>
   );
