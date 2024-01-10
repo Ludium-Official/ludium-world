@@ -11,10 +11,9 @@ const Editor = dynamic(() => import("@/components/Editor"), {
   ssr: false,
 });
 
-export default function MissionEditor({ mission, postingId }) {
+export default function ArticleEditor({ article, postingId }) {
   const router = useRouter();
   const editorRef = useRef();
-  const submitFormEditorRef = useRef();
   const formRef = useRef();
   const [pending1, setPending1] = useState(false);
 
@@ -22,17 +21,15 @@ export default function MissionEditor({ mission, postingId }) {
     e.preventDefault();
     setPending1(true);
     const { editorInstance } = editorRef.current;
-    const submitFormEditorInstance = submitFormEditorRef.current.editorInstance;
 
     const updateWorkContentResponse = await fetchWithRetry(
-      `/learning/${postingId}/${mission.curriculumId}/mission`,
+      `/learning/${postingId}/${article.curriculumId}/article`,
       {
         method: HTTP_METHOD.PUT,
         body: JSON.stringify({
-          ...mission,
+          ...article,
           title: e.target.title.value,
           description: editorInstance.getMarkdown(),
-          missionSubmitForm: submitFormEditorInstance.getMarkdown(),
         }),
       }
     );
@@ -47,10 +44,10 @@ export default function MissionEditor({ mission, postingId }) {
           break;
         }
         default:
-          alert("미션을 저장하는 중 에러가 발생했습니다.");
+          alert("아티클을 저장하는 중 에러가 발생했습니다.");
       }
     } else {
-      alert("미션이 저장되었습니다.");
+      alert("아티클이 저장되었습니다.");
       router.refresh();
     }
   };
@@ -59,33 +56,24 @@ export default function MissionEditor({ mission, postingId }) {
     <form ref={formRef} onSubmit={handleEditWorkContent}>
       <div className={learningstyle["learning-edit-reference-button-area"]}>
         <button disabled={pending1}>
-          {pending1 ? "미션을 수정하는 중입니다..." : "미션 수정하기"}
+          {pending1 ? "아티클을 수정하는 중입니다..." : "아티클 수정하기"}
         </button>
       </div>
       <details open={true}>
-        <summary>미션 펼치기 / 닫기</summary>
+        <summary>아티클 펼치기 / 닫기</summary>
         <div className={learningstyle["learning-edit-header-area"]}>
           <input
             type="text"
             name="title"
             id="title"
-            defaultValue={mission.title}
-            placeholder="미션 제목을 입력해주세요"
+            defaultValue={article.title}
+            placeholder="아티클 제목을 입력해주세요"
           />
         </div>
-        <h4>미션 내용</h4>
         <div className={learningstyle["learning-edit-content-area"]}>
           <Editor
             editorRef={editorRef}
-            content={mission.description}
-            height={"100%"}
-          />
-        </div>
-        <h4>미션 제출 양식</h4>
-        <div className={learningstyle["learning-edit-content-area"]}>
-          <Editor
-            editorRef={submitFormEditorRef}
-            content={mission.missionSubmitForm}
+            content={article.description}
             height={"100%"}
           />
         </div>
