@@ -7,6 +7,8 @@ import CreateCurriculumButton from "./CreateCurriculumButton";
 import CurriculumEditor from "./CurriculumEditor";
 import CreateMissionButton from "./CreateMissionButton";
 import MissionEditor from "./MissionEditor";
+import CreateArticleButton from "./CreateArticlebutton";
+import ArticleEditor from "./ArticleEditor";
 
 export async function generateMetadata({ params: { learningId } }) {
   const learning = await getLearning(learningId);
@@ -48,11 +50,43 @@ async function getMissionList(learningId, curriculumId) {
   return await getMissionListResponse.json();
 }
 
+async function getArticleList(learningId, curriculumId) {
+  const getArticleListResponse = await fetchWithRetry(
+    `/learning/${learningId}/${curriculumId}/article`
+  );
+
+  console.log(getArticleListResponse.status);
+  if (!getArticleListResponse.ok)
+    if (getArticleListResponse.status === 404) return [];
+    else throw new Error("미션을 조회하는 중 에러가 발생했습니다.");
+
+  return await getArticleListResponse.json();
+}
+
+async function ArticleList({ learningId, curriculumId }) {
+  const articles = await getArticleList(learningId, curriculumId);
+
+  console.log(articles);
+  return (
+    <>
+      <h3>아티클 목록</h3>
+      {articles.map((article) => (
+        <ArticleEditor
+          key={article.articleId}
+          article={article}
+          learningId={learningId}
+        />
+      ))}
+    </>
+  );
+}
+
 async function MissionList({ learningId, curriculumId }) {
   const missions = await getMissionList(learningId, curriculumId);
 
   return (
     <>
+      <h3>미션 목록</h3>
       {missions.map((mission) => (
         <MissionEditor
           key={mission.missionId}
@@ -71,25 +105,29 @@ async function CurriculumList({ learningId }) {
     <>
       <h2>커리큘럼 목록</h2>
       {curriculums.map((curriculum) => (
-        <>
-          <CurriculumEditor
-            key={curriculum.curriculumId}
-            curriculum={curriculum}
-          />
+        <section key={curriculum.curriculumId}>
+          <CurriculumEditor curriculum={curriculum} />
           <div>
             <CreateMissionButton
               learningId={learningId}
               curriculumId={curriculum.curriculumId}
             />
-            {/* <button>아티클 추가하기</button> */}
+            <CreateArticleButton
+              learningId={learningId}
+              curriculumId={curriculum.curriculumId}
+            />
           </div>
           <div>
             <MissionList
               learningId={learningId}
               curriculumId={curriculum.curriculumId}
             />
+            <ArticleList
+              learningId={learningId}
+              curriculumId={curriculum.curriculumId}
+            />
           </div>
-        </>
+        </section>
       ))}
     </>
   );

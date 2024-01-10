@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import world.ludium.education.auth.ludium.LudiumUserService;
 import world.ludium.education.learning.model.Curriculum;
+import world.ludium.education.learning.model.EnhancedArticle;
 import world.ludium.education.learning.model.Learning;
 import world.ludium.education.learning.model.Mission;
 import world.ludium.education.util.ResponseException;
@@ -20,17 +21,20 @@ public class LearningController {
     private final ResponseUtil responseUtil;
     private final CurriculumService curriculumService;
     private final MissionService missionService;
+    private final EnhancedArticleService enhancedArticleService;
 
     public LearningController(LearningService learningService,
                               LudiumUserService ludiumUserService,
                               ResponseUtil responseUtil,
                               CurriculumService curriculumService,
-                              MissionService missionService) {
+                              MissionService missionService,
+                              EnhancedArticleService enhancedArticleService) {
         this.learningService = learningService;
         this.ludiumUserService = ludiumUserService;
         this.responseUtil = responseUtil;
         this.curriculumService = curriculumService;
         this.missionService = missionService;
+        this.enhancedArticleService = enhancedArticleService;
     }
 
     @GetMapping("")
@@ -87,6 +91,22 @@ public class LearningController {
             return responseUtil.getNoSuchElementExceptionMessage("미션 데이터가 없습니다.", nse.getMessage());
         } catch (Exception e) {
             return responseUtil.getExceptionMessage("미션을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @GetMapping("/{learningId}/{curriculumId}/article")
+    public ResponseEntity<Object> getAllArticle(@PathVariable UUID learningId,
+                                                @PathVariable UUID curriculumId) {
+        try {
+            var articleList = enhancedArticleService.getAllArticle(curriculumId);
+
+            if (articleList.isEmpty()) throw new NoSuchElementException();
+
+            return ResponseEntity.ok(articleList);
+        } catch (NoSuchElementException nse) {
+            return responseUtil.getNoSuchElementExceptionMessage("아티클 데이터가 없습니다.", nse.getMessage());
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("아티클을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
@@ -152,6 +172,28 @@ public class LearningController {
         }
     }
 
+    @PostMapping("/{learningId}/{curriculumId}/article")
+    public ResponseEntity<Object> createArticle(@PathVariable UUID learningId,
+                                                @PathVariable UUID curriculumId,
+                                                @CookieValue(name = "access_token", required = false) String accessToken){
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null)
+            return responseUtil.getUnAuthorizedMessage();
+
+        var article = new EnhancedArticle();
+        article.setCurriculumId(curriculumId);
+        article.setTitle("");
+        article.setDescription("");
+        article.setUsrId(ludiumUser.getId());
+
+        try {
+            return ResponseEntity.ok(enhancedArticleService.createArticle(article));
+        } catch (Exception e){
+            return responseUtil.getExceptionMessage("아티클을 만드는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
     @PutMapping("/{learningId}")
     public ResponseEntity<Object> updateLearning(@RequestBody Learning learning,
                                                  @CookieValue(name = "access_token", required = false) String accessToken) {
@@ -203,6 +245,24 @@ public class LearningController {
             return ResponseEntity.ok(missionService.updateMission(mission));
         } catch (Exception e) {
             return responseUtil.getExceptionMessage("미션을 수정하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @PutMapping("/{learningId}/{curriculumId}/article")
+    public ResponseEntity<Object> updateMission(@RequestBody EnhancedArticle article,
+                                                @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null)
+            return responseUtil.getUnAuthorizedMessage();
+
+        if (!ludiumUser.getId().equals(article.getUsrId()))
+            return responseUtil.getForbiddenExceptionMessage(new ResponseException("아티클 수정자 정보가 일치하지 않습니다.", ""));
+
+        try {
+            return ResponseEntity.ok(enhancedArticleService.updateArticle(article));
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("아티클을 수정하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 }
