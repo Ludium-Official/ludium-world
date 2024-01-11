@@ -12,7 +12,7 @@ const refreshAccessToken = async (options) => {
   if (options.headers !== undefined) {
     fetchInit.headers = {
       ...options.headers,
-      ...fetchInit.headers["Content-Type"],
+      "Content-Type": fetchInit.headers["Content-Type"],
     };
   }
 
@@ -22,6 +22,7 @@ const refreshAccessToken = async (options) => {
   );
 
   if (!tokenRefreshResponse.ok) {
+    console.log({ fetchInit, options }, tokenRefreshResponse.status);
     throw new Error("Failed to refresh access token");
   }
   return await tokenRefreshResponse.json();
@@ -40,6 +41,7 @@ const fetchWithRetry = (url, options, maxRetry = 3) => {
       cache: "no-store",
     });
     if (response.status === 401 && retryCount < maxRetry) {
+      console.log({ url, options });
       const refreshAccessTokenResponse = await refreshAccessToken(options);
 
       return retry(

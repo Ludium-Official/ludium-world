@@ -65,7 +65,6 @@
 .viewer-content {
   margin: 15px;
   padding: 15px;
-  height: 300px;
   height: calc(100vh - 240px);
   min-height: 500px;
   border: 1px solid #cbcbcb;
@@ -104,11 +103,11 @@
   background-color: #e6e0e9;
 }
 
-.viewer-sub2 {
+.curriculum-content-viewer {
   margin: 20px;
 }
 
-.viewer-sub2[open] {
+.curriculum-content-viewer[open] {
   margin-top: 15px;
   background-color: #e6e0e9;
   padding-bottom: 15px;
@@ -116,26 +115,48 @@
   border-radius: 8px;
 }
 
-.viewer-sub-summary2 {
+.curriculum-content-summary {
   padding: 20px;
   margin: 15px 0 0;
   cursor: pointer;
-  text-align: center;
-  background-color: #e6e0e9;
-  border: 1px solid #e6e0e9;
+  background-color: #a991e8;
+  border: 1px solid #a991e8;
+  color: #000;
   border-radius: 8px;
+  font-size: 1.5em;
 }
 
-.viewer-sub2[open] > .viewer-sub-summary2 {
-  padding: 0;
-  margin: 15px 15px;
+.curriculum-content-summary::marker {
+  content: "";
 }
 
-.viewer-sub-summary2:hover {
+.curriculum-content-viewer[open] > .curriculum-content-summary {
+  padding: 5px 0;
+  margin: 0;
+  border: none;
+  background-color: #e6e0e9;
+  color: #e6e0e9;
+  border-radius: 8px 8px 0 0;
+  text-align: center;
+  font-size: 0;
+}
+
+.curriculum-content-viewer[open] > .curriculum-content-summary::marker {
+  content: "접기";
+  color: #000;
+  font-size: 1rem;
+}
+
+.curriculum-content-summary:hover {
+  background-color: #cbb7ff;
+}
+
+.curriculum-content-viewer[open] > .curriculum-content-summary:hover {
   background-color: #d4cbd9;
+  color: #d4cbd9;
 }
 
-.viewer-title2 {
+.curriculum-content-title {
   display: block;
   font-size: 2em;
   margin-block-start: 0.67em;
@@ -151,6 +172,71 @@
   line-height: 45px;
   text-indent: 15px;
   padding: 15px 0;
+}
+
+.mission-submit {
+  margin-top: 15px;
+}
+
+.mission-submit[open] {
+  background-color: #d4cbd9;
+  padding-bottom: 15px;
+  margin: 5px;
+  border-radius: 8px;
+}
+
+.mission-submit-summary {
+  width: 50%;
+  margin: auto;
+  padding: 15px;
+  background-color: #6750a4;
+  border: 1px solid #6750a4;
+  border-radius: 50px;
+  color: #fff;
+  text-align: center;
+}
+
+.mission-submit-summary:hover {
+  background-color: #7965af;
+}
+
+.mission-submit[open] > .mission-submit-summary {
+  padding: 5px 15px;
+  background-color: #d4cbd9;
+  border-color: #d4cbd9;
+  color: #000;
+  width: calc(100% - 30px);
+  border: none;
+  border-radius: 8px 8px 0 0;
+}
+
+.mission-submit[open] > .mission-submit-summary:hover {
+  background-color: #c5bacb;
+}
+
+.mission-submit-summary::marker {
+  content: "제출하기";
+}
+
+.mission-submit[open] > .mission-submit-summary::marker {
+  content: "제출 접기";
+}
+
+.mission-submit-content {
+  margin: 15px;
+  height: 600px;
+  min-height: 500px;
+  border: 1px solid #cbcbcb;
+  background-color: #fff;
+}
+
+.mission-summary-title {
+  margin: 0;
+}
+
+.mission-status {
+  font-size: 15px;
+  margin: 0;
 }
 
 .header1 {
@@ -188,8 +274,46 @@
   color: #6c3890;
 }
 
-.right-end {
+.header4 {
+  display: block;
+  font-size: 1.1em;
+  margin-block-start: 0.83em;
+  margin-block-end: 0.83em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+  margin: 15px;
+  color: #6c3890;
+}
+
+.button1 {
+  margin: 15px 10px;
+  border: solid 1px #6750a4;
+  background-color: #6750a4;
+  list-style-type: none;
+  border-radius: 100px;
+  height: 40px;
+  padding: 0 24px;
+  color: #fff;
+  font-size: 16px;
+}
+
+.button1:hover {
+  background-color: #7965af;
+}
+
+.button1:active {
+  background-color: #f7f2fa;
+  color: #8b78b9;
+}
+
+.flex-end {
   display: flex;
   justify-content: flex-end;
   margin: 15px;
+}
+
+.space-between {
+  display: flex;
+  justify-content: space-between;
 }
