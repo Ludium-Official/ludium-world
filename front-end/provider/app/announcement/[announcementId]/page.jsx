@@ -56,7 +56,7 @@ async function DetailedAnnouncementList({ announcementId }) {
             ]}
           />
           <details className={announcementstyle.module} open={true}>
-            <summary>{title === "" ? "작업" : title} 펼치기 / 닫기</summary>
+            <summary>{title === "" ? "작업" : title} 펼치기 / 접기</summary>
             <div className={announcementstyle["module-header-area"]}>
               <input
                 type="text"

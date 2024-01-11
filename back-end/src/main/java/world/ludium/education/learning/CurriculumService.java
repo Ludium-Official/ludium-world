@@ -6,6 +6,7 @@ import world.ludium.education.learning.model.CurriculumRepository;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -30,4 +31,6 @@ public class CurriculumService {
     public Curriculum updateCurriculum(Curriculum curriculum) {
         return curriculumRepository.save(curriculum);
     }
+
+    public List<Map<String, String>> getAllCurriculumContents(UUID curriculumId) { return curriculumRepository.findAllMissionAndArticle(curriculumId); }
 }

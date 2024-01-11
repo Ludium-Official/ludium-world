@@ -2,6 +2,7 @@ package world.ludium.education.auth.ludium;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import world.ludium.education.auth.LoginService;
 
 import java.math.BigInteger;
@@ -39,6 +40,10 @@ public class LudiumUserService {
             var googleUserApiData = loginService.getUserResource(accessToken, "google");
 
             return getUser(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+        } catch (HttpClientErrorException hcee) {
+            hcee.printStackTrace();
+
+            return null;
         } catch (Exception e) {
             return null;
         }
