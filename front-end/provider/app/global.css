@@ -156,6 +156,12 @@
   color: #d4cbd9;
 }
 
+.curriculum-content-viewer[open]
+  > .curriculum-content-summary
+  > .space-between {
+  display: none;
+}
+
 .curriculum-content-title {
   display: block;
   font-size: 2em;
@@ -186,7 +192,7 @@
 }
 
 .mission-submit-summary {
-  width: 50%;
+  width: 250px;
   margin: auto;
   padding: 15px;
   background-color: #6750a4;
