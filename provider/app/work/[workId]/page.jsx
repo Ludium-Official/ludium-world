@@ -133,14 +133,14 @@ async function WorkContentCommentList({ workId, workContentId, status }) {
     <article className={workstyle["work-content-comment-wrapper"]}>
       <h3>댓글 목록</h3>
       <details className={workstyle["work-content-comment-list"]} open={true}>
-        <summary>댓글 목록 펼치기 / 닫기</summary>
+        <summary>댓글 목록 펼치기 / 접기</summary>
         {workContentCommentList.map((workContentComment) => (
           <details
             className={workstyle["work-content-comment"]}
             key={workContentComment.detailedContentCommentId}
             open={true}
           >
-            <summary>댓글 펼치기 / 닫기</summary>
+            <summary>댓글 펼치기 / 접기</summary>
             <div className={workstyle["work-content-comment-header"]}>
               <p>
                 작성 일시: {getCommentTimeStamp(workContentComment.createAt)}
