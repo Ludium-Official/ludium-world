@@ -124,12 +124,21 @@ async function MissionSubmit({ learningId, curriculumId, mission }) {
 async function MissionSummary({ learningId, curriculumId, mission }) {
   const missionStatus = getMissionStatus(learningId, curriculumId, mission.id);
   return (
-    <summary className="curriculum-content-summary">
-      <div className="space-between">
-        <p className="mission-summary-title">[미션] {mission.title}</p>
+    <>
+      <summary className="curriculum-content-summary">
+        <div className="space-between">
+          <p className="mission-summary-title">[미션] {mission.title}</p>
+          <p className="mission-status">{missionStatus}</p>
+        </div>
+      </summary>
+      <div className="flex-end">
         <p className="mission-status">{missionStatus}</p>
       </div>
-    </summary>
+      <h4 className="curriculum-content-title">{mission.title}</h4>
+      <section className="viewer-content">
+        <Viewer content={mission.description} height="100%" />
+      </section>
+    </>
   );
 }
 
@@ -141,10 +150,6 @@ async function Mission({ learningId, curriculumId, mission }) {
         curriculumId={curriculumId}
         mission={mission}
       />
-      <h4 className="curriculum-content-title">{mission.title}</h4>
-      <section className="viewer-content">
-        <Viewer content={mission.description} height="100%" />
-      </section>
       <MissionSubmit
         learningId={learningId}
         curriculumId={curriculumId}
