@@ -254,6 +254,25 @@ public class LearningController {
         }
     }
 
+    @PostMapping("/{learningId}/{curriculumId}/article/{articleId}")
+    public ResponseEntity<Object> createArticleSubmit(@PathVariable UUID articleId,
+                                                      @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null)
+            return responseUtil.getUnAuthorizedMessage();
+
+        var articleSubmit = new ArticleSubmit();
+        articleSubmit.setArticleId(articleId);
+        articleSubmit.setUsrId(ludiumUser.getId());
+
+        try {
+            return ResponseEntity.ok(enhancedArticleService.createArticleSubmit(articleSubmit));
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("아티클 제출을 만드는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
     @PutMapping("/{learningId}")
     public ResponseEntity<Object> updateLearning(@RequestBody Learning learning,
                                                  @CookieValue(name = "access_token", required = false) String accessToken) {
