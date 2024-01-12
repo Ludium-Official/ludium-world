@@ -313,6 +313,17 @@
   color: #8b78b9;
 }
 
+.button-large {
+  width: 250px;
+  height: 53px;
+  margin: 0;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
 .flex-end {
   display: flex;
   justify-content: flex-end;

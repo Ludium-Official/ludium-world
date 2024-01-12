@@ -70,18 +70,6 @@ async function getMission(learningId, curriculumId, missionId) {
   return await getMissionResponse.json();
 }
 
-async function getMissionStatus(learningId, curriculumId, missionId) {
-  const missionSubmit = await getMissinoSubmit(
-    learningId,
-    curriculumId,
-    missionId
-  );
-
-  if (missionSubmit === null) return "미제출";
-
-  return MISSIONSUBMIT_STATUS[missionSubmit.status];
-}
-
 async function MissionSubmit({ learningId, curriculumId, mission }) {
   const missionSubmit = await getMissinoSubmit(
     learningId,
@@ -92,7 +80,7 @@ async function MissionSubmit({ learningId, curriculumId, mission }) {
   if (missionSubmit !== null)
     return (
       <details className="mission-submit">
-        <summary className="mission-submit-summary" />
+        <summary className="mission-submit-summary"></summary>
         <h4 className="header4">제출 내용</h4>
         <MissionSubmitEditor
           learningId={learningId}
@@ -108,7 +96,7 @@ async function MissionSubmit({ learningId, curriculumId, mission }) {
 
   return (
     <details className="mission-submit">
-      <summary className="mission-submit-summary" />
+      <summary className="mission-submit-summary"></summary>
       <h4 className="header4">제출 내용</h4>
       <MissionSubmitEditor
         learningId={learningId}
@@ -122,34 +110,45 @@ async function MissionSubmit({ learningId, curriculumId, mission }) {
 }
 
 async function MissionSummary({ learningId, curriculumId, mission }) {
-  const missionStatus = getMissionStatus(learningId, curriculumId, mission.id);
+  const missionSubmit = await getMissinoSubmit(
+    learningId,
+    curriculumId,
+    mission.id
+  );
+
+  if (missionSubmit === null) return <p className="mission-status">미제출</p>;
+
   return (
-    <>
-      <summary className="curriculum-content-summary">
-        <div className="space-between">
-          <p className="mission-summary-title">[미션] {mission.title}</p>
-          <p className="mission-status">{missionStatus}</p>
-        </div>
-      </summary>
-      <div className="flex-end">
-        <p className="mission-status">{missionStatus}</p>
-      </div>
-      <h4 className="curriculum-content-title">{mission.title}</h4>
-      <section className="viewer-content">
-        <Viewer content={mission.description} height="100%" />
-      </section>
-    </>
+    <p className="mission-status">
+      {MISSIONSUBMIT_STATUS[missionSubmit.status]}
+    </p>
   );
 }
 
 async function Mission({ learningId, curriculumId, mission }) {
   return (
     <details className="curriculum-content-viewer">
-      <MissionSummary
-        learningId={learningId}
-        curriculumId={curriculumId}
-        mission={mission}
-      />
+      <summary className="curriculum-content-summary">
+        <div className="space-between">
+          <p className="mission-summary-title">[미션] {mission.title}</p>
+          <MissionSummary
+            learningId={learningId}
+            curriculumId={curriculumId}
+            mission={mission}
+          />
+        </div>
+      </summary>
+      <div className="flex-end">
+        <MissionSummary
+          learningId={learningId}
+          curriculumId={curriculumId}
+          mission={mission}
+        />
+      </div>
+      <h4 className="curriculum-content-title">{mission.title}</h4>
+      <section className="viewer-content">
+        <Viewer content={mission.description} height="100%" />
+      </section>
       <MissionSubmit
         learningId={learningId}
         curriculumId={curriculumId}
@@ -169,6 +168,11 @@ async function Article({ learningId, curriculumId, article }) {
       <section className="viewer-content">
         <Viewer content={article.description} height="100%" />
       </section>
+      <div className="center">
+        <button className="button1 button-large" type="button">
+          제출하기
+        </button>
+      </div>
     </details>
   );
 }
