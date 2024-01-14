@@ -151,6 +151,23 @@ public class LearningController {
         }
     }
 
+    @GetMapping("/{learningId}/{curriculumId}/article/{articleId}/submit/user")
+    public ResponseEntity<Object> getArticleSubmit(@PathVariable UUID articleId,
+                                                   @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null)
+            return responseUtil.getUnAuthorizedMessage();
+
+        try {
+            return ResponseEntity.ok(enhancedArticleService.getArticleSubmit(articleId, ludiumUser.getId()));
+        } catch (NoSuchElementException nse) {
+            return responseUtil.getNoSuchElementExceptionMessage("아티클 제출 데이터가 없습니다.", nse.getMessage());
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("아티클 제출을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
     @PostMapping("")
     public ResponseEntity<Object> createLearning(@RequestBody Learning learning,
                                                  @CookieValue(name = "access_token", required = false) String accessToken) {
@@ -261,6 +278,9 @@ public class LearningController {
 
         if (ludiumUser == null)
             return responseUtil.getUnAuthorizedMessage();
+
+        if(enhancedArticleService.isExistArticleSubmit(articleId, ludiumUser.getId()))
+            return responseUtil.getDuplicateExceptionMessage(new ResponseException("이미 제출된 아티클 입니다.", ""));
 
         var articleSubmit = new ArticleSubmit();
         articleSubmit.setArticleId(articleId);
