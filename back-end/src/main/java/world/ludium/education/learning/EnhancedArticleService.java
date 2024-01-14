@@ -33,10 +33,27 @@ public class EnhancedArticleService {
         return enhancedArticleRepository.save(enhancedArticle);
     }
 
+    public boolean isExistArticleSubmit(UUID articleId, UUID usrId) {
+        var articleSubmitId = new ArticleSubmitId();
+
+        articleSubmitId.setArticleId(articleId);
+        articleSubmitId.setUsrId(usrId);
+
+        return articleSubmitRepository.existsById(articleSubmitId);
+    }
+
     public ArticleSubmit createArticleSubmit(ArticleSubmit articleSubmit) {
         articleSubmit.setCreateAt(new Timestamp(System.currentTimeMillis()));
         articleSubmit.setStatus(ArticleSubmitStatus.SUBMIT.toString());
 
         return articleSubmitRepository.save(articleSubmit);
+    }
+
+    public ArticleSubmit getArticleSubmit(UUID articleId, UUID usrId) {
+        var articleSubmitId = new ArticleSubmitId();
+        articleSubmitId.setArticleId(articleId);
+        articleSubmitId.setUsrId(usrId);
+
+        return articleSubmitRepository.findById(articleSubmitId).orElseThrow();
     }
 }

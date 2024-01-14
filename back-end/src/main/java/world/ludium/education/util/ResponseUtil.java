@@ -41,4 +41,10 @@ public class ResponseUtil {
                 .status(HttpStatus.FORBIDDEN)
                 .body(responseException);
     }
+
+    public ResponseEntity<Object> getDuplicateExceptionMessage(ResponseException responseException) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(responseException);
+    }
 }
