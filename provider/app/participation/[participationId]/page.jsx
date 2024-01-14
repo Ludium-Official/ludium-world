@@ -5,6 +5,8 @@ import dynamic from "next/dynamic";
 import MissionSubmitEditor from "./MissionSubmitEditor";
 import { cookies } from "next/headers";
 import MISSIONSUBMIT_STATUS from "@/enums/MISSIONSUBMIT_STATUS";
+import ArticleSubmitbutton from "./ArticleSubmitButton";
+import ARTICLESUBMIT_STATUS from "@/enums/ARTICLESUBMIT_STATUS";
 
 const Viewer = dynamic(() => import("@/components/Viewer"), { ssr: false });
 
@@ -70,6 +72,24 @@ async function getMission(learningId, curriculumId, missionId) {
   return await getMissionResponse.json();
 }
 
+async function getArticleSubmit(learningId, curriculumId, articleId) {
+  const cookieStore = cookies();
+  const getArticleSubmitResponse = await fetchWithRetry(
+    `/learning/${learningId}/${curriculumId}/article/${articleId}/submit/user`,
+    {
+      headers: {
+        cookie: cookieStore,
+      },
+    }
+  );
+
+  if (!getArticleSubmitResponse.ok)
+    if (getArticleSubmitResponse.status === 404) return null;
+    else throw new Error("아티클 제출을 조회하는 중 에러가 발생했습니다.");
+
+  return await getArticleSubmitResponse.json();
+}
+
 async function MissionSubmit({ learningId, curriculumId, mission }) {
   const missionSubmit = await getMissinoSubmit(
     learningId,
@@ -116,10 +136,11 @@ async function MissionSummary({ learningId, curriculumId, mission }) {
     mission.id
   );
 
-  if (missionSubmit === null) return <p className="mission-status">미제출</p>;
+  if (missionSubmit === null)
+    return <p className="curriculum-content-status">미제출</p>;
 
   return (
-    <p className="mission-status">
+    <p className="curriculum-content-status">
       {MISSIONSUBMIT_STATUS[missionSubmit.status]}
     </p>
   );
@@ -130,7 +151,9 @@ async function Mission({ learningId, curriculumId, mission }) {
     <details className="curriculum-content-viewer">
       <summary className="curriculum-content-summary">
         <div className="space-between">
-          <p className="mission-summary-title">[미션] {mission.title}</p>
+          <p className="curriculum-content-summary-title">
+            [미션] {mission.title}
+          </p>
           <MissionSummary
             learningId={learningId}
             curriculumId={curriculumId}
@@ -159,19 +182,40 @@ async function Mission({ learningId, curriculumId, mission }) {
 }
 
 async function Article({ learningId, curriculumId, article }) {
+  const articleSubmit = await getArticleSubmit(
+    learningId,
+    curriculumId,
+    article.id
+  );
+
+  const articleSubmitStatus =
+    articleSubmit === null
+      ? ARTICLESUBMIT_STATUS.NO_SUBMIT
+      : ARTICLESUBMIT_STATUS[articleSubmit.status];
+
   return (
     <details className="curriculum-content-viewer">
       <summary className="curriculum-content-summary">
-        [아티클] {article.title}
+        <div className="space-between">
+          <p className="curriculum-content-summary-title">
+            [아티클] {article.title}
+          </p>
+          <p className="curriculum-content-status">{articleSubmitStatus}</p>
+        </div>
       </summary>
+      <div className="flex-end">
+        <p className="curriculum-content-status">{articleSubmitStatus}</p>
+      </div>
       <h4 className="curriculum-content-title">{article.title}</h4>
       <section className="viewer-content">
         <Viewer content={article.description} height="100%" />
       </section>
       <div className="center">
-        <button className="button1 button-large" type="button">
-          제출하기
-        </button>
+        <ArticleSubmitbutton
+          learningId={learningId}
+          curriculumId={curriculumId}
+          articleId={article.id}
+        />
       </div>
     </details>
   );
