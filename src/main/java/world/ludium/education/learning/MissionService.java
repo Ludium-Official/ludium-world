@@ -41,6 +41,10 @@ public class MissionService {
         return missionRepository.save(mission);
     }
 
+    public List<EnhancedMissionSubmit> getAllMissionSubmit(UUID missionId) {
+        return enhancedMissionSubmitRepository.findAllByMissionIdOrderByCreateAt(missionId);
+    }
+
     public EnhancedMissionSubmit getMissionSubmit(UUID missionId, UUID usrId) {
         return enhancedMissionSubmitRepository.findByMissionIdAndUsrId(missionId, usrId).orElseThrow();
     }
