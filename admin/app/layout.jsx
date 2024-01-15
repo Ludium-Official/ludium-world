@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import MainWrapper from "../components/MainWrapper";
 import Navigation from "../components/Navigation";
+import "./global.css";
 
 async function getNavigationLinks() {
   return [
@@ -23,6 +24,11 @@ async function getNavigationLinks() {
       id: crypto.randomUUID(),
       dir: "/learning",
       text: "학습제작",
+    },
+    {
+      id: crypto.randomUUID(),
+      dir: "/mission-management",
+      text: "미션관리",
     },
     {
       id: crypto.randomUUID(),
