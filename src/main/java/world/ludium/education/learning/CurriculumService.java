@@ -21,6 +21,10 @@ public class CurriculumService {
         return curriculumRepository.findAllByPostingIdOrderByCreateAt(learningId);
     }
 
+    public Curriculum getCurriculum(UUID curriculumId) {
+        return curriculumRepository.findById(curriculumId).orElseThrow();
+    }
+
     public Curriculum createCurriculum(Curriculum curriculum) {
         curriculum.setCurriculumId(UUID.randomUUID());
         curriculum.setCreateAt(new Timestamp(System.currentTimeMillis()));
