@@ -47,7 +47,7 @@ public class MissionSubmitService {
 
     public MissionSubmit validateMissionSubmit(UUID submitId) {
         MissionSubmit missionSubmit = missionSubmitRepository.findById(submitId)
-                .orElseThrow(() -> new EntityNotFoundException("미션 서브밋을 찾을 수 없습니다. ID: " + submitId));
+                .orElseThrow(() -> new EntityNotFoundException("미션 제출을 찾을 수 없습니다. ID: " + submitId));
 
         missionSubmit.setVldStt(true);
 
@@ -56,7 +56,7 @@ public class MissionSubmitService {
 
     public MissionSubmit invalidateMissionSubmit(UUID submitId) {
         MissionSubmit missionSubmit = missionSubmitRepository.findById(submitId)
-                .orElseThrow(() -> new EntityNotFoundException("미션 서브밋을 찾을 수 없습니다. ID: " + submitId));
+                .orElseThrow(() -> new EntityNotFoundException("미션 제출을 찾을 수 없습니다. ID: " + submitId));
 
         missionSubmit.setVldStt(false);
 
@@ -65,12 +65,12 @@ public class MissionSubmitService {
 
     public MissionSubmit getMissionSubmit(UUID submitId) {
         return missionSubmitRepository.findById(submitId)
-                .orElseThrow(() -> new EntityNotFoundException("미션 서브밋을 찾을 수 없습니다. ID: " + submitId));
+                .orElseThrow(() -> new EntityNotFoundException("미션 제출밋을 찾을 수 없습니다. ID: " + submitId));
     }
 
     public MissionSubmit updateMissionSubmit(UUID submitId, String content) {
         MissionSubmit missionSubmit = missionSubmitRepository.findById(submitId)
-                .orElseThrow(() -> new EntityNotFoundException("미션 서브밋을 찾을 수 없습니다. ID: " + submitId));
+                .orElseThrow(() -> new EntityNotFoundException("미션 제출을 찾을 수 없습니다. ID: " + submitId));
 
         missionSubmit.setContent(content);
 
