@@ -18,6 +18,10 @@ public class MissionService {
         this.enhancedMissionSubmitRepository = enhancedMissionSubmitRepository;
     }
 
+    public List<Mission> getAllMission() {
+        return missionRepository.findAllByOrderByCreateAt();
+    }
+
     public List<Mission> getAllMission(UUID curriculumId) {
         return missionRepository.findAllByCurriculumIdOrderByCreateAt(curriculumId);
     }

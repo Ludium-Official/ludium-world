@@ -10,34 +10,51 @@ import world.ludium.education.article.Category;
 import world.ludium.education.auth.LoginService;
 import world.ludium.education.auth.ludium.LudiumUser;
 import world.ludium.education.auth.ludium.LudiumUserService;
+import world.ludium.education.learning.MissionService;
+import world.ludium.education.util.ResponseUtil;
 
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/mission", produces = "application/json")
 public class MissionController {
-    private LoginService loginService;
-    private LudiumUserService ludiumUserService;
-    private ArticleService articleService;
-    private MissionSubmitService missionSubmitService;
+    private final LoginService loginService;
+    private final LudiumUserService ludiumUserService;
+    private final ArticleService articleService;
+    private final MissionSubmitService missionSubmitService;
+    private final MissionService missionService;
+    private final ResponseUtil responseUtil;
 
     public MissionController(LoginService loginService,
                              LudiumUserService ludiumUserService,
                              ArticleService articleService,
-                             MissionSubmitService missionSubmitService) {
+                             MissionSubmitService missionSubmitService,
+                             MissionService missionService,
+                             ResponseUtil responseUtil) {
         this.loginService = loginService;
         this.ludiumUserService = ludiumUserService;
         this.articleService = articleService;
         this.missionSubmitService = missionSubmitService;
+        this.missionService = missionService;
+        this.responseUtil = responseUtil;
     }
 
     @GetMapping("")
-    public ResponseEntity getMissions() {
-        return ResponseEntity.ok(articleService.getAllMission());
+    public ResponseEntity<Object> getMissions() {
+        try {
+            var missionList = missionService.getAllMission();
+
+            if (missionList.isEmpty()) return responseUtil.getNoSuchElementExceptionMessage("미션 데이터가 없습니다.", "");
+
+            return ResponseEntity.ok(missionList);
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("미션을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
     }
 
     @GetMapping("/{missionId}")
@@ -54,10 +71,11 @@ public class MissionController {
             googleUserApiData = loginService.getUserResource(accessToken, "google");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                    new HashMap<String, String>() {{
-                        put("message", "인증에 실패했습니다.");
-                        put("debug", e.getMessage());
-                    }
+                    new HashMap<String, String>() {
+                        {
+                            put("message", "인증에 실패했습니다.");
+                            put("debug", e.getMessage());
+                        }
                     });
         }
 
@@ -97,10 +115,11 @@ public class MissionController {
             googleUserApiData = loginService.getUserResource(accessToken, "google");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                    new HashMap<String, String>() {{
-                        put("message", "인증에 실패했습니다.");
-                        put("debug", e.getMessage());
-                    }
+                    new HashMap<String, String>() {
+                        {
+                            put("message", "인증에 실패했습니다.");
+                            put("debug", e.getMessage());
+                        }
                     });
         }
 
@@ -161,7 +180,7 @@ public class MissionController {
         try {
             missionSubmitService.validateMissionSubmit(submitId);
             missionSubmitService.createMissionSubmitHistory(missionSubmitHistory);
-        } catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new HashMap<>() {{
                         put("message", "미션을 검증하는 중에 에러가 발생했습니다.");
@@ -183,7 +202,7 @@ public class MissionController {
         try {
             missionSubmitService.invalidateMissionSubmit(submitId);
             missionSubmitService.createMissionSubmitHistory(missionSubmitHistory);
-        } catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new HashMap<>() {{
                         put("message", "미션을 검증을 해제하는 중에 에러가 발생했습니다.");
@@ -206,7 +225,7 @@ public class MissionController {
         try {
             missionSubmitService.updateMissionSubmit(submitId, content);
             missionSubmitService.createMissionSubmitHistory(missionSubmitHistory);
-        } catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new HashMap<>() {{
                         put("message", "미션을 수정하는 중에 에러가 발생했습니다.");
@@ -259,10 +278,11 @@ public class MissionController {
             googleUserApiData = loginService.getUserResource(accessToken, "google");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                    new HashMap<String, String>() {{
-                        put("message", "인증에 실패했습니다.");
-                        put("debug", e.getMessage());
-                    }
+                    new HashMap<String, String>() {
+                        {
+                            put("message", "인증에 실패했습니다.");
+                            put("debug", e.getMessage());
+                        }
                     });
         }
 
@@ -302,10 +322,11 @@ public class MissionController {
             googleUserApiData = loginService.getUserResource(accessToken, "google");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                    new HashMap<String, String>() {{
-                        put("message", "인증에 실패했습니다.");
-                        put("debug", e.getMessage());
-                    }
+                    new HashMap<String, String>() {
+                        {
+                            put("message", "인증에 실패했습니다.");
+                            put("debug", e.getMessage());
+                        }
                     });
         }
 
@@ -313,7 +334,7 @@ public class MissionController {
 
         MissionSubmitComment missionSubmitComment = missionSubmitService.getMissionSubmitComment(commentId);
 
-        if(!missionSubmitComment.getUsrId().equals(ludiumUser.getId())) {
+        if (!missionSubmitComment.getUsrId().equals(ludiumUser.getId())) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new HashMap<>() {{
                         put("message", "미션 코멘트를 삭제하는 중에 에러가 발생했습니다.");
@@ -324,7 +345,7 @@ public class MissionController {
         try {
             missionSubmitComment.setContent(content);
             missionSubmitService.updateMissionSubmitComment(missionSubmitComment);
-        } catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new HashMap<>() {{
                         put("message", "미션 코멘트를 삭제하는 중에 에러가 발생했습니다.");
@@ -350,10 +371,11 @@ public class MissionController {
             googleUserApiData = loginService.getUserResource(accessToken, "google");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                    new HashMap<String, String>() {{
-                        put("message", "인증에 실패했습니다.");
-                        put("debug", e.getMessage());
-                    }
+                    new HashMap<String, String>() {
+                        {
+                            put("message", "인증에 실패했습니다.");
+                            put("debug", e.getMessage());
+                        }
                     });
         }
 
@@ -361,7 +383,7 @@ public class MissionController {
 
         MissionSubmitComment missionSubmitComment = missionSubmitService.getMissionSubmitComment(commentId);
 
-        if(!missionSubmitComment.getUsrId().equals(ludiumUser.getId())) {
+        if (!missionSubmitComment.getUsrId().equals(ludiumUser.getId())) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new HashMap<>() {{
                         put("message", "미션 코멘트를 삭제하는 중에 에러가 발생했습니다.");
@@ -371,7 +393,7 @@ public class MissionController {
 
         try {
             missionSubmitService.deleteMissionSubmitComment(missionSubmitComment);
-        } catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new HashMap<>() {{
                         put("message", "미션 코멘트를 삭제하는 중에 에러가 발생했습니다.");
