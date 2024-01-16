@@ -2,6 +2,8 @@ package world.ludium.education.learning;
 
 import org.springframework.stereotype.Service;
 import world.ludium.education.learning.model.*;
+import world.ludium.education.mission.EnhancedMissionSubmitComment;
+import world.ludium.education.mission.EnhancedMissionSubmitCommentRepository;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -11,11 +13,14 @@ import java.util.UUID;
 public class MissionService {
     private final MissionRepository missionRepository;
     private final EnhancedMissionSubmitRepository enhancedMissionSubmitRepository;
+    private final EnhancedMissionSubmitCommentRepository enhancedMissionSubmitCommentRepository;
 
     public MissionService(MissionRepository missionRepository,
-                          EnhancedMissionSubmitRepository enhancedMissionSubmitRepository) {
+                          EnhancedMissionSubmitRepository enhancedMissionSubmitRepository,
+                          EnhancedMissionSubmitCommentRepository enhancedMissionSubmitCommentRepository) {
         this.missionRepository = missionRepository;
         this.enhancedMissionSubmitRepository = enhancedMissionSubmitRepository;
+        this.enhancedMissionSubmitCommentRepository = enhancedMissionSubmitCommentRepository;
     }
 
     public List<Mission> getAllMission() {
@@ -58,5 +63,15 @@ public class MissionService {
 
     public EnhancedMissionSubmit updateMissionSubmit(EnhancedMissionSubmit enhancedMissionSubmit) {
         return enhancedMissionSubmitRepository.save(enhancedMissionSubmit);
+    }
+
+    public List<EnhancedMissionSubmitComment> getAllMissionSubmitComment(UUID missionId, UUID usrId) {
+        return enhancedMissionSubmitCommentRepository.findAllByMissionIdAndUsrIdOrderByCreateAt(missionId, usrId);
+    }
+
+    public EnhancedMissionSubmitComment createMissionSubmitComment(EnhancedMissionSubmitComment missionSubmitComment) {
+        missionSubmitComment.setCreateAt(new Timestamp(System.currentTimeMillis()));
+
+        return enhancedMissionSubmitCommentRepository.save(missionSubmitComment);
     }
 }
