@@ -28,6 +28,7 @@ export default function ApproveMissionCommentEditor({ missionId, usrId }) {
       }
     );
 
+    setPending(false);
     if (!createMissionSubmitCommentResponse.ok) {
       alert("댓글을 추가하는 중 에러가 발생했습니다.");
       return;
