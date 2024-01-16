@@ -90,6 +90,59 @@ async function getArticleSubmit(learningId, curriculumId, articleId) {
   return await getArticleSubmitResponse.json();
 }
 
+async function getMissionSubmitCommentList(missionId, usrId) {
+  const getMissionSubmitCommentListResponse = await fetchWithRetry(
+    `/mission/${missionId}/submit/${usrId}/comment`
+  );
+
+  if (!getMissionSubmitCommentListResponse.ok)
+    if (getMissionSubmitCommentListResponse.status === 404) return [];
+    else throw new Error("미션 제출 댓글을 조회하는 중 에러가 발생했습니다.");
+
+  return await getMissionSubmitCommentListResponse.json();
+}
+
+async function getUser(usrId) {
+  const getUserResponse = await fetchWithRetry(`/user/${usrId}`);
+
+  if (!getUserResponse.ok) throw new Error(500);
+
+  return await getUserResponse.json();
+}
+
+async function User({ usrId }) {
+  const user = await getUser(usrId);
+
+  return <p>작성자: {user.nick}</p>;
+}
+
+async function MissionSubmitComment({ missionId, usrId }) {
+  const missionSubmitCommentList = await getMissionSubmitCommentList(
+    missionId,
+    usrId
+  );
+
+  return (
+    <details className="mission-submit-comment">
+      <summary className="mission-submit-comment-summary" />
+      {missionSubmitCommentList.map((missionSubmitComment) => (
+        <section
+          className="comment"
+          key={`${missionSubmitComment.missionId} ${missionSubmitComment.createAt}`}
+        >
+          <span className="flex-end comment-header">
+            <User usrId={missionSubmitComment.commentor} />
+            <p>생성일시: {missionSubmitComment.createAt}</p>
+          </span>
+          <div className="comment-content">
+            <Viewer content={missionSubmitComment.description} height="100%" />
+          </div>
+        </section>
+      ))}
+    </details>
+  );
+}
+
 async function MissionSubmit({ learningId, curriculumId, mission }) {
   const missionSubmit = await getMissinoSubmit(
     learningId,
@@ -108,6 +161,10 @@ async function MissionSubmit({ learningId, curriculumId, mission }) {
           missionId={mission.id}
           missionSubmit={missionSubmit}
           isCreate={false}
+        />
+        <MissionSubmitComment
+          missionId={missionSubmit.missionId}
+          usrId={missionSubmit.usrId}
         />
       </details>
     );
