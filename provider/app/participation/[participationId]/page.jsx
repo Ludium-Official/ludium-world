@@ -190,7 +190,7 @@ async function Article({ learningId, curriculumId, article }) {
 
   const articleSubmitStatus =
     articleSubmit === null
-      ? ARTICLESUBMIT_STATUS.NO_SUBMIT
+      ? ARTICLESUBMIT_STATUS.NO_COMPLETE
       : ARTICLESUBMIT_STATUS[articleSubmit.status];
 
   return (
