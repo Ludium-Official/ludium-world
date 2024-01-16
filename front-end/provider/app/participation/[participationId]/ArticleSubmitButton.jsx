@@ -36,7 +36,7 @@ export default function ArticleSubmitbutton({
       onClick={handleArticleSubmit}
       disabled={pending}
     >
-      {pending ? "아티클을 제출하는 중입니다..." : "아티클 제출하기"}
+      {pending ? "아티클을 완료하는 중입니다..." : "아티클 완료하기"}
     </button>
   );
 }

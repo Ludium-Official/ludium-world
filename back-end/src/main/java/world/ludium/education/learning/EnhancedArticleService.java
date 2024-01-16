@@ -44,7 +44,7 @@ public class EnhancedArticleService {
 
     public ArticleSubmit createArticleSubmit(ArticleSubmit articleSubmit) {
         articleSubmit.setCreateAt(new Timestamp(System.currentTimeMillis()));
-        articleSubmit.setStatus(ArticleSubmitStatus.SUBMIT.toString());
+        articleSubmit.setStatus(ArticleSubmitStatus.COMPLETE.toString());
 
         return articleSubmitRepository.save(articleSubmit);
     }
