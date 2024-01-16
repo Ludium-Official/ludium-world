@@ -34,6 +34,7 @@ export default function ApproveMissionCommentEditor({ missionId, usrId }) {
       return;
     }
 
+    editorInstance.setMarkdown();
     router.refresh();
   };
 
