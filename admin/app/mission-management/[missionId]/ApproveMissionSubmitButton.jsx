@@ -22,13 +22,14 @@ export default function ApproveMissionSubmitButton({
         method: HTTP_METHOD.PUT,
       }
     );
-    setPending(false);
-    if (!approveMissionSubmitResponse.ok) {
-      alert("미션 제출을 승인하는 중 에러가 발생했습니다.");
+
+    if (approveMissionSubmitResponse.ok) {
+      router.refresh();
       return;
     }
 
-    router.refresh();
+    setPending(false);
+    alert("미션 제출을 승인하는 중 에러가 발생했습니다.");
   };
   return (
     <button
@@ -37,7 +38,7 @@ export default function ApproveMissionSubmitButton({
       disabled={isApproved || pending}
     >
       {isApproved
-        ? "이미 승인된 미션 제출 입니다."
+        ? "미션 제출이 이미 승인되었습니다."
         : pending
         ? "미션 제출을 승인하는 중입니다..."
         : "승인하기"}
