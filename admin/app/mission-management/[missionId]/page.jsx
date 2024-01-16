@@ -2,6 +2,7 @@ import fetchWithRetry from "@/functions/api";
 import dynamic from "next/dynamic";
 import ApproveMissionSubmitButton from "./ApproveMissionSubmitButton";
 import MISSIONSUBMIT_STATUS from "@/enums/MISSIONSUBMIT_STATUS";
+import ApproveMissionCommentEditor from "./ApproveMissionCommentEditor";
 
 const Viewer = dynamic(() => import("@/components/Viewer"), { ssr: false });
 
@@ -35,6 +36,45 @@ async function getUser(usrId) {
   return await getUserResponse.json();
 }
 
+async function getMissionSubmitCommentList(missionId, usrId) {
+  const getMissionSubmitCommentListResponse = await fetchWithRetry(
+    `/mission/${missionId}/submit/${usrId}/comment`
+  );
+
+  if (!getMissionSubmitCommentListResponse.ok)
+    if (getMissionSubmitCommentListResponse.status === 404) return [];
+    else throw new Error("미션 제출 댓글을 조회하는 중 에러가 발생했습니다.");
+
+  return await getMissionSubmitCommentListResponse.json();
+}
+
+async function MissionSubmitCommentList({ missionId, usrId }) {
+  const missionSubmitComments = await getMissionSubmitCommentList(
+    missionId,
+    usrId
+  );
+
+  return (
+    <>
+      <h2>댓글 목록</h2>
+      {missionSubmitComments.map((missionSubmitComment) => (
+        <article
+          key={`${missionSubmitComment.missionId} ${missionSubmitComment.createAt}`}
+        >
+          <div className="flex-end">
+            <span>
+              댓글 작성자: <User usrId={missionSubmitComment.commentor} />
+            </span>
+          </div>
+          <div className="viewer">
+            <Viewer content={missionSubmitComment.description} height="100%" />
+          </div>
+        </article>
+      ))}
+    </>
+  );
+}
+
 async function User({ usrId }) {
   const user = await getUser(usrId);
 
@@ -64,6 +104,16 @@ async function MissionSubmitList({ missionId }) {
           <div className="viewer">
             <Viewer content={missionSubmit.description} height="100%" />
           </div>
+          <section>
+            <MissionSubmitCommentList
+              missionId={missionSubmit.missionId}
+              usrId={missionSubmit.usrId}
+            />
+            <ApproveMissionCommentEditor
+              missionId={missionSubmit.missionId}
+              usrId={missionSubmit.usrId}
+            />
+          </section>
         </details>
       ))}
     </>

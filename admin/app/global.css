@@ -71,3 +71,9 @@
   display: flex;
   justify-content: flex-end;
 }
+
+.editor {
+  padding: 15px;
+  height: Calc(100vh - 515px);
+  min-height: 500px;
+}
