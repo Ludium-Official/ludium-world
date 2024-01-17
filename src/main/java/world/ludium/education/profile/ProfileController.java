@@ -6,6 +6,7 @@ import world.ludium.education.announcement.ApplicationService;
 import world.ludium.education.announcement.DetailedAnnouncementService;
 import world.ludium.education.auth.ludium.LudiumUser;
 import world.ludium.education.auth.ludium.LudiumUserService;
+import world.ludium.education.learning.MissionService;
 import world.ludium.education.util.ResponseUtil;
 
 import java.util.UUID;
@@ -19,16 +20,19 @@ public class ProfileController {
     private final ResponseUtil responseUtil;
     private final ApplicationService applicationService;
     private final DetailedAnnouncementService detailedAnnouncementService;
+    private final MissionService missionService;
     private static final Logger logger = Logger.getLogger(ProfileController.class.getName());
 
     public ProfileController(LudiumUserService ludiumUserService,
                              ResponseUtil responseUtil,
                              ApplicationService applicationService,
-                             DetailedAnnouncementService detailedAnnouncementService) {
+                             DetailedAnnouncementService detailedAnnouncementService,
+                             MissionService missionService) {
         this.ludiumUserService = ludiumUserService;
         this.responseUtil = responseUtil;
         this.applicationService = applicationService;
         this.detailedAnnouncementService = detailedAnnouncementService;
+        this.missionService = missionService;
     }
 
     @GetMapping("")
@@ -65,6 +69,20 @@ public class ProfileController {
         } catch (Exception e) {
             logger.log(Level.SEVERE, "작업을 조회하는 중에 에러가 발생했습니다", e);
             return responseUtil.getExceptionMessage("작업을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @GetMapping("{usrId}/mission")
+    public ResponseEntity<Object> getAllMission(@PathVariable UUID usrId) {
+        try {
+            var missionDTOList = missionService.getAllMyMissionDTO(usrId);
+
+            if(missionDTOList.isEmpty()) return responseUtil.getNoSuchElementExceptionMessage("미션 데이터가 없습니다.", "");
+
+            return ResponseEntity.ok(missionDTOList);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "미션을 조회하는 중에 에러가 발생했습니다", e);
+            return responseUtil.getExceptionMessage("미션을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
