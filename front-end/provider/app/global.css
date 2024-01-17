@@ -411,3 +411,35 @@
   margin-inline-end: 0px;
   margin: 15px;
 }
+
+.profile-application {
+  margin: 15px;
+  background-color: #f7f2fa;
+  border: 1px solid #f7f2fa;
+  border-radius: 8px;
+}
+
+.profile-application-summary {
+  padding: 30px 0;
+  text-indent: 30px;
+  cursor: pointer;
+}
+
+.profile-application-summary::marker {
+  content: "지원서 펼치기";
+}
+
+.profile-application[open] > .profile-application-summary {
+  padding: 10px 0;
+  text-align: center;
+  border-bottom: 2px dashed #bea4cd;
+}
+
+.profile-application[open] > .profile-application-summary:hover {
+  background-color: #e6e0e9;
+  border-bottom: 2px solid #e6e0e9;
+}
+
+.profile-application[open] > .profile-application-summary::marker {
+  content: "지원서 접기";
+}

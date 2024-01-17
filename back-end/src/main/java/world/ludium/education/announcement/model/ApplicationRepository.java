@@ -10,4 +10,6 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID> 
     List<Application> findAllByDetailIdAndRole(UUID detailId, String role);
 
     Optional<Application> findAllByDetailIdAndRoleAndUsrId(UUID detailId, String role, UUID usrId);
+
+    List<Application> findAllByUsrIdOrderByCreateAt(UUID usrId);
 }

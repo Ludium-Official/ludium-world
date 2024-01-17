@@ -25,6 +25,42 @@ export async function getProfile() {
   return await getProfileResopnse.json();
 }
 
+async function getApplicationList(usrId) {
+  const getApplicationListResponse = await fetchWithRetry(
+    `/profile/${usrId}/application`
+  );
+
+  if (!getApplicationListResponse.ok)
+    if (getApplicationListResponse.status === 404) return [];
+    else throw new Error("지원서를 조회하는 중 에러가 발생했습니다.");
+
+  return await getApplicationListResponse.json();
+}
+
+async function ApplicationList({ usrId }) {
+  const applications = await getApplicationList(usrId);
+
+  return (
+    <>
+      <h2 className="header2">지원서 목록</h2>
+      <details className="profile-application">
+        <summary className="profile-application-summary" />
+        {applications.map((application) => (
+          <section key={application.applicationId}>
+            <span className="space-between">
+              <h3 className="header3">지원서 제목: {application.title}</h3>
+              <p className="text1">지원서 종류: {application.role}</p>
+            </span>
+            <div className="viewer-content">
+              <Viewer content={application.description} height="100%" />
+            </div>
+          </section>
+        ))}
+      </details>
+    </>
+  );
+}
+
 export default async function ProfilePage() {
   const profile = await getProfile();
 
@@ -49,6 +85,7 @@ export default async function ProfilePage() {
         <div className="viewer-content">
           <Viewer content={profile.selfIntro} />
         </div>
+        <ApplicationList usrId={profile.id} />
       </article>
     </>
   );
