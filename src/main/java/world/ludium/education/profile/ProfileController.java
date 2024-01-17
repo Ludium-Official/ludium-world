@@ -2,6 +2,7 @@ package world.ludium.education.profile;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import world.ludium.education.announcement.ApplicationService;
 import world.ludium.education.article.ArticleService;
 import world.ludium.education.auth.LoginService;
 import world.ludium.education.auth.ludium.LudiumUser;
@@ -16,11 +17,14 @@ import java.util.UUID;
 public class ProfileController {
     private final LudiumUserService ludiumUserService;
     private final ResponseUtil responseUtil;
+    private final ApplicationService applicationService;
 
     public ProfileController(LudiumUserService ludiumUserService,
-                             ResponseUtil responseUtil) {
+                             ResponseUtil responseUtil,
+                             ApplicationService applicationService) {
         this.ludiumUserService = ludiumUserService;
         this.responseUtil = responseUtil;
+        this.applicationService = applicationService;
     }
 
     @GetMapping("")
@@ -32,6 +36,20 @@ public class ProfileController {
 
         return ResponseEntity.ok(ludiumUser);
     }
+
+    @GetMapping("{userId}/application")
+    public ResponseEntity<Object> getAllApplication(@PathVariable UUID userId) {
+        try {
+            var applicationList = applicationService.getAllApplication(userId);
+
+            if(applicationList.isEmpty()) return responseUtil.getNoSuchElementExceptionMessage("지원서 데이터가 없습니다.", "");
+
+            return ResponseEntity.ok(applicationList);
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("지원서를 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
 
     @PutMapping("")
     public ResponseEntity<Object> updateProfile(@CookieValue(name = "access_token", required = false) String accessToken,

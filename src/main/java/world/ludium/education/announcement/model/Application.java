@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
@@ -16,6 +17,7 @@ public class Application {
     private UUID detailId;
     private UUID usrId;
     private String role;
+    private Timestamp createAt;
 
     public UUID getApplicationId() {
         return applicationId;
@@ -63,5 +65,13 @@ public class Application {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Timestamp getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Timestamp createAt) {
+        this.createAt = createAt;
     }
 }

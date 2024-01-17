@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import world.ludium.education.announcement.model.Application;
 import world.ludium.education.announcement.model.ApplicationRepository;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,6 +16,10 @@ public class ApplicationService {
         this.applicationRepository = applicationRepository;
     }
 
+    public List<Application> getAllApplication(UUID usrId) {
+        return applicationRepository.findAllByUsrIdOrderByCreateAt(usrId);
+    }
+
     public List<Application> getApplication(UUID detailId, String role) {
         return applicationRepository.findAllByDetailIdAndRole(detailId, role);
     }
@@ -24,6 +29,7 @@ public class ApplicationService {
     }
     public Application createApplication(Application application) {
         application.setApplicationId(UUID.randomUUID());
+        application.setCreateAt(new Timestamp(System.currentTimeMillis()));
 
         return applicationRepository.save(application);
     }
