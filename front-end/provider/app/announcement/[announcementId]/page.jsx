@@ -5,7 +5,6 @@ import Viewer from "../../../components/Viewer";
 import fetchWithRetry from "../../../functions/api";
 import ModuleNavigation from "../ModuleNavigation";
 import announcementstyle from "../announcement.module.css";
-// import RedirectApply from "./RedirectApply";
 
 export async function generateMetadata({ params: { announcementId } }) {
   const announcement = await getAnnouncement(announcementId);
@@ -87,10 +86,6 @@ export default async function AnnouncementPage({ params: { announcementId } }) {
         <BackButton />
       </ContentNavigation>
       <article className={announcementstyle.wrapper}>
-        {/* <RedirectApply
-          modules={announcement.modules}
-          announcementId={announcementId}
-        /> */}
         <h1 className={announcementstyle.title}>{announcement.title}</h1>
         <section className={announcementstyle["content-area"]}>
           <Viewer content={announcement.description} height="100%" />
