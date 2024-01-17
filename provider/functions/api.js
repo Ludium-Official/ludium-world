@@ -31,13 +31,15 @@ const fetchWithRetry = (url, options, maxRetry = 3) => {
   const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
 
   const retry = async (url, options, retryCount) => {
+    const { headers } = { ...options };
+
+    if (headers != null) headers["Content-Type"] = "application/json";
+
     const response = await fetch(`${serverUri}${url}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
       ...options,
       credentials: "include",
       cache: "no-store",
+      headers,
     });
     if (response.status === 401 && retryCount < maxRetry) {
       const refreshAccessTokenResponse = await refreshAccessToken(options);
