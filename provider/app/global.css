@@ -420,7 +420,8 @@
   border-radius: 8px;
 }
 
-.profile-application-summary {
+.profile-application-summary,
+.profile-work-summary {
   padding: 30px 0;
   text-indent: 30px;
   cursor: pointer;
