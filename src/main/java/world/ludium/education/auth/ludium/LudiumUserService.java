@@ -60,8 +60,8 @@ public class LudiumUserService {
         return ludiumUser;
     }
 
-    public void updateUser(LudiumUser ludiumUser) {
-        ludiumUserRepository.save(ludiumUser);
+    public LudiumUser updateUser(LudiumUser ludiumUser) {
+        return ludiumUserRepository.save(ludiumUser);
     }
 
     public LudiumUserRight getUserRight(UUID userid) {
