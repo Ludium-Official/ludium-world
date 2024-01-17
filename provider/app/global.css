@@ -338,7 +338,6 @@
 }
 
 .mission-submit-comment {
-  border-top: 1px solid #8a7396;
 }
 
 .mission-submit-comment-summary {
@@ -367,6 +366,11 @@
   content: "댓글 보기";
 }
 
+.mission-submit-comment[open] {
+  border-top: 3px dashed #8a7396;
+  margin: 20px 15px 15px;
+}
+
 .mission-submit-comment[open] > .mission-submit-comment-summary::marker {
   content: "댓글 접기";
 }
@@ -379,7 +383,7 @@
 }
 
 .comment-header {
-  gap: 15px;
+  margin: 10px 25px;
 }
 
 .comment-content {
@@ -389,5 +393,13 @@
   min-height: 40px;
   border: 1px solid #cbcbcb;
   overflow-y: auto;
+  background-color: #fff;
+}
+
+.editor {
+  margin: 15px;
+  height: 600px;
+  min-height: 500px;
+  border: 1px solid #cbcbcb;
   background-color: #fff;
 }
