@@ -420,40 +420,29 @@
   border-radius: 8px;
 }
 
-.profile-application-summary,
-.profile-work-summary {
+.profile-contents-summary {
   padding: 30px 0;
   text-indent: 30px;
   cursor: pointer;
 }
 
-.profile-application-summary::marker {
-  content: "지원서 펼치기";
+.profile-contents-summary::marker {
+  content: "펼치기";
 }
 
-.profile-work-summary::marker {
-  content: "작업 펼치기";
-}
-
-.profile-contents[open] > .profile-application-summary,
-.profile-contents[open] > .profile-work-summary {
+.profile-contents[open] > .profile-contents-summary {
   padding: 10px 0;
   text-align: center;
   border-bottom: 2px dashed #bea4cd;
 }
 
-.profile-contents[open] > .profile-application-summary:hover,
-.profile-contents[open] > .profile-work-summary:hover {
+.profile-contents[open] > .profile-contents-summary:hover {
   background-color: #e6e0e9;
   border-bottom: 2px solid #e6e0e9;
 }
 
-.profile-contents[open] > .profile-application-summary::marker {
-  content: "지원서 접기";
-}
-
-.profile-contents[open] > .profile-work-summary::marker {
-  content: "작업 접기";
+.profile-contents[open] > .profile-contents-summary::marker {
+  content: "접기";
 }
 
 .work-section {

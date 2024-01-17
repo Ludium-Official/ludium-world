@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import world.ludium.education.learning.model.*;
 import world.ludium.education.mission.EnhancedMissionSubmitComment;
 import world.ludium.education.mission.EnhancedMissionSubmitCommentRepository;
+import world.ludium.education.profile.MyMissionDTO;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -29,6 +30,10 @@ public class MissionService {
 
     public List<Mission> getAllMission(UUID curriculumId) {
         return missionRepository.findAllByCurriculumIdOrderByCreateAt(curriculumId);
+    }
+
+    public List<MyMissionDTO> getAllMyMissionDTO(UUID usrId) {
+        return missionRepository.findAllByUsrIdOrderByCreateAt(usrId);
     }
 
     public Mission getMission(UUID missionId) {
