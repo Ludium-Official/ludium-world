@@ -43,7 +43,6 @@ async function getWorkList(usrId) {
     `/profile/${usrId}/detailed-announcement`
   );
 
-  console.log(getWorkListResponse.status);
   if (!getWorkListResponse.ok)
     if (getWorkListResponse.status === 404) return [];
     else throw new Error("작업을 조회하는 중 에러가 발생했습니다.");
@@ -51,20 +50,62 @@ async function getWorkList(usrId) {
   return await getWorkListResponse.json();
 }
 
+async function getMissionList(usrId) {
+  const getMissionListResponse = await fetchWithRetry(
+    `/profile/${usrId}/mission`
+  );
+
+  if (!getMissionListResponse.ok)
+    if (getMissionListResponse.status === 404) return [];
+    else throw new Error("미션을 조회하는 중 에러가 발생했습니다.");
+
+  return await getMissionListResponse.json();
+}
+
+async function MissionList({ usrId }) {
+  const missions = await getMissionList(usrId);
+
+  return (
+    <>
+      <h2 className="header2">미션 목록</h2>
+      <details className="profile-contents" open={true}>
+        <summary className="profile-contents-summary" />
+        {missions.map((mission) => (
+          <section className="work-section" key={mission.missionId}>
+            <span className="space-between">
+              <h3 className="header3">제목: {mission.title}</h3>
+              <p className="text1">
+                작업 상태: {mission.status === "APPROVE" ? "승인됨" : "미승인"}
+              </p>
+            </span>
+            <Link
+              className="work-section-link"
+              href={`/participation/${mission.postingId}#${mission.missionId}`}
+            >
+              <h3 className="header3">{mission.title} 미션 페이지로 이동</h3>
+            </Link>
+          </section>
+        ))}
+      </details>
+    </>
+  );
+}
+
 async function WorkList({ usrId }) {
   const works = await getWorkList(usrId);
 
-  console.log(works);
   return (
     <>
       <h2 className="header2">작업 목록</h2>
       <details className="profile-contents" open={true}>
-        <summary className="profile-work-summary" />
+        <summary className="profile-contents-summary" />
         {works.map((work) => (
           <section className="work-section" key={work.detailId}>
             <span className="space-between">
               <h3 className="header3">제목: {work.title}</h3>
-              <p className="text1">작업 상태: {work.status}</p>
+              <p className="text1">
+                미션 상태: {work.status === "APPROVE" ? "승인됨" : "미승인"}
+              </p>
             </span>
             <Link className="work-section-link" href={`/work/${work.detailId}`}>
               <h3 className="header3">{work.title} 작업 페이지로 이동</h3>
@@ -83,7 +124,7 @@ async function ApplicationList({ usrId }) {
     <>
       <h2 className="header2">지원서 목록</h2>
       <details className="profile-contents" open={true}>
-        <summary className="profile-application-summary" />
+        <summary className="profile-contents-summary" />
         {applications.map((application) => (
           <section key={application.applicationId}>
             <span className="space-between">
@@ -126,6 +167,7 @@ export default async function ProfilePage() {
         </div>
         <ApplicationList usrId={profile.id} />
         <WorkList usrId={profile.id} />
+        <MissionList usrId={profile.id} />
       </article>
     </>
   );

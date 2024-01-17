@@ -294,7 +294,7 @@ async function CurriculumContentList({ learningId, curriculumId }) {
     <article>
       <h3 className="header3">미션 / 아티클 목록</h3>
       {contents.map((content) => (
-        <section key={content.id}>
+        <section key={content.id} id={content.id}>
           {content.type === "MISSION" ? (
             <Mission
               learningId={learningId}
