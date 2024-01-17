@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import ContentNavigation from "../../components/ContentNavigation";
 import Viewer from "../../components/Viewer";
 import fetchWithRetry from "../../functions/api";
+import Link from "next/link";
 
 export async function generateMetadata() {
   const profile = await getProfile();
@@ -37,13 +38,51 @@ async function getApplicationList(usrId) {
   return await getApplicationListResponse.json();
 }
 
+async function getWorkList(usrId) {
+  const getWorkListResponse = await fetchWithRetry(
+    `/profile/${usrId}/detailed-announcement`
+  );
+
+  console.log(getWorkListResponse.status);
+  if (!getWorkListResponse.ok)
+    if (getWorkListResponse.status === 404) return [];
+    else throw new Error("작업을 조회하는 중 에러가 발생했습니다.");
+
+  return await getWorkListResponse.json();
+}
+
+async function WorkList({ usrId }) {
+  const works = await getWorkList(usrId);
+
+  console.log(works);
+  return (
+    <>
+      <h2 className="header2">작업 목록</h2>
+      <details className="profile-contents" open={true}>
+        <summary className="profile-work-summary" />
+        {works.map((work) => (
+          <section className="work-section" key={work.detailId}>
+            <span className="space-between">
+              <h3 className="header3">제목: {work.title}</h3>
+              <p className="text1">작업 상태: {work.status}</p>
+            </span>
+            <Link className="work-section-link" href={`/work/${work.detailId}`}>
+              <h3 className="header3">{work.title} 작업 페이지로 이동</h3>
+            </Link>
+          </section>
+        ))}
+      </details>
+    </>
+  );
+}
+
 async function ApplicationList({ usrId }) {
   const applications = await getApplicationList(usrId);
 
   return (
     <>
       <h2 className="header2">지원서 목록</h2>
-      <details className="profile-application" open={true}>
+      <details className="profile-contents" open={true}>
         <summary className="profile-application-summary" />
         {applications.map((application) => (
           <section key={application.applicationId}>
@@ -86,6 +125,7 @@ export default async function ProfilePage() {
           <Viewer content={profile.selfIntro} />
         </div>
         <ApplicationList usrId={profile.id} />
+        <WorkList usrId={profile.id} />
       </article>
     </>
   );
