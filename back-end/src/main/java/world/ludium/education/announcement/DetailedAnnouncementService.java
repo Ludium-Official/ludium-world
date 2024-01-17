@@ -32,6 +32,10 @@ public class DetailedAnnouncementService {
         return detailedAnnouncementRepository.findAllByPostingIdOrderByCreateAt(announcementId);
     }
 
+    public List<DetailedAnnouncement> getAllDetailedAnnouncementByWorker(UUID usrId) {
+        return detailedAnnouncementRepository.findAllByWorkerOrderByCreateAt(usrId);
+    }
+
     public Optional<DetailedAnnouncement> getDetailedAnnouncement(UUID detailedAnnouncementId) {
         return detailedAnnouncementRepository.findById(detailedAnnouncementId);
     }

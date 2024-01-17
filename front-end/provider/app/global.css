@@ -293,6 +293,7 @@
   font-weight: bold;
   margin: 15px;
   color: #6c3890;
+  text-decoration: none;
 }
 
 .button1 {
@@ -412,7 +413,7 @@
   margin: 15px;
 }
 
-.profile-application {
+.profile-contents {
   margin: 15px;
   background-color: #f7f2fa;
   border: 1px solid #f7f2fa;
@@ -429,17 +430,58 @@
   content: "지원서 펼치기";
 }
 
-.profile-application[open] > .profile-application-summary {
+.profile-work-summary::marker {
+  content: "작업 펼치기";
+}
+
+.profile-contents[open] > .profile-application-summary,
+.profile-contents[open] > .profile-work-summary {
   padding: 10px 0;
   text-align: center;
   border-bottom: 2px dashed #bea4cd;
 }
 
-.profile-application[open] > .profile-application-summary:hover {
+.profile-contents[open] > .profile-application-summary:hover,
+.profile-contents[open] > .profile-work-summary:hover {
   background-color: #e6e0e9;
   border-bottom: 2px solid #e6e0e9;
 }
 
-.profile-application[open] > .profile-application-summary::marker {
+.profile-contents[open] > .profile-application-summary::marker {
   content: "지원서 접기";
+}
+
+.profile-contents[open] > .profile-work-summary::marker {
+  content: "작업 접기";
+}
+
+.work-section {
+  margin: 15px;
+  border: 1px solid #bea4cd;
+  border-radius: 20px;
+  background-color: #bea4cd;
+}
+
+.work-section:hover {
+  background-color: #f7f2fa;
+}
+
+.work-section-link {
+  display: none;
+  padding: 7px;
+}
+
+.work-section > .space-between {
+  padding: 7px;
+}
+
+.work-section:hover > .space-between {
+  display: none;
+}
+
+.work-section:hover > .work-section-link {
+  display: block;
+  text-decoration: none;
+  color: black;
+  height: 100%;
 }

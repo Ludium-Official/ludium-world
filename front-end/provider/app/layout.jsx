@@ -7,7 +7,7 @@ async function getNavigationLinks() {
   return [
     {
       id: crypto.randomUUID(),
-      dir: "/profile?active=article",
+      dir: "/profile",
       text: "프로필",
     },
     {
