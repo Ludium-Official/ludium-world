@@ -7,6 +7,8 @@ import { cookies } from "next/headers";
 import MISSIONSUBMIT_STATUS from "@/enums/MISSIONSUBMIT_STATUS";
 import ArticleSubmitbutton from "./ArticleSubmitButton";
 import ARTICLESUBMIT_STATUS from "@/enums/ARTICLESUBMIT_STATUS";
+import MissionSubmitCommentEditor from "./MissionSubmitCommentEditor";
+import { getTimeStamp } from "@/functions/helper";
 
 const Viewer = dynamic(() => import("@/components/Viewer"), { ssr: false });
 
@@ -125,20 +127,25 @@ async function MissionSubmitComment({ missionId, usrId }) {
   return (
     <details className="mission-submit-comment">
       <summary className="mission-submit-comment-summary" />
+      <h4 className="header4">댓글 목록</h4>
       {missionSubmitCommentList.map((missionSubmitComment) => (
         <section
           className="comment"
           key={`${missionSubmitComment.missionId} ${missionSubmitComment.createAt}`}
         >
-          <span className="flex-end comment-header">
+          <span className="space-between comment-header">
             <User usrId={missionSubmitComment.commentor} />
-            <p>생성일시: {missionSubmitComment.createAt}</p>
+            <p>{getTimeStamp(missionSubmitComment.createAt)}</p>
           </span>
           <div className="comment-content">
             <Viewer content={missionSubmitComment.description} height="100%" />
           </div>
         </section>
       ))}
+      <section>
+        <h4 className="header4">댓글 작성</h4>
+        <MissionSubmitCommentEditor missionId={missionId} usrId={usrId} />
+      </section>
     </details>
   );
 }
