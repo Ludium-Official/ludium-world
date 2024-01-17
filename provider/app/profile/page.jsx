@@ -43,7 +43,7 @@ async function ApplicationList({ usrId }) {
   return (
     <>
       <h2 className="header2">지원서 목록</h2>
-      <details className="profile-application">
+      <details className="profile-application" open={true}>
         <summary className="profile-application-summary" />
         {applications.map((application) => (
           <section key={application.applicationId}>
