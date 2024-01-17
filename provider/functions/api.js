@@ -39,7 +39,9 @@ const fetchWithRetry = (url, options, maxRetry = 3) => {
       ...options,
       credentials: "include",
       cache: "no-store",
-      headers,
+      headers: headers ?? {
+        "Content-Type": "application/json",
+      },
     });
     if (response.status === 401 && retryCount < maxRetry) {
       const refreshAccessTokenResponse = await refreshAccessToken(options);
