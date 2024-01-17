@@ -65,8 +65,8 @@
 .viewer-content {
   margin: 15px;
   padding: 15px;
-  height: calc(100vh - 240px);
-  min-height: 500px;
+  height: fit-content;
+  min-height: 300px;
   border: 1px solid #cbcbcb;
   overflow-y: auto;
   background-color: #fff;
@@ -256,6 +256,7 @@
   margin-inline-end: 0px;
   font-weight: bold;
   margin: 15px;
+  color: #6c3890;
 }
 
 .header2 {
@@ -337,9 +338,6 @@
   justify-content: space-between;
 }
 
-.mission-submit-comment {
-}
-
 .mission-submit-comment-summary {
   position: absolute;
   top: 100px;
@@ -402,4 +400,14 @@
   min-height: 500px;
   border: 1px solid #cbcbcb;
   background-color: #fff;
+}
+
+.text1 {
+  display: block;
+  font-size: 1em;
+  margin-block-start: 0.83em;
+  margin-block-end: 0.83em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  margin: 15px;
 }

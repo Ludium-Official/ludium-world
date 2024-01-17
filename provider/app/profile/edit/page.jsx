@@ -1,14 +1,20 @@
 import { getProfile } from "../page";
 import EditProfile from "./EditProfile";
 
-export const metadata = {
-  title: "내 정보 수정"
+export async function generateMetadata() {
+  const profile = await getProfile();
+
+  return {
+    title: `${profile.nick} 프로필 수정`,
+  };
 }
 
 export default async function EditProfilePage() {
   const profile = await getProfile();
 
-  return <div>
-    <EditProfile profile={profile} />
-  </div>
+  return (
+    <div>
+      <EditProfile profile={profile} />
+    </div>
+  );
 }
