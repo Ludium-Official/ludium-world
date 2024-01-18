@@ -6,6 +6,7 @@ import world.ludium.education.announcement.ApplicationService;
 import world.ludium.education.announcement.DetailedAnnouncementService;
 import world.ludium.education.auth.ludium.LudiumUser;
 import world.ludium.education.auth.ludium.LudiumUserService;
+import world.ludium.education.learning.LearningService;
 import world.ludium.education.learning.MissionService;
 import world.ludium.education.util.ResponseUtil;
 
@@ -21,18 +22,21 @@ public class ProfileController {
     private final ApplicationService applicationService;
     private final DetailedAnnouncementService detailedAnnouncementService;
     private final MissionService missionService;
+    private final LearningService learningService;
     private static final Logger logger = Logger.getLogger(ProfileController.class.getName());
 
     public ProfileController(LudiumUserService ludiumUserService,
                              ResponseUtil responseUtil,
                              ApplicationService applicationService,
                              DetailedAnnouncementService detailedAnnouncementService,
-                             MissionService missionService) {
+                             MissionService missionService,
+                             LearningService learningService) {
         this.ludiumUserService = ludiumUserService;
         this.responseUtil = responseUtil;
         this.applicationService = applicationService;
         this.detailedAnnouncementService = detailedAnnouncementService;
         this.missionService = missionService;
+        this.learningService = learningService;
     }
 
     @GetMapping("")
@@ -83,6 +87,20 @@ public class ProfileController {
         } catch (Exception e) {
             logger.log(Level.SEVERE, "미션을 조회하는 중에 에러가 발생했습니다", e);
             return responseUtil.getExceptionMessage("미션을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @GetMapping("{usrId}/learning")
+    public ResponseEntity<Object> getAllLearning(@PathVariable UUID usrId) {
+        try {
+            var learningList = learningService.getAllLearningDTO(usrId);
+
+            if(learningList.isEmpty()) return responseUtil.getNoSuchElementExceptionMessage("학습 데이터가 없습니다.", "");
+
+            return ResponseEntity.ok(learningList);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "학습을 조회하는 중에 에러가 발생했습니다", e);
+            return responseUtil.getExceptionMessage("학습을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
