@@ -42,6 +42,11 @@ export default function Navigation({ googleAuthInfo, gglId, links }) {
               학습 참여
             </Link>
           </li>
+          <li>
+            <Link className={navigationstyle.link} href="/community">
+              커뮤니티
+            </Link>
+          </li>
         </ul>
       </nav>
     );

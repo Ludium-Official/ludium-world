@@ -60,7 +60,7 @@ export default function MissionSubmitEditor({
 
   return (
     <>
-      <div className="flex-end">
+      <div className="flex-end margin1">
         <button
           className="button1"
           type="button"

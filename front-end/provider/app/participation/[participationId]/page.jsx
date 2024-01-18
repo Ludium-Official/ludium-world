@@ -225,7 +225,7 @@ async function Mission({ learningId, curriculumId, mission }) {
           />
         </div>
       </summary>
-      <div className="flex-end">
+      <div className="flex-end margin1">
         <MissionSummary
           learningId={learningId}
           curriculumId={curriculumId}
@@ -267,7 +267,7 @@ async function Article({ learningId, curriculumId, article }) {
           <p className="curriculum-content-status">{articleSubmitStatus}</p>
         </div>
       </summary>
-      <div className="flex-end">
+      <div className="flex-end margin1">
         <p className="curriculum-content-status">{articleSubmitStatus}</p>
       </div>
       <h4 className="curriculum-content-title">{article.title}</h4>
@@ -349,13 +349,13 @@ async function LearningContent({ learningId }) {
   const learning = await getLearning(learningId);
 
   return (
-    <article className="viewer">
+    <div className="viewer">
       <h1 className="viewer-title">{learning.title}</h1>
       <section className="viewer-content">
         <Viewer content={learning.description} height="100%" />
       </section>
       <CurriculumList learningId={learningId} />
-    </article>
+    </div>
   );
 }
 
