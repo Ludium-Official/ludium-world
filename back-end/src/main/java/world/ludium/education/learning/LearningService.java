@@ -3,6 +3,7 @@ package world.ludium.education.learning;
 import org.springframework.stereotype.Service;
 import world.ludium.education.learning.model.Learning;
 import world.ludium.education.learning.model.LearningRepository;
+import world.ludium.education.profile.LearningDTO;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -17,6 +18,9 @@ public class LearningService {
     }
     public List<Learning> getAllLearning() {
         return learningRepository.findAllByOrderByCreateAt();
+    }
+    public List<LearningDTO> getAllLearningDTO(UUID usrId) {
+        return learningRepository.getAllLearningDTOByUsrId(usrId);
     }
 
     public Learning getLearning(UUID learningId) {
