@@ -331,7 +331,6 @@
 .flex-end {
   display: flex;
   justify-content: flex-end;
-  margin: 15px;
 }
 
 .space-between {
@@ -474,4 +473,21 @@
   text-decoration: none;
   color: black;
   height: 100%;
+}
+
+.margin1 {
+  margin: 15px;
+}
+
+.input-title {
+  width: calc(100% - 4px);
+  padding: 12px 2px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: solid 1px #cfbcda;
+  border-radius: 4px 4px 0 0;
+  text-indent: 15px;
+  font-size: 3em;
+  background-color: #e6e0e9;
 }

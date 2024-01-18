@@ -164,7 +164,7 @@ async function ApplicationList({ usrId }) {
       <details className="profile-contents" open={true}>
         <summary className="profile-contents-summary" />
         {applications.map((application) => (
-          <section key={application.applicationId}>
+          <div key={application.applicationId}>
             <span className="space-between">
               <h3 className="header3">지원서 제목: {application.title}</h3>
               <p className="text1">지원서 종류: {application.role}</p>
@@ -172,7 +172,7 @@ async function ApplicationList({ usrId }) {
             <div className="viewer-content">
               <Viewer content={application.description} height="100%" />
             </div>
-          </section>
+          </div>
         ))}
       </details>
     </>

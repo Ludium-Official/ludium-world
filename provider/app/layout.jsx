@@ -25,6 +25,11 @@ async function getNavigationLinks() {
       dir: "/participation",
       text: "학습참여",
     },
+    {
+      id: crypto.randomUUID(),
+      dir: "/community",
+      text: "커뮤니티",
+    },
   ];
 }
 
