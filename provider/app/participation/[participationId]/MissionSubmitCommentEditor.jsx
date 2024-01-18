@@ -40,7 +40,7 @@ export default function MissionSubmitCommentEditor({ missionId, usrId }) {
 
   return (
     <>
-      <div className="flex-end">
+      <div className="flex-end margin1">
         <button
           className="button1"
           onClick={handleCreateMissionSubmitComment}
