@@ -37,6 +37,7 @@ export default function NewCommunityForm() {
     }
 
     router.back();
+    router.refresh();
   };
 
   return (
