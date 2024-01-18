@@ -62,6 +62,44 @@ async function getMissionList(usrId) {
   return await getMissionListResponse.json();
 }
 
+async function getLearningList(usrId) {
+  const getLearningListResponse = await fetchWithRetry(
+    `/profile/${usrId}/learning`
+  );
+
+  if (!getLearningListResponse.ok)
+    if (getLearningListResponse.status === 404) return [];
+    else throw new Error("학습을 조회하는 중 에러가 발생했습니다.");
+
+  return await getLearningListResponse.json();
+}
+
+async function LearningList({ usrId }) {
+  const learnings = await getLearningList(usrId);
+
+  return (
+    <>
+      <h2 className="header2">학습 목록</h2>
+      <details className="profile-contents" open={true}>
+        <summary className="profile-contents-summary" />
+        {learnings.map((learning) => (
+          <section className="work-section" key={learning.postingId}>
+            <span className="space-between">
+              <h3 className="header3">제목: {learning.title}</h3>
+            </span>
+            <Link
+              className="work-section-link"
+              href={`/participation/${learning.postingId}`}
+            >
+              <h3 className="header3">{learning.title} 학습 페이지로 이동</h3>
+            </Link>
+          </section>
+        ))}
+      </details>
+    </>
+  );
+}
+
 async function MissionList({ usrId }) {
   const missions = await getMissionList(usrId);
 
@@ -167,6 +205,7 @@ export default async function ProfilePage() {
         </div>
         <ApplicationList usrId={profile.id} />
         <WorkList usrId={profile.id} />
+        <LearningList usrId={profile.id} />
         <MissionList usrId={profile.id} />
       </article>
     </>
