@@ -49,6 +49,19 @@ public class ContentController {
         }
     }
 
+    @GetMapping("/{contentId}/comment")
+    public ResponseEntity<Object> getAllContentComment(@PathVariable UUID contentId) {
+        try {
+            var contentCommeentList = contentService.getAllContentComment(contentId);
+
+            if(contentCommeentList.isEmpty()) return responseUtil.getNoSuchElementExceptionMessage("콘텐츠 댓글 데이터가 없습니다.", "");
+
+            return ResponseEntity.ok(contentCommeentList);
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("콘텐츠 댓글을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
     @PostMapping("")
     public ResponseEntity<Object> createContent(@RequestBody Content content,
                                                 @CookieValue(name = "access_token", required = false) String accessToken) {
