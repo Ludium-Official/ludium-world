@@ -1,6 +1,7 @@
-package world.ludium.education.community;
+package world.ludium.education.community.model;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import world.ludium.education.community.model.Content;
 
 import java.util.List;
 import java.util.UUID;
