@@ -5,6 +5,9 @@ import org.springframework.web.bind.annotation.*;
 import world.ludium.education.auth.ludium.LudiumUserService;
 import world.ludium.education.util.ResponseUtil;
 
+import java.util.NoSuchElementException;
+import java.util.UUID;
+
 @RestController
 @RequestMapping(value = "/content", produces = "application/json")
 public class ContentController {
@@ -28,6 +31,17 @@ public class ContentController {
             if(contentList.isEmpty()) return responseUtil.getNoSuchElementExceptionMessage("콘텐츠 데잍터가 없습니다.", "");
 
             return ResponseEntity.ok(contentList);
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("콘텐츠를 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @GetMapping("/{contentId}")
+    public ResponseEntity<Object> getContent(@PathVariable UUID contentId) {
+        try {
+            return ResponseEntity.ok(contentService.getContent(contentId));
+        } catch (NoSuchElementException nse) {
+            return responseUtil.getNoSuchElementExceptionMessage("콘텐츠 데이터가 없습니다.", nse.getMessage());
         } catch (Exception e) {
             return responseUtil.getExceptionMessage("콘텐츠를 조회하는 중에 에러가 발생했습니다.", e.getMessage());
         }

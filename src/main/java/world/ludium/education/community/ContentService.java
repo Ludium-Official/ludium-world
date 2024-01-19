@@ -18,6 +18,11 @@ public class ContentService {
         return contentRepository.findAllByOrderByCreateAt();
     }
 
+
+    public Content getContent(UUID contentId) {
+        return contentRepository.findById(contentId).orElseThrow();
+    }
+
     public Content createContent(Content content) {
         content.setContentId(UUID.randomUUID());
         content.setCreateAt(new Timestamp(System.currentTimeMillis()));
