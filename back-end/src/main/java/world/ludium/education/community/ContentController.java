@@ -3,6 +3,8 @@ package world.ludium.education.community;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import world.ludium.education.auth.ludium.LudiumUserService;
+import world.ludium.education.community.model.Content;
+import world.ludium.education.community.model.ContentComment;
 import world.ludium.education.util.ResponseUtil;
 
 import java.util.NoSuchElementException;
@@ -60,6 +62,24 @@ public class ContentController {
             return ResponseEntity.ok(contentService.createContent(content));
         } catch (Exception e) {
             return responseUtil.getExceptionMessage("콘텐츠를 저장하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @PostMapping("/{contentId}/comment")
+    public ResponseEntity<Object> createContentComment(@PathVariable UUID contentId,
+                                                       @RequestBody ContentComment comment,
+                                                       @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null) return responseUtil.getUnAuthorizedMessage();
+
+        comment.setContentId(contentId);
+        comment.setUsrId(ludiumUser.getId());
+
+        try {
+            return ResponseEntity.ok(contentService.createContentComment(comment));
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("콘텐츠 댓글을 추가하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 }
