@@ -4,6 +4,7 @@ import UserNick from "@/components/UserNick";
 import fetchWithRetry from "@/functions/api";
 import { getTimeStamp } from "@/functions/helper";
 import dynamic from "next/dynamic";
+import ContentCommentEditor from "./ContentCommentEditor";
 const Viewer = dynamic(() => import("@/components/Viewer"), { ssr: false });
 
 async function getContent(communityId) {
@@ -23,7 +24,7 @@ export default async function ContentPage({ params: { communityId } }) {
       <ContentNavigation links={[]}>
         <BackButton />
       </ContentNavigation>
-      <div className="viewer">
+      <div className="wrapper">
         <div className="space-between">
           <p className="text1">
             작성자: <UserNick usrId={content.usrId} />
@@ -36,6 +37,7 @@ export default async function ContentPage({ params: { communityId } }) {
         <div className="viewer-content">
           <Viewer content={content.description} height="100%" />
         </div>
+        <ContentCommentEditor contentId={communityId} />
       </div>
     </>
   );
