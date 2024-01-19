@@ -22,5 +22,5 @@ async function getContent(contentId) {
 export default async function EditContentPage({ params: { communityId } }) {
   const content = await getContent(communityId);
 
-  return <EditCommunityForm key={crypto.randomUUID()} content={content} />;
+  return <EditCommunityForm content={content} />;
 }

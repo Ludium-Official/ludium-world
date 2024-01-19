@@ -5,7 +5,17 @@ import fetchWithRetry from "@/functions/api";
 import { getTimeStamp } from "@/functions/helper";
 import dynamic from "next/dynamic";
 import ContentCommentEditor from "./ContentCommentEditor";
+import Link from "next/link";
 const Viewer = dynamic(() => import("@/components/Viewer"), { ssr: false });
+
+export async function generateMetadata({ params: { communityId } }) {
+  const content = await getContent(communityId);
+
+  return {
+    title: content.title,
+    description: content.description,
+  };
+}
 
 async function getContent(contentId) {
   const getContentResponse = await fetchWithRetry(`/content/${contentId}`);
@@ -63,6 +73,7 @@ export default async function ContentPage({ params: { communityId } }) {
     <>
       <ContentNavigation links={[]}>
         <BackButton />
+        <Link href={`/community/${communityId}/edit`}>수정 페이지로 이동</Link>
       </ContentNavigation>
       <div className="wrapper">
         <div className="space-between">
