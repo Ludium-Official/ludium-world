@@ -13,6 +13,7 @@ export async function generateMetadata({ params: { announcementId } }) {
     title: announcement.title,
   };
 }
+
 export async function getAnnouncement(announcementId) {
   const getAnnouncementResponse = await fetchWithRetry(
     `/announcement/${announcementId}`

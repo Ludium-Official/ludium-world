@@ -3,11 +3,15 @@
 import { useRouter } from "next/navigation";
 
 export default function BackButton() {
-    const router = useRouter();
+  const router = useRouter();
 
-    const handleBack = () => {
-        router.back();
-    }
+  const handleBack = () => {
+    router.back();
+  };
 
-    return <button onClick={handleBack}>돌아가기</button>
+  return (
+    <button type="button" onClick={handleBack}>
+      돌아가기
+    </button>
+  );
 }
