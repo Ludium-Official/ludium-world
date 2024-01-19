@@ -40,11 +40,12 @@ async function getNavigationLinks() {
       dir: "/apply",
       text: "지원서 관리",
     },
+    {
+      id: crypto.randomUUID(),
+      dir: "/community",
+      text: "커뮤니티",
+    },
     // , {
-    //     id: crypto.randomUUID(),
-    //     dir: "/mission",
-    //     text: "미션"
-    // }, {
     //     id: crypto.randomUUID(),
     //     dir: "/article",
     //     text: "아티클"
