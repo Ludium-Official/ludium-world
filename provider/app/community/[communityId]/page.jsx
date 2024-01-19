@@ -32,25 +32,27 @@ async function ContentCoomentList({ contentId }) {
   const contentCommentList = await getContentCoomentList(contentId);
 
   return (
-    <article className="comment-list">
+    <>
       <h2 className="header2">댓글 목록</h2>
-      {contentCommentList.map((contentComment) => (
-        <section
-          className="comment"
-          key={`${contentComment.missionId} ${contentComment.usrId} ${contentComment.createAt}`}
-        >
-          <section className="space-between margin1">
-            <p className="text1">
-              작성자: <UserNick usrId={contentComment.usrId} />
-            </p>
-            <p className="text1">{getTimeStamp(contentComment.createAt)}</p>
+      <article className="comment-list">
+        {contentCommentList.map((contentComment) => (
+          <section
+            className="comment"
+            key={`${contentComment.missionId} ${contentComment.usrId} ${contentComment.createAt}`}
+          >
+            <section className="space-between margin1">
+              <p className="text1">
+                작성자: <UserNick usrId={contentComment.usrId} />
+              </p>
+              <p className="text1">{getTimeStamp(contentComment.createAt)}</p>
+            </section>
+            <div className="comment-content">
+              <Viewer content={contentComment.description} height="100%" />
+            </div>
           </section>
-          <div className="comment-content">
-            <Viewer content={contentComment.description} height="100%" />
-          </div>
-        </section>
-      ))}
-    </article>
+        ))}
+      </article>
+    </>
   );
 }
 
