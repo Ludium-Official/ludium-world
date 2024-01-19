@@ -3,7 +3,7 @@ import fetchWithRetry from "@/functions/api";
 import Link from "next/link";
 
 export const metadata = {
-  title: "컨텐츠 목록",
+  title: "콘텐츠 목록",
 };
 
 async function getContents() {
