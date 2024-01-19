@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import world.ludium.education.auth.ludium.LudiumUserService;
 import world.ludium.education.community.model.Content;
 import world.ludium.education.community.model.ContentComment;
+import world.ludium.education.util.ResponseException;
 import world.ludium.education.util.ResponseUtil;
 
 import java.util.NoSuchElementException;
@@ -93,6 +94,23 @@ public class ContentController {
             return ResponseEntity.ok(contentService.createContentComment(comment));
         } catch (Exception e) {
             return responseUtil.getExceptionMessage("콘텐츠 댓글을 추가하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @PutMapping("/{contentId}")
+    public ResponseEntity<Object> updateContent(@PathVariable UUID contentId,
+                                                @RequestBody Content content,
+                                                @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null) return responseUtil.getUnAuthorizedMessage();
+
+        if(!ludiumUser.getId().equals(content.getUsrId())) return responseUtil.getForbiddenExceptionMessage(new ResponseException("콘텐츠 글쓴이 정보가 일치하지 않습니다.", ""));
+
+        try {
+            return ResponseEntity.ok(contentService.updateContent(content));
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("콘텐츠를 수정하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 }

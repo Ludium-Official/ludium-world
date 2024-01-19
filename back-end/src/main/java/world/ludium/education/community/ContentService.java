@@ -37,6 +37,10 @@ public class ContentService {
         return contentRepository.save(content);
     }
 
+    public Content updateContent(Content content) {
+        return contentRepository.save(content);
+    }
+
     public List<ContentComment> getAllContentComment(UUID contentId) {
         return contentCommentRepository.findAllByContentIdOrderByCreateAt(contentId);
     }
