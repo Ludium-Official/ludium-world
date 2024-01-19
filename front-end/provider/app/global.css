@@ -491,3 +491,14 @@
   font-size: 3em;
   background-color: #e6e0e9;
 }
+
+.comment-list {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  height: calc(100vh - 210px);
+  margin: 0 15px;
+  background-color: #f7f2fa;
+  border: 1px solid #f7f2fa;
+  border-radius: 8px;
+}

@@ -40,6 +40,7 @@ export default function ContentCommentEditor({ contentId }) {
 
   return (
     <>
+      <h2 className="header2">댓글 작성</h2>
       <div className="flex-end">
         <button
           className="button1"

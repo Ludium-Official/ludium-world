@@ -37,6 +37,10 @@ public class ContentService {
         return contentRepository.save(content);
     }
 
+    public List<ContentComment> getAllContentComment(UUID contentId) {
+        return contentCommentRepository.findAllByContentIdOrderByCreateAt(contentId);
+    }
+
     public ContentComment createContentComment(ContentComment contentComment) {
         contentComment.setCreateAt(new Timestamp(System.currentTimeMillis()));
         return contentCommentRepository.save(contentComment);
