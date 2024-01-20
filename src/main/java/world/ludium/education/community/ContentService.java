@@ -1,10 +1,7 @@
 package world.ludium.education.community;
 
 import org.springframework.stereotype.Service;
-import world.ludium.education.community.model.Content;
-import world.ludium.education.community.model.ContentComment;
-import world.ludium.education.community.model.ContentCommentRepository;
-import world.ludium.education.community.model.ContentRepository;
+import world.ludium.education.community.model.*;
 
 import java.sql.Timestamp;
 import java.util.List;

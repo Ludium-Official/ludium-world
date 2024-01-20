@@ -16,6 +16,7 @@ public class Content {
     private String description;
     private UUID usrId;
     private Timestamp createAt;
+    private String type;
 
     public UUID getContentId() {
         return contentId;
@@ -55,5 +56,13 @@ public class Content {
 
     public void setCreateAt(Timestamp createAt) {
         this.createAt = createAt;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
