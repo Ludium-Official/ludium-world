@@ -8,116 +8,116 @@ import fetchWithRetry from "../../functions/api";
 import managementstyle from "./management.module.css";
 
 class CustomCheckBoxRenderer {
-    constructor(props) {
-        this.el = document.createElement("input");
-        this.el.type = "checkbox";
-        this.el.onclick = () => {
-            props.columnInfo.renderer.options.onClick(
-                props.grid.getRow(props.rowKey), this.el.checked
-            );
-        };
-        this.render(props);
-    }
+  constructor(props) {
+    this.el = document.createElement("input");
+    this.el.type = "checkbox";
+    this.el.onclick = () => {
+      props.columnInfo.renderer.options.onClick(
+        props.grid.getRow(props.rowKey),
+        this.el.checked
+      );
+    };
+    this.render(props);
+  }
 
-    getElement() {
-        return this.el;
-    }
+  getElement() {
+    return this.el;
+  }
 
-    render(props) {
-        this.el.checked = props.value;
-    }
+  render(props) {
+    this.el.checked = props.value;
+  }
 }
 
 class CustomRouterButton {
-    constructor(props) {
-        this.el = document.createElement("button");
-        this.el.type = "button";
-        this.el.onclick = () => {
-            props.columnInfo
-                .renderer
-                .options
-                .onClick(props.grid.getRow(props.rowKey));
-        };
-        this.render(props);
-    }
+  constructor(props) {
+    this.el = document.createElement("button");
+    this.el.type = "button";
+    this.el.onclick = () => {
+      props.columnInfo.renderer.options.onClick(
+        props.grid.getRow(props.rowKey)
+      );
+    };
+    this.render(props);
+  }
 
-    getElement() {
-        return this.el;
-    }
+  getElement() {
+    return this.el;
+  }
 
-    render(props) {
-        this.el.innerText = "보러가기";
-    }
+  render(props) {
+    this.el.innerText = "보러가기";
+  }
 }
 
-
 export default function ManagementForm({ users }) {
-    const gridRef = useRef();
-    const router = useRouter();
+  const gridRef = useRef();
+  const router = useRouter();
 
-    const handleEditAdminAuth = async (user, isChecked) => {
-        const formData = new FormData();
+  const handleEditAdminAuth = async (user, isChecked) => {
+    await fetchWithRetry(`/user/${user.id}/admin?isAdmin=${isChecked}`, {
+      method: "PUT",
+    });
+  };
 
-        formData.append("isAdmin", isChecked);
-        await fetchWithRetry(`/user/${user.id}/admin`, {
-            method: "PUT",
-            body: formData
-        });
+  const handleRouterProfile = (user) => {
+    router.push(`/management/${user.id}`);
+    router.refresh();
+  };
+
+  const getGrid = () => {
+    if (!gridRef.current.instance) {
+      const grid = new Grid({
+        el: gridRef.current,
+        bodyHeight: "fitToParent",
+        columns: [
+          {
+            header: "닉네임",
+            name: "nick",
+          },
+          {
+            header: "이메일",
+            name: "email",
+          },
+          {
+            header: "관리자",
+            name: "admin",
+            width: 120,
+            align: "center",
+            renderer: {
+              type: CustomCheckBoxRenderer,
+              options: {
+                onClick: handleEditAdminAuth,
+              },
+            },
+          },
+          {
+            header: "프로필",
+            name: "profile",
+            width: 120,
+            align: "center",
+            renderer: {
+              type: CustomRouterButton,
+              options: {
+                onClick: handleRouterProfile,
+              },
+            },
+          },
+        ],
+        data: users,
+      });
+
+      gridRef.current.instance = grid;
     }
+  };
 
-    const handleRouterProfile = (user) => {
-        router.push(`/management/${user.id}`);
-        router.refresh();
-    }
+  useEffect(() => {
+    getGrid();
+  }, []);
 
-    const getGrid = () => {
-        if (!gridRef.current.instance) {
-            const grid = new Grid({
-                el: gridRef.current,
-                bodyHeight: "fitToParent",
-                columns: [{
-                    header: "닉네임",
-                    name: "nick",
-                },
-                {
-                    header: "이메일",
-                    name: "email",
-                }, {
-                    header: "관리자",
-                    name: "admin",
-                    width: 120,
-                    align: "center",
-                    renderer: {
-                        type: CustomCheckBoxRenderer,
-                        options: {
-                            onClick: handleEditAdminAuth,
-                        },
-                    },
-                }, {
-                    header: "프로필",
-                    name: "profile",
-                    width: 120,
-                    align: "center",
-                    renderer: {
-                        type: CustomRouterButton,
-                        options: {
-                            onClick: handleRouterProfile
-                        }
-                    }
-                }
-                ],
-                data: users,
-            });
-
-            gridRef.current.instance = grid;
-        }
-    }
-
-    useEffect(() => {
-        getGrid();
-    }, []);
-
-    return <div className={managementstyle["ref-grid"]}>
-        <div ref={gridRef} />
+  return (
+    <div className={managementstyle["ref-grid"]}>
+      <div ref={gridRef} />
     </div>
+  );
 }

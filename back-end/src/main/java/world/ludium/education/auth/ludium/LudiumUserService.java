@@ -68,6 +68,12 @@ public class LudiumUserService {
         return ludiumUserRightRepository.findById(userid).orElseThrow();
     }
 
+    public Boolean isAdmin(UUID usrId) {
+        var right = getUserRight(usrId);
+
+        return right.isAdm();
+    }
+
     public void updateUserRight(LudiumUserRight ludiumUserRight) {
         ludiumUserRightRepository.save(ludiumUserRight);
     }

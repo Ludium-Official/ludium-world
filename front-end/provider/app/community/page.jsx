@@ -1,5 +1,7 @@
 import ContentNavigation from "@/components/ContentNavigation";
+import UserNick from "@/components/UserNick";
 import fetchWithRetry from "@/functions/api";
+import ko_kr from "langs/ko_kr";
 import Link from "next/link";
 
 export const metadata = {
@@ -21,10 +23,17 @@ async function ContentList() {
 
   return (
     <div className="list">
-      {contents.map(({ contentId, title }) => (
+      {contents.map(({ contentId, title, usrId, type }) => (
         <h2 className="list-item" key={contentId}>
           <Link className="list-item-link" href={`/community/${contentId}`}>
-            {title}
+            <span className="space-between">
+              <p className="text1 margin0">
+                [{ko_kr[type]}] {title}
+              </p>
+              <p className="text1 margin0">
+                작성자: <UserNick usrId={usrId} />
+              </p>
+            </span>
           </Link>
         </h2>
       ))}

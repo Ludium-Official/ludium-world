@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import world.ludium.education.auth.ludium.LudiumUserService;
 import world.ludium.education.community.model.Content;
 import world.ludium.education.community.model.ContentComment;
+import world.ludium.education.community.model.ContentType;
 import world.ludium.education.util.ResponseException;
 import world.ludium.education.util.ResponseUtil;
 
@@ -31,7 +32,7 @@ public class ContentController {
         try {
             var contentList = contentService.getAllContent();
 
-            if(contentList.isEmpty()) return responseUtil.getNoSuchElementExceptionMessage("콘텐츠 데잍터가 없습니다.", "");
+            if (contentList.isEmpty()) return responseUtil.getNoSuchElementExceptionMessage("콘텐츠 데잍터가 없습니다.", "");
 
             return ResponseEntity.ok(contentList);
         } catch (Exception e) {
@@ -55,7 +56,8 @@ public class ContentController {
         try {
             var contentCommeentList = contentService.getAllContentComment(contentId);
 
-            if(contentCommeentList.isEmpty()) return responseUtil.getNoSuchElementExceptionMessage("콘텐츠 댓글 데이터가 없습니다.", "");
+            if (contentCommeentList.isEmpty())
+                return responseUtil.getNoSuchElementExceptionMessage("콘텐츠 댓글 데이터가 없습니다.", "");
 
             return ResponseEntity.ok(contentCommeentList);
         } catch (Exception e) {
@@ -65,6 +67,7 @@ public class ContentController {
 
     @PostMapping("")
     public ResponseEntity<Object> createContent(@RequestBody Content content,
+                                                @RequestParam(required = false) String type,
                                                 @CookieValue(name = "access_token", required = false) String accessToken) {
         var ludiumUser = ludiumUserService.getUser(accessToken);
 
@@ -73,6 +76,12 @@ public class ContentController {
         content.setUsrId(ludiumUser.getId());
 
         try {
+            var contentType = type == null ? ContentType.CONTENT.toString() : ContentType.valueOf(type).toString();
+            content.setType(contentType);
+
+            if (contentType.equals(ContentType.ANNOUNCEMENT.toString()) || contentType.equals(ContentType.BANNER.toString()))
+                if(!ludiumUserService.isAdmin(ludiumUser.getId())) return responseUtil.getForbiddenExceptionMessage(new ResponseException("관리자만 공지사항 혹은 배너를 추가할 수 있습니다.", ""));
+
             return ResponseEntity.ok(contentService.createContent(content));
         } catch (Exception e) {
             return responseUtil.getExceptionMessage("콘텐츠를 저장하는 중에 에러가 발생했습니다.", e.getMessage());
@@ -105,7 +114,11 @@ public class ContentController {
 
         if (ludiumUser == null) return responseUtil.getUnAuthorizedMessage();
 
-        if(!ludiumUser.getId().equals(content.getUsrId())) return responseUtil.getForbiddenExceptionMessage(new ResponseException("콘텐츠 글쓴이 정보가 일치하지 않습니다.", ""));
+        if (!ludiumUser.getId().equals(content.getUsrId()))
+            return responseUtil.getForbiddenExceptionMessage(new ResponseException("콘텐츠 글쓴이 정보가 일치하지 않습니다.", ""));
+
+        if (content.equals(ContentType.ANNOUNCEMENT.toString()) || content.equals(ContentType.BANNER.toString()))
+            if(!ludiumUserService.isAdmin(ludiumUser.getId())) return responseUtil.getForbiddenExceptionMessage(new ResponseException("관리자만 공지사항 혹은 배너를 수정할 수 있습니다.", ""));
 
         try {
             return ResponseEntity.ok(contentService.updateContent(content));

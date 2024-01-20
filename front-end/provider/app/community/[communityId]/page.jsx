@@ -6,6 +6,7 @@ import { getTimeStamp } from "@/functions/helper";
 import dynamic from "next/dynamic";
 import ContentCommentEditor from "./ContentCommentEditor";
 import Link from "next/link";
+import COMMUNITY_TYPE from "@/enums/COMMUNITY_TYPE";
 const Viewer = dynamic(() => import("@/components/Viewer"), { ssr: false });
 
 export async function generateMetadata({ params: { communityId } }) {
@@ -88,8 +89,12 @@ export default async function ContentPage({ params: { communityId } }) {
         <div className="viewer-content">
           <Viewer content={content.description} height="100%" />
         </div>
-        <ContentCoomentList contentId={communityId} />
-        <ContentCommentEditor contentId={communityId} />
+        {content.type === COMMUNITY_TYPE.CONTENT ? (
+          <>
+            <ContentCoomentList contentId={communityId} />
+            <ContentCommentEditor contentId={communityId} />
+          </>
+        ) : null}
       </div>
     </>
   );

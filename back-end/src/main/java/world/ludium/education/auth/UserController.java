@@ -154,7 +154,7 @@ public class UserController {
     public ResponseEntity updateAdminRight(@CookieValue(name = "access_token", required = false) String accessToken,
                                           @PathVariable UUID userId,
                                           @RequestParam boolean isAdmin) {
-        LudiumUserRight admin = ludiumUserService.getUserRight(userId);
+        var admin = ludiumUserService.getUserRight(userId);
 
         admin.setAdm(isAdmin);
 

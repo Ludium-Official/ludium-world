@@ -10,7 +10,7 @@ import { useRef, useState } from "react";
 
 const Editor = dynamic(() => import("@/components/Editor"), { ssr: false });
 
-export default function NewCommunityForm() {
+export default function NewCommunityForm({ type }) {
   const router = useRouter();
   const editorRef = useRef();
   const [pending, setPending] = useState(false);
@@ -20,8 +20,9 @@ export default function NewCommunityForm() {
     setPending(true);
 
     const { editorInstance } = editorRef.current;
+    const url = type == null ? "/content" : `/content?type=${type}`;
 
-    const createContentResponse = await fetchWithRetry(`/content`, {
+    const createContentResponse = await fetchWithRetry(url, {
       method: HTTP_METHOD.POST,
       body: JSON.stringify({
         title: e.target.title.value,
