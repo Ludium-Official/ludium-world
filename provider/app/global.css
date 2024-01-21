@@ -1,3 +1,27 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+
+/* style guide start */
+:root {
+  --white: #ffffff;
+  --black: #000000;
+  --alert: #ff4747;
+  --info: #477bff;
+  --purple01: #861cc4;
+  --purple02: #e4b7ff;
+  --purple03: #f3deff;
+  --purple04: #f8ecff;
+  --purple05: #fcf8ff;
+  --gray01: #495057;
+  --gray02: #666666;
+  --gray03: #7c7c7c;
+  --gray04: #9a9a9a;
+  --gray05: #d9d9d9;
+  --gray06: #e9e9e9;
+  --gray07: #fbfbfb;
+}
+
+/* style guide end */
+
 .wrapper {
   margin-left: 360px;
   padding: 15px 17px 40px 44px;
@@ -506,3 +530,113 @@
   border: 1px solid #f7f2fa;
   border-radius: 8px;
 }
+
+body {
+  margin: 0;
+}
+
+.main {
+  width: 1440px;
+  height: 1024px;
+  background: var(--Gray-07, #fbfbfb);
+}
+
+/* aside style start */
+.aside {
+  background-color: var(--white);
+  height: 1024px;
+  position: relative;
+  width: 247px;
+}
+
+.logo1 {
+  position: absolute;
+  left: 40px;
+  top: 20px;
+}
+
+.gnb {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 20px;
+  position: absolute;
+  width: 247px;
+  height: 308px;
+  left: 0px;
+  top: 97px;
+}
+
+.gnb-menu-2 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 16px 0px 16px 40px;
+  gap: 16px;
+  width: 207px;
+  height: 30px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  text-decoration: none;
+}
+
+.icon-28 {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  position: relative;
+}
+
+.text-wrapper {
+  width: auto;
+  height: auto;
+}
+
+.h4-20 {
+  color: var(--gray02, var(--Gray-666666, #666));
+  font-family: "Pretendard Variable";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 30px; /* 150% */
+  letter-spacing: -0.06px;
+}
+
+.logo2 {
+  position: absolute;
+  left: 40px;
+  top: 793px;
+}
+
+.address {
+  position: absolute;
+  width: 167px;
+  height: 150px;
+  left: 40px;
+  top: 833px;
+  font-family: "Pretendard Variable";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 25px;
+  color: var(--gray04);
+}
+
+.icon-profile {
+  position: absolute;
+  left: 3.34px;
+  top: 3.34px;
+}
+
+.icon-announcement {
+  position: absolute;
+  left: 13.04%;
+  right: 15.29%;
+  top: 8.87%;
+  bottom: 5.21%;
+}
+/* aside style end */
