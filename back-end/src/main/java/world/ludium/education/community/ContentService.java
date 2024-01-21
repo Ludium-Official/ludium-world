@@ -46,4 +46,8 @@ public class ContentService {
         contentComment.setCreateAt(new Timestamp(System.currentTimeMillis()));
         return contentCommentRepository.save(contentComment);
     }
+
+    public Content getLatestAnnouncement() {
+        return contentRepository.findTop1ByTypeOrderByCreateAtDesc(ContentType.ANNOUNCEMENT.toString()).orElseThrow();
+    }
 }
