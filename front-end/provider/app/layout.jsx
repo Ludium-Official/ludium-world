@@ -15,7 +15,9 @@ export default async function RootLayout({ children }) {
             googleAuthInfo={cookieStore.get("access_token")}
             gglId={cookieStore.get("ggl_id")}
           />
-          <MainWrapper>{children}</MainWrapper>
+          {/* <MainWrapper> */}
+          {children}
+          {/* </MainWrapper> */}
         </main>
       </body>
     </html>
