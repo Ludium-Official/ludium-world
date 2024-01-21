@@ -65,6 +65,17 @@ public class ContentController {
         }
     }
 
+    @GetMapping("/latest-announcement")
+    public ResponseEntity<Object> getLatestAnnouncement() {
+        try {
+            return ResponseEntity.ok(contentService.getLatestAnnouncement());
+        } catch (NoSuchElementException nse) {
+            return responseUtil.getNoSuchElementExceptionMessage("최신 공지 데이터가 없습니다.", nse.getMessage());
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("최신 공지를 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
     @PostMapping("")
     public ResponseEntity<Object> createContent(@RequestBody Content content,
                                                 @RequestParam(required = false) String type,
