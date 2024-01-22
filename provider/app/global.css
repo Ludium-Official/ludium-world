@@ -538,7 +538,7 @@ body {
 .main {
   width: 100%;
   height: 1024px;
-  background: var(--Gray-07, #fbfbfb);
+  background: var(--gray07, #fbfbfb);
 }
 
 /* aside style start */
@@ -597,7 +597,7 @@ body {
 }
 
 .h4-20 {
-  color: var(--gray02, var(--Gray-666666, #666));
+  color: var(--gray02, var(--gray06, #666));
   font-family: "Pretendard Variable";
   font-size: 20px;
   font-style: normal;
@@ -749,3 +749,182 @@ body {
   color: var(--purple01);
 }
 /* lastest announcement style end */
+
+/* home content style start */
+.home-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 40px;
+  position: absolute;
+  width: Calc(100% - 327px);
+  height: 885px;
+  left: 287px;
+  top: 112px;
+}
+
+.banner {
+  width: Calc(100%);
+  height: 256px;
+  background: #ffffff;
+  border-radius: 20px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+.content-article {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 24px;
+  width: 100%;
+  height: 589px;
+}
+
+.article-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 24px;
+  height: 589px;
+  flex: none;
+  order: 0;
+  flex-grow: 1;
+}
+
+.article-announce {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px;
+  gap: 20px;
+  height: 29px;
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.content-article-announce-text {
+  margin: 0;
+}
+
+.h3-24 {
+  font-family: "Pretendard Variable";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 29px;
+  letter-spacing: -0.003em;
+}
+
+.article-list-text {
+  margin: 0;
+}
+
+.article-list-more {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.article-list-more-text {
+  color: var(--gray04);
+  margin: 0;
+}
+
+.p1-18 {
+  font-family: "Pretendard Variable";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 27px;
+  letter-spacing: -0.005em;
+}
+
+.article-list-more-icon {
+  box-sizing: border-box;
+  width: 28px;
+  height: 28px;
+  background: var(--white);
+  border: 1px solid var(--gray04);
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.article-list {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+
+  width: 100%;
+  height: 536px;
+
+  background: var(--white);
+  border: 1px solid var(--gray06);
+  border-radius: 20px;
+}
+
+.article {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px 40px;
+  gap: 4px;
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.article-status {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 3px 8px;
+  gap: 10px;
+  background: var(--white);
+  border: 1px solid var(--purple01);
+  border-radius: 4px;
+}
+
+.article-status-text {
+  margin: 0;
+}
+
+.article-text {
+  width: 100%;
+  margin: 0;
+}
+
+.caption-12 {
+  font-family: "Pretendard Variable";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.color-purple-01 {
+  color: var(--purple01);
+}
+
+.article-divider {
+  width: Calc(100% - 60px);
+  height: 0;
+  border: 1px solid var(--gray05);
+}
+/* home content style end */
