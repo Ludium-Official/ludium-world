@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import world.ludium.education.announcement.model.Announcement;
 import world.ludium.education.announcement.model.AnnouncementRepository;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -19,10 +20,13 @@ public class AnnouncementService {
     public List<Announcement> getAllAnnouncement() {
         return announcementRepository.findAll();
     }
+    public List<Announcement> getTop5Announcement() { return announcementRepository.findTop5ByOrderByCreateAtDesc(); }
     public Optional<Announcement> getAnnouncement(UUID announcementId) { return announcementRepository.findById(announcementId); }
 
     public Announcement createAnnouncement(Announcement announcement) {
         announcement.setPostingId(UUID.randomUUID());
+        announcement.setCreateAt(new Timestamp(System.currentTimeMillis()));
+
         return announcementRepository.save(announcement);
     }
 

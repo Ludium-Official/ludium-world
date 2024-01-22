@@ -49,6 +49,19 @@ public class LearningController {
         }
     }
 
+    @GetMapping("/top5")
+    public ResponseEntity<Object> getTop5Learning() {
+        try {
+            var top5LearningList = learningService.getAllLearning();
+
+            if (top5LearningList.isEmpty()) return responseUtil.getNoSuchElementExceptionMessage("학습 데이터가 없습니다.", "");
+
+            return ResponseEntity.ok(top5LearningList);
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("학습을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
     @GetMapping("/{learningId}")
     public ResponseEntity<Object> getLearning(@PathVariable UUID learningId) {
         try {
