@@ -27,7 +27,7 @@ export default async function LatestAnnouncement() {
             : `/community/${latestAnnouncement.contentId}`
         }
       >
-        <Icon src="icon_announce.svg" alt="announce" width={24} height={24} />
+        <Icon src="/icon_announce.svg" alt="announce" width={24} height={24} />
         <p className="h4-20 lastest-announcement-text">
           {latestAnnouncement == null
             ? "최신 공지 데이터가 없습니다."

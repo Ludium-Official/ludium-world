@@ -63,6 +63,19 @@ public class AnnouncementController {
         return ResponseEntity.ok(announcementService.getAllAnnouncement());
     }
 
+    @GetMapping("/top5")
+    public ResponseEntity<Object> getTop5Announcement() {
+        try {
+            var top5AnnouncementList = announcementService.getTop5Announcement();
+
+            if(top5AnnouncementList.isEmpty()) return responseUtil.getNoSuchElementExceptionMessage("공고 데이터가 없습니다.", "");
+
+            return ResponseEntity.ok(top5AnnouncementList);
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("공고 목록을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
     @GetMapping("/{announcementId}")
     public ResponseEntity<Announcement> getAnnouncement(@PathVariable UUID announcementId) {
         return ResponseEntity.ok(announcementService.getAnnouncement(announcementId).orElseThrow());

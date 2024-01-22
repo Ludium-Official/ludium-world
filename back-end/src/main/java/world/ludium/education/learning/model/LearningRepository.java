@@ -34,4 +34,6 @@ public interface LearningRepository extends JpaRepository<Learning, UUID> {
         """)
     List<LearningDTO> getAllLearningDTOByUsrId(@Param("usrId") UUID usrId);
     List<Learning> findAllByOrderByCreateAt();
+
+    List<Learning> findTop5ByOrderByCreateAtDesc();
 }

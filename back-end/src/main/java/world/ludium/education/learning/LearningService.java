@@ -19,6 +19,11 @@ public class LearningService {
     public List<Learning> getAllLearning() {
         return learningRepository.findAllByOrderByCreateAt();
     }
+
+    public List<Learning> getTop5Learning() {
+        return learningRepository.findTop5ByOrderByCreateAtDesc();
+    }
+
     public List<LearningDTO> getAllLearningDTO(UUID usrId) {
         return learningRepository.getAllLearningDTOByUsrId(usrId);
     }
