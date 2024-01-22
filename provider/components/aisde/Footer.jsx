@@ -22,7 +22,7 @@ export default function Footer() {
               href="https://twitter.com/ludium_official"
             >
               <div className="sns-icon">
-                <Icon src="icon_x.svg" alt="X" width={16} height={15} />
+                <Icon src="/icon_x.svg" alt="X" width={16} height={15} />
               </div>
               Twitter
             </Link>
@@ -32,7 +32,7 @@ export default function Footer() {
             >
               <div className="sns-icon">
                 <Icon
-                  src="icon_discord.svg"
+                  src="/icon_discord.svg"
                   alt="discord"
                   width={13.333}
                   height={10.667}
@@ -45,7 +45,7 @@ export default function Footer() {
               href="https://www.youtube.com/@Ludium"
             >
               <Icon
-                src="icon_youtube.svg"
+                src="/icon_youtube.svg"
                 alt="youtube"
                 width={16}
                 height={16}
@@ -55,7 +55,7 @@ export default function Footer() {
             <Link className="address-text sns" href="#">
               <div className="sns-icon">
                 <Icon
-                  src="icon_customer_service.svg"
+                  src="/icon_customer_service.svg"
                   alt="custoer service"
                   width={15.333}
                   height={14.667}

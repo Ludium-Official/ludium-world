@@ -23,7 +23,7 @@ export default function Navigation({ googleAuthInfo, gglId }) {
           <GnbMenu
             href={`https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}&access_type=offline&prompt=consent`}
             iconClass="icon-profile"
-            src="logo_profile.svg"
+            src="/icon_profile.svg"
             alt="profile"
             width={17.323}
             height={17.323}
@@ -33,7 +33,7 @@ export default function Navigation({ googleAuthInfo, gglId }) {
           <GnbMenu
             href="/profile"
             iconClass="icon-profile"
-            src="logo_profile.svg"
+            src="/icon_profile.svg"
             alt="profile"
             width={17.323}
             height={17.323}
@@ -43,7 +43,7 @@ export default function Navigation({ googleAuthInfo, gglId }) {
         <GnbMenu
           href="/announcement"
           iconClass="icon-announcement"
-          src="icon_announcement.svg"
+          src="/icon_announcement.svg"
           alt="announcement"
           width={17.2}
           height={20.62}
@@ -51,7 +51,7 @@ export default function Navigation({ googleAuthInfo, gglId }) {
         />
         <GnbMenu
           href="/work"
-          src="icon_note.svg"
+          src="/icon_note.svg"
           alt="work"
           width={24}
           height={24}
@@ -59,7 +59,7 @@ export default function Navigation({ googleAuthInfo, gglId }) {
         />
         <GnbMenu
           href="/participation"
-          src="icon_learning.svg"
+          src="/icon_learning.svg"
           alt="learning"
           width={24}
           height={24}
@@ -67,7 +67,7 @@ export default function Navigation({ googleAuthInfo, gglId }) {
         />
         <GnbMenu
           href="/community"
-          src="icon_community.svg"
+          src="/icon_community.svg"
           alt="community"
           width={24}
           height={24}
