@@ -17,13 +17,19 @@ export default function Footer() {
             <p className="address-text contact-us">Contact us</p>
           </div>
           <div className="address-inner">
-            <Link className="address-text sns" href="#">
+            <Link
+              className="address-text sns"
+              href="https://twitter.com/ludium_official"
+            >
               <div className="sns-icon">
                 <Icon src="icon_x.svg" alt="X" width={16} height={15} />
               </div>
               Twitter
             </Link>
-            <Link className="address-text sns" href="#">
+            <Link
+              className="address-text sns"
+              href="https://discord.com/invite/c8Snswayuw"
+            >
               <div className="sns-icon">
                 <Icon
                   src="icon_discord.svg"
@@ -34,7 +40,10 @@ export default function Footer() {
               </div>
               Discord
             </Link>
-            <Link className="address-text sns" href="#">
+            <Link
+              className="address-text sns"
+              href="https://www.youtube.com/@Ludium"
+            >
               <Icon
                 src="icon_youtube.svg"
                 alt="youtube"
