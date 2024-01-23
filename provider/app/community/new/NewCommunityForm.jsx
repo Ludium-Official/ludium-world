@@ -1,7 +1,6 @@
 "use client";
 
 import BackButton from "@/components/BackButton";
-import ContentNavigation from "@/components/ContentNavigation";
 import HTTP_METHOD from "@/enums/HTTP_METHOD";
 import fetchWithRetry from "@/functions/api";
 import dynamic from "next/dynamic";
@@ -41,14 +40,13 @@ export default function NewCommunityForm() {
   };
 
   return (
-    <form onSubmit={handleCreateContent}>
-      <ContentNavigation links={[]}>
-        <BackButton />
-        <button disabled={pending}>
+    <form className="wrapper" onSubmit={handleCreateContent}>
+      <div className="flex-end">
+        <button className="button1" disabled={pending}>
           {pending ? "콘텐츠를 저장하는 중입니다..." : "콘텐츠 저장하기"}
         </button>
-      </ContentNavigation>
-      <article className="wrapper">
+      </div>
+      <article>
         <section className="margin1">
           <input
             className="input-title"

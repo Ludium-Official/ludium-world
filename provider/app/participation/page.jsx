@@ -1,3 +1,4 @@
+import BackButton from "@/components/BackButton";
 import fetchWithRetry from "@/functions/api";
 import Link from "next/link";
 
@@ -33,9 +34,14 @@ async function LearningList() {
 
 export default async function ParticipationListPage() {
   return (
-    <article className="wrapper">
-      <h1 className="header1">학습 목록</h1>
-      <LearningList />
-    </article>
+    <>
+      <header className="nb">
+        <BackButton />
+      </header>
+      <article className="wrapper">
+        <h1 className="header1">학습 목록</h1>
+        <LearningList />
+      </article>
+    </>
   );
 }

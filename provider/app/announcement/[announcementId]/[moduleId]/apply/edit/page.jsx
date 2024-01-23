@@ -1,3 +1,4 @@
+import BackButton from "@/components/BackButton";
 import { getApplication } from "../page";
 import EditApplyForm from "./EditApplyForm";
 
@@ -8,10 +9,15 @@ export default async function EditApply({
   const application = await getApplication(announcementId, moduleId, role);
 
   return (
-    <EditApplyForm
-      announcementId={announcementId}
-      detailId={moduleId}
-      application={application}
-    />
+    <>
+      <header className="nb">
+        <BackButton />
+      </header>
+      <EditApplyForm
+        announcementId={announcementId}
+        detailId={moduleId}
+        application={application}
+      />
+    </>
   );
 }
