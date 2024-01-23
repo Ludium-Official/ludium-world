@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import { uploadImage } from "@/functions/actions/ImageUpload";
 import "@toast-ui/editor/dist/toastui-editor.css";
+import { useEffect } from "react";
 
 export default function Editor({ editorRef, content, height }) {
   useEffect(() => {
@@ -16,6 +17,22 @@ export default function Editor({ editorRef, content, height }) {
           previewStyle: "tab",
           initialValue: content,
           autofocus: false,
+          hooks: {
+            async addImageBlobHook(blob, callback) {
+              const formData = new FormData();
+
+              formData.append("image", blob);
+
+              const imageUploadResponse = await uploadImage(formData);
+
+              if (imageUploadResponse === false) {
+                alert("이미지를 업로드 하는 중 에러가 발생했습니다.");
+                return;
+              }
+
+              callback(imageUploadResponse, blob.name);
+            },
+          },
         });
       } catch (error) {
         console.error(error);
