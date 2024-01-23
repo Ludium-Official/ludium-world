@@ -1,3 +1,4 @@
+import BackButton from "@/components/BackButton";
 import { getProfile } from "../page";
 import EditProfile from "./EditProfile";
 
@@ -13,8 +14,13 @@ export default async function EditProfilePage() {
   const profile = await getProfile();
 
   return (
-    <div>
-      <EditProfile profile={profile} />
-    </div>
+    <>
+      <header className="nb">
+        <BackButton />
+      </header>
+      <div className="wrapper">
+        <EditProfile profile={profile} />
+      </div>
+    </>
   );
 }
