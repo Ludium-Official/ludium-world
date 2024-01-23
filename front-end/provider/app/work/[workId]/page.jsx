@@ -166,10 +166,10 @@ export default async function WorkPage({ params: { workId } }) {
 
   return (
     <>
-      <ContentNavigation links={[]}>
+      <header className="nb">
         <BackButton />
-      </ContentNavigation>
-      <div className={workstyle["work-view-wrapper"]}>
+      </header>
+      <div className="wrapper">
         <div className={workstyle["work-content-comment-header"]}>
           <Worker workId={workId} />
           <p>작업 승인 상태: {work.status === "CREATE" ? "미승인" : "승인"}</p>

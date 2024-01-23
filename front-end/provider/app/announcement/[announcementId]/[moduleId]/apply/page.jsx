@@ -2,6 +2,7 @@ import fetchWithRetry from "@/functions/api";
 import { cookies } from "next/headers";
 import ApplyForm from "./ApplyForm";
 import RedirectEditPage from "./RedirectEditPage";
+import BackButton from "@/components/BackButton";
 
 export const metadata = {
   title: "지원서 작성하기",
@@ -62,10 +63,15 @@ export default async function ApplyPage({
     );
 
   return (
-    <ApplyForm
-      announcementId={announcementId}
-      detailId={moduleId}
-      applicationTemplate={applicationTemplate}
-    />
+    <>
+      <header className="nb">
+        <BackButton />
+      </header>
+      <ApplyForm
+        announcementId={announcementId}
+        detailId={moduleId}
+        applicationTemplate={applicationTemplate}
+      />
+    </>
   );
 }

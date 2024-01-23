@@ -32,6 +32,7 @@ export default function EditApplyForm({
         }),
       }
     );
+    setPending(false);
 
     if (!updateApplyResponse.ok) {
       const { message } = await updateApplyResponse.json();
@@ -43,20 +44,9 @@ export default function EditApplyForm({
     }
   };
 
-  const handleBack = () => {
-    router.back();
-  };
-
   return (
-    <form className={applystyle.form} onSubmit={handleApplyForm}>
+    <form className="wrapper" onSubmit={handleApplyForm}>
       <div className={applystyle["form-button-area"]}>
-        <button
-          className={applystyle["form-button"]}
-          type="button"
-          onClick={handleBack}
-        >
-          돌아가기
-        </button>
         <input
           className={applystyle["form-button"]}
           type="submit"
