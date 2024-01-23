@@ -69,14 +69,22 @@ async function ContentCoomentList({ contentId }) {
 
 export default async function ContentPage({ params: { communityId } }) {
   const content = await getContent(communityId);
+  const links = [
+    {
+      href: `/community/${communityId}/edit`,
+      text: "수정 페이지로 이동",
+    },
+  ];
 
   return (
     <>
-      <ContentNavigation links={[]}>
+      <header className="nb">
         <BackButton />
-        <Link href={`/community/${communityId}/edit`}>수정 페이지로 이동</Link>
-      </ContentNavigation>
+      </header>
       <div className="wrapper">
+        <div className="flex-end">
+          <ContentNavigation links={links} />
+        </div>
         <div className="space-between">
           <p className="text1">
             작성자: <UserNick usrId={content.usrId} />

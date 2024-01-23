@@ -1,6 +1,7 @@
 import Link from "next/link";
 import fetchWithRetry from "../../functions/api";
 import workstyle from "./work.module.css";
+import BackButton from "@/components/BackButton";
 
 export const metadata = {
   title: "작업 목록",
@@ -32,9 +33,14 @@ async function WorkList() {
 
 export default async function WorkListPage() {
   return (
-    <article className={workstyle.wrapper}>
-      <h1 className={workstyle["title-label"]}>작업 목록</h1>
-      <WorkList />
-    </article>
+    <>
+      <header className="nb">
+        <BackButton />
+      </header>
+      <article className="wrapper">
+        <h1 className={workstyle["title-label"]}>작업 목록</h1>
+        <WorkList />
+      </article>
+    </>
   );
 }

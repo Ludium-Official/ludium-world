@@ -349,7 +349,7 @@ async function LearningContent({ learningId }) {
   const learning = await getLearning(learningId);
 
   return (
-    <div className="viewer">
+    <div className="wrapper">
       <h1 className="viewer-title">{learning.title}</h1>
       <section className="viewer-content">
         <Viewer content={learning.description} height="100%" />
@@ -364,9 +364,9 @@ export default async function ParticipationPage({
 }) {
   return (
     <>
-      <ContentNavigation links={[]}>
+      <header className="nb">
         <BackButton />
-      </ContentNavigation>
+      </header>
       <LearningContent learningId={participationId} />
     </>
   );

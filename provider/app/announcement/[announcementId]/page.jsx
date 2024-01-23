@@ -1,6 +1,5 @@
 import APPLY_CATEGORY from "@/enums/APPLY_CATEGORY";
 import BackButton from "../../../components/BackButton";
-import ContentNavigation from "../../../components/ContentNavigation";
 import Viewer from "../../../components/Viewer";
 import fetchWithRetry from "../../../functions/api";
 import ModuleNavigation from "../ModuleNavigation";
@@ -83,10 +82,10 @@ export default async function AnnouncementPage({ params: { announcementId } }) {
 
   return (
     <>
-      <ContentNavigation links={[]}>
+      <header className="nb">
         <BackButton />
-      </ContentNavigation>
-      <article className={announcementstyle.wrapper}>
+      </header>
+      <article className="wrapper">
         <h1 className={announcementstyle.title}>{announcement.title}</h1>
         <section className={announcementstyle["content-area"]}>
           <Viewer content={announcement.description} height="100%" />

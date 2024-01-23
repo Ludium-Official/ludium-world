@@ -25,9 +25,11 @@
 .wrapper {
   position: absolute;
   left: 287px;
-  top: 112px;
-  width: Calc(100% - 327px);
-  height: fit-content;
+  top: 72px;
+  width: Calc(100% - 287px);
+  padding-top: 40px;
+  height: 912px;
+  overflow-y: auto;
   /* height: 1438px;
   min-height: calc(100vh - 135px); */
 }
@@ -423,8 +425,8 @@
 
 .editor {
   margin: 15px;
-  height: 600px;
-  min-height: 500px;
+  height: 712px;
+  min-height: 600px;
   border: 1px solid #cbcbcb;
   background-color: #fff;
 }
@@ -527,7 +529,8 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  height: calc(100vh - 210px);
+  height: fit-content;
+  min-height: 100px;
   margin: 0 15px;
   background-color: #f7f2fa;
   border: 1px solid #f7f2fa;

@@ -1,3 +1,4 @@
+import BackButton from "@/components/BackButton";
 import ContentNavigation from "@/components/ContentNavigation";
 import UserNick from "@/components/UserNick";
 import fetchWithRetry from "@/functions/api";
@@ -45,10 +46,13 @@ export default async function CommunityListPage() {
   const links = [{ href: "/community/new", text: "콘텐츠 추가" }];
   return (
     <>
-      <article className="flex-end">
-        <ContentNavigation links={links} />
-      </article>
+      <header className="nb">
+        <BackButton />
+      </header>
       <article className="wrapper">
+        <article className="flex-end">
+          <ContentNavigation links={links} />
+        </article>
         <ContentList />
       </article>
     </>

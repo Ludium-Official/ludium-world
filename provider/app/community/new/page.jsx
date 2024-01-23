@@ -1,3 +1,4 @@
+import BackButton from "@/components/BackButton";
 import NewCommunityForm from "./NewCommunityForm";
 
 export const metadata = {
@@ -5,5 +6,12 @@ export const metadata = {
 };
 
 export default async function NewContentPage() {
-  return <NewCommunityForm />;
+  return (
+    <>
+      <header className="nb">
+        <BackButton />
+      </header>
+      <NewCommunityForm />
+    </>
+  );
 }

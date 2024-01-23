@@ -1,6 +1,7 @@
 import Link from "next/link";
 import fetchWithRetry from "../../functions/api";
 import announcementstyle from "./announcement.module.css";
+import BackButton from "@/components/BackButton";
 
 export const metadata = {
   title: "공고 목록",
@@ -33,11 +34,16 @@ async function AnnouncementList() {
 
 export default async function AnnouncementPage() {
   return (
-    <article className={announcementstyle.wrapper}>
-      <h1 className={announcementstyle["title-label"]}>공고 목록</h1>
-      <div className={announcementstyle["announcement-list"]}>
-        <AnnouncementList />
-      </div>
-    </article>
+    <>
+      <header className="nb">
+        <BackButton />
+      </header>
+      <article className="wrapper">
+        <h1 className={announcementstyle["title-label"]}>공고 목록</h1>
+        <div className={announcementstyle["announcement-list"]}>
+          <AnnouncementList />
+        </div>
+      </article>
+    </>
   );
 }

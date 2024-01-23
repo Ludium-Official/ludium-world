@@ -11,7 +11,7 @@
 
 .form-button-area {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   height: 50px;
   padding: 15px 15px 15px 0;
 }
@@ -39,7 +39,7 @@
 
 .content-area {
   padding: 7px 45px 15px 15px;
-  height: calc(100vh - 212px);
+  height: 700px;
 }
 
 .error {

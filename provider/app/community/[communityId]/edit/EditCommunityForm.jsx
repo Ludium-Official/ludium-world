@@ -48,14 +48,13 @@ export default function EditCommunityForm({ content }) {
   };
 
   return (
-    <form onSubmit={handleUpdateContent}>
-      <ContentNavigation links={[]}>
-        <BackButton />
-        <button disabled={pending}>
+    <form className="wrapper" onSubmit={handleUpdateContent}>
+      <div className="flex-end">
+        <button className="button1" disabled={pending}>
           {pending ? "콘텐츠를 저장하는 중입니다..." : "콘텐츠 저장하기"}
         </button>
-      </ContentNavigation>
-      <article className="wrapper">
+      </div>
+      <article>
         <section className="margin1">
           <input
             className="input-title"

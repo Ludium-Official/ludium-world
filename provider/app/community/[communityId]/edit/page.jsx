@@ -1,5 +1,6 @@
 import fetchWithRetry from "@/functions/api";
 import EditCommunityForm from "./EditCommunityForm";
+import BackButton from "@/components/BackButton";
 
 export async function generateMetadata({ params: { communityId } }) {
   const content = await getContent(communityId);
@@ -22,5 +23,12 @@ async function getContent(contentId) {
 export default async function EditContentPage({ params: { communityId } }) {
   const content = await getContent(communityId);
 
-  return <EditCommunityForm key={crypto.randomUUID()} content={content} />;
+  return (
+    <>
+      <header className="nb">
+        <BackButton />
+      </header>
+      <EditCommunityForm key={crypto.randomUUID()} content={content} />
+    </>
+  );
 }
