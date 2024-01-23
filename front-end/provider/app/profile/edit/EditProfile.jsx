@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Editor from "../../../components/Editor";
 import fetchWithRetry from "../../../functions/api";
 import profilestyle from "../profile.module.css";
@@ -10,11 +10,13 @@ import HTTP_METHOD from "@/enums/HTTP_METHOD";
 export default function EditProfile({ profile }) {
   const editorRef = useRef(null);
   const router = useRouter();
+  const [pending, setPending] = useState(false);
 
   if (!profile) return <h1>사용자 데이터를 불러오지 못했습니다.</h1>;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setPending(true);
 
     const { nick, phone_number } = e.target;
     const { editorInstance } = editorRef.current;
@@ -35,27 +37,19 @@ export default function EditProfile({ profile }) {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setPending(false);
     }
-  };
-
-  const handleBack = () => {
-    router.push("/profile");
   };
 
   return (
     <form className={profilestyle["form-wrapper"]} onSubmit={handleSubmit}>
-      <div className={profilestyle["form-button-area"]}>
-        <button
-          className={profilestyle["form-button"]}
-          type="button"
-          onClick={handleBack}
-        >
-          돌아가기
-        </button>
+      <div className="flex-end">
         <input
           className={profilestyle["form-button"]}
           type="submit"
-          value="저장하기"
+          value={pending ? "프로필을 수정하는 중입니다..." : "수정하기"}
+          disabled={pending}
         />
       </div>
       <div className={profilestyle["form-info"]}>

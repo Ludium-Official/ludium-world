@@ -23,10 +23,13 @@
 /* style guide end */
 
 .wrapper {
-  margin-left: 360px;
-  padding: 15px 17px 40px 44px;
-  height: 88%;
-  min-height: calc(100vh - 135px);
+  position: absolute;
+  left: 287px;
+  top: 112px;
+  width: Calc(100% - 327px);
+  height: fit-content;
+  /* height: 1438px;
+  min-height: calc(100vh - 135px); */
 }
 
 .list {
@@ -696,11 +699,10 @@ body {
 /* aside style end */
 
 /* lastest announcement style start */
-.lastest-announcement-wrapper {
+.latest-announcement-wrapper {
   box-sizing: border-box;
-  padding: 21px 0;
+  padding: 21px 40px;
   width: Calc(100% - 247px);
-  height: 30px;
   position: absolute;
   top: 0;
   right: 0;
@@ -708,25 +710,22 @@ body {
   border-bottom: 1px solid var(--gray06);
 }
 
-.lastest-announcement {
+.latest-announcement {
   display: flex;
   flex-direction: row;
   align-items: center;
   padding: 0px;
   gap: 8px;
-  position: absolute;
   width: 520px;
   height: 30px;
-  left: 40px;
-  top: calc(50% - 30px / 2);
   text-decoration: none;
 }
 
-.lastest-announcement-text {
+.latest-announcement-text {
   color: var(--purple01);
 }
 
-.lastest-announcement-icon {
+.latest-announcement-icon {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -932,3 +931,173 @@ body {
   border: 1px solid var(--gray05);
 }
 /* home content style end */
+
+/* page navigation2 style start */
+.nb {
+  box-sizing: border-box;
+  position: absolute;
+  width: Calc(100% - 247px);
+  padding: 21px 40px;
+  right: 0px;
+  top: 0px;
+  background: var(--white);
+  border-bottom: 1px solid var(--gray06);
+}
+
+.back-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  gap: 16px;
+  width: 109px;
+  height: 30px;
+  border: none;
+  background: var(--white);
+  cursor: pointer;
+}
+
+.back-button-icon {
+  position: absolute;
+  width: 18.46px;
+  height: 18.46px;
+  left: 2.77px;
+  top: 2.77px;
+}
+
+.back-button-text {
+  margin: 0;
+}
+/* page navigation2 style end */
+
+/* profile page style start */
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 40px;
+  position: absolute;
+  width: Calc(100% - 327px);
+  height: 1438px;
+  left: 287px;
+  top: 112px;
+}
+
+.user-wrapper {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  gap: 10px;
+  width: 100%;
+  background: var(--white);
+  border: 1px solid var(--gray06);
+  border-radius: 20px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+.user {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px;
+  gap: 10px;
+  width: 100%;
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.avatar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 8px;
+  margin: 0 auto;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+.avatar-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 24px;
+
+  width: 292px;
+  height: 60px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+.self-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px 0px 0px 84px;
+  gap: 4px;
+
+  width: 398px;
+  height: 58px;
+}
+
+.avatar-greeting {
+  margin: 0;
+  font-family: "Pretendard Variable";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 28px;
+  line-height: 33px;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
+
+.avatar-nick {
+  font-family: "Pretendard Variable";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 33px;
+}
+
+.avatar-icon {
+  width: 60px;
+  height: 60px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  position: relative;
+}
+
+.ellipse {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
+.profile-empty {
+  position: absolute;
+  left: 16.5px;
+  top: 15.75px;
+  width: auto;
+  height: auto;
+}
+
+.color-gray-01 {
+  color: var(--gray01);
+}
+/* profile page style end */

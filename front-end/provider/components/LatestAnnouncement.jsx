@@ -18,22 +18,22 @@ export default async function LatestAnnouncement() {
   const latestAnnouncement = await getLatestAnnouncement();
 
   return (
-    <header className="lastest-announcement-wrapper">
+    <header className="latest-announcement-wrapper">
       <Link
-        className="lastest-announcement"
+        className="latest-announcement"
         href={
           latestAnnouncement == null
-            ? "#"
+            ? "/"
             : `/community/${latestAnnouncement.contentId}`
         }
       >
         <Icon src="/icon_announce.svg" alt="announce" width={24} height={24} />
-        <p className="h4-20 lastest-announcement-text">
+        <p className="h4-20 latest-announcement-text">
           {latestAnnouncement == null
             ? "최신 공지 데이터가 없습니다."
             : latestAnnouncement.title}
         </p>
-        <p className="lastest-announcement-icon">N</p>
+        <p className="latest-announcement-icon">N</p>
       </Link>
     </header>
   );

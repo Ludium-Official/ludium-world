@@ -3,12 +3,16 @@ import ContentNavigation from "../../components/ContentNavigation";
 import Viewer from "../../components/Viewer";
 import fetchWithRetry from "../../functions/api";
 import Link from "next/link";
+import BackButton from "@/components/BackButton";
+import Icon from "@/components/Icon";
+import Avatart from "@/components/profile/Avatar";
 
 export async function generateMetadata() {
   const profile = await getProfile();
 
   return {
     title: `${profile.nick} 프로필`,
+    description: `${profile.selfIntro}`,
   };
 }
 
@@ -185,16 +189,22 @@ export default async function ProfilePage() {
   const links = [
     {
       href: "/profile/edit",
-      text: "내 정보 수정하기",
+      text: "수정 페이지로 이동",
     },
   ];
 
   return (
     <>
-      <div className="flex-end">
-        <ContentNavigation links={links} />
-      </div>
+      <header className="nb">
+        <BackButton />
+      </header>
+      {/* <main className="profile">
+        <Avatart profile={profile} />
+      </main> */}
       <article className="wrapper">
+        <div className="flex-end">
+          <ContentNavigation links={links} />
+        </div>
         <h1 className="header1">내 정보</h1>
         <p className="text1">
           {profile.nick} ({profile.phnNmb})
