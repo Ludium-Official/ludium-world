@@ -18,6 +18,11 @@ export default function Editor({ editorRef, content, height }) {
           autofocus: false,
           hooks: {
             async addImageBlobHook(blob, callback) {
+              if (blob.size >= 4194304) {
+                alert("4MB 이상의 사이즈는 업로드 할 수 없습니다.");
+                return;
+              }
+
               const formData = new FormData();
 
               formData.append("image", blob);
