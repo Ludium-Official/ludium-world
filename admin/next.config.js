@@ -5,6 +5,7 @@ const config = {
   api: {
     bodyParse: {
       sizeLimit: "30mb",
+      responseLimit: "30mb",
     },
   },
 };
