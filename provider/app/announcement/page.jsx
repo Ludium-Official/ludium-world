@@ -40,7 +40,7 @@ export default async function AnnouncementPage() {
       </header>
       <article className="wrapper">
         <h1 className={announcementstyle["title-label"]}>공고 목록</h1>
-        <div className={announcementstyle["announcement-list"]}>
+        <div className="list">
           <AnnouncementList />
         </div>
       </article>
