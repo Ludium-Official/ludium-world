@@ -9,6 +9,8 @@ import ArticleSubmitbutton from "./ArticleSubmitButton";
 import ARTICLESUBMIT_STATUS from "@/enums/ARTICLESUBMIT_STATUS";
 import MissionSubmitCommentEditor from "./MissionSubmitCommentEditor";
 import { getTimeStamp } from "@/functions/helper";
+import { Fragment } from "react";
+import Link from "next/link";
 
 const Viewer = dynamic(() => import("@/components/Viewer"), { ssr: false });
 
@@ -292,21 +294,36 @@ async function CurriculumContentList({ learningId, curriculumId }) {
 
   return (
     <article>
-      <h3 className="header3">미션 / 아티클 목록</h3>
       {contents.map((content) => (
         <section key={content.id} id={content.id}>
           {content.type === "MISSION" ? (
-            <Mission
+            <Link
+              className="link"
+              href={`/participation/${learningId}/${curriculumId}/mission/${content.id}`}
+            >
+              <span className="h4-20">미션</span>
+              <span className="h4-20">{content.title}</span>
+              <span className="caption-12 color-purple-01">참여이전</span>
+            </Link>
+          ) : (
+            /* <Mission
               learningId={learningId}
               curriculumId={curriculumId}
               mission={content}
-            />
-          ) : (
-            <Article
+            /> */
+            /* <Article
               learningId={learningId}
               curriculumId={curriculumId}
               article={content}
-            />
+            /> */
+            <Link
+              className="link"
+              href={`/participation/${learningId}/${curriculumId}/article/${content.id}`}
+            >
+              <span className="h4-20">아티클</span>
+              <span className="h4-20">{content.title}</span>
+              <span className="caption-12 color-purple-01">참여이전</span>
+            </Link>
           )}
         </section>
       ))}
@@ -323,23 +340,21 @@ async function CurriculumList({ learningId }) {
     <section>
       <h2 className="header2">커리큘럼 목록</h2>
       {curriculums.map((curriculum) => (
-        <details
-          className="viewer-sub"
-          key={curriculum.curriculumId}
-          open={true}
-        >
-          <summary className="viewer-sub-summary">
-            커리큘럼 펼치기 / 접기
-          </summary>
-          <h3 className="viewer-title">{curriculum.title}</h3>
-          <section className="viewer-content">
-            <Viewer content={curriculum.description} height="100%" />
-          </section>
-          <CurriculumContentList
-            learningId={learningId}
-            curriculumId={curriculum.curriculumId}
-          />
-        </details>
+        <Fragment key={curriculum.curriculumId}>
+          <details
+            className="viewer-sub"
+            key={curriculum.curriculumId}
+            open={true}
+          >
+            <summary className="viewer-sub-summary h4-20 color-purple-01">
+              {curriculum.title}
+            </summary>
+            <CurriculumContentList
+              learningId={learningId}
+              curriculumId={curriculum.curriculumId}
+            />
+          </details>
+        </Fragment>
       ))}
     </section>
   );
