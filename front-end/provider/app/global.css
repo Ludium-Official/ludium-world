@@ -101,35 +101,24 @@
   background-color: #fff;
 }
 
-.viewer-sub {
-  margin: 20px;
-}
-
 .viewer-sub[open] {
-  margin-top: 15px;
   background-color: #f7f2fa;
   padding-bottom: 15px;
-  border: 1px solid #f7f2fa;
-  border-radius: 8px;
 }
 
 .viewer-sub-summary {
-  padding: 20px;
-  margin: 15px 0 0;
+  padding: 7px 0;
+  margin: 0;
   cursor: pointer;
-  text-align: center;
   background-color: #f7f2fa;
-  border: 1px solid #f7f2fa;
-  border-radius: 8px;
-}
-
-.viewer-sub[open] > .viewer-sub-summary {
-  padding: 0;
-  margin: 15px 15px;
 }
 
 .viewer-sub-summary:hover {
   background-color: #e6e0e9;
+}
+
+.viewer-sub-summary::marker {
+  content: "";
 }
 
 .curriculum-content-viewer {
@@ -237,7 +226,7 @@
 }
 
 .mission-submit[open] > .mission-submit-summary {
-  padding: 5px 15px;
+  padding: 0;
   background-color: #d4cbd9;
   border-color: #d4cbd9;
   color: #000;
@@ -255,7 +244,7 @@
 }
 
 .mission-submit[open] > .mission-submit-summary::marker {
-  content: "제출 접기";
+  content: "";
   color: #6c3890;
 }
 
@@ -1104,3 +1093,7 @@ body {
   color: var(--gray01);
 }
 /* profile page style end */
+
+.link {
+  text-decoration: none;
+}

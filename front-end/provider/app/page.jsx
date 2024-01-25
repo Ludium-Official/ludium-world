@@ -55,11 +55,11 @@ async function AnnouncementList() {
         {announcements.map((announcement, index) => (
           <Fragment key={announcement.postingId}>
             <section className="article">
-              <div className="article-status">
+              {/* <div className="article-status">
                 <p className="article-status-text caption-12 color-purple-01">
                   마감 N일전
                 </p>
-              </div>
+              </div> */}
               <Link
                 className="article-text h4-20"
                 href={`/announcement/${announcement.postingId}`}
@@ -100,11 +100,11 @@ async function ParticipationList() {
         {participations.map((participation, index) => (
           <Fragment key={participation.postingId}>
             <section className="article">
-              <div className="article-status">
+              {/* <div className="article-status">
                 <p className="article-status-text caption-12 color-purple-01">
-                  수강기한 31일
+                  수강기한 N일
                 </p>
-              </div>
+              </div> */}
               <Link
                 className="article-text h4-20"
                 href={`/participation/${participation.postingId}`}
