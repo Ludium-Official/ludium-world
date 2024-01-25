@@ -32,7 +32,7 @@ public class ContentController {
         try {
             var contentList = contentService.getAllContent();
 
-            if (contentList.isEmpty()) return responseUtil.getNoSuchElementExceptionMessage("콘텐츠 데잍터가 없습니다.", "");
+            if (contentList.isEmpty()) return responseUtil.getNoSuchElementExceptionMessage("콘텐츠 데이터가 없습니다.", "");
 
             return ResponseEntity.ok(contentList);
         } catch (Exception e) {
