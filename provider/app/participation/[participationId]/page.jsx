@@ -293,7 +293,7 @@ async function CurriculumContentList({ learningId, curriculumId }) {
   return (
     <article>
       {contents.map((content) => (
-        <section key={content.id} id={content.id}>
+        <section key={content.id}>
           {content.type === "MISSION" ? (
             <Link
               className="link"
