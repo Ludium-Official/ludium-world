@@ -22,6 +22,10 @@ public class EnhancedArticleService {
         return enhancedArticleRepository.findAllByCurriculumIdOrderByCreateAt(curriculumId);
     }
 
+    public EnhancedArticle getArticle(UUID articleId) {
+        return enhancedArticleRepository.findById(articleId).orElseThrow();
+    }
+
     public EnhancedArticle createArticle(EnhancedArticle enhancedArticle) {
         enhancedArticle.setArticleId(UUID.randomUUID());
         enhancedArticle.setCreateAt(new Timestamp(System.currentTimeMillis()));
