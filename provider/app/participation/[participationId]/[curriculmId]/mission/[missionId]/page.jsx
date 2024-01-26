@@ -115,7 +115,7 @@ async function MissionComment({ missionId }) {
           >
             <span className="space-between comment-header">
               <UserNick usrId={missionSubmitComment.commentor} />
-              <p>{getTimeStamp(missionSubmitComment.createAt)}</p>
+              <span>{getTimeStamp(missionSubmitComment.createAt)}</span>
             </span>
             <div className="comment-content">
               <Viewer
@@ -144,8 +144,9 @@ export default async function MissionPage({
       <article className="wrapper">
         <section className="space-between">
           <div className="mission">
-            <h1 className="header1">
-              {mission.title} 작성일: {getTimeStamp(mission.createAt)}
+            <h1 className="header1 space-between">
+              <span>{mission.title}</span>
+              <span>{getTimeStamp(mission.createAt)}</span>
             </h1>
             <div className="viewer-content">
               <Viewer content={mission.description} height="100%" />
