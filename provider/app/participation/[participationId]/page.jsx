@@ -163,7 +163,6 @@ async function MissionSubmit({ learningId, curriculumId, mission }) {
     return (
       <details className="mission-submit">
         <summary className="mission-submit-summary"></summary>
-        <h4 className="header4">제출 내용</h4>
         <MissionSubmitEditor
           learningId={learningId}
           curriculumId={curriculumId}
@@ -183,7 +182,6 @@ async function MissionSubmit({ learningId, curriculumId, mission }) {
   return (
     <details className="mission-submit">
       <summary className="mission-submit-summary"></summary>
-      <h4 className="header4">제출 내용</h4>
       <MissionSubmitEditor
         learningId={learningId}
         curriculumId={curriculumId}
