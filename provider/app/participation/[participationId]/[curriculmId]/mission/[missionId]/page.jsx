@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { cookies } from "next/headers";
 import MissionSubmitEditor from "../../../MissionSubmitEditor";
 import MissionSubmitCommentEditor from "../../../MissionSubmitCommentEditor";
+import UserNick from "@/components/UserNick";
 
 const Viewer = dynamic(() => import("@/components/Viewer"), { ssr: false });
 
@@ -15,6 +16,20 @@ async function getMission(missionId) {
     throw new Error("미션을 조회하는 중 에러가 발생했습니다.");
 
   return await getMissionResponse.json();
+}
+
+async function getProfile() {
+  const cookieStore = cookies();
+  const getProfileResponse = await fetchWithRetry(`/profile`, {
+    headers: {
+      cookie: cookieStore,
+    },
+  });
+
+  if (!getProfileResponse.ok)
+    throw new Error("프로필을 불러오는 중 에러가 발생했습니다.");
+
+  return await getProfileResponse.json();
 }
 
 async function getMissinoSubmit(learningId, curriculumId, missionId) {
@@ -35,6 +50,18 @@ async function getMissinoSubmit(learningId, curriculumId, missionId) {
   return await getMissionSubmitResponse.json();
 }
 
+async function getMissionSubmitCommentList(missionId, usrId) {
+  const getMissionSubmitCommentListResponse = await fetchWithRetry(
+    `/mission/${missionId}/submit/${usrId}/comment`
+  );
+
+  if (!getMissionSubmitCommentListResponse.ok)
+    if (getMissionSubmitCommentListResponse.status === 404) return [];
+    else throw new Error("미션 제출 댓글을 조회하는 중 에러가 발생했습니다.");
+
+  return await getMissionSubmitCommentListResponse.json();
+}
+
 async function MissionSubmit({ learningId, curriculumId, missionId }) {
   const missionSubmit = await getMissinoSubmit(
     learningId,
@@ -52,10 +79,6 @@ async function MissionSubmit({ learningId, curriculumId, missionId }) {
           missionId={missionId}
           missionSubmit={missionSubmit}
           isCreate={false}
-        />
-        <MissionSubmitCommentEditor
-          missionId={missionSubmit.missionId}
-          usrId={missionSubmit.usrId}
         />
       </details>
     );
@@ -77,6 +100,37 @@ async function MissionSubmit({ learningId, curriculumId, missionId }) {
   );
 }
 
+async function MissionComment({ missionId }) {
+  const profile = await getProfile();
+  const comments = await getMissionSubmitCommentList(missionId, profile.id);
+
+  return (
+    <div className="mission-comment">
+      <h2 className="header2">코멘트</h2>
+      <div className="mission-comment-list">
+        {comments.map((missionSubmitComment) => (
+          <section
+            className="comment"
+            key={`${missionSubmitComment.missionId} ${missionSubmitComment.createAt}`}
+          >
+            <span className="space-between comment-header">
+              <UserNick usrId={missionSubmitComment.commentor} />
+              <p>{getTimeStamp(missionSubmitComment.createAt)}</p>
+            </span>
+            <div className="comment-content">
+              <Viewer
+                content={missionSubmitComment.description}
+                height="100%"
+              />
+            </div>
+          </section>
+        ))}
+      </div>
+      <MissionSubmitCommentEditor missionId={missionId} usrId={profile.id} />
+    </div>
+  );
+}
+
 export default async function MissionPage({
   params: { participationId, curriculmId, missionId },
 }) {
@@ -88,12 +142,17 @@ export default async function MissionPage({
         <BackButton />
       </header>
       <article className="wrapper">
-        <h1 className="header1">
-          {mission.title} 작성일: {getTimeStamp(mission.createAt)}
-        </h1>
-        <div className="viewer-content">
-          <Viewer content={mission.description} height="100%" />
-        </div>
+        <section className="space-between">
+          <div className="mission">
+            <h1 className="header1">
+              {mission.title} 작성일: {getTimeStamp(mission.createAt)}
+            </h1>
+            <div className="viewer-content">
+              <Viewer content={mission.description} height="100%" />
+            </div>
+          </div>
+          <MissionComment missionId={missionId} />
+        </section>
         <MissionSubmit
           learningId={participationId}
           curriculumId={curriculmId}

@@ -40,7 +40,7 @@ export default function MissionSubmitCommentEditor({ missionId, usrId }) {
 
   return (
     <>
-      <div className="flex-end margin1">
+      <div className="flex-end">
         <button
           className="button1"
           onClick={handleCreateMissionSubmitComment}
@@ -49,7 +49,7 @@ export default function MissionSubmitCommentEditor({ missionId, usrId }) {
           {pending ? "댓글을 추가하는 중입니다..." : "댓글 추가하기"}
         </button>
       </div>
-      <div className="editor">
+      <div className="mission-comment-editor">
         <Editor editorRef={editorRef} content="" height="100%" />
       </div>
     </>
