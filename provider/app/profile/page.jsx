@@ -1,11 +1,9 @@
+import BackButton from "@/components/BackButton";
 import { cookies } from "next/headers";
+import Link from "next/link";
 import ContentNavigation from "../../components/ContentNavigation";
 import Viewer from "../../components/Viewer";
 import fetchWithRetry from "../../functions/api";
-import Link from "next/link";
-import BackButton from "@/components/BackButton";
-import Icon from "@/components/Icon";
-import Avatart from "@/components/profile/Avatar";
 
 export async function generateMetadata() {
   const profile = await getProfile();

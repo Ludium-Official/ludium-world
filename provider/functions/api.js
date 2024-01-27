@@ -1,3 +1,5 @@
+import UnAuthorizedError from "errors/UnAuthorizedError";
+
 const refreshAccessToken = async (options) => {
   const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;
   const fetchInit = {
@@ -22,8 +24,9 @@ const refreshAccessToken = async (options) => {
   );
 
   if (!tokenRefreshResponse.ok) {
-    throw new Error("Failed to refresh access token");
+    throw new UnAuthorizedError("Failed to refresh access token");
   }
+
   return await tokenRefreshResponse.json();
 };
 

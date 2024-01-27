@@ -1,11 +1,10 @@
 import BackButton from "@/components/BackButton";
-import ContentNavigation from "@/components/ContentNavigation";
 import fetchWithRetry from "@/functions/api";
 import dynamic from "next/dynamic";
 import workstyle from "../work.module.css";
+import WorkContentCommentEditor from "./WorkContentCommentEditor";
 import WorkContentCreateButton from "./WorkContentCreateButton";
 import WorkContentEditor from "./WorkContentEditor";
-import WorkContentCommentEditor from "./WorkContentCommentEditor";
 
 const Viewer = dynamic(() => import("@/components/Viewer"), {
   ssr: false,
