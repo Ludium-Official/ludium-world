@@ -77,10 +77,10 @@ async function LearningList({ participations }) {
             <div className="frame-102">
               {participations.some(participation => participation.postingId === postingId) ?
                 <div className="frame-97 background-purple-04 color-purple-01">진행중</div> :
-                <div className="frame-100 background-purple-01 color-white">미진행</div>}
+                <div className="frame-100 background-gray-06 color-gray-04 border-gray-04">미진행</div>}
             </div>
           </div>
-          <div className="line-4 bordeer-gray-05" />
+          <div className="line border-gray-05" />
         </Fragment>
       ))
       }
@@ -99,8 +99,10 @@ export default async function ParticipationListPage() {
         <BackButton />
       </header>
       <article className="wrapper">
-        <h1 className="h3-24">학습 참여</h1>
-        <LearningList participations={participations} />
+        <div className="frame-93">
+          <h1 className="h3-24">학습 참여</h1>
+          <LearningList participations={participations} />
+        </div>
       </article>
     </>
   );
