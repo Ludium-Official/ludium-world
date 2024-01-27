@@ -6,6 +6,8 @@ import { cookies } from "next/headers";
 import MissionSubmitEditor from "../../../MissionSubmitEditor";
 import MissionSubmitCommentEditor from "../../../MissionSubmitCommentEditor";
 import UserNick from "@/components/UserNick";
+import Icon from "@/components/Icon";
+import { Fragment } from "react";
 
 const Viewer = dynamic(() => import("@/components/Viewer"), { ssr: false });
 
@@ -105,28 +107,47 @@ async function MissionComment({ missionId }) {
   const comments = await getMissionSubmitCommentList(missionId, profile.id);
 
   return (
-    <div className="mission-comment">
-      <h2 className="header2">코멘트</h2>
-      <div className="mission-comment-list">
-        {comments.map((missionSubmitComment) => (
-          <section
-            className="comment"
-            key={`${missionSubmitComment.missionId} ${missionSubmitComment.createAt}`}
-          >
-            <span className="space-between comment-header">
-              <UserNick usrId={missionSubmitComment.commentor} />
-              <span>{getTimeStamp(missionSubmitComment.createAt)}</span>
-            </span>
-            <div className="comment-content">
-              <Viewer
-                content={missionSubmitComment.description}
-                height="100%"
-              />
-            </div>
-          </section>
-        ))}
+    <div className="frame-150">
+      <div className="frame background-white border-gray-06 mission-comment">
+        <div className="frame-101">
+          <div className="frame-9">
+            <h2 className="h4-20 color-black">코멘트</h2>
+          </div>
+        </div>
+        <div className="frame-143">
+          {comments.map((missionSubmitComment, index) => (
+            <Fragment key={`${missionSubmitComment.missionId} ${missionSubmitComment.createAt}`}>
+              <section
+                className="frame-142"
+              >
+                <div className="frame-140">
+                  <div className="frame-10">
+                    <div className="frame-141">
+                      <h3 className="h5-18"><UserNick usrId={missionSubmitComment.commentor} /></h3>
+                      <div className="frame-9-3">
+                        <p className="caption-12">{getTimeStamp(missionSubmitComment.createAt)}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="background-white mission-comment-viewer">
+                  <Viewer
+                    content={missionSubmitComment.description}
+                    height="100%"
+                  />
+                </div>
+              </section>
+              {index < comments.length - 1 ? <div className="line border-gray-05" /> : null}
+            </Fragment>
+          ))}
+        </div>
       </div>
-      <MissionSubmitCommentEditor missionId={missionId} usrId={profile.id} />
+      <div className="frame background-white border-gray-06 mission-comment mission-comment-editor">
+        <div className="frame-148">
+          <h2 className="h5-18">코멘트 작성하기</h2>
+        </div>
+        <MissionSubmitCommentEditor missionId={missionId} usrId={profile.id} />
+      </div>
     </div>
   );
 }
@@ -142,14 +163,22 @@ export default async function MissionPage({
         <BackButton />
       </header>
       <article className="wrapper">
-        <section className="space-between">
-          <div className="mission">
-            <h1 className="header1 space-between">
-              <span>{mission.title}</span>
-              <span>{getTimeStamp(mission.createAt)}</span>
-            </h1>
-            <div className="viewer-content">
-              <Viewer content={mission.description} height="100%" />
+        <section className="frame-151">
+          <div className="frame-149">
+            <div className="frame background-white border-gray-06">
+              <div className="frame-101">
+                <div className="frame-9">
+                  <div className="frame-145">
+                    <Icon src="/icon_flag.svg" alt="mission" width={24} height={24} />
+                    <h1 className="h4-20 color-black">{mission.title}</h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="frame  background-white border-gray-06">
+              <div className="frame-101 mission-content">
+                <Viewer content={mission.description} height="100%" />
+              </div>
             </div>
           </div>
           <MissionComment missionId={missionId} />

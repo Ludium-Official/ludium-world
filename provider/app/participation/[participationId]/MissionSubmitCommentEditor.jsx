@@ -30,7 +30,7 @@ export default function MissionSubmitCommentEditor({ missionId, usrId }) {
 
     setPending(false);
     if (!createMissionSubmitCommentResponse.ok) {
-      alert("댓글을 추가하는 중 에러가 발생했습니다.");
+      alert("댓글을 작성하는 중 에러가 발생했습니다.");
       return;
     }
 
@@ -40,17 +40,17 @@ export default function MissionSubmitCommentEditor({ missionId, usrId }) {
 
   return (
     <>
-      <div className="flex-end">
+      <div className="frame-102-2">
+        <Editor editorRef={editorRef} content="" height="100%" />
+      </div>
+      <div className="frame-148">
         <button
           className="button1"
           onClick={handleCreateMissionSubmitComment}
           disabled={pending}
         >
-          {pending ? "댓글을 추가하는 중입니다..." : "댓글 추가하기"}
+          {pending ? "댓글을 작성하는 중입니다..." : "작성하기"}
         </button>
-      </div>
-      <div className="mission-comment-editor">
-        <Editor editorRef={editorRef} content="" height="100%" />
       </div>
     </>
   );
