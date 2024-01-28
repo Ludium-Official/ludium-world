@@ -60,19 +60,19 @@ export default function MissionSubmitEditor({
 
   return (
     <>
-      <div className="flex-end margin1">
+      <section className="frame-101 mission-content">
+        <Editor editorRef={editorRef} content={description} height="100%" />
+      </section>
+      <div className="frame-157">
         <button
-          className="button1"
+          className="button1 h5-18 mission-submit-button"
           type="button"
           disabled={pending}
           onClick={handleMissionSubmit}
         >
-          {pending ? "제출을 저장하는 중입니다..." : "제출 저장하기"}
+          {pending ? "제출하는 중입니다..." : "제출하기"}
         </button>
       </div>
-      <section className="mission-submit-content">
-        <Editor editorRef={editorRef} content={description} height="100%" />
-      </section>
     </>
   );
 }

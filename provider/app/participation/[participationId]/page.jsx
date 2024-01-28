@@ -1,7 +1,7 @@
 import BackButton from "@/components/BackButton";
 import fetchWithRetry from "@/functions/api";
-import UnAuthorizedError from "errors/UnAuthorizedError";
-import ko_kr from "langs/ko_kr";
+import UnAuthorizedError from "@/errors/UnAuthorizedError";
+import ko_kr from "@/langs/ko_kr";
 import dynamic from "next/dynamic";
 import { cookies } from "next/headers";
 import Link from "next/link";
@@ -44,20 +44,26 @@ async function getMissionList(learningId, curriculumId) {
 
 async function getMissinoSubmit(learningId, curriculumId, missionId) {
   const cookieStore = cookies();
-  const getMissionSubmitResponse = await fetchWithRetry(
-    `/learning/${learningId}/${curriculumId}/mission/${missionId}/submit/user`,
-    {
-      headers: {
-        cookie: cookieStore,
-      },
-    }
-  );
 
-  if (!getMissionSubmitResponse.ok)
-    if (getMissionSubmitResponse.status === 404) return null;
-    else throw new Error("미션 제출을 조회하는 중 에러가 발생했습니다.");
+  try {
+    const getMissionSubmitResponse = await fetchWithRetry(
+      `/learning/${learningId}/${curriculumId}/mission/${missionId}/submit/user`,
+      {
+        headers: {
+          cookie: cookieStore,
+        },
+      }
+    );
 
-  return await getMissionSubmitResponse.json();
+    if (!getMissionSubmitResponse.ok)
+      if (getMissionSubmitResponse.status === 404) return null;
+      else throw new Error("미션 제출을 조회하는 중 에러가 발생했습니다.");
+
+    return await getMissionSubmitResponse.json();
+  } catch (error) {
+    if (error instanceof UnAuthorizedError) return null;
+    else throw new Error(error.message);
+  }
 }
 
 async function getArticleSubmit(learningId, curriculumId, articleId) {
@@ -80,7 +86,7 @@ async function getArticleSubmit(learningId, curriculumId, articleId) {
     return await getArticleSubmitResponse.json();
   } catch (error) {
     if (error instanceof UnAuthorizedError) return null;
-    else throw new Error(error.message)
+    else throw new Error(error.message);
   }
 }
 
@@ -91,17 +97,44 @@ async function MissionSubmit({ learningId, curriculumId, missionId }) {
     missionId
   );
 
-  if (missionSubmit === null) return <div className="frame-97 background-gray-06 color-gray-04 border-gray-04">{ko_kr.NO_COMPLETE}</div>;
-  if (missionSubmit.status === "SUBMIT") return <div className="frame-97 background-purple-04 color-purple-01">{ko_kr[missionSubmit.status]}</div>;
+  if (missionSubmit === null)
+    return (
+      <div className="frame-97 background-gray-06 color-gray-04 border-gray-04">
+        {ko_kr.NO_COMPLETE}
+      </div>
+    );
+  if (missionSubmit.status === "SUBMIT")
+    return (
+      <div className="frame-97 background-purple-04 color-purple-01">
+        {ko_kr[missionSubmit.status]}
+      </div>
+    );
 
-  return <div className="frame-97 background-purple-01 color-white">{ko_kr[missionSubmit.status]}</div>
+  return (
+    <div className="frame-97 background-purple-01 color-white">
+      {ko_kr[missionSubmit.status]}
+    </div>
+  );
 }
 
 async function ArticleSubmit({ learningId, curriculumId, articleId }) {
-  const articleSubmit = await getArticleSubmit(learningId, curriculumId, articleId);
+  const articleSubmit = await getArticleSubmit(
+    learningId,
+    curriculumId,
+    articleId
+  );
 
-  if (articleSubmit === null) return <div className="frame-97 background-gray-06 color-gray-04 border-gray-04">{ko_kr.NO_COMPLETE}</div>;
-  return <div className="frame-97 background-purple-01 color-white">{ko_kr[articleSubmit.status]}</div>
+  if (articleSubmit === null)
+    return (
+      <div className="frame-97 background-gray-06 color-gray-04 border-gray-04">
+        {ko_kr.NO_COMPLETE}
+      </div>
+    );
+  return (
+    <div className="frame-97 background-purple-01 color-white">
+      {ko_kr[articleSubmit.status]}
+    </div>
+  );
 }
 
 async function CurriculumContentList({ learningId, curriculumId }) {
@@ -116,7 +149,9 @@ async function CurriculumContentList({ learningId, curriculumId }) {
           <div className="frame-34-3">
             <div className="frame-9-2">
               <div className="frame-93-2">
-                <h4 className="h4-20">{content.type === "MISSION" ? "미션" : "아티클"}</h4>
+                <h4 className="h4-20">
+                  {content.type === "MISSION" ? "미션" : "아티클"}
+                </h4>
               </div>
             </div>
           </div>
@@ -125,18 +160,32 @@ async function CurriculumContentList({ learningId, curriculumId }) {
               <div className="frame-4 background-white border-purple-01">
                 <p className="caption-12 color-purple-01">수강 마감 미설정</p>
               </div>
-              <Link className="h4-20 link" href={content.type === "MISSION" ?
-                `/participation/${learningId}/${curriculumId}/mission/${content.id}` :
-                `/participation/${learningId}/${curriculumId}/article/${content.id}`
-              }>
+              <Link
+                className="h4-20 link"
+                href={
+                  content.type === "MISSION"
+                    ? `/participation/${learningId}/${curriculumId}/mission/${content.id}`
+                    : `/participation/${learningId}/${curriculumId}/article/${content.id}`
+                }
+              >
                 {content.title}
               </Link>
             </div>
           </div>
           <div className="frame-101-2">
-            {content.type === "MISSION" ?
-              <MissionSubmit learningId={learningId} curriculumId={curriculumId} missionId={content.id} /> :
-              <ArticleSubmit learningId={learningId} curriculumId={curriculumId} articleId={content.id} />}
+            {content.type === "MISSION" ? (
+              <MissionSubmit
+                learningId={learningId}
+                curriculumId={curriculumId}
+                missionId={content.id}
+              />
+            ) : (
+              <ArticleSubmit
+                learningId={learningId}
+                curriculumId={curriculumId}
+                articleId={content.id}
+              />
+            )}
           </div>
         </section>
       ))}
@@ -153,9 +202,7 @@ async function CurriculumList({ learningId }) {
     <article className="frame">
       <div className="frame-101">
         <div className="frame-9">
-          <h2 className="h4-20 color-black">
-            커리큘럼 목록
-          </h2>
+          <h2 className="h4-20 color-black">커리큘럼 목록</h2>
         </div>
       </div>
       <div className="line border-gray-05" />
@@ -166,7 +213,9 @@ async function CurriculumList({ learningId }) {
               <div className="frame-34-2">
                 <div className="frame-9-2">
                   <div className="frame-93-2">
-                    <h3 className="h4-20 color-purple-01">{curriculum.title}</h3>
+                    <h3 className="h4-20 color-purple-01">
+                      {curriculum.title}
+                    </h3>
                   </div>
                 </div>
               </div>

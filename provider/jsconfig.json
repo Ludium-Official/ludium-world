@@ -5,7 +5,9 @@
       "@/components/*": ["components/*"],
       "@/app/*": ["app/*"],
       "@/enums/*": ["enums/*"],
-      "@/functions/*": ["functions/*"]
+      "@/functions/*": ["functions/*"],
+      "@/errors/*": ["errors/*"],
+      "@/langs/*": ["langs/*"]
     }
   }
 }
