@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { cookies } from "next/headers";
 import ArticleSubmitbutton from "../../../ArticleSubmitButton";
 import ARTICLESUBMIT_STATUS from "@/enums/ARTICLESUBMIT_STATUS";
-import UnAuthorizedError from "errors/UnAuthorizedError";
+import UnAuthorizedError from "@/errors/UnAuthorizedError";
 
 const Viewer = dynamic(() => import("@/components/Viewer"), { ssr: false });
 

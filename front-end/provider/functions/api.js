@@ -1,4 +1,4 @@
-import UnAuthorizedError from "errors/UnAuthorizedError";
+import UnAuthorizedError from "@/errors/UnAuthorizedError";
 
 const refreshAccessToken = async (options) => {
   const serverUri = process.env.NEXT_PUBLIC_BACKEND_URI;

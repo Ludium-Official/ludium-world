@@ -1,6 +1,6 @@
 import BackButton from "@/components/BackButton";
 import fetchWithRetry from "@/functions/api";
-import UnAuthorizedError from "errors/UnAuthorizedError";
+import UnAuthorizedError from "@/errors/UnAuthorizedError";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { Fragment } from "react";
@@ -61,11 +61,12 @@ async function LearningList({ participations }) {
       </div>
       {learnings.map(({ postingId, title }) => (
         <Fragment key={postingId}>
-          <div className="frame-136" >
+          <div className="frame-136">
             <div className="frame-35">
               <h3 className="frame-92">
                 <div className="frame-3 background-white border-purple-01 ">
-                  <p className="caption-12 color-purple-01">수강 마감 미설정</p></div>
+                  <p className="caption-12 color-purple-01">수강 마감 미설정</p>
+                </div>
                 <Link
                   className="h5-18 color-gray-02 link"
                   href={`/participation/${postingId}`}
@@ -75,23 +76,31 @@ async function LearningList({ participations }) {
               </h3>
             </div>
             <div className="frame-102">
-              {participations.some(participation => participation.postingId === postingId) ?
-                <div className="frame-97 background-purple-04 color-purple-01">진행중</div> :
-                <div className="frame-100 background-gray-06 color-gray-04 border-gray-04">미진행</div>}
+              {participations.some(
+                (participation) => participation.postingId === postingId
+              ) ? (
+                <div className="frame-97 background-purple-04 color-purple-01">
+                  진행중
+                </div>
+              ) : (
+                <div className="frame-100 background-gray-06 color-gray-04 border-gray-04">
+                  미진행
+                </div>
+              )}
             </div>
           </div>
           <div className="line border-gray-05" />
         </Fragment>
-      ))
-      }
-    </div >
+      ))}
+    </div>
   );
 }
 
 export default async function ParticipationListPage() {
   const profile = await getProfile();
 
-  const participations = profile === null ? [] : await getParticipationList(profile.id);
+  const participations =
+    profile === null ? [] : await getParticipationList(profile.id);
 
   return (
     <>
