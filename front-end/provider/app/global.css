@@ -334,12 +334,6 @@
   border-color: var(--gray05);
 }
 
-.button-large {
-  width: 250px;
-  height: 53px;
-  margin: 0;
-}
-
 .center {
   display: flex;
   justify-content: center;
@@ -1438,7 +1432,8 @@ body {
   gap: 16px;
 }
 
-.mission-content {
+.mission-content,
+.article-content {
   height: 642px;
 }
 
@@ -1541,9 +1536,16 @@ body {
   gap: 4px;
 }
 
-.mission-submit-button {
+.button-L {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 36px;
+  gap: 10px;
+  margin: 0 auto;
   width: 320px;
-  height: 60px;
+  height: 59px;
 }
 /* mission page style end */
 

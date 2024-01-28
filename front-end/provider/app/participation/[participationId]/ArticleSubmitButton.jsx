@@ -31,7 +31,7 @@ export default function ArticleSubmitbutton({
   };
   return (
     <button
-      className="button1 button-large"
+      className="button1 button-L"
       type="button"
       onClick={handleArticleSubmit}
       disabled={pending}

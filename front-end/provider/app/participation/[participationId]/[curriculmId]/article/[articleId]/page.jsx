@@ -5,6 +5,8 @@ import { cookies } from "next/headers";
 import ArticleSubmitbutton from "../../../ArticleSubmitButton";
 import ARTICLESUBMIT_STATUS from "@/enums/ARTICLESUBMIT_STATUS";
 import UnAuthorizedError from "@/errors/UnAuthorizedError";
+import Icon from "@/components/Icon";
+import ko_kr from "@/langs/ko_kr";
 
 const Viewer = dynamic(() => import("@/components/Viewer"), { ssr: false });
 
@@ -56,30 +58,55 @@ async function Article({ learningId, curriculumId, article }) {
     article.articleId
   );
 
-  const articleSubmitStatus =
-    articleSubmit.data === null
-      ? ARTICLESUBMIT_STATUS.NO_COMPLETE
-      : ARTICLESUBMIT_STATUS[articleSubmit.data.status];
-
   return (
-    <>
-      <h1 className="header1 space-between">
-        <span>{article.title}</span>
-        <span>{articleSubmitStatus}</span>
-      </h1>
-      <div className="viewer-content">
-        <Viewer content={article.description} height="100%" />
-      </div>
-      {articleSubmit.visible === true ? (
-        <div className="center">
-          <ArticleSubmitbutton
-            learningId={learningId}
-            curriculumId={curriculumId}
-            articleId={article.articleId}
-          />
+    <section className="frame-151">
+      <div className="frame-149">
+        <div className="frame background-white border-gray-06">
+          <div className="frame-101">
+            <div className="frame-9">
+              <div className="frame-145">
+                <Icon
+                  src="/icon_note.svg"
+                  alt="아티클"
+                  width={24}
+                  height={24}
+                />
+                <h1 className="h4-20">{article.title}</h1>
+              </div>
+              <div className="frame-9-3">
+                <p
+                  className={`caption-12 ${
+                    articleSubmit.data === null
+                      ? "color-gray-04"
+                      : "color-purple-01"
+                  }`}
+                >
+                  {articleSubmit.data === null
+                    ? ko_kr.NO_COMPLETE
+                    : ko_kr[articleSubmit.data.status]}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-      ) : null}
-    </>
+        <div className="frame background-white border-gray-06">
+          <div className="frame-101 article-content">
+            <Viewer content={article.description} height="100%" />
+          </div>
+        </div>
+        {articleSubmit.visible === true ? (
+          <div className="frame background-white border-gray-06">
+            <div className="frame-157">
+              <ArticleSubmitbutton
+                learningId={learningId}
+                curriculumId={curriculumId}
+                articleId={article.articleId}
+              />
+            </div>
+          </div>
+        ) : null}
+      </div>
+    </section>
   );
 }
 

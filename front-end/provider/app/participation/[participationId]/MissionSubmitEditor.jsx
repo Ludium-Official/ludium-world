@@ -65,7 +65,7 @@ export default function MissionSubmitEditor({
       </section>
       <div className="frame-157">
         <button
-          className="button1 h5-18 mission-submit-button"
+          className="button1 h5-18 button-L"
           type="button"
           disabled={pending}
           onClick={handleMissionSubmit}
