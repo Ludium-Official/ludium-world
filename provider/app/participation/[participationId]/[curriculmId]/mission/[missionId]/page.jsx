@@ -8,6 +8,7 @@ import MissionSubmitCommentEditor from "../../../MissionSubmitCommentEditor";
 import UserNick from "@/components/UserNick";
 import Icon from "@/components/Icon";
 import { Fragment } from "react";
+import UnAuthorizedError from "@/errors/UnAuthorizedError";
 
 const Viewer = dynamic(() => import("@/components/Viewer"), { ssr: false });
 
@@ -22,34 +23,46 @@ async function getMission(missionId) {
 
 async function getProfile() {
   const cookieStore = cookies();
-  const getProfileResponse = await fetchWithRetry(`/profile`, {
-    headers: {
-      cookie: cookieStore,
-    },
-  });
 
-  if (!getProfileResponse.ok)
-    throw new Error("프로필을 불러오는 중 에러가 발생했습니다.");
+  try {
+    const getProfileResponse = await fetchWithRetry(`/profile`, {
+      headers: {
+        cookie: cookieStore,
+      },
+    });
 
-  return await getProfileResponse.json();
+    if (!getProfileResponse.ok)
+      throw new Error("프로필을 불러오는 중 에러가 발생했습니다.");
+
+    return await getProfileResponse.json();
+  } catch (error) {
+    if (error instanceof UnAuthorizedError) return null;
+    else throw new Error(error.message);
+  }
 }
 
 async function getMissinoSubmit(learningId, curriculumId, missionId) {
   const cookieStore = cookies();
-  const getMissionSubmitResponse = await fetchWithRetry(
-    `/learning/${learningId}/${curriculumId}/mission/${missionId}/submit/user`,
-    {
-      headers: {
-        cookie: cookieStore,
-      },
-    }
-  );
 
-  if (!getMissionSubmitResponse.ok)
-    if (getMissionSubmitResponse.status === 404) return null;
-    else throw new Error("미션 제출을 조회하는 중 에러가 발생했습니다.");
+  try {
+    const getMissionSubmitResponse = await fetchWithRetry(
+      `/learning/${learningId}/${curriculumId}/mission/${missionId}/submit/user`,
+      {
+        headers: {
+          cookie: cookieStore,
+        },
+      }
+    );
 
-  return await getMissionSubmitResponse.json();
+    if (!getMissionSubmitResponse.ok)
+      if (getMissionSubmitResponse.status === 404) return null;
+      else throw new Error("미션 제출을 조회하는 중 에러가 발생했습니다.");
+
+    return await getMissionSubmitResponse.json();
+  } catch (error) {
+    if (error instanceof UnAuthorizedError) return null;
+    else throw new Error(error.message);
+  }
 }
 
 async function getMissionSubmitCommentList(missionId, usrId) {
@@ -65,46 +78,43 @@ async function getMissionSubmitCommentList(missionId, usrId) {
 }
 
 async function MissionSubmit({ learningId, curriculumId, missionId }) {
+  const profile = await getProfile();
   const missionSubmit = await getMissinoSubmit(
     learningId,
     curriculumId,
     missionId
   );
 
-  if (missionSubmit !== null)
-    return (
-      <details className="mission-submit">
-        <summary className="mission-submit-summary"></summary>
-        <MissionSubmitEditor
-          learningId={learningId}
-          curriculumId={curriculumId}
-          missionId={missionId}
-          missionSubmit={missionSubmit}
-          isCreate={false}
-        />
-      </details>
-    );
+  if (profile === null) return null;
 
   const newMission = await getMission(missionId);
 
   return (
-    <details className="mission-submit">
-      <summary className="mission-submit-summary"></summary>
-      <h4 className="header4">제출 내용</h4>
-      <MissionSubmitEditor
-        learningId={learningId}
-        curriculumId={curriculumId}
-        missionId={missionId}
-        missionSubmit={newMission}
-        isCreate={true}
-      />
-    </details>
+    <div className="mission-submit">
+      <div className="frame background-white border-gray-06">
+        <div className="frame-101">
+          <div className="frame-9">
+            <h1 className="h4-20 color-black">제출 내용</h1>
+          </div>
+        </div>
+        <MissionSubmitEditor
+          learningId={learningId}
+          curriculumId={curriculumId}
+          missionId={missionId}
+          missionSubmit={missionSubmit === null ? newMission : missionSubmit}
+          isCreate={missionSubmit === null ? true : false}
+        />
+      </div>
+    </div>
   );
 }
 
 async function MissionComment({ missionId }) {
   const profile = await getProfile();
-  const comments = await getMissionSubmitCommentList(missionId, profile.id);
+  const comments =
+    profile === null
+      ? []
+      : await getMissionSubmitCommentList(missionId, profile.id);
 
   return (
     <div className="frame-150">
@@ -116,16 +126,20 @@ async function MissionComment({ missionId }) {
         </div>
         <div className="frame-143">
           {comments.map((missionSubmitComment, index) => (
-            <Fragment key={`${missionSubmitComment.missionId} ${missionSubmitComment.createAt}`}>
-              <section
-                className="frame-142"
-              >
+            <Fragment
+              key={`${missionSubmitComment.missionId} ${missionSubmitComment.createAt}`}
+            >
+              <section className="frame-142">
                 <div className="frame-140">
                   <div className="frame-10">
                     <div className="frame-141">
-                      <h3 className="h5-18"><UserNick usrId={missionSubmitComment.commentor} /></h3>
+                      <h3 className="h5-18">
+                        <UserNick usrId={missionSubmitComment.commentor} />
+                      </h3>
                       <div className="frame-9-3">
-                        <p className="caption-12">{getTimeStamp(missionSubmitComment.createAt)}</p>
+                        <p className="caption-12">
+                          {getTimeStamp(missionSubmitComment.createAt)}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -137,7 +151,9 @@ async function MissionComment({ missionId }) {
                   />
                 </div>
               </section>
-              {index < comments.length - 1 ? <div className="line border-gray-05" /> : null}
+              {index < comments.length - 1 ? (
+                <div className="line border-gray-05" />
+              ) : null}
             </Fragment>
           ))}
         </div>
@@ -146,7 +162,10 @@ async function MissionComment({ missionId }) {
         <div className="frame-148">
           <h2 className="h5-18">코멘트 작성하기</h2>
         </div>
-        <MissionSubmitCommentEditor missionId={missionId} usrId={profile.id} />
+        <MissionSubmitCommentEditor
+          missionId={missionId}
+          usrId={profile === null ? null : profile.id}
+        />
       </div>
     </div>
   );
@@ -169,7 +188,12 @@ export default async function MissionPage({
               <div className="frame-101">
                 <div className="frame-9">
                   <div className="frame-145">
-                    <Icon src="/icon_flag.svg" alt="mission" width={24} height={24} />
+                    <Icon
+                      src="/icon_flag.svg"
+                      alt="mission"
+                      width={24}
+                      height={24}
+                    />
                     <h1 className="h4-20 color-black">{mission.title}</h1>
                   </div>
                 </div>

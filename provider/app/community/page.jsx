@@ -2,7 +2,7 @@ import BackButton from "@/components/BackButton";
 import ContentNavigation from "@/components/ContentNavigation";
 import UserNick from "@/components/UserNick";
 import fetchWithRetry from "@/functions/api";
-import ko_kr from "langs/ko_kr";
+import ko_kr from "@/langs/ko_kr";
 import Link from "next/link";
 
 export const metadata = {
