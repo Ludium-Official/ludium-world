@@ -75,11 +75,10 @@ async function Article({ learningId, curriculumId, article }) {
               </div>
               <div className="frame-9-3">
                 <p
-                  className={`caption-12 ${
-                    articleSubmit.data === null
+                  className={`caption-12 ${articleSubmit.data === null
                       ? "color-gray-04"
                       : "color-purple-01"
-                  }`}
+                    }`}
                 >
                   {articleSubmit.data === null
                     ? ko_kr.NO_COMPLETE
@@ -95,7 +94,7 @@ async function Article({ learningId, curriculumId, article }) {
           </div>
         </div>
         {articleSubmit.visible === true ? (
-          <div className="frame background-white border-gray-06">
+          <div className="frame ">
             <div className="frame-157">
               <ArticleSubmitbutton
                 learningId={learningId}
