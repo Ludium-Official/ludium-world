@@ -26,12 +26,12 @@ export default function MissionSubmitEditor({
   const getMissionSubmitRequest = () => {
     const body = isCreate
       ? JSON.stringify({
-          description: editorRef.current.editorInstance.getMarkdown(),
-        })
+        description: editorRef.current.editorInstance.getMarkdown(),
+      })
       : JSON.stringify({
-          ...missionSubmit,
-          description: editorRef.current.editorInstance.getMarkdown(),
-        });
+        ...missionSubmit,
+        description: editorRef.current.editorInstance.getMarkdown(),
+      });
 
     const method = isCreate ? HTTP_METHOD.POST : HTTP_METHOD.PUT;
 
@@ -60,7 +60,7 @@ export default function MissionSubmitEditor({
 
   return (
     <>
-      <section className="frame-101 mission-content">
+      <section className="frame-101 mission-submit-content">
         <Editor editorRef={editorRef} content={description} height="100%" />
       </section>
       <div className="frame-157">
