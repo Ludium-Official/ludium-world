@@ -48,7 +48,7 @@ export default function Editor({ editorRef, content, height }) {
   }, []);
 
   return (
-    <div ref={editorRef} style={{ width: "100%", height: "100vh" }}>
+    <div className="tui-editor" ref={editorRef} >
       에디터를 불러오는 중입니다...
     </div>
   );
