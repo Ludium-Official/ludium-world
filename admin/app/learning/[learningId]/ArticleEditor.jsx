@@ -71,7 +71,12 @@ export default function ArticleEditor({ article, postingId }) {
             placeholder="아티클 제목을 입력해주세요"
           />
         </div>
-        <input type="number" name="orderNum" id="orderNum" defaultValue={article.orderNum} />
+        <input
+          type="number"
+          name="orderNum"
+          id="orderNum"
+          defaultValue={article.orderNum}
+        />
         <div className={learningstyle["learning-edit-content-area"]}>
           <Editor
             editorRef={editorRef}
