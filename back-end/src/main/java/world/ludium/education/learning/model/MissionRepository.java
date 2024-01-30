@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface MissionRepository extends JpaRepository<Mission, UUID> {
     List<Mission> findAllByOrderByCreateAt();
-    List<Mission> findAllByCurriculumIdOrderByCreateAt(UUID curriculumId);
+    List<Mission> findAllByCurriculumIdOrderByOrderNum(UUID curriculumId);
 
     @Query("""
             SELECT new world.ludium.education.profile.MyMissionDTO(m.missionId,

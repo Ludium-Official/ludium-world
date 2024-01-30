@@ -33,6 +33,7 @@ export default function MissionEditor({ mission, postingId }) {
           title: e.target.title.value,
           description: editorInstance.getMarkdown(),
           missionSubmitForm: submitFormEditorInstance.getMarkdown(),
+          orderNum: e.target.orderNum.value,
         }),
       }
     );
@@ -73,6 +74,7 @@ export default function MissionEditor({ mission, postingId }) {
             placeholder="미션 제목을 입력해주세요"
           />
         </div>
+        <input type="number" name="orderNum" id="orderNum" defaultValue={mission.orderNum} />
         <h4>미션 내용</h4>
         <div className={learningstyle["learning-edit-content-area"]}>
           <Editor

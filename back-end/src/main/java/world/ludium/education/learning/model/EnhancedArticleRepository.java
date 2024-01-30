@@ -6,5 +6,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface EnhancedArticleRepository extends JpaRepository<EnhancedArticle, UUID> {
-    List<EnhancedArticle> findAllByCurriculumIdOrderByCreateAt(UUID curriculumId);
+    List<EnhancedArticle> findAllByCurriculumIdOrderByOrderNum(UUID curriculumId);
 }

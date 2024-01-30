@@ -18,6 +18,7 @@ public class Mission {
     private Timestamp createAt;
     private UUID usrId;
     private String missionSubmitForm;
+    private Integer orderNum;
 
     public UUID getMissionId() {
         return missionId;
@@ -73,5 +74,13 @@ public class Mission {
 
     public void setMissionSubmitForm(String missionSubmitForm) {
         this.missionSubmitForm = missionSubmitForm;
+    }
+
+    public Integer getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(Integer orderNum) {
+        this.orderNum = orderNum;
     }
 }
