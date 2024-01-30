@@ -29,7 +29,7 @@ public class MissionService {
     }
 
     public List<Mission> getAllMission(UUID curriculumId) {
-        return missionRepository.findAllByCurriculumIdOrderByCreateAt(curriculumId);
+        return missionRepository.findAllByCurriculumIdOrderByOrderNum(curriculumId);
     }
 
     public List<MyMissionDTO> getAllMyMissionDTO(UUID usrId) {

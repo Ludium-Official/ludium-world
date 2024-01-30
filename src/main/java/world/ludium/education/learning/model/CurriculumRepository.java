@@ -16,7 +16,8 @@ public interface CurriculumRepository extends JpaRepository<Curriculum, UUID> {
                    description,
                    usr_id,
                    'MISSION' type,
-                   create_at
+                   create_at,
+                   order_num
               FROM mission
              WHERE curriculum_id = ?1
              UNION
@@ -25,10 +26,11 @@ public interface CurriculumRepository extends JpaRepository<Curriculum, UUID> {
                    description,
                    usr_id,
                    'ARTICLE' type,
-                   create_at
+                   create_at,
+                   order_num
               FROM article
              WHERE curriculum_id = ?1
-             ORDER BY create_at
+             ORDER BY order_num, create_at
             """)
     List<Map<String, String>> findAllMissionAndArticle(UUID curriculumId);
 }

@@ -19,7 +19,7 @@ public class EnhancedArticleService {
     }
 
     public List<EnhancedArticle> getAllArticle(UUID curriculumId) {
-        return enhancedArticleRepository.findAllByCurriculumIdOrderByCreateAt(curriculumId);
+        return enhancedArticleRepository.findAllByCurriculumIdOrderByOrderNum(curriculumId);
     }
 
     public EnhancedArticle getArticle(UUID articleId) {
