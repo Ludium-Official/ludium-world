@@ -103,8 +103,9 @@ async function CurriculumList({ learningId }) {
     <>
       <h2>커리큘럼 목록</h2>
       {curriculums.map((curriculum) => (
-        <section key={curriculum.curriculumId}>
+        <section key={curriculum.curriculumId} className={`${learningstyle["background-white"]} ${learningstyle["border-gray"]}`}>
           <CurriculumEditor curriculum={curriculum} />
+          <hr />
           <div>
             <CreateMissionButton
               learningId={learningId}
@@ -115,6 +116,7 @@ async function CurriculumList({ learningId }) {
               curriculumId={curriculum.curriculumId}
             />
           </div>
+          <hr />
           <div>
             <MissionList
               learningId={learningId}

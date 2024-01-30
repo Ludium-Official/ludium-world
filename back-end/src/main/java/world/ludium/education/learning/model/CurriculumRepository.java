@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public interface CurriculumRepository extends JpaRepository<Curriculum, UUID> {
-    List<Curriculum> findAllByPostingIdOrderByCreateAt(UUID learningId);
+    List<Curriculum> findAllByPostingIdOrderByOrderNum(UUID learningId);
 
     @Query(nativeQuery = true, value = """
             SELECT mission_id id,

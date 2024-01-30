@@ -60,8 +60,8 @@ export default function ArticleEditor({ article, postingId }) {
           {pending1 ? "아티클을 수정하는 중입니다..." : "아티클 수정하기"}
         </button>
       </div>
-      <details open={true}>
-        <summary>아티클 펼치기 / 닫기</summary>
+      <details>
+        <summary>[아티클] {article.title}</summary>
         <div className={learningstyle["learning-edit-header-area"]}>
           <input
             type="text"

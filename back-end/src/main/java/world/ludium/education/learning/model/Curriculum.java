@@ -17,6 +17,7 @@ public class Curriculum {
     private String description;
     private Timestamp createAt;
     private UUID usrId;
+    private Integer orderNum;
 
     public UUID getCurriculumId() {
         return curriculumId;
@@ -64,5 +65,13 @@ public class Curriculum {
 
     public void setUsrId(UUID usrId) {
         this.usrId = usrId;
+    }
+
+    public Integer getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(Integer orderNum) {
+        this.orderNum = orderNum;
     }
 }
