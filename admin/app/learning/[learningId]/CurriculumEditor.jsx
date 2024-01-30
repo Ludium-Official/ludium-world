@@ -30,6 +30,7 @@ export default function CurriculumEditor({ curriculum }) {
           ...curriculum,
           title: e.target.title.value,
           description: editorInstance.getMarkdown(),
+          orderNum: e.target.orderNum.value
         }),
       }
     );
@@ -59,25 +60,23 @@ export default function CurriculumEditor({ curriculum }) {
           {pending1 ? "커리큘럼을 수정하는 중입니다..." : "커리큘럼 수정하기"}
         </button>
       </div>
-      <details open={true}>
-        <summary>커리큘럼 펼치기 / 닫기</summary>
-        <div className={learningstyle["learning-edit-header-area"]}>
-          <input
-            type="text"
-            name="title"
-            id="title"
-            defaultValue={curriculum.title}
-            placeholder="커리큘럼 제목을 입력해주세요"
-          />
-        </div>
-        <div className={learningstyle["learning-edit-content-area"]}>
-          <Editor
-            editorRef={editorRef}
-            content={curriculum.description}
-            height={"100%"}
-          />
-        </div>
-      </details>
+      <div className={learningstyle["learning-edit-header-area"]}>
+        <input
+          type="text"
+          name="title"
+          id="title"
+          defaultValue={curriculum.title}
+          placeholder="커리큘럼 제목을 입력해주세요"
+        />
+      </div>
+      <input type="number" name="orderNum" id="orderNum" defaultValue={curriculum.orderNum} />
+      <div className={learningstyle["hidden"]}>
+        <Editor
+          editorRef={editorRef}
+          content={curriculum.description}
+          height="10px"
+        />
+      </div>
     </form>
   );
 }
