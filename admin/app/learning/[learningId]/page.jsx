@@ -55,7 +55,6 @@ async function getArticleList(learningId, curriculumId) {
     `/learning/${learningId}/${curriculumId}/article`
   );
 
-  console.log(getArticleListResponse.status);
   if (!getArticleListResponse.ok)
     if (getArticleListResponse.status === 404) return [];
     else throw new Error("미션을 조회하는 중 에러가 발생했습니다.");
@@ -66,7 +65,6 @@ async function getArticleList(learningId, curriculumId) {
 async function ArticleList({ learningId, curriculumId }) {
   const articles = await getArticleList(learningId, curriculumId);
 
-  console.log(articles);
   return (
     <>
       <h3>아티클 목록</h3>
@@ -74,7 +72,7 @@ async function ArticleList({ learningId, curriculumId }) {
         <ArticleEditor
           key={article.articleId}
           article={article}
-          learningId={learningId}
+          postingId={learningId}
         />
       ))}
     </>
@@ -91,7 +89,7 @@ async function MissionList({ learningId, curriculumId }) {
         <MissionEditor
           key={mission.missionId}
           mission={mission}
-          learningId={learningId}
+          postingId={learningId}
         />
       ))}
     </>
