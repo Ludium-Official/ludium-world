@@ -38,59 +38,84 @@ async function getCurriculumList(learningId) {
   return await getCurriculumListResponse.json();
 }
 
-async function getMissionList(learningId, curriculumId) {
-  const getMissionListResponse = await fetchWithRetry(
-    `/learning/${learningId}/${curriculumId}/mission`
+async function getMission(learningId, curriculumId, missionId) {
+  const getMissionResponse = await fetchWithRetry(
+    `/learning/${learningId}/${curriculumId}/mission/${missionId}`
   );
 
-  if (!getMissionListResponse.ok)
-    if (getMissionListResponse.status === 404) return [];
-    else throw new Error("미션을 조회하는 중 에러가 발생했습니다.");
+  if (!getMissionResponse.ok)
+    throw new Error("미션을 조회하는 중 에러가 발생했습니다.");
 
-  return await getMissionListResponse.json();
+  return await getMissionResponse.json();
 }
 
-async function getArticleList(learningId, curriculumId) {
-  const getArticleListResponse = await fetchWithRetry(
-    `/learning/${learningId}/${curriculumId}/article`
+async function getArticle(learningId, curriculumId, articleId) {
+  const getArticleResponse = await fetchWithRetry(`/article/${articleId}`);
+
+  if (!getArticleResponse.ok)
+    throw new Error("미션을 조회하는 중 에러가 발생했습니다.");
+
+  return await getArticleResponse.json();
+}
+
+async function getContentList(learningId, curriculumId) {
+  const getContentListResponse = await fetchWithRetry(
+    `/learning/${learningId}/${curriculumId}/content`
   );
 
-  if (!getArticleListResponse.ok)
-    if (getArticleListResponse.status === 404) return [];
+  if (!getContentListResponse.ok)
+    if (getContentListResponse.status === 404) return [];
     else throw new Error("미션을 조회하는 중 에러가 발생했습니다.");
 
-  return await getArticleListResponse.json();
+  return await getContentListResponse.json();
 }
 
-async function ArticleList({ learningId, curriculumId }) {
-  const articles = await getArticleList(learningId, curriculumId);
+async function Article({ learningId, curriculumId, articleId }) {
+  const article = await getArticle(learningId, curriculumId, articleId);
+
+  return (
+    <ArticleEditor
+      key={article.articleId}
+      article={article}
+      postingId={learningId}
+    />
+  );
+}
+
+async function Mission({ learningId, curriculumId, missionId }) {
+  const mission = await getMission(learningId, curriculumId, missionId);
+
+  return (
+    <MissionEditor
+      key={mission.missionId}
+      mission={mission}
+      postingId={learningId}
+    />
+  );
+}
+
+async function ContentList({ learningId, curriculumId }) {
+  const contents = await getContentList(learningId, curriculumId);
 
   return (
     <>
-      <h3>아티클 목록</h3>
-      {articles.map((article) => (
-        <ArticleEditor
-          key={article.articleId}
-          article={article}
-          postingId={learningId}
-        />
-      ))}
-    </>
-  );
-}
-
-async function MissionList({ learningId, curriculumId }) {
-  const missions = await getMissionList(learningId, curriculumId);
-
-  return (
-    <>
-      <h3>미션 목록</h3>
-      {missions.map((mission) => (
-        <MissionEditor
-          key={mission.missionId}
-          mission={mission}
-          postingId={learningId}
-        />
+      {contents.map((content) => (
+        <>
+          {content.type === "MISSION" ? (
+            <Mission
+              learningId={learningId}
+              curriculumId={curriculumId}
+              missionId={content.id}
+            />
+          ) : (
+            <Article
+              learningId={learningId}
+              curriculumId={curriculumId}
+              articleId={content.id}
+            />
+          )}
+          <hr />
+        </>
       ))}
     </>
   );
@@ -103,7 +128,10 @@ async function CurriculumList({ learningId }) {
     <>
       <h2>커리큘럼 목록</h2>
       {curriculums.map((curriculum) => (
-        <section key={curriculum.curriculumId} className={`${learningstyle["background-white"]} ${learningstyle["border-gray"]}`}>
+        <section
+          key={curriculum.curriculumId}
+          className={`${learningstyle["background-white"]} ${learningstyle["border-gray"]}`}
+        >
           <CurriculumEditor curriculum={curriculum} />
           <hr />
           <div>
@@ -118,11 +146,7 @@ async function CurriculumList({ learningId }) {
           </div>
           <hr />
           <div>
-            <MissionList
-              learningId={learningId}
-              curriculumId={curriculum.curriculumId}
-            />
-            <ArticleList
+            <ContentList
               learningId={learningId}
               curriculumId={curriculum.curriculumId}
             />
