@@ -212,7 +212,6 @@ public class LearningController {
         curriculum.setUsrId(ludiumUser.getId());
         curriculum.setPostingId(learningId);
 
-
         try {
             return ResponseEntity.ok(curriculumService.createCurriculum(curriculum));
         } catch (Exception e) {

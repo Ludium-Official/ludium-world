@@ -18,7 +18,7 @@ public class CurriculumService {
     }
 
     public List<Curriculum> getAllCurriculum(UUID learningId) {
-        return curriculumRepository.findAllByPostingIdOrderByCreateAt(learningId);
+        return curriculumRepository.findAllByPostingIdOrderByOrderNum(learningId);
     }
 
     public Curriculum getCurriculum(UUID curriculumId) {
