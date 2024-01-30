@@ -485,3 +485,15 @@
   background-color: #f7f2fa;
   color: #8b78b9;
 }
+
+.hidden {
+  display: none;
+}
+
+.background-white {
+  background: #fff;
+}
+
+.border-gray {
+  border: 1px solid gray;
+}

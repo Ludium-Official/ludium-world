@@ -63,8 +63,8 @@ export default function MissionEditor({ mission, postingId }) {
           {pending1 ? "미션을 수정하는 중입니다..." : "미션 수정하기"}
         </button>
       </div>
-      <details open={true}>
-        <summary>미션 펼치기 / 닫기</summary>
+      <details>
+        <summary>[미션] {mission.title}</summary>
         <div className={learningstyle["learning-edit-header-area"]}>
           <input
             type="text"
