@@ -1,20 +1,17 @@
 package world.ludium.education.auth;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import world.ludium.education.auth.google.GoogleUser;
 import world.ludium.education.auth.google.GoogleUserService;
 import world.ludium.education.auth.ludium.LudiumUser;
-import world.ludium.education.auth.ludium.LudiumUserRight;
 import world.ludium.education.auth.ludium.LudiumUserService;
 import world.ludium.education.auth.ludium.UserDTO;
 import world.ludium.education.util.ResponseUtil;
 
 import java.math.BigInteger;
 import java.util.HashMap;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -37,52 +34,15 @@ public class UserController {
         this.responseUtil = responseUtil;
     }
 
-    @PostMapping("/sign-up/{registrationId}")
-    public ResponseEntity<Object> signUpUser(@CookieValue(name = "access_token", required = false) String accessToken,
-                                             @PathVariable String registrationId,
-                                             @RequestBody LudiumUser ludiumUser) {
-        try {
-            var googleUserApiData = loginService.getUserResource(accessToken, "google");
-
-            GoogleUser googleUser = new GoogleUser();
-            googleUser.setGgl_id(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
-            googleUser.setGgl_gvn(googleUserApiData.get("given_name").toString().replaceAll("\"", ""));
-            googleUser.setGgl_nm(googleUserApiData.get("name").toString().replaceAll("\"", ""));
-            googleUser.setGgl_eml(googleUserApiData.get("email").toString().replaceAll("\"", ""));
-
-            ludiumUser.setGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
-
-            googleUserService.createUser(googleUser);
-            ludiumUserService.createUser(ludiumUser);
-        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-//                    new HashMap<String, String>() {
-//                        {
-//                            put("message", "인증에 실패했습니다.");
-//                            put("debug", e.getMessage());
-//                        }
-//                    });
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new HashMap<String, String>() {
-                        {
-                            put("message", "사용자 데이터를 만드는 중에 에러가 발생하였습니다.");
-                            put("debug", e.getMessage());
-                        }
-                    });
-        }
-
-        return ResponseEntity.ok(ludiumUser);
-    }
-
     @GetMapping("")
-    public ResponseEntity getAllUser() {
-        List<UserDTO> userDTOList = ludiumUserService.getAllUser()
+    public ResponseEntity<Object> getAllUser() {
+        var userDTOList = ludiumUserService.getAllUser()
                 .stream()
                 .map(user -> {
-                    LudiumUserRight userRight = ludiumUserService.getUserRight(user.getId());
-                    GoogleUser googleUser = googleUserService.getUserById(user.getGglId());
+                    var userRight = ludiumUserService.getUserRight(user.getId());
+                    var googleUser = googleUserService.getUserById(user.getGglId());
 
-                    UserDTO userDTO = new UserDTO();
+                    var userDTO = new UserDTO();
                     userDTO.setId(user.getId());
                     userDTO.setNick(user.getNick());
                     userDTO.setEmail(googleUser.getGgl_eml());
@@ -95,6 +55,21 @@ public class UserController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(userDTOList);
+    }
+
+    @GetMapping("/right")
+    public ResponseEntity<Object> getUserRight(@CookieValue(name = "access_token", required = false) String accessToken) {
+        try {
+            var ludiumUser = ludiumUserService.getUser(accessToken);
+
+            if(ludiumUser == null) return responseUtil.getUnAuthorizedMessage();
+
+            var ludiumUserRight = ludiumUserService.getUserRight(ludiumUser.getId());
+
+            return ResponseEntity.ok(ludiumUserRight);
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("사용자 권한을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
     }
 
     @GetMapping("{usrId}")
@@ -112,31 +87,54 @@ public class UserController {
         }
     }
 
-    @PutMapping("/{userId}/provider")
-    public ResponseEntity updateProviderRight(@CookieValue(name = "access_token", required = false) String accessToken,
-                                              @PathVariable UUID userId,
-                                              @RequestParam boolean isProvider) {
-        LudiumUserRight provider = ludiumUserService.getUserRight(userId);
-
-        provider.setPrv(isProvider);
-
+    @PostMapping("/sign-up/{registrationId}")
+    public ResponseEntity<Object> signUpUser(@PathVariable String registrationId,
+                                             @RequestBody LudiumUser ludiumUser,
+                                             @CookieValue(name = "access_token", required = false) String accessToken) {
         try {
-            ludiumUserService.updateUserRight(provider);
+            var googleUserApiData = loginService.getUserResource(accessToken, "google");
+
+            GoogleUser googleUser = new GoogleUser();
+            googleUser.setGgl_id(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+            googleUser.setGgl_gvn(googleUserApiData.get("given_name").toString().replaceAll("\"", ""));
+            googleUser.setGgl_nm(googleUserApiData.get("name").toString().replaceAll("\"", ""));
+            googleUser.setGgl_eml(googleUserApiData.get("email").toString().replaceAll("\"", ""));
+
+            ludiumUser.setGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+
+            googleUserService.createUser(googleUser);
+            ludiumUserService.createUser(ludiumUser);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     new HashMap<String, String>() {
                         {
-                            put("message", "프로바이더를 설정하는 중에 에러가 발생하였습니다.");
+                            put("message", "사용자 데이터를 만드는 중에 에러가 발생하였습니다.");
                             put("debug", e.getMessage());
                         }
                     });
         }
 
-        return ResponseEntity.ok(provider);
+        return ResponseEntity.ok(ludiumUser);
+    }
+
+    @PutMapping("/{userId}/provider")
+    public ResponseEntity<Object> updateProviderRight(@CookieValue(name = "access_token", required = false) String accessToken,
+                                              @PathVariable UUID userId,
+                                              @RequestParam boolean isProvider) {
+        var provider = ludiumUserService.getUserRight(userId);
+
+        provider.setPrv(isProvider);
+
+        try {
+            ludiumUserService.updateUserRight(provider);
+            return ResponseEntity.ok(provider);
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("프로바이더 권한을 설정하는 중에 에러가 발생하였습니다.", e.getMessage());
+        }
     }
 
     @PutMapping("/{userId}/admin")
-    public ResponseEntity updateAdminRight(@CookieValue(name = "access_token", required = false) String accessToken,
+    public ResponseEntity<Object> updateAdminRight(@CookieValue(name = "access_token", required = false) String accessToken,
                                            @PathVariable UUID userId,
                                            @RequestParam boolean isAdmin) {
         var admin = ludiumUserService.getUserRight(userId);
@@ -145,16 +143,10 @@ public class UserController {
 
         try {
             ludiumUserService.updateUserRight(admin);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new HashMap<String, String>() {
-                        {
-                            put("message", "관리자를 설정하는 중에 에러가 발생하였습니다.");
-                            put("debug", e.getMessage());
-                        }
-                    });
-        }
 
-        return ResponseEntity.ok(admin);
+            return ResponseEntity.ok(admin);
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("관리자 권한을 설정하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
     }
 }
