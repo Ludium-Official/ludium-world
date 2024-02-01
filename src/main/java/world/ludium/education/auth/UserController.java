@@ -40,39 +40,28 @@ public class UserController {
     @PostMapping("/sign-up/{registrationId}")
     public ResponseEntity<Object> signUpUser(@CookieValue(name = "access_token", required = false) String accessToken,
                                              @PathVariable String registrationId,
-                                             @RequestParam String nick,
-                                             @RequestParam String self_intro,
-                                             @RequestParam String phone_number
-    ) {
-        JsonNode googleUserApiData = null;
+                                             @RequestBody LudiumUser ludiumUser) {
         try {
-            googleUserApiData = loginService.getUserResource(accessToken, "google");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                    new HashMap<String, String>() {
-                        {
-                            put("message", "인증에 실패했습니다.");
-                            put("debug", e.getMessage());
-                        }
-                    });
-        }
+            var googleUserApiData = loginService.getUserResource(accessToken, "google");
 
-        GoogleUser googleUser = new GoogleUser();
-        googleUser.setGgl_id(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
-        googleUser.setGgl_gvn(googleUserApiData.get("given_name").toString().replaceAll("\"", ""));
-        googleUser.setGgl_nm(googleUserApiData.get("name").toString().replaceAll("\"", ""));
-        googleUser.setGgl_eml(googleUserApiData.get("email").toString().replaceAll("\"", ""));
+            GoogleUser googleUser = new GoogleUser();
+            googleUser.setGgl_id(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+            googleUser.setGgl_gvn(googleUserApiData.get("given_name").toString().replaceAll("\"", ""));
+            googleUser.setGgl_nm(googleUserApiData.get("name").toString().replaceAll("\"", ""));
+            googleUser.setGgl_eml(googleUserApiData.get("email").toString().replaceAll("\"", ""));
 
-        LudiumUser ludiumUser = new LudiumUser();
-        ludiumUser.setGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
-        ludiumUser.setNick(nick);
-        ludiumUser.setSelfIntro(self_intro);
-        ludiumUser.setPhnNmb(phone_number);
+            ludiumUser.setGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
 
-        try {
             googleUserService.createUser(googleUser);
             ludiumUserService.createUser(ludiumUser);
         } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+//                    new HashMap<String, String>() {
+//                        {
+//                            put("message", "인증에 실패했습니다.");
+//                            put("debug", e.getMessage());
+//                        }
+//                    });
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     new HashMap<String, String>() {
                         {
@@ -82,11 +71,7 @@ public class UserController {
                     });
         }
 
-        return ResponseEntity.ok(new HashMap<String, String>() {{
-            put("nick", nick);
-            put("self_intro", self_intro);
-            put("phn_nmb", phone_number);
-        }});
+        return ResponseEntity.ok(ludiumUser);
     }
 
     @GetMapping("")
@@ -117,7 +102,7 @@ public class UserController {
         try {
             var ludiumUser = ludiumUserService.getUser(usrId);
 
-            if(ludiumUser == null) throw new NoSuchElementException();
+            if (ludiumUser == null) throw new NoSuchElementException();
 
             return ResponseEntity.ok(ludiumUser);
         } catch (NoSuchElementException nse) {
@@ -129,8 +114,8 @@ public class UserController {
 
     @PutMapping("/{userId}/provider")
     public ResponseEntity updateProviderRight(@CookieValue(name = "access_token", required = false) String accessToken,
-                                          @PathVariable UUID userId,
-                                          @RequestParam boolean isProvider) {
+                                              @PathVariable UUID userId,
+                                              @RequestParam boolean isProvider) {
         LudiumUserRight provider = ludiumUserService.getUserRight(userId);
 
         provider.setPrv(isProvider);
@@ -152,8 +137,8 @@ public class UserController {
 
     @PutMapping("/{userId}/admin")
     public ResponseEntity updateAdminRight(@CookieValue(name = "access_token", required = false) String accessToken,
-                                          @PathVariable UUID userId,
-                                          @RequestParam boolean isAdmin) {
+                                           @PathVariable UUID userId,
+                                           @RequestParam boolean isAdmin) {
         var admin = ludiumUserService.getUserRight(userId);
 
         admin.setAdm(isAdmin);
