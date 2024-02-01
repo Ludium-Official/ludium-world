@@ -1,5 +1,4 @@
 import { cookies } from "next/headers";
-import MainWrapper from "../components/MainWrapper";
 import Navigation from "../components/Navigation";
 import "./global.css";
 
@@ -15,9 +14,7 @@ export default async function RootLayout({ children }) {
             googleAuthInfo={cookieStore.get("access_token")}
             gglId={cookieStore.get("ggl_id")}
           />
-          {/* <MainWrapper> */}
           {children}
-          {/* </MainWrapper> */}
         </main>
       </body>
     </html>
