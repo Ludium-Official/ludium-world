@@ -17,6 +17,7 @@ public interface MissionRepository extends JpaRepository<Mission, UUID> {
                                                                    m.title,
                                                                    m.createAt,
                                                                    ms.status,
+                                                                   c.curriculumId,
                                                                    c.postingId)
               FROM EnhancedMissionSubmit ms
                  , Mission m
