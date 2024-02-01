@@ -39,7 +39,7 @@ async function MissionParent({ curriculumId }) {
 
   return (
     <p className="caption-12">
-      [{learning.title}] {curriculum.title}
+      {learning.title} {">"} {curriculum.title}
     </p>
   );
 }
@@ -47,7 +47,6 @@ async function MissionParent({ curriculumId }) {
 async function MissionList() {
   const missions = await getMissionList();
 
-  console.log(missions);
   return (
     <div className="frame-34">
       <div className="frame-101">
