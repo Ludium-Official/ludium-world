@@ -41,7 +41,7 @@ function SubmitStatus({ status }) {
 
   return (
     <div className="frame-97 background-purple-01 color-white">
-      {ko_kr[missionSubmit.status]}
+      {ko_kr[status]}
     </div>
   );
 }
