@@ -165,21 +165,23 @@ async function MissionComment({ missionId }) {
 }
 
 export default async function MissionSubmitPage({
-  params: { participationId, curriculmId, missionId }
+  params: { participationId, curriculmId, missionId },
 }) {
-  return <>
-    <header className="nb">
-      <BackButton />
-    </header>
-    <article className="wrapper">
-      <section className="frame-151">
-        <MissionSubmit
-          learningId={participationId}
-          curriculumId={curriculmId}
-          missionId={missionId}
-        />
-        <MissionComment missionId={missionId} />
-      </section>
-    </article>
-  </>
+  return (
+    <>
+      <header className="nb">
+        <BackButton />
+      </header>
+      <article className="wrapper">
+        <section className="frame-151">
+          <MissionSubmit
+            learningId={participationId}
+            curriculumId={curriculmId}
+            missionId={missionId}
+          />
+          <MissionComment missionId={missionId} />
+        </section>
+      </article>
+    </>
+  );
 }
