@@ -82,7 +82,7 @@ async function LearningList({ usrId }) {
   return (
     <>
       <h2 className="header2">학습 목록</h2>
-      <details className="profile-contents" open={true}>
+      <details className="profile-contents">
         <summary className="profile-contents-summary" />
         {learnings.map((learning) => (
           <section className="work-section" key={learning.postingId}>
@@ -108,7 +108,7 @@ async function MissionList({ usrId }) {
   return (
     <>
       <h2 className="header2">미션 목록</h2>
-      <details className="profile-contents" open={true}>
+      <details className="profile-contents">
         <summary className="profile-contents-summary" />
         {missions.map((mission) => (
           <section className="work-section" key={mission.missionId}>
@@ -120,7 +120,7 @@ async function MissionList({ usrId }) {
             </span>
             <Link
               className="work-section-link"
-              href={`/participation/${mission.postingId}#${mission.missionId}`}
+              href={`/participation/${mission.postingId}/${mission.curriculumId}/mission/${mission.missionId}`}
             >
               <h3 className="header3">{mission.title} 미션 페이지로 이동</h3>
             </Link>
@@ -137,7 +137,7 @@ async function WorkList({ usrId }) {
   return (
     <>
       <h2 className="header2">작업 목록</h2>
-      <details className="profile-contents" open={true}>
+      <details className="profile-contents">
         <summary className="profile-contents-summary" />
         {works.map((work) => (
           <section className="work-section" key={work.detailId}>
@@ -163,7 +163,7 @@ async function ApplicationList({ usrId }) {
   return (
     <>
       <h2 className="header2">지원서 목록</h2>
-      <details className="profile-contents" open={true}>
+      <details className="profile-contents">
         <summary className="profile-contents-summary" />
         {applications.map((application) => (
           <div key={application.applicationId}>
