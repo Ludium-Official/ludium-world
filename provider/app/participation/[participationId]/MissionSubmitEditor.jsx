@@ -26,12 +26,12 @@ export default function MissionSubmitEditor({
   const getMissionSubmitRequest = () => {
     const body = isCreate
       ? JSON.stringify({
-        description: editorRef.current.editorInstance.getMarkdown(),
-      })
+          description: editorRef.current.editorInstance.getMarkdown(),
+        })
       : JSON.stringify({
-        ...missionSubmit,
-        description: editorRef.current.editorInstance.getMarkdown(),
-      });
+          ...missionSubmit,
+          description: editorRef.current.editorInstance.getMarkdown(),
+        });
 
     const method = isCreate ? HTTP_METHOD.POST : HTTP_METHOD.PUT;
 
@@ -53,6 +53,7 @@ export default function MissionSubmitEditor({
     setPending(false);
     if (!missionSubmitResponse.ok) {
       alert("미션을 제출하는 중 에러가 발생했습니다.");
+      return;
     }
 
     router.refresh();
