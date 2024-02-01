@@ -4,9 +4,12 @@ import { usePathname } from "next/navigation";
 import Footer from "./aisde/Footer";
 import GnbMenu from "./aisde/GnbMenu";
 import Logo1 from "./aisde/Logo1";
+import { useEffect, useState } from "react";
+import fetchWithRetry from "@/functions/api";
 
 export default function Navigation({ googleAuthInfo, gglId }) {
   const pathName = usePathname();
+  const [isProvider, setIsProvider] = useState(false);
 
   if (pathName === "/sign-up") return null;
 
@@ -14,6 +17,22 @@ export default function Navigation({ googleAuthInfo, gglId }) {
   const REDIRECT_URI = process.env.NEXT_PUBLIC_OAUTH2_GOOGLE_REDIRECT_URI;
   const RESPONSE_TYPE = process.env.NEXT_PUBLIC_OAUTH2_GOOGLE_RESPONSE_TYPE;
   const SCOPE = process.env.NEXT_PUBLIC_OAUTH2_GOOGLE_SCOPE;
+
+  const getUserRight = async () => {
+    if (googleAuthInfo == null || gglId == null) return;
+
+    const getRightResponse = await fetchWithRetry("/user/right", {});
+
+    if (getRightResponse.ok) {
+      const right = await getRightResponse.json();
+
+      setIsProvider(right.prv);
+    }
+  };
+
+  useEffect(() => {
+    getUserRight();
+  }, []);
 
   return (
     <aside className="aside">
@@ -73,6 +92,19 @@ export default function Navigation({ googleAuthInfo, gglId }) {
           height={24}
           text="커뮤니티"
         />
+        {isProvider ? (
+          <div>
+            <div className="line border-gray-05" />
+            <GnbMenu
+              href="/mission"
+              src="/icon_note.svg"
+              alt="work"
+              width={24}
+              height={24}
+              text="미션 관리"
+            />
+          </div>
+        ) : null}
       </nav>
       <Footer />
     </aside>

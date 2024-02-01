@@ -54,6 +54,12 @@ export default function ManagementForm({ users }) {
   const gridRef = useRef();
   const router = useRouter();
 
+  const handleEditProviderAuth = async (user, isChecked) => {
+    await fetchWithRetry(`/user/${user.id}/provider?isProvider=${isChecked}`, {
+      method: "PUT",
+    });
+  };
+
   const handleEditAdminAuth = async (user, isChecked) => {
     await fetchWithRetry(`/user/${user.id}/admin?isAdmin=${isChecked}`, {
       method: "PUT",
@@ -78,6 +84,18 @@ export default function ManagementForm({ users }) {
           {
             header: "이메일",
             name: "email",
+          },
+          {
+            header: "프로바이더",
+            name: "provider",
+            width: 120,
+            align: "center",
+            renderer: {
+              type: CustomCheckBoxRenderer,
+              options: {
+                onClick: handleEditProviderAuth,
+              },
+            },
           },
           {
             header: "관리자",
