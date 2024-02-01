@@ -1,9 +1,15 @@
 import MissionSubmitCommentEditor from "@/app/participation/[participationId]/MissionSubmitCommentEditor";
 import MissionSubmitEditor from "@/app/participation/[participationId]/MissionSubmitEditor";
 import BackButton from "@/components/BackButton";
+import UserNick from "@/components/UserNick";
 import UnAuthorizedError from "@/errors/UnAuthorizedError";
 import fetchWithRetry from "@/functions/api";
+import { getTimeStamp } from "@/functions/helper";
+import dynamic from "next/dynamic";
 import { cookies } from "next/headers";
+import { Fragment } from "react";
+
+const Viewer = dynamic(() => import("@/components/Viewer"), { ssr: false });
 
 async function getProfile() {
   const cookieStore = cookies();
