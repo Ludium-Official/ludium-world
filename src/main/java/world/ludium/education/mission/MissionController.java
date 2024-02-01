@@ -27,7 +27,7 @@ public class MissionController {
     }
 
     @GetMapping("")
-    public ResponseEntity<Object> getMissions() {
+    public ResponseEntity<Object> getAllMission() {
         try {
             var missionList = missionService.getAllMission();
 
@@ -61,6 +61,18 @@ public class MissionController {
             return ResponseEntity.ok(missionSubmitList);
         } catch (Exception e) {
             return responseUtil.getExceptionMessage("미션 제출목록을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @GetMapping("/{missionId}/submit/{usrId}")
+    public ResponseEntity<Object> getMissionSubmit(@PathVariable UUID missionId,
+                                                   @PathVariable UUID usrId) {
+        try {
+            return ResponseEntity.ok(missionService.getMissionSubmit(missionId, usrId));
+        }  catch (NoSuchElementException nse) {
+            return responseUtil.getNoSuchElementExceptionMessage("미션 제출 데이터가 없습니다.", nse.getMessage());
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("미션 제출을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
