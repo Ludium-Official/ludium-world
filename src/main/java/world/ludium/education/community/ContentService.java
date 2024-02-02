@@ -19,17 +19,18 @@ public class ContentService {
     }
 
     public List<Content> getAllContent() {
-        return contentRepository.findAllByOrderByCreateAt();
+        return contentRepository.findAllByVisibleOrderByCreateAt(true);
     }
 
 
     public Content getContent(UUID contentId) {
-        return contentRepository.findById(contentId).orElseThrow();
+        return contentRepository.findByContentIdAndVisible(contentId, true).orElseThrow();
     }
 
     public Content createContent(Content content) {
         content.setContentId(UUID.randomUUID());
         content.setCreateAt(new Timestamp(System.currentTimeMillis()));
+        content.setVisible(true);
 
         return contentRepository.save(content);
     }
@@ -48,6 +49,11 @@ public class ContentService {
     }
 
     public Content getLatestAnnouncement() {
-        return contentRepository.findTop1ByTypeOrderByCreateAtDesc(ContentType.ANNOUNCEMENT.toString()).orElseThrow();
+        return contentRepository.findTop1ByTypeAndVisibleOrderByCreateAtDesc(ContentType.ANNOUNCEMENT.toString(), true).orElseThrow();
+    }
+
+    public Content deleteContent(Content content) {
+        content.setVisible(false);
+        return updateContent(content);
     }
 }

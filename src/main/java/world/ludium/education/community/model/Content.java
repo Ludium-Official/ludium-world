@@ -17,6 +17,7 @@ public class Content {
     private UUID usrId;
     private Timestamp createAt;
     private String type;
+    private boolean visible;
 
     public UUID getContentId() {
         return contentId;
@@ -64,5 +65,13 @@ public class Content {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 }
