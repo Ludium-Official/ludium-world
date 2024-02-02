@@ -128,11 +128,33 @@ public class ContentController {
         if (!ludiumUser.getId().equals(content.getUsrId()))
             return responseUtil.getForbiddenExceptionMessage(new ResponseException("콘텐츠 글쓴이 정보가 일치하지 않습니다.", ""));
 
-        if (content.equals(ContentType.ANNOUNCEMENT.toString()) || content.equals(ContentType.BANNER.toString()))
+        if (content.getType().equals(ContentType.ANNOUNCEMENT.toString()) || content.getType().equals(ContentType.BANNER.toString()))
             if(!ludiumUserService.isAdmin(ludiumUser.getId())) return responseUtil.getForbiddenExceptionMessage(new ResponseException("관리자만 공지사항 혹은 배너를 수정할 수 있습니다.", ""));
 
         try {
             return ResponseEntity.ok(contentService.updateContent(content));
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("콘텐츠를 수정하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{contentId}")
+    public ResponseEntity<Object> deleteContent(@PathVariable UUID contentId,
+                                                @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null) return responseUtil.getUnAuthorizedMessage();
+
+        var content = contentService.getContent(contentId);
+        
+        if (!ludiumUser.getId().equals(content.getUsrId()))
+            return responseUtil.getForbiddenExceptionMessage(new ResponseException("콘텐츠 글쓴이 정보가 일치하지 않습니다.", ""));
+
+        if (content.getType().equals(ContentType.ANNOUNCEMENT.toString()) || content.getType().equals(ContentType.BANNER.toString()))
+            if(!ludiumUserService.isAdmin(ludiumUser.getId())) return responseUtil.getForbiddenExceptionMessage(new ResponseException("관리자만 공지사항 혹은 배너를 삭제할 수 있습니다.", ""));
+
+        try {
+            return ResponseEntity.ok(contentService.deleteContent(content));
         } catch (Exception e) {
             return responseUtil.getExceptionMessage("콘텐츠를 수정하는 중에 에러가 발생했습니다.", e.getMessage());
         }
