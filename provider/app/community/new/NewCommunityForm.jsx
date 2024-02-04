@@ -1,6 +1,5 @@
 "use client";
 
-import BackButton from "@/components/BackButton";
 import HTTP_METHOD from "@/enums/HTTP_METHOD";
 import fetchWithRetry from "@/functions/api";
 import dynamic from "next/dynamic";
@@ -35,33 +34,44 @@ export default function NewCommunityForm() {
       return;
     }
 
+    alert("콘텐츠가 저장되었습니다.");
     router.back();
     router.refresh();
   };
 
+  const handleIgnoreEnterKeyDown = (keydownEvent) => {
+    if (keydownEvent.key === "Enter") keydownEvent.preventDefault();
+  };
+
   return (
-    <form className="wrapper" onSubmit={handleCreateContent}>
-      <div className="flex-end">
-        <button className="button1" disabled={pending}>
-          {pending ? "콘텐츠를 저장하는 중입니다..." : "콘텐츠 저장하기"}
+    <form className="frame-116" onSubmit={handleCreateContent}>
+      <div className="input-2">
+        <label className="h5-18 color-gray-03" htmlFor="title">
+          제목
+        </label>
+        <input
+          className="frame-102-3 background-white border-gray-05 p1-18 color-gray-04"
+          type="text"
+          placeholder="제목을 입력해주세요"
+          name="title"
+          id="title"
+          onKeyDown={handleIgnoreEnterKeyDown}
+        />
+      </div>
+      <div className="input-2">
+        <p className="h5-18 color-gray-03">내용</p>
+        <div className="frame-102-4 background-white content-editor">
+          <Editor editorRef={editorRef} content="" height="100%" />
+        </div>
+      </div>
+      <div className="frame-157">
+        <button
+          className="button-L-2 background-purple-01 h5-18 color-white"
+          disabled={pending}
+        >
+          {pending ? "저장하는 중입니다..." : "저장하기"}
         </button>
       </div>
-      <article>
-        <section className="margin1">
-          <input
-            className="input-title"
-            type="text"
-            name="title"
-            placeholder=""
-            onKeyDown={(evt) => {
-              if (evt.key === "Enter") evt.preventDefault();
-            }}
-          />
-        </section>
-        <section className="editor">
-          <Editor editorRef={editorRef} content="" height="100%" />
-        </section>
-      </article>
     </form>
   );
 }
