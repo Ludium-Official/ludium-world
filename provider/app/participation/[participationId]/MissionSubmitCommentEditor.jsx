@@ -34,6 +34,7 @@ export default function MissionSubmitCommentEditor({ missionId, usrId }) {
       return;
     }
 
+    alert("댓글이 추가되었습니다.");
     editorInstance.setMarkdown();
     router.refresh();
   };
