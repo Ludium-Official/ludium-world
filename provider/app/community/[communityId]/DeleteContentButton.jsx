@@ -25,13 +25,21 @@ export default function DeleteContentButton({ communityId }) {
       return;
     }
 
+    alert("콘텐츠가 삭제되었습니다.");
     router.back();
     router.refresh();
   };
 
   return (
-    <button type="button" onClick={handleDeleteContent} disabled={pending}>
-      {pending ? "콘텐츠를 삭제하는 중입니다..." : "삭제하기"}
-    </button>
+    <div>
+      <button
+        className="caption-12"
+        type="button"
+        onClick={handleDeleteContent}
+        disabled={pending}
+      >
+        {pending ? "콘텐츠를 삭제하는 중입니다..." : "삭제하기"}
+      </button>
+    </div>
   );
 }
