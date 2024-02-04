@@ -56,6 +56,7 @@ export default function MissionSubmitEditor({
       return;
     }
 
+    alert("미션이 제출되었습니다.");
     router.refresh();
   };
 

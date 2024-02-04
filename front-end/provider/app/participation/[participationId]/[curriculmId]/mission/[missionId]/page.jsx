@@ -24,12 +24,16 @@ export default async function MissionPage({
     <>
       <header className="nb">
         <BackButton />
-        <Link className="frame-56 link"
-          href={`/participation/${participationId}/${curriculmId}/mission/${missionId}/submit`}>
-          <Icon src="/icon_flag_purple01.svg"
+        <Link
+          className="frame-56 link"
+          href={`/participation/${participationId}/${curriculmId}/mission/${missionId}/submit`}
+        >
+          <Icon
+            src="/icon_flag_purple01.svg"
             alt="제출하기"
             width={24}
-            height={24} />
+            height={24}
+          />
           <p className="h4-20 color-purple-01">제출하기</p>
         </Link>
       </header>
