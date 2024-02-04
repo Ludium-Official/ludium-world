@@ -8,7 +8,7 @@ import { useRef, useState } from "react";
 
 const Editor = dynamic(() => import("@/components/Editor"), { ssr: false });
 
-export default function ContentCommentEditor({ contentId }) {
+export default function ContentCommentEditor({ contentId, usrId }) {
   const router = useRouter();
   const editorRef = useRef();
   const [pending, setPending] = useState(false);
@@ -40,17 +40,21 @@ export default function ContentCommentEditor({ contentId }) {
 
   return (
     <>
-      <div className="flex-end">
+      <div className="frame-102-2">
+        <Editor editorRef={editorRef} content="" height="100%" />
+      </div>
+      <div className="frame-148">
         <button
           className="button1"
           onClick={handleCreateContentComment}
-          disabled={pending}
+          disabled={usrId === null ? true : pending}
         >
-          {pending ? "댓글을 추가하는 중입니다..." : "댓글 추가하기"}
+          {usrId === null
+            ? "로그인을 해주세요"
+            : pending
+            ? "댓글을 추가하는 중입니다..."
+            : "댓글 추가하기"}
         </button>
-      </div>
-      <div className="editor">
-        <Editor editorRef={editorRef} content="" height="100%" />;
       </div>
     </>
   );

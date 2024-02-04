@@ -50,7 +50,11 @@ export default function MissionSubmitCommentEditor({ missionId, usrId }) {
           onClick={handleCreateMissionSubmitComment}
           disabled={usrId === null ? true : pending}
         >
-          {pending ? "댓글을 작성하는 중입니다..." : "작성하기"}
+          {usrId === null
+            ? "로그인을 해주세요"
+            : pending
+            ? "댓글을 작성하는 중입니다..."
+            : "작성하기"}
         </button>
       </div>
     </>
