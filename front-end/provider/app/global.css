@@ -78,8 +78,8 @@
   font-size: 2em;
   margin-block-start: 0.67em;
   margin-block-end: 0.67em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
   font-weight: bold;
   background-color: #e6e0e9;
   height: 45px;
@@ -539,7 +539,7 @@ body {
   position: absolute;
   width: 247px;
   height: 308px;
-  left: 0px;
+  left: 0;
   top: 97px;
 }
 
@@ -910,8 +910,8 @@ body {
   position: absolute;
   width: Calc(100% - 247px);
   padding: 21px 40px;
-  right: 0px;
-  top: 0px;
+  right: 0;
+  top: 0;
   background: var(--white);
   border-bottom: 1px solid var(--gray06);
 }
@@ -1057,8 +1057,8 @@ body {
 
 .ellipse {
   position: absolute;
-  left: 0px;
-  top: 0px;
+  left: 0;
+  top: 0;
 }
 
 .profile-empty {
@@ -1122,6 +1122,10 @@ body {
   padding: 24px 0;
   width: 100%;
   gap: 4px;
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
 }
 
 .frame-9 {
@@ -1131,6 +1135,10 @@ body {
   align-items: flex-start;
   padding: 0;
   gap: 10px;
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
 }
 
 .color-black {
@@ -1261,6 +1269,8 @@ body {
   padding: 0 40px;
   border-radius: 20px;
   width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .border-gray-06 {
@@ -1418,12 +1428,14 @@ body {
   align-items: center;
   padding: 0;
   gap: 16px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
 }
 
 .mission-content,
 .article-content {
   height: 642px;
-  overflow-y: auto;
 }
 
 .frame-150 {
@@ -1432,6 +1444,10 @@ body {
   align-items: flex-start;
   padding: 0;
   gap: 24px;
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
 }
 
 .frame-143 {
@@ -1442,8 +1458,11 @@ body {
   gap: 20px;
   width: 100%;
   height: 343px;
-  overflow-y: auto;
-  overflow-x: hidden;
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+  z-index: 1;
 }
 
 .frame-142 {
@@ -1452,6 +1471,10 @@ body {
   align-items: flex-start;
   padding: 0;
   gap: 4px;
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
 }
 
 .frame-10 {
@@ -1460,6 +1483,9 @@ body {
   align-items: center;
   padding: 0 0 1px;
   gap: 10px;
+  flex: none;
+  order: 0;
+  flex-grow: 1;
 }
 
 .frame-141 {
@@ -1476,17 +1502,23 @@ body {
   align-items: flex-end;
   padding: 0 0 4px;
   gap: 10px;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
 }
 
-.mission-comment {
+.mission-comment,
+.comment {
   width: 389px;
 }
 
-.mission-comment-viewer {
+.mission-comment-viewer,
+.comment-viewer {
   width: 290px;
 }
 
-.mission-comment-editor {
+.mission-comment-editor,
+.comment-eidtor {
   padding: 24px 40px;
 }
 
@@ -1494,7 +1526,7 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 0px;
+  padding: 0;
   gap: 16px;
   width: 100%;
 }
@@ -1521,7 +1553,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 0px;
+  padding: 0;
   gap: 4px;
   flex: none;
   order: 0;
@@ -1541,7 +1573,8 @@ body {
   height: 59px;
 }
 
-.mission-submit {
+.mission-submit,
+.comment-included-left {
   width: calc(100% - 429px);
 }
 
@@ -1555,7 +1588,7 @@ body {
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-  padding: 0px;
+  padding: 0;
   gap: 16px;
   position: absolute;
   width: 109px;
@@ -1584,7 +1617,7 @@ p {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0px;
+  padding: 0;
   gap: 24px;
   flex: none;
   order: 0;
@@ -1597,7 +1630,7 @@ p {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0px;
+  padding: 0;
   gap: 40px;
   flex: none;
   order: 0;
@@ -1641,7 +1674,7 @@ p {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 0px 4px;
+  padding: 0 4px;
   gap: 4px;
 
   display: none;
@@ -1656,12 +1689,16 @@ p {
   height: 712px;
 }
 
+.content-viewer {
+  height: 712px;
+}
+
 .frame-157-2 {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0px;
+  padding: 0;
   gap: 24px;
   flex: none;
   order: 2;
@@ -1682,4 +1719,24 @@ p {
   border-radius: 40px;
   border: none;
 }
+
+.frame-140 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 8px;
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+}
 /* community page style end */
+
+.toast-viewer {
+  width: 100%;
+}
+
+.border-none {
+  border: none;
+}
