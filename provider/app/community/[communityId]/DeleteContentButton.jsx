@@ -10,6 +10,10 @@ export default function DeleteContentButton({ communityId }) {
   const [pending, setPending] = useState(false);
 
   const handleDeleteContent = async () => {
+    const isDelete = confirm("콘텐츠를 삭제하시겠습니까?");
+
+    if (!isDelete) return;
+
     setPending(true);
 
     const deleteContentResponse = await fetchWithRetry(
@@ -33,7 +37,7 @@ export default function DeleteContentButton({ communityId }) {
   return (
     <div>
       <button
-        className="caption-12"
+        className="button2 caption-12"
         type="button"
         onClick={handleDeleteContent}
         disabled={pending}
