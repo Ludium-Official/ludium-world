@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ContentRepository extends JpaRepository<Content, UUID> {
-    List<Content> findAllByVisibleOrderByCreateAt(boolean visible);
+    List<Content> findAllByVisibleOrderByCreateAtDesc(boolean visible);
 
     Optional<Content> findByContentIdAndVisible(UUID id, boolean visible);
     Optional<Content> findTop1ByTypeAndVisibleOrderByCreateAtDesc(String string, boolean visible);

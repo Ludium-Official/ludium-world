@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface MissionRepository extends JpaRepository<Mission, UUID> {
-    List<Mission> findAllByOrderByCreateAt();
+    List<Mission> findAllByOrderByCreateAtDesc();
     List<Mission> findAllByCurriculumIdOrderByOrderNum(UUID curriculumId);
 
     @Query("""
