@@ -1,7 +1,5 @@
 "use client";
 
-import BackButton from "@/components/BackButton";
-import ContentNavigation from "@/components/ContentNavigation";
 import HTTP_METHOD from "@/enums/HTTP_METHOD";
 import fetchWithRetry from "@/functions/api";
 import dynamic from "next/dynamic";
@@ -38,43 +36,55 @@ export default function EditCommunityForm({ content }) {
     if (!updateContentResponse.ok) {
       if (updateContentResponse.status === 403)
         alert("콘텐츠는 작성자만 수정할 수 있습니다.");
-      else alert("콘텐츠를 저장하는 중 에러가 발생했습니다.");
+      else alert("콘텐츠를 수정하는 중 에러가 발생했습니다.");
 
       return;
     }
+
+    alert("콘텐츠가 수정되었습니다.");
 
     router.back();
     router.refresh();
   };
 
+  const handleIgnoreEnterKeyDown = (keydownEvent) => {
+    if (keydownEvent.key === "Enter") keydownEvent.preventDefault();
+  };
+
   return (
-    <form className="wrapper" onSubmit={handleUpdateContent}>
-      <div className="flex-end">
-        <button className="button1" disabled={pending}>
-          {pending ? "콘텐츠를 저장하는 중입니다..." : "콘텐츠 저장하기"}
-        </button>
+    <form className="frame-116" onSubmit={handleUpdateContent}>
+      <div className="input-2">
+        <label htmlFor="title" className="h5-18 color-gray-03">
+          제목
+        </label>
+        <input
+          className="frame-102-3 background-white border-gray-05 p1-18 color-gray-04"
+          type="text"
+          placeholder="제목을 입력해주세요"
+          name="title"
+          id="title"
+          defaultValue={content.title}
+          onKeyDown={handleIgnoreEnterKeyDown}
+        />
       </div>
-      <article>
-        <section className="margin1">
-          <input
-            className="input-title"
-            type="text"
-            name="title"
-            placeholder=""
-            defaultValue={content.title}
-            onKeyDown={(evt) => {
-              if (evt.key === "Enter") evt.preventDefault();
-            }}
-          />
-        </section>
-        <section className="editor">
+      <div className="input-2">
+        <p className="h5-18 color-gray-03">내용</p>
+        <div className="frame-102-4 background-white content-editor">
           <Editor
             editorRef={editorRef}
             content={content.description}
             height="100%"
           />
-        </section>
-      </article>
+        </div>
+      </div>
+      <div className="frame-157">
+        <button
+          className="button-L-2 background-purple-01 h5-18 color-white"
+          disabled={pending}
+        >
+          {pending ? "수정하는 중입니다..." : "수정하기"}
+        </button>
+      </div>
     </form>
   );
 }
