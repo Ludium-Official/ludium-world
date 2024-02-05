@@ -1113,6 +1113,7 @@ body {
   order: 1;
   flex-grow: 0;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .frame-101 {
@@ -1686,7 +1687,7 @@ p {
 }
 
 .content-editor {
-  height: 712px;
+  height: 540px;
 }
 
 .content-viewer {
