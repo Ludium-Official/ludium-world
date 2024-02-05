@@ -329,7 +329,7 @@
 
 .button2:hover,
 .button2:active {
-  color: red;
+  color: var(--alert);
 }
 
 .center {
@@ -955,20 +955,15 @@ body {
 /* page navigation2 style end */
 
 /* profile page style start */
-.profile {
+.frame-76 {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 0;
-  gap: 40px;
-  position: absolute;
-  width: Calc(100% - 327px);
-  height: 1438px;
-  left: 287px;
-  top: 112px;
+  padding: 0px;
+  gap: 24px;
 }
 
-.user-wrapper {
+.frame-81 {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -976,74 +971,83 @@ body {
   align-items: center;
   padding: 24px;
   gap: 10px;
-  width: 100%;
   background: var(--white);
   border: 1px solid var(--gray06);
   border-radius: 20px;
   flex: none;
   order: 0;
   flex-grow: 0;
+  width: 100%;
 }
 
-.user {
+.frame-82 {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0;
+  padding: 0px;
   gap: 10px;
-  width: 100%;
   flex: none;
   order: 0;
   align-self: stretch;
   flex-grow: 0;
+  width: 100%;
 }
 
-.avatar {
+.frame-83 {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  padding: 0;
+  padding: 0px;
   gap: 8px;
-  margin: 0 auto;
   flex: none;
   order: 0;
   flex-grow: 0;
 }
 
-.avatar-header {
+.frame-84 {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 0;
+  padding: 0px;
   gap: 24px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
 
-  width: 292px;
+.group-8 {
+  width: 60px;
   height: 60px;
   flex: none;
   order: 0;
   flex-grow: 0;
 }
 
-.self-intro {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0 0 0 84px;
-  gap: 4px;
+.ellipse-2 {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  left: 0px;
+  top: 0px;
+}
 
-  width: 398px;
-  height: 58px;
+.icons {
+  position: absolute;
+  left: 16.5px;
+  top: 15.75px;
+  width: auto;
+  height: auto;
 }
 
 .avatar-greeting {
-  margin: 0;
   font-family: "Pretendard Variable";
   font-style: normal;
   font-weight: 300;
   font-size: 28px;
   line-height: 33px;
+  color: var(--gray01);
   flex: none;
   order: 1;
   flex-grow: 0;
@@ -1057,27 +1061,62 @@ body {
   line-height: 33px;
 }
 
-.avatar-icon {
-  width: 60px;
-  height: 60px;
+.frame-80 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0 0 0 84px;
+  gap: 4px;
   flex: none;
-  order: 0;
+  order: 1;
   flex-grow: 0;
-  position: relative;
 }
 
-.ellipse {
-  position: absolute;
-  left: 0;
-  top: 0;
+.frame-79 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 8px;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
 }
 
-.profile-empty {
+.tel {
   position: absolute;
-  left: 16.5px;
-  top: 15.75px;
-  width: auto;
-  height: auto;
+  left: 12.51%;
+  top: 15.5%;
+}
+
+.button-M,
+.button-M-a {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 30px;
+  gap: 10px;
+  width: 176px;
+  height: 45px;
+  background: var(--purple01);
+  border-radius: 40px;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  border: none;
+}
+
+.button-M-a {
+  padding: 0;
+}
+
+.p5-18 {
+  font-family: "Pretendard Variable";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 27px;
 }
 
 .color-gray-01 {

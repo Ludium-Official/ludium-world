@@ -1,4 +1,5 @@
 import BackButton from "@/components/BackButton";
+import Avatar from "@/components/profile/Avatar";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import ContentNavigation from "../../components/ContentNavigation";
@@ -196,10 +197,12 @@ export default async function ProfilePage() {
       <header className="nb">
         <BackButton />
       </header>
-      {/* <main className="profile">
-        <Avatart profile={profile} />
-      </main> */}
       <article className="wrapper">
+        <div className="frame-76">
+          <Avatar profile={profile} />
+        </div>
+      </article>
+      {/* <article className="wrapper">
         <div className="flex-end">
           <ContentNavigation links={links} />
         </div>
@@ -215,7 +218,7 @@ export default async function ProfilePage() {
         <WorkList usrId={profile.id} />
         <LearningList usrId={profile.id} />
         <MissionList usrId={profile.id} />
-      </article>
+      </article> */}
     </>
   );
 }
