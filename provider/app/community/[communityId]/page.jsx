@@ -113,10 +113,22 @@ export default async function ContentPage({ params: { communityId } }) {
     <>
       <header className="nb">
         <BackButton />
-        <Link className="frame-56 link" href={`/community/${communityId}/edit`}>
-          <Icon src="/icon_write.svg" alt="수정하기" width={24} height={24} />
-          <p className="h4-20 color-purple-01">수정하기</p>
-        </Link>
+        {content.type === COMMUNITY_TYPE.CONTENT ? (
+          profile === null ? null : (
+            <Link
+              className="frame-56 link"
+              href={`/community/${communityId}/edit`}
+            >
+              <Icon
+                src="/icon_write.svg"
+                alt="수정하기"
+                width={24}
+                height={24}
+              />
+              <p className="h4-20 color-purple-01">수정하기</p>
+            </Link>
+          )
+        ) : null}
       </header>
       <article className="wrapper">
         <div className="frame-151">
