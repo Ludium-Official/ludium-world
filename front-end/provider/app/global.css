@@ -321,6 +321,17 @@
   border-color: var(--gray05);
 }
 
+.button2 {
+  background: var(--white);
+  border: none;
+  color: var(--black);
+}
+
+.button2:hover,
+.button2:active {
+  color: red;
+}
+
 .center {
   display: flex;
   justify-content: center;

@@ -147,11 +147,11 @@ export default async function ContentPage({ params: { communityId } }) {
                   </div>
                   <div className="frame-9-3">
                     <p className="caption-12 color-gray-04">
-                      <UserNick usrId={content.usrId} />
+                      작성자: <UserNick usrId={content.usrId} />
                     </p>
-                    <p className="caption-12 color-gray-04">
+                    {/* <p className="caption-12 color-gray-04">
                       {getTimeStamp(content.createAt)}
-                    </p>
+                    </p> */}
                     {content.type === COMMUNITY_TYPE.CONTENT ? (
                       profile === null ? null : (
                         <DeleteContentButton communityId={communityId} />
