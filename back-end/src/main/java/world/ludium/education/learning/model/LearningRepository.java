@@ -33,7 +33,7 @@ public interface LearningRepository extends JpaRepository<Learning, UUID> {
              ORDER BY min(lp2.create_at)
         """)
     List<LearningDTO> getAllLearningDTOByUsrId(@Param("usrId") UUID usrId);
-    List<Learning> findAllByOrderByCreateAt();
+    List<Learning> findAllByOrderByCreateAtDesc();
 
     List<Learning> findTop5ByOrderByCreateAtDesc();
 }

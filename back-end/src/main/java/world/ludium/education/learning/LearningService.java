@@ -17,7 +17,7 @@ public class LearningService {
         this.learningRepository = learningRepository;
     }
     public List<Learning> getAllLearning() {
-        return learningRepository.findAllByOrderByCreateAt();
+        return learningRepository.findAllByOrderByCreateAtDesc();
     }
 
     public List<Learning> getTop5Learning() {

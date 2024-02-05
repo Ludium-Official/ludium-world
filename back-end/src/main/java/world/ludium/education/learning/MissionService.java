@@ -25,7 +25,7 @@ public class MissionService {
     }
 
     public List<Mission> getAllMission() {
-        return missionRepository.findAllByOrderByCreateAt();
+        return missionRepository.findAllByOrderByCreateAtDesc();
     }
 
     public List<Mission> getAllMission(UUID curriculumId) {

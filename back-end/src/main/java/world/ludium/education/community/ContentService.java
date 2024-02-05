@@ -19,7 +19,7 @@ public class ContentService {
     }
 
     public List<Content> getAllContent() {
-        return contentRepository.findAllByVisibleOrderByCreateAt(true);
+        return contentRepository.findAllByVisibleOrderByCreateAtDesc(true);
     }
 
 
