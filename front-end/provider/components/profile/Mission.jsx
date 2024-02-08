@@ -1,8 +1,7 @@
-import Link from "next/link";
-import Icon from "../Icon";
-import { Fragment } from "react";
 import fetchWithRetry from "@/functions/api";
 import ko_kr from "@/langs/ko_kr";
+import Link from "next/link";
+import { Fragment } from "react";
 
 async function getMissionList(usrId) {
   const getMissionListResponse = await fetchWithRetry(

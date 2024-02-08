@@ -2127,3 +2127,7 @@ p {
 .color-gray-03 {
   color: var(--gray03);
 }
+
+.color-alert {
+  color: var(--alert);
+}
