@@ -1,11 +1,10 @@
 import fetchWithRetry from "@/functions/api";
 import Link from "next/link";
-import Icon from "../Icon";
 import { Fragment } from "react";
 
 async function getWorkList(usrId) {
   const getWorkListResponse = await fetchWithRetry(
-    `/profile/${usrId}/detailed-announcement`
+    `/profile/${usrId}/detailed-announcement/top4`
   );
 
   if (!getWorkListResponse.ok)

@@ -5,7 +5,7 @@ import { Fragment } from "react";
 
 async function getLearningList(usrId) {
   const getLearningListResponse = await fetchWithRetry(
-    `/profile/${usrId}/learning`
+    `/profile/${usrId}/learning/top4`
   );
 
   if (!getLearningListResponse.ok)

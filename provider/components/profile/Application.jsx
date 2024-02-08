@@ -1,13 +1,13 @@
-import Link from "next/link";
-import Icon from "../Icon";
 import fetchWithRetry from "@/functions/api";
+import Link from "next/link";
 import { Fragment } from "react";
 
 async function getApplicationList(usrId) {
   const getApplicationListResponse = await fetchWithRetry(
-    `/profile/${usrId}/application`
+    `/profile/${usrId}/application/top4`
   );
 
+  console.log(getApplicationListResponse.status);
   if (!getApplicationListResponse.ok)
     if (getApplicationListResponse.status === 404) return [];
     else throw new Error("지원서를 조회하는 중 에러가 발생했습니다.");

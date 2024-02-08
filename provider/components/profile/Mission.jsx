@@ -5,7 +5,7 @@ import { Fragment } from "react";
 
 async function getMissionList(usrId) {
   const getMissionListResponse = await fetchWithRetry(
-    `/profile/${usrId}/mission`
+    `/profile/${usrId}/mission/top4`
   );
 
   if (!getMissionListResponse.ok)
