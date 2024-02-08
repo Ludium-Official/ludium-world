@@ -1,20 +1,32 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import profilestyle from "./profile.module.css";
+import Link from "next/link";
+import { Fragment, useEffect, useState } from "react";
+import isLogined from "./api";
 
-export default function ProfileErrorPage({
-    error,
-    reset,
-}) {
-    const router = useRouter();
+export default function ProfileErrorPage({ error, reset }) {
+  const [logined, setLogined] = useState(true);
 
-    const handleSignUp = () => {
-        router.replace("/sign-up");
-    }
+  const checkLogined = async () => {
+    setLogined(await isLogined());
+  };
 
-    return <div className={profilestyle["profile-wrapper"]}>
-        <h1>로그인 혹은 회원가입을 먼저 해주세요.</h1>
-        <button onClick={handleSignUp}>회원가입 하러 가기</button>
+  useEffect(() => {
+    checkLogined();
+  }, [error]);
+
+  return (
+    <div className="wrapper">
+      {logined ? (
+        <Fragment>
+          <h1 className="h4-20 color-black">회원가입을 해주세요.</h1>
+          <Link className="link color-purple-01" href="/sign-up">
+            회원가입 하러 가기
+          </Link>
+        </Fragment>
+      ) : (
+        <h1 className="h4-20 color-black">로그인을 해주세요</h1>
+      )}
     </div>
+  );
 }

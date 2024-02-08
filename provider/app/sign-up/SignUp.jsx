@@ -9,6 +9,7 @@ import signupstyle from "./signup.module.css";
 export default function SignUp() {
   const router = useRouter();
   const editorRef = useRef(null);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -33,6 +34,7 @@ export default function SignUp() {
       }
     } catch (error) {}
   };
+
   return (
     <form className={signupstyle["form-wrapper"]} onSubmit={handleSubmit}>
       <div className={signupstyle["form-button-area"]}>
