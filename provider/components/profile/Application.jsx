@@ -18,6 +18,7 @@ async function getApplicationList(usrId) {
 export default async function Application({ usrId }) {
   const applications = await getApplicationList(usrId);
 
+  console.log(applications);
   return (
     <div className="frame-34-6 background-white border-gray-06">
       <div className="frame-35-2">
@@ -42,7 +43,10 @@ export default async function Application({ usrId }) {
             <div className="frame-3 background-white border-purple-01">
               <p className="caption-12 color-purple-01">마감 미설정</p>
             </div>
-            <Link className="h4-20 color-gray-02 link" href="/">
+            <Link
+              className="h4-20 color-gray-02 link"
+              href={`/announcement/${application.postingId}/${application.detailId}/apply/edit?role=${application.role}`}
+            >
               {application.title}
             </Link>
           </div>
