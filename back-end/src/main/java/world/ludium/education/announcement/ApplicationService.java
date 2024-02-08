@@ -3,6 +3,7 @@ package world.ludium.education.announcement;
 import org.springframework.stereotype.Service;
 import world.ludium.education.announcement.model.Application;
 import world.ludium.education.announcement.model.ApplicationRepository;
+import world.ludium.education.profile.MyApplicationDTO;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -16,7 +17,7 @@ public class ApplicationService {
         this.applicationRepository = applicationRepository;
     }
 
-    public List<Application> getAllApplication(UUID usrId) {
+    public List<MyApplicationDTO> getAllApplication(UUID usrId) {
         return applicationRepository.findAllByUsrIdOrderByCreateAt(usrId);
     }
 
