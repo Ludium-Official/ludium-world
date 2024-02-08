@@ -11,8 +11,6 @@ export default function Navigation({ googleAuthInfo, gglId }) {
   const pathName = usePathname();
   const [isProvider, setIsProvider] = useState(false);
 
-  if (pathName === "/sign-up") return null;
-
   const CLIENT_ID = process.env.NEXT_PUBLIC_OAUTH2_GOOGLE_CLIENT_ID;
   const REDIRECT_URI = process.env.NEXT_PUBLIC_OAUTH2_GOOGLE_REDIRECT_URI;
   const RESPONSE_TYPE = process.env.NEXT_PUBLIC_OAUTH2_GOOGLE_RESPONSE_TYPE;
@@ -33,6 +31,8 @@ export default function Navigation({ googleAuthInfo, gglId }) {
   useEffect(() => {
     getUserRight();
   }, []);
+
+  if (pathName === "/sign-up") return null;
 
   return (
     <aside className="aside">
