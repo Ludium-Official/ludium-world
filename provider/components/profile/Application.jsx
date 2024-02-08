@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Icon from "../Icon";
 import fetchWithRetry from "@/functions/api";
+import { Fragment } from "react";
 
 async function getApplicationList(usrId) {
   const getApplicationListResponse = await fetchWithRetry(
@@ -21,7 +22,7 @@ export default async function Application({ usrId }) {
     <div className="frame-34-6 background-white border-gray-06">
       <div className="frame-35-2">
         <h1 className="h4-20 color-black">나의 지원서</h1>
-        <Link className="frame-56-2 link" href="/">
+        {/* <Link className="frame-56-2 link" href="/">
           <p className="more color-gray-04">모두 보기</p>
           <div className="arrow-right">
             <div className="frame-78">
@@ -33,18 +34,22 @@ export default async function Application({ usrId }) {
               />
             </div>
           </div>
-        </Link>
+        </Link> */}
       </div>
-      {applications.map((application) => (
-        <div className="frame-44" key={application.applicationId}>
-          <div className="frame-3 background-white border-purple-01">
-            <p className="caption-12 color-purple-01">마감 미설정</p>
+      {applications.map((application, index) => (
+        <Fragment key={application.applicationId}>
+          <div className="frame-44">
+            <div className="frame-3 background-white border-purple-01">
+              <p className="caption-12 color-purple-01">마감 미설정</p>
+            </div>
+            <Link className="h4-20 color-gray-02 link" href="/">
+              {application.title}
+            </Link>
           </div>
-          <Link className="h4-20 color-gray-02 link" href="/">
-            {application.title}
-          </Link>
-          <div className="line border-gray-05" />
-        </div>
+          {index < applications.length - 1 ? (
+            <div className="line border-gray-05" />
+          ) : null}
+        </Fragment>
       ))}
     </div>
   );
