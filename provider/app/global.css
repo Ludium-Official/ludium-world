@@ -1375,6 +1375,74 @@ body {
 }
 /* profile page style end */
 
+/* profile mission list style start */
+.frame-93-7 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+  gap: 24px;
+}
+
+.frame-93-8 {
+  justify-content: center;
+}
+
+.frame-58 {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 40px;
+  border-radius: 20px;
+  width: 100%;
+}
+
+.frame-34-8 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 20px;
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 1;
+}
+
+.frame-100-4 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 20px;
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 1;
+}
+
+.frame-101-3 {
+  flex: none;
+  order: 2;
+  flex-grow: 0;
+}
+
+.frame-9-6 {
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.frame-4-1 {
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+/* profile mission list style end */
+
 .link {
   text-decoration: none;
 }
@@ -1623,7 +1691,8 @@ body {
   width: 128px;
 }
 
-.frame-9-2 {
+.frame-9-2,
+.frame-9-6 {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -1663,7 +1732,8 @@ body {
   width: 100%;
 }
 
-.frame-93-3 {
+.frame-93-3,
+.frame-93-8 {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -1672,7 +1742,8 @@ body {
   width: 100%;
 }
 
-.frame-4 {
+.frame-4,
+.frame-4-1 {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -1682,7 +1753,8 @@ body {
   border-radius: 4px;
 }
 
-.frame-101-2 {
+.frame-101-2,
+.frame-101-3 {
   display: flex;
   flex-direction: column;
   justify-content: center;

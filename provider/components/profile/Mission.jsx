@@ -2,6 +2,7 @@ import fetchWithRetry from "@/functions/api";
 import ko_kr from "@/langs/ko_kr";
 import Link from "next/link";
 import { Fragment } from "react";
+import Icon from "../Icon";
 
 async function getMissionList(usrId) {
   const getMissionListResponse = await fetchWithRetry(
@@ -24,19 +25,19 @@ export default async function Mission({ usrId }) {
       {/* <div className="frame-34-7 background-white border-gray-06"> */}
       <div className="frame-35-2">
         <h1 className="h4-20 color-black">나의 미션</h1>
-        {/* <Link className="frame-56-2 link" href="/">
-            <p className="more color-gray-04">모두 보기</p>
-            <div className="arrow-right">
-              <div className="frame-78">
-                <Icon
-                  src="/icon_arrow_right.svg"
-                  alt="more"
-                  width={12}
-                  height={12}
-                />
-              </div>
+        <Link className="frame-56-2 link" href="/profile/mission">
+          <p className="more color-gray-04">모두 보기</p>
+          <div className="arrow-right">
+            <div className="frame-78">
+              <Icon
+                src="/icon_arrow_right.svg"
+                alt="more"
+                width={12}
+                height={12}
+              />
             </div>
-          </Link> */}
+          </div>
+        </Link>
       </div>
       {missions.map((mission, index) => (
         <Fragment key={mission.missionId}>
