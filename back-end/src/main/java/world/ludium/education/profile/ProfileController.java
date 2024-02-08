@@ -62,10 +62,37 @@ public class ProfileController {
         }
     }
 
+    @GetMapping("{userId}/application/top4")
+    public ResponseEntity<Object> getTop4Application(@PathVariable UUID userId) {
+        try {
+            var applicationList = applicationService.getTop4Application(userId);
+
+            if(applicationList.isEmpty()) return responseUtil.getNoSuchElementExceptionMessage("지원서 데이터가 없습니다.", "");
+
+            return ResponseEntity.ok(applicationList);
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("지원서를 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
     @GetMapping("{usrId}/detailed-announcement")
     public ResponseEntity<Object> getAllDetailedAnnouncement(@PathVariable UUID usrId) {
         try {
             var detailedAnnouncementList = detailedAnnouncementService.getAllDetailedAnnouncementByWorker(usrId);
+
+            if(detailedAnnouncementList.isEmpty()) return responseUtil.getNoSuchElementExceptionMessage("작업 데이터가 없습니다.", "");
+
+            return ResponseEntity.ok(detailedAnnouncementList);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "작업을 조회하는 중에 에러가 발생했습니다", e);
+            return responseUtil.getExceptionMessage("작업을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @GetMapping("{usrId}/detailed-announcement/top4")
+    public ResponseEntity<Object> getTop4DetailedAnnouncement(@PathVariable UUID usrId) {
+        try {
+            var detailedAnnouncementList = detailedAnnouncementService.getTop4DetailedAnnouncementByWorker(usrId);
 
             if(detailedAnnouncementList.isEmpty()) return responseUtil.getNoSuchElementExceptionMessage("작업 데이터가 없습니다.", "");
 
@@ -90,10 +117,38 @@ public class ProfileController {
         }
     }
 
+    @GetMapping("{usrId}/mission/top4")
+    public ResponseEntity<Object> getTop4Mission(@PathVariable UUID usrId) {
+        try {
+            var missionDTOList = missionService.getTop4MyMissionDTO(usrId);
+
+            if(missionDTOList.isEmpty()) return responseUtil.getNoSuchElementExceptionMessage("미션 데이터가 없습니다.", "");
+
+            return ResponseEntity.ok(missionDTOList);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "미션을 조회하는 중에 에러가 발생했습니다", e);
+            return responseUtil.getExceptionMessage("미션을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
     @GetMapping("{usrId}/learning")
     public ResponseEntity<Object> getAllLearning(@PathVariable UUID usrId) {
         try {
             var learningList = learningService.getAllLearningDTO(usrId);
+
+            if(learningList.isEmpty()) return responseUtil.getNoSuchElementExceptionMessage("학습 데이터가 없습니다.", "");
+
+            return ResponseEntity.ok(learningList);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "학습을 조회하는 중에 에러가 발생했습니다", e);
+            return responseUtil.getExceptionMessage("학습을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @GetMapping("{usrId}/learning/top4")
+    public ResponseEntity<Object> getTop4Learning(@PathVariable UUID usrId) {
+        try {
+            var learningList = learningService.getTop4LearningDTO(usrId);
 
             if(learningList.isEmpty()) return responseUtil.getNoSuchElementExceptionMessage("학습 데이터가 없습니다.", "");
 

@@ -1,5 +1,6 @@
 package world.ludium.education.learning;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import world.ludium.education.learning.model.Learning;
 import world.ludium.education.learning.model.LearningRepository;
@@ -26,6 +27,10 @@ public class LearningService {
 
     public List<LearningDTO> getAllLearningDTO(UUID usrId) {
         return learningRepository.getAllLearningDTOByUsrId(usrId);
+    }
+
+    public List<LearningDTO> getTop4LearningDTO(UUID usrId) {
+        return learningRepository.getTop4LearningDTOByUsrId(usrId, PageRequest.of(0, 4));
     }
 
     public Learning getLearning(UUID learningId) {

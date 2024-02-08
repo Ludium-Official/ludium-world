@@ -1,5 +1,6 @@
 package world.ludium.education.announcement.model;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,4 +21,14 @@ public interface DetailedAnnouncementRepository extends JpaRepository<DetailedAn
              ORDER BY dp.createAt
             """)
     List<DetailedAnnouncement> findAllByWorkerOrderByCreateAt(@Param("usrId") UUID usrId);
+
+    @Query("""
+            SELECT dp
+              FROM DetailedAnnouncementWorker dpw
+                 , DetailedAnnouncement dp
+             WHERE dpw.detailId = dp.detailId
+               AND dpw.usrId = :usrId
+             ORDER BY dp.createAt
+            """)
+    List<DetailedAnnouncement> findTop4ByWorkerOrderByCreateAt(@Param("usrId") UUID usrId, Pageable pageable);
 }

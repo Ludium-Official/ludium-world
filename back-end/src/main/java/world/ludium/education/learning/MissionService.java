@@ -1,5 +1,6 @@
 package world.ludium.education.learning;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import world.ludium.education.learning.model.*;
 import world.ludium.education.mission.EnhancedMissionSubmitComment;
@@ -34,6 +35,10 @@ public class MissionService {
 
     public List<MyMissionDTO> getAllMyMissionDTO(UUID usrId) {
         return missionRepository.findAllByUsrIdOrderByCreateAt(usrId);
+    }
+
+    public List<MyMissionDTO> getTop4MyMissionDTO(UUID usrId) {
+        return missionRepository.findTop4ByUsrIdOrderByCreateAt(usrId, PageRequest.of(0, 4));
     }
 
     public Mission getMission(UUID missionId) {

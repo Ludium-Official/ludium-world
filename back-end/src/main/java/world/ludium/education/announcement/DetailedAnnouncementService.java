@@ -1,5 +1,6 @@
 package world.ludium.education.announcement;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import world.ludium.education.announcement.model.*;
 
@@ -34,6 +35,9 @@ public class DetailedAnnouncementService {
 
     public List<DetailedAnnouncement> getAllDetailedAnnouncementByWorker(UUID usrId) {
         return detailedAnnouncementRepository.findAllByWorkerOrderByCreateAt(usrId);
+    }
+    public List<DetailedAnnouncement> getTop4DetailedAnnouncementByWorker(UUID usrId) {
+        return detailedAnnouncementRepository.findTop4ByWorkerOrderByCreateAt(usrId, PageRequest.of(0, 4));
     }
 
     public Optional<DetailedAnnouncement> getDetailedAnnouncement(UUID detailedAnnouncementId) {
