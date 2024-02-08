@@ -49,12 +49,13 @@ export default async function ProfilePage() {
         <div className="frame-76">
           <Avatar profile={profile} />
           <div className="frame-42">
-            <Application usrId={profile.id} />
+            <Mission usrId={profile.id} />
             <Work usrId={profile.id} />
           </div>
-          <div className="frame-43">
+          {/* <div className="frame-43"> */}
+          <div className="frame-42">
             <Learning usrId={profile.id} />
-            <Mission usrId={profile.id} />
+            <Application usrId={profile.id} />
           </div>
         </div>
       </article>
