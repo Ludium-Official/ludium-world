@@ -1,5 +1,6 @@
 package world.ludium.education.announcement;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import world.ludium.education.announcement.model.Application;
 import world.ludium.education.announcement.model.ApplicationRepository;
@@ -19,6 +20,10 @@ public class ApplicationService {
 
     public List<MyApplicationDTO> getAllApplication(UUID usrId) {
         return applicationRepository.findAllByUsrIdOrderByCreateAt(usrId);
+    }
+
+    public List<MyApplicationDTO> getTop4Application(UUID usrId) {
+        return applicationRepository.findTop4ByUsrIdOrderByCreateAt(usrId, PageRequest.of(0, 4));
     }
 
     public List<Application> getApplication(UUID detailId, String role) {
