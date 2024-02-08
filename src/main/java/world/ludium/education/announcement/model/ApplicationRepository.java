@@ -1,6 +1,9 @@
 package world.ludium.education.announcement.model;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import world.ludium.education.profile.MyApplicationDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,5 +14,18 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID> 
 
     Optional<Application> findAllByDetailIdAndRoleAndUsrId(UUID detailId, String role, UUID usrId);
 
-    List<Application> findAllByUsrIdOrderByCreateAt(UUID usrId);
+    @Query("""
+            SELECT NEW world.ludium.education.profile.MyApplicationDTO(a.applicationId,
+                                                                       a.title,
+                                                                       a.detailId,
+                                                                       a.role,
+                                                                       a.createAt,
+                                                                       dp.postingId)
+              FROM Application a
+              LEFT JOIN DetailedAnnouncement dp
+                ON a.detailId = dp.detailId
+             WHERE a.usrId = :usrId
+             ORDER BY a.createAt DESC
+            """)
+    List<MyApplicationDTO> findAllByUsrIdOrderByCreateAt(@Param("usrId") UUID usrId);
 }
