@@ -33,13 +33,6 @@ export async function getProfile() {
 export default async function ProfilePage() {
   const profile = await getProfile();
 
-  const links = [
-    {
-      href: "/profile/edit",
-      text: "수정 페이지로 이동",
-    },
-  ];
-
   return (
     <>
       <header className="nb">
