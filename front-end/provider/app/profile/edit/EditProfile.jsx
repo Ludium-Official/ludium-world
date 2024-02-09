@@ -90,7 +90,7 @@ export default function EditProfile({ profile }) {
             className="button-L-2 background-purple-01 h5-18 color-white"
             disabled={pending}
           >
-            {pending ? "프로필을 수정하는 중입니다..." : "수정하기"}
+            {pending ? "프로필 적용을 진행중입니다..." : "프로필 적용"}
           </button>
         </div>
       </div>
