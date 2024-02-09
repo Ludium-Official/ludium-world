@@ -1,11 +1,10 @@
 "use client";
 
+import HTTP_METHOD from "@/enums/HTTP_METHOD";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import Editor from "../../../components/Editor";
 import fetchWithRetry from "../../../functions/api";
-import profilestyle from "../profile.module.css";
-import HTTP_METHOD from "@/enums/HTTP_METHOD";
 
 export default function EditProfile({ profile }) {
   const editorRef = useRef(null);
@@ -43,46 +42,57 @@ export default function EditProfile({ profile }) {
   };
 
   return (
-    <form className={profilestyle["form-wrapper"]} onSubmit={handleSubmit}>
-      <div className="flex-end">
-        <input
-          className={profilestyle["form-button"]}
-          type="submit"
-          value={pending ? "프로필을 수정하는 중입니다..." : "수정하기"}
-          disabled={pending}
-        />
-      </div>
-      <div className={profilestyle["form-info"]}>
-        <label className={profilestyle["form-label"]} htmlFor="nick">
-          닉네임
-        </label>
-        <input
-          className={profilestyle["form-text-field"]}
-          type="text"
-          name="nick"
-          id="nick"
-          placeholder="닉네임을 입력하세요"
-          defaultValue={profile.nick}
-        />
-        <label className={profilestyle["form-label"]} htmlFor="phone_number">
-          핸드폰번호
-        </label>
-        <input
-          className={profilestyle["form-text-field"]}
-          type="number"
-          name="phone_number"
-          id="phone_number"
-          placeholder="'-' 없이 숫자만 입력해주세요."
-          defaultValue={profile.phnNmb}
-        />
-        <label className={profilestyle["form-label"]}>자기소개</label>
-      </div>
-      <div className={profilestyle["form-content"]}>
-        <Editor
-          editorRef={editorRef}
-          content={profile.selfIntro}
-          height="100%"
-        />
+    <form
+      className="frame-34-10 background-white border-gray-06"
+      onSubmit={handleSubmit}
+    >
+      <div className="frame-117-2">
+        <div className="frame-116-2">
+          <div className="input-2">
+            <label className="h5-18 color-gray-03" htmlFor="nick">
+              닉네임
+            </label>
+            <input
+              className="frame-102-3 background-white border-gray-05 p1-18 color-gray-04"
+              type="text"
+              name="nick"
+              id="nick"
+              placeholder="닉네임을 입력하세요"
+              defaultValue={profile.nick}
+            />
+          </div>
+          <div className="input-2">
+            <label className="h5-18 color-gray-03" htmlFor="phone_number">
+              핸드폰번호
+            </label>
+            <input
+              className="frame-102-3 background-white border-gray-05 p1-18 color-gray-04"
+              type="number"
+              name="phone_number"
+              id="phone_number"
+              placeholder="'-' 없이 숫자만 입력해주세요."
+              defaultValue={profile.phnNmb}
+            />
+          </div>
+          <div className="input-2">
+            <label className="h5-18 color-gray-03">자기소개</label>
+          </div>
+          <div className="frame-102-4 background-white content-editor">
+            <Editor
+              editorRef={editorRef}
+              content={profile.selfIntro}
+              height="100%"
+            />
+          </div>
+        </div>
+        <div className="flex-end">
+          <button
+            className="button-L-2 background-purple-01 h5-18 color-white"
+            disabled={pending}
+          >
+            {pending ? "프로필을 수정하는 중입니다..." : "수정하기"}
+          </button>
+        </div>
       </div>
     </form>
   );
