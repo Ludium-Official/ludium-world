@@ -19,7 +19,12 @@ export default async function EditProfilePage() {
         <BackButton />
       </header>
       <div className="wrapper">
-        <EditProfile profile={profile} />
+        <div className="frame-93">
+          <div className="frame-57">
+            <h1 className="h3-24 color-black">프로필 수정</h1>
+          </div>
+          <EditProfile profile={profile} />
+        </div>
       </div>
     </>
   );
