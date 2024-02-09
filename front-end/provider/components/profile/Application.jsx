@@ -7,7 +7,6 @@ async function getApplicationList(usrId) {
     `/profile/${usrId}/application/top4`
   );
 
-  console.log(getApplicationListResponse.status);
   if (!getApplicationListResponse.ok)
     if (getApplicationListResponse.status === 404) return [];
     else throw new Error("지원서를 조회하는 중 에러가 발생했습니다.");
@@ -18,7 +17,6 @@ async function getApplicationList(usrId) {
 export default async function Application({ usrId }) {
   const applications = await getApplicationList(usrId);
 
-  console.log(applications);
   return (
     <div className="frame-34-6 background-white border-gray-06">
       <div className="frame-35-2">

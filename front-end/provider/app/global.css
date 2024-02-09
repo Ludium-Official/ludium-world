@@ -1443,6 +1443,34 @@ body {
 }
 /* profile mission list style end */
 
+/* profile learning list style start */
+.frame-34-9 {
+  padding: 12px 40px;
+  border-radius: 20px;
+}
+
+.frame-136-2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  gap: 24px;
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.learning-status {
+  font-family: "Pretendard Variable";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 14px;
+}
+/* profile learning list style end */
+
 .link {
   text-decoration: none;
 }
@@ -1679,7 +1707,8 @@ body {
 }
 
 .frame-34-2,
-.frame-34-3 {
+.frame-34-3,
+.frame-34-9 {
   display: flex;
   flex-direction: column;
   justify-content: center;
