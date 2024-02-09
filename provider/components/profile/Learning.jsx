@@ -25,19 +25,19 @@ export default async function Learning({ usrId }) {
       <div className="frame-35-3">
         <div className="frame-9">
           <h1 className="h4-20 color-black">나의 학습</h1>
-          {/* <Link className="frame-56-2 link" href="/">
-              <p className="more color-gray-04">모두 보기</p>
-              <div className="arrow-right">
-                <div className="frame-78">
-                  <Icon
-                    src="/icon_arrow_right.svg"
-                    alt="more"
-                    width={12}
-                    height={12}
-                  />
-                </div>
+          <Link className="frame-56-2 link" href="/profile/learning">
+            <p className="more color-gray-04">모두 보기</p>
+            <div className="arrow-right">
+              <div className="frame-78">
+                <Icon
+                  src="/icon_arrow_right.svg"
+                  alt="more"
+                  width={12}
+                  height={12}
+                />
               </div>
-            </Link> */}
+            </div>
+          </Link>
         </div>
       </div>
       {/* <div className="frame-9-2"> */}

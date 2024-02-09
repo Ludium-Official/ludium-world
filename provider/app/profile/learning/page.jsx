@@ -1,13 +1,13 @@
 import BackButton from "@/components/BackButton";
-import MissionList from "@/components/profile/mission/MissionList";
+import LearningList from "@/components/profile/learning/LearningList";
 import fetchWithRetry from "@/functions/api";
 import { cookies } from "next/headers";
 
 export const metadata = {
-  title: "나의 미션 목록",
+  title: "나의 학습 목록",
 };
 
-export async function getProfile() {
+async function getProfile() {
   const cookieStore = cookies();
 
   const getProfileResopnse = await fetchWithRetry(`/profile`, {
@@ -21,16 +21,15 @@ export async function getProfile() {
   return await getProfileResopnse.json();
 }
 
-export default async function MyMissionList({}) {
+export default async function LearningListPage() {
   const profile = await getProfile();
-
   return (
     <>
       <header className="nb">
         <BackButton />
       </header>
       <article className="wrapper">
-        <MissionList usrId={profile.id} />
+        <LearningList usrId={profile.id} />
       </article>
     </>
   );

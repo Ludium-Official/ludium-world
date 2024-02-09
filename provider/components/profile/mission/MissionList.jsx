@@ -18,7 +18,6 @@ async function getMissionList(usrId) {
 export default async function MissionList({ usrId }) {
   const missions = await getMissionList(usrId);
 
-  console.log(missions);
   return (
     <div className="frame-93-7">
       <div className="frame-57">
