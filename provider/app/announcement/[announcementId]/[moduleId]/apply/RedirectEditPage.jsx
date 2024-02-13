@@ -1,9 +1,8 @@
 "use client";
 
+import BackButton from "@/components/BackButton";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import applystyle from "./apply.module.css";
-import BackButton from "@/components/BackButton";
 
 export default function RedirectEditPage({ announcementId, moduleId, role }) {
   const router = useRouter();
@@ -21,10 +20,12 @@ export default function RedirectEditPage({ announcementId, moduleId, role }) {
       <header className="nb">
         <BackButton />
       </header>
-      <article className={`wrapper ${applystyle.error}`}>
-        <h1 className={applystyle.title}>
-          이미 지원서를 제출했습니다. 곧 지원서 수정페이지로 연결됩니다.
-        </h1>
+      <article className="wrapper">
+        <div className="frame ">
+          <h1 className="h3-24">
+            이미 지원서를 제출했습니다. 곧 지원서 수정페이지로 연결됩니다.
+          </h1>
+        </div>
       </article>
     </>
   );
