@@ -45,30 +45,37 @@ export default function EditApplyForm({
   };
 
   return (
-    <form className="wrapper" onSubmit={handleApplyForm}>
-      <div className={applystyle["form-button-area"]}>
+    <form className="frame-116" onSubmit={handleApplyForm}>
+      <div className="input-2">
+        <label className="h5-18 color-gray-03" htmlFor="title">
+          제목
+        </label>
         <input
-          className={applystyle["form-button"]}
-          type="submit"
-          value={pending ? "지원서를 제출하는 중입니다..." : "지원서 제출하기"}
-          disabled={pending}
-        />
-      </div>
-      <div className={applystyle["form-header"]}>
-        <input
-          className={applystyle["form-title"]}
+          className="frame-102-3 background-white border-gray-05 p1-18 color-gray-04"
           type="text"
           name="title"
+          id="title"
           defaultValue={application.title}
           readOnly
         />
       </div>
-      <div className={applystyle["content-area"]}>
-        <Editor
-          editorRef={editorRef}
-          height="100%"
-          content={application.description}
-        />
+      <div className="input-2">
+        <p className="h5-18 color-gray-03">내용</p>
+        <div className="frame-102-4 background-white content-editor">
+          <Editor
+            editorRef={editorRef}
+            height="100%"
+            content={application.description}
+          />
+        </div>
+      </div>
+      <div className="frame-157">
+        <button
+          className="button-L-2 background-purple-01 h5-18 color-white"
+          disabled={pending}
+        >
+          {pending ? "지원서를 제출하는 중입니다..." : "제출하기"}
+        </button>
       </div>
     </form>
   );

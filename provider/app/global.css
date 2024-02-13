@@ -2087,6 +2087,7 @@ p {
   order: 1;
   align-self: stretch;
   flex-grow: 0;
+  border-radius: 20px;
 }
 
 .frame-109 {
