@@ -1,21 +1,16 @@
 import BackButton from "@/components/BackButton";
-import ContentNavigation from "@/components/ContentNavigation";
-import Viewer from "@/components/Viewer";
+import Icon from "@/components/Icon";
+import APPLY_CATEGORY from "@/enums/APPLY_CATEGORY";
 import fetchWithRetry from "@/functions/api";
-import ModuleNavigation from "../../ModuleNavigation";
-import announcementstyle from "@/app/announcement/announcement.module.css";
+import { getDate } from "@/functions/helper";
+import dynamic from "next/dynamic";
+import Link from "next/link";
 
-async function getModule(announcementId, moduleId) {
-  const getModuleResponse = await fetchWithRetry(
-    `/announcement/${announcementId}/${moduleId}`
-  );
+const Viewer = dynamic(() => import("@/components/Viewer"), { ssr: false });
 
-  return await getModuleResponse.json();
-}
-
-async function getMake(announcementId, moduleId) {
+async function getDetailedAnnouncement(announcementId, detailedAnnouncement) {
   const getMakeResponse = await fetchWithRetry(
-    `/announcement/${announcementId}/${moduleId}/make`
+    `/announcement/${announcementId}/${detailedAnnouncement}`
   );
 
   if (!getMakeResponse.ok) return [];
@@ -23,54 +18,61 @@ async function getMake(announcementId, moduleId) {
   return await getMakeResponse.json();
 }
 
-export async function ModuleViewer({ announcementId, moduleId }) {
-  const module = await getModule(announcementId, moduleId);
+export async function DetailedAnnouncement({ announcementId, moduleId }) {
+  const detailedAnnouncement = await getDetailedAnnouncement(
+    announcementId,
+    moduleId
+  );
 
   return (
-    <>
-      <div className={announcementstyle["module-header-area"]}>
-        <input type="text" defaultValue={module.title} readOnly />
+    <div className="frame-151">
+      <div className="frame-149">
+        <div className="frame background-white border-gray-06">
+          <div className="frame-101">
+            <div className="frame-9">
+              <div className="frame-145">
+                <h1 className="h4-20 color-black">
+                  {detailedAnnouncement.title}
+                </h1>
+              </div>
+              <div className="frame-9-3">
+                <p className="caption-12 color-gray-04">
+                  작성일: {getDate(detailedAnnouncement.createAt)}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="frame background-white border-gray-06">
+          <div className="frame-120">
+            <Viewer content={detailedAnnouncement.description} />
+          </div>
+        </div>
       </div>
-      <div className={announcementstyle["module-content"]}>
-        <Viewer content={module.description} />
-      </div>
-    </>
+    </div>
   );
 }
 
-export default async function ModulePage({
+export default async function DetailedAnnouncementPage({
   params: { announcementId, moduleId },
 }) {
-  const makes = await getMake(announcementId, moduleId);
-
   return (
     <>
-      <ContentNavigation links={[]}>
+      <header className="nb">
         <BackButton />
-      </ContentNavigation>
-      <article className={announcementstyle.wrapper}>
-        <ModuleViewer announcementId={announcementId} moduleId={moduleId} />
-        <h2>제작 목록</h2>
-        {makes.map((make) => (
-          <section
-            className={announcementstyle["make-wrapper"]}
-            key={crypto.randomUUID()}
-          >
-            <ModuleNavigation
-              links={[
-                {
-                  href: `/make/${make.id}/edit`,
-                  text: "제작하기",
-                },
-                {
-                  href: `/validate/${make.id}`,
-                  text: "검증하기",
-                },
-              ]}
-            />
-            <h3 className={announcementstyle["make-title"]}>{make.title}</h3>
-          </section>
-        ))}
+        <Link
+          className="frame-56 link"
+          href={`/announcement/${announcementId}/${moduleId}/apply?role=${APPLY_CATEGORY.PROVIDER}`}
+        >
+          <Icon src="/icon_plus.svg" alt="추가하기" width={24} height={24} />
+          <p className="h4-20 color-purple-01">지원하기</p>
+        </Link>
+      </header>
+      <article className="wrapper">
+        <DetailedAnnouncement
+          announcementId={announcementId}
+          moduleId={moduleId}
+        />
       </article>
     </>
   );
