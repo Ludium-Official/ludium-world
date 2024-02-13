@@ -5,7 +5,7 @@ import RedirectEditPage from "./RedirectEditPage";
 import BackButton from "@/components/BackButton";
 
 export const metadata = {
-  title: "지원서 작성하기",
+  title: "지원서 작성",
 };
 
 export async function getApplicationTemplate(announcementId, detailId, role) {
@@ -67,11 +67,22 @@ export default async function ApplyPage({
       <header className="nb">
         <BackButton />
       </header>
-      <ApplyForm
-        announcementId={announcementId}
-        detailId={moduleId}
-        applicationTemplate={applicationTemplate}
-      />
+      <article className="wrapper">
+        <div className="frame-93">
+          <div className="frame-57">
+            <h1 className="h3-24 color-black">지원서 작성</h1>
+          </div>
+          <div className="frame-34-4">
+            <div className="frame-117">
+              <ApplyForm
+                announcementId={announcementId}
+                detailId={moduleId}
+                applicationTemplate={applicationTemplate}
+              />
+            </div>
+          </div>
+        </div>
+      </article>
     </>
   );
 }
