@@ -66,7 +66,7 @@ export default function Navigation({ googleAuthInfo, gglId }) {
           alt="announcement"
           width={17.2}
           height={20.62}
-          text="공고"
+          text="공고 지원"
         />
         <GnbMenu
           href="/work"
