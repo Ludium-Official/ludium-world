@@ -1,10 +1,10 @@
 "use client";
 
+import Icon from "@/components/Icon";
 import HTTP_METHOD from "@/enums/HTTP_METHOD";
 import fetchWithRetry from "@/functions/api";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import workstyle from "../work.module.css";
 
 export default function WorkContentCreateButton({ workId }) {
   const router = useRouter();
@@ -39,12 +39,22 @@ export default function WorkContentCreateButton({ workId }) {
   };
 
   return (
-    <button
-      className={workstyle["work-add-button"]}
-      onClick={handleCreateWorkContent}
-      disabled={pending}
-    >
-      {pending ? "작업물을 추가하는 중입니다..." : "작업물 추가하기"}
-    </button>
+    <div className="flex-end margin1">
+      <button
+        className="button-M"
+        onClick={handleCreateWorkContent}
+        disabled={pending}
+      >
+        <Icon
+          src="/icon_plus_white.svg"
+          alt="작업물 추가"
+          width={24}
+          height={24}
+        />
+        <p className="h5-18 color-white">
+          {pending ? "추가중..." : "작업물 추가"}
+        </p>
+      </button>
+    </div>
   );
 }
