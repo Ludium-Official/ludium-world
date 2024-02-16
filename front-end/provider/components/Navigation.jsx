@@ -74,7 +74,7 @@ export default function Navigation({ googleAuthInfo, gglId }) {
           alt="work"
           width={24}
           height={24}
-          text="작업"
+          text="작업 수행"
         />
         <GnbMenu
           href="/participation"
