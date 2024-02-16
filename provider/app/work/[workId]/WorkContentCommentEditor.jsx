@@ -5,7 +5,6 @@ import HTTP_METHOD from "@/enums/HTTP_METHOD";
 import fetchWithRetry from "@/functions/api";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import workstyle from "../work.module.css";
 
 export default function WorkContentCommentEditor({ workId, workContentId }) {
   const router = useRouter();
@@ -37,13 +36,19 @@ export default function WorkContentCommentEditor({ workId, workContentId }) {
   };
 
   return (
-    <form onSubmit={handleCreateComment}>
-      <div className={workstyle["content-navigation"]}>
-        <button className={workstyle["work-add-button"]} disabled={pending}>
-          {pending ? "댓글을 저장하는 중입니다..." : "댓글 저장"}
+    <>
+      <div className="frame-102-2">
+        <Editor editorRef={editorRef} content="" height="100%" />
+      </div>
+      <div className="frame-148">
+        <button
+          className="button1"
+          onClick={handleCreateComment}
+          disabled={pending}
+        >
+          {pending ? "댓글을 작성하는 중입니다..." : "작성하기"}
         </button>
       </div>
-      <Editor editorRef={editorRef} content="" />
-    </form>
+    </>
   );
 }
