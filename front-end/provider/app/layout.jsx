@@ -7,7 +7,12 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <head></head>
+      <head>
+        <meta
+          name="naver-site-verification"
+          content={process.env.NEXT_PUBLIC_NAVER_SEARCH_ADVISOR}
+        />
+      </head>
       <body>
         <main className="main">
           <Navigation
