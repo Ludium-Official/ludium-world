@@ -10,6 +10,15 @@ import WorkContentSubmitButton from "./WorkContentSubmitButton";
 
 const Viewer = dynamic(() => import("@/components/Viewer"), { ssr: false });
 
+export async function generateMetadata({ params: { workId, contentId } }) {
+  const detailContent = await getWorkContent(workId, contentId);
+
+  return {
+    title: detailContent.title,
+    description: detailContent.description,
+  };
+}
+
 async function getWorkContent(workId, contentId) {
   const getWorkContentResponse = await fetchWithRetry(
     `/detailed-announcement/${workId}/${contentId}`
