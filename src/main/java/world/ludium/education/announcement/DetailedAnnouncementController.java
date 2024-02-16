@@ -88,6 +88,19 @@ public class DetailedAnnouncementController {
         }
     }
 
+    @GetMapping("{detailedAnnouncementId}/{detailedAnnouncementContentId}")
+    public ResponseEntity<Object> getDetailedAnnouncementContent(@PathVariable UUID detailedAnnouncementContentId) {
+        try {
+            var detailedAnnouncementContent = detailedAnnouncementService.getDetailedAnnouncementContent(detailedAnnouncementContentId);
+
+            return ResponseEntity.ok(detailedAnnouncementContent);
+        } catch (NoSuchElementException nse) {
+            return responseUtil.getNoSuchElementExceptionMessage("작업물 데이터가 없습니다.", nse.getMessage());
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("작업물을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
     @GetMapping("{detailedAnnouncementId}/{detailedAnnouncementContentId}/comment")
     public ResponseEntity<Object> getAllDetailedAnnouncementContentComment(@PathVariable UUID detailedAnnouncementContentId) {
         try {
