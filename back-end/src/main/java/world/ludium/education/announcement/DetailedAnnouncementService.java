@@ -74,6 +74,10 @@ public class DetailedAnnouncementService {
         return detailedAnnouncementContentRepository.findAllByDetailIdAndStatusOrderByCreateAt(detailedAnnouncementId, status);
     }
 
+    public DetailedAnnouncementContent getDetailedAnnouncementContent(UUID detailedAnnouncementContentId) {
+        return detailedAnnouncementContentRepository.findById(detailedAnnouncementContentId).orElseThrow();
+    }
+
     public DetailedAnnouncementContent createDetailedAnnouncementContent(DetailedAnnouncementContent detailedAnnouncementContent) {
         detailedAnnouncementContent.setDetailContentId(UUID.randomUUID());
 

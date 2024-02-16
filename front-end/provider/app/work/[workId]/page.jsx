@@ -9,6 +9,15 @@ const Viewer = dynamic(() => import("@/components/Viewer"), {
   ssr: false,
 });
 
+export async function generateMetadata({ params: { workId } }) {
+  const work = await getWork(workId);
+
+  return {
+    title: work.title,
+    description: work.description,
+  };
+}
+
 async function getWork(workId) {
   const getWorkResponse = await fetchWithRetry(
     `/detailed-announcement/${workId}`
