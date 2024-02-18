@@ -12,6 +12,10 @@ export default async function RootLayout({ children }) {
           name="naver-site-verification"
           content={process.env.NEXT_PUBLIC_NAVER_SEARCH_ADVISOR}
         />
+        <meta
+          name="google-site-verification"
+          content={process.env.NEXT_PUBLIC_GOOGLE_SEARCH_CONSOLE}
+        />
       </head>
       <body>
         <main className="main">
