@@ -7,6 +7,36 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import { Fragment } from "react";
 
+export async function generateMetadata({ params: { participationId } }) {
+  const learning = await getLearning(participationId);
+
+  return {
+    title: learning.title,
+    description: learning.description,
+    openGraph: {
+      title: learning.title,
+      description: learning.description,
+      url: `${process.env.NEXT_PUBLIC_SITE_MAP_URL}/participation/${participationId}`,
+      siteName: "루디움",
+      locale: "ko_KR",
+      type: "website",
+      images: [
+        {
+          url: "/logo1.svg",
+          width: 70,
+          height: 32,
+        },
+        {
+          url: "/logo1.svg",
+          width: 70,
+          height: 32,
+          alt: "루디움",
+        },
+      ],
+    },
+  };
+}
+
 const Viewer = dynamic(() => import("@/components/Viewer"), { ssr: false });
 
 async function getLearning(learningId) {

@@ -1,14 +1,55 @@
 import BackButton from "@/components/BackButton";
+import Icon from "@/components/Icon";
+import UnAuthorizedError from "@/errors/UnAuthorizedError";
 import fetchWithRetry from "@/functions/api";
+import ko_kr from "@/langs/ko_kr";
 import dynamic from "next/dynamic";
 import { cookies } from "next/headers";
 import ArticleSubmitbutton from "../../../ArticleSubmitButton";
-import ARTICLESUBMIT_STATUS from "@/enums/ARTICLESUBMIT_STATUS";
-import UnAuthorizedError from "@/errors/UnAuthorizedError";
-import Icon from "@/components/Icon";
-import ko_kr from "@/langs/ko_kr";
 
 const Viewer = dynamic(() => import("@/components/Viewer"), { ssr: false });
+
+export async function generateMetadata({
+  params: { participationId, curriculmId, articleId },
+}) {
+  const article = await getArticle(articleId);
+
+  return {
+    title: article.title,
+    description: article.description
+      .replace(/\[.*?\]\([^)]*?\)/g, "")
+      .replace(/\n+/g, "")
+      .replace(/#+\s/g, "")
+      .replaceAll("*", "")
+      .substring(0, 80),
+    openGraph: {
+      title: article.title,
+      description: article.description
+        .replace(/\[.*?\]\([^)]*?\)/g, "")
+        .replace(/\n+/g, "")
+        .replace(/#+\s/g, "")
+        .replaceAll("*", "")
+        .substring(0, 80),
+      url: `${process.env.NEXT_PUBLIC_SITE_MAP_URL}/participation/${participationId}/${curriculmId}/article/${articleId}`,
+      siteName: "루디움",
+      locale: "ko_KR",
+      type: "website",
+      images: [
+        {
+          url: "/logo1.svg",
+          width: 70,
+          height: 32,
+        },
+        {
+          url: "/logo1.svg",
+          width: 70,
+          height: 32,
+          alt: "루디움",
+        },
+      ],
+    },
+  };
+}
 
 async function getArticle(articleId) {
   const getArticleResponse = await fetchWithRetry(`/article/${articleId}`);
@@ -75,10 +116,11 @@ async function Article({ learningId, curriculumId, article }) {
               </div>
               <div className="frame-9-3">
                 <p
-                  className={`caption-12 ${articleSubmit.data === null
+                  className={`caption-12 ${
+                    articleSubmit.data === null
                       ? "color-gray-04"
                       : "color-purple-01"
-                    }`}
+                  }`}
                 >
                   {articleSubmit.data === null
                     ? ko_kr.NO_COMPLETE

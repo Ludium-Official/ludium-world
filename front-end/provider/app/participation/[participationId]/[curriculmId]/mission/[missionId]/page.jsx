@@ -6,6 +6,48 @@ import Link from "next/link";
 
 const Viewer = dynamic(() => import("@/components/Viewer"), { ssr: false });
 
+export async function generateMetadata({
+  params: { participationId, curriculmId, missionId },
+}) {
+  const mission = await getMission(missionId);
+
+  return {
+    title: mission.title,
+    description: mission.description
+      .replace(/\[.*?\]\([^)]*?\)/g, "")
+      .replace(/\n+/g, "")
+      .replace(/#+\s/g, "")
+      .replaceAll("*", "")
+      .substring(0, 80),
+    openGraph: {
+      title: mission.title,
+      description: mission.description
+        .replace(/\[.*?\]\([^)]*?\)/g, "")
+        .replace(/\n+/g, "")
+        .replace(/#+\s/g, "")
+        .replaceAll("*", "")
+        .substring(0, 80),
+      url: `${process.env.NEXT_PUBLIC_SITE_MAP_URL}/participation/${participationId}/${curriculmId}/mission/${missionId}`,
+      siteName: "루디움",
+      locale: "ko_KR",
+      type: "website",
+      images: [
+        {
+          url: "/logo1.svg",
+          width: 70,
+          height: 32,
+        },
+        {
+          url: "/logo1.svg",
+          width: 70,
+          height: 32,
+          alt: "루디움",
+        },
+      ],
+    },
+  };
+}
+
 async function getMission(missionId) {
   const getMissionResponse = await fetchWithRetry(`/mission/${missionId}`);
 
