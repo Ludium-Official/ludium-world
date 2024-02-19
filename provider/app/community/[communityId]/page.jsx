@@ -41,11 +41,6 @@ export async function generateMetadata({ params: { communityId } }) {
           url: `${process.env.NEXT_PUBLIC_SITE_MAP_URL}/logo1.svg`,
           width: 70,
           height: 32,
-        },
-        {
-          url: `${process.env.NEXT_PUBLIC_SITE_MAP_URL}/logo1.svg`,
-          width: 70,
-          height: 32,
           alt: "루디움",
         },
       ],
