@@ -12,6 +12,7 @@ export async function generateMetadata({
   const mission = await getMission(missionId);
 
   return {
+    metadataBase: process.env.NEXT_PUBLIC_SITE_MAP_URL,
     title: mission.title,
     description: mission.description
       .replace(/\[.*?\]\([^)]*?\)/g, "")
@@ -33,7 +34,7 @@ export async function generateMetadata({
       type: "website",
       images: [
         {
-          url: `${process.env.NEXT_PUBLIC_SITE_MAP_URL}/logo1.svg`,
+          url: "/logo1.svg",
           width: 70,
           height: 32,
           alt: "루디움",

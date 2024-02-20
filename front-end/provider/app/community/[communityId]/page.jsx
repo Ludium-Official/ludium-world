@@ -17,6 +17,7 @@ export async function generateMetadata({ params: { communityId } }) {
   const content = await getContent(communityId);
 
   return {
+    metadataBase: process.env.NEXT_PUBLIC_SITE_MAP_URL,
     title: content.title,
     description: content.description
       .replace(/\[.*?\]\([^)]*?\)/g, "")
@@ -38,7 +39,7 @@ export async function generateMetadata({ params: { communityId } }) {
       type: "website",
       images: [
         {
-          url: `${process.env.NEXT_PUBLIC_SITE_MAP_URL}/logo1.svg`,
+          url: "/logo1.svg",
           width: 70,
           height: 32,
           alt: "루디움",
