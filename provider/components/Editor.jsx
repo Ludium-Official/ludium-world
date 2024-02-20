@@ -38,6 +38,23 @@ export default function Editor({ editorRef, content, height }) {
               callback(imageUploadResponse, blob.name);
             },
           },
+          usageStatistics: true,
+          customHTMLRenderer: {
+            htmlBlock: {
+              iframe(node) {
+                return [
+                  {
+                    type: "openTag",
+                    tagName: "iframe",
+                    outerNewLine: true,
+                    attributes: node.attrs,
+                  },
+                  { type: "html", content: node.childrenHTML },
+                  { type: "closeTag", tagName: "iframe", outerNewLine: false },
+                ];
+              },
+            },
+          },
         });
       } catch (error) {
         console.error(error);
