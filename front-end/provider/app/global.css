@@ -2291,3 +2291,8 @@ p {
   align-items: center;
 }
 /* announcement page style end */
+
+.toastui-editor-contents h1,
+.toastui-editor-contents h2 {
+  border-bottom: none !important;
+}

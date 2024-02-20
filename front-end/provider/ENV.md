@@ -11,5 +11,7 @@ NEXT_PUBLIC_NAVER_SEARCH_ADVISOR = ""
 // Sitemap url
 NEXT_PUBLIC_SITE_MAP_URL = ""
 // 구글 검색 엔진 최적화 관련 정보(Google Search Console) 메타 데이터 값
-NEXT_PUBLIC_GOOGLE_SEARCH_CONSOLE
+NEXT_PUBLIC_GOOGLE_SEARCH_CONSOLE = ""
+// 이미지 저장 API KEY (IMGBB)
+NEXT_PUBLIC_IMGBB_KEY = ""
 ```
