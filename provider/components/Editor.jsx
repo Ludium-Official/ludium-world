@@ -1,5 +1,6 @@
 import { uploadImage } from "@/functions/actions/ImageUpload";
 import "@toast-ui/editor/dist/toastui-editor.css";
+import DOMPurify from "dompurify";
 import { useEffect } from "react";
 
 export default function Editor({ editorRef, content, height }) {
@@ -50,10 +51,38 @@ export default function Editor({ editorRef, content, height }) {
                     attributes: node.attrs,
                   },
                   { type: "html", content: node.childrenHTML },
-                  { type: "closeTag", tagName: "iframe", outerNewLine: false },
+                  { type: "closeTag", tagName: "iframe", outerNewLine: true },
                 ];
               },
             },
+          },
+          customHTMLSanitizer: (html) => {
+            return DOMPurify.sanitize(html, {
+              ADD_TAGS: ["iframe"],
+              ADD_ATTR: [
+                "rel",
+                "target",
+                "hreflang",
+                "type",
+                "frameborder",
+                "allow",
+                "allowfullscreen",
+              ],
+              FORBID_TAGS: [
+                "input",
+                "script",
+                "textarea",
+                "form",
+                "button",
+                "select",
+                "meta",
+                "style",
+                "link",
+                "title",
+                "object",
+                "base",
+              ],
+            });
           },
         });
       } catch (error) {
