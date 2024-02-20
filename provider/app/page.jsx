@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Fragment } from "react";
 
 export const metadata = {
+  metadataBase: process.env.NEXT_PUBLIC_SITE_MAP_URL,
   title: "루디움",
   description:
     "공지사항 그리고 전반적인 Web3.0에 대한 정보들을 찾아 볼 수 있어.",
@@ -18,12 +19,7 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: `${process.env.NEXT_PUBLIC_SITE_MAP_URL}/logo1.svg`,
-        width: 70,
-        height: 32,
-      },
-      {
-        url: `${process.env.NEXT_PUBLIC_SITE_MAP_URL}/logo1.svg`,
+        url: "logo1.svg",
         width: 70,
         height: 32,
         alt: "루디움",
