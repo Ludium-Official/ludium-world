@@ -21,6 +21,23 @@ export default function Viewer({ content, height }) {
           width: "100%",
           height: height ?? "90vh",
           initialValue: content,
+          usageStatistics: true,
+          customHTMLRenderer: {
+            htmlBlock: {
+              iframe(node) {
+                return [
+                  {
+                    type: "openTag",
+                    tagName: "iframe",
+                    outerNewLine: true,
+                    attributes: node.attrs,
+                  },
+                  { type: "html", content: node.childrenHTML },
+                  { type: "closeTag", tagName: "iframe", outerNewLine: false },
+                ];
+              },
+            },
+          },
         });
       } catch (error) {
         console.error(error);
