@@ -2,6 +2,8 @@ import { uploadImage } from "@/functions/actions/ImageUpload";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import DOMPurify from "dompurify";
 import { useEffect } from "react";
+import { YoutubeEmbedToolbar } from "./editor/toolbars";
+import sanitizer from "./editor/sanitizer";
 
 export default function Editor({ editorRef, content, height }) {
   useEffect(() => {
@@ -57,34 +59,14 @@ export default function Editor({ editorRef, content, height }) {
             },
           },
           customHTMLSanitizer: (html) => {
-            return DOMPurify.sanitize(html, {
-              ADD_TAGS: ["iframe"],
-              ADD_ATTR: [
-                "rel",
-                "target",
-                "hreflang",
-                "type",
-                "frameborder",
-                "allow",
-                "allowfullscreen",
-              ],
-              FORBID_TAGS: [
-                "input",
-                "script",
-                "textarea",
-                "form",
-                "button",
-                "select",
-                "meta",
-                "style",
-                "link",
-                "title",
-                "object",
-                "base",
-              ],
-            });
+            return sanitizer(html);
           },
         });
+
+        editorRef.current.editorInstance.insertToolbarItem(
+          { groupIndex: 3, itemIndex: 3 },
+          YoutubeEmbedToolbar(editorRef.current.editorInstance)
+        );
       } catch (error) {
         console.error(error);
       }
