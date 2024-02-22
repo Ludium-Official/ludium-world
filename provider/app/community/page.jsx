@@ -27,7 +27,7 @@ async function ContentList() {
   return (
     <div className="frame-152">
       {contents.map(({ contentId, title, usrId, type, createAt }) => (
-        <div className="frame background-white border-gray-06">
+        <div className="frame background-white border-gray-06" key={contentId}>
           <div className="frame-118-2">
             <div className="frame-34-5">
               <div className="frame-9-2">

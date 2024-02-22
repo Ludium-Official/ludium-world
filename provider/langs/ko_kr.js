@@ -7,4 +7,6 @@ export default {
   SUBMIT: "제출됨",
   APPROVE: "승인됨",
   CREATE: "생성됨",
+  FREE: "자유",
+  QUESTION: "질문",
 };
