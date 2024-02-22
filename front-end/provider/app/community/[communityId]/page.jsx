@@ -11,6 +11,7 @@ import Link from "next/link";
 import { Fragment } from "react";
 import ContentCommentEditor from "./ContentCommentEditor";
 import DeleteContentButton from "./DeleteContentButton";
+import ko_kr from "@/langs/ko_kr";
 const Viewer = dynamic(() => import("@/components/Viewer"), { ssr: false });
 
 export async function generateMetadata({ params: { communityId } }) {
@@ -136,11 +137,17 @@ export default async function ContentPage({ params: { communityId } }) {
   const content = await getContent(communityId);
   const profile = await getProfile();
 
+  const editableContentTypes = [
+    COMMUNITY_TYPE.CONTENT,
+    COMMUNITY_TYPE.FREE,
+    COMMUNITY_TYPE.QUESTION,
+  ];
+
   return (
     <>
       <header className="nb">
         <BackButton />
-        {content.type === COMMUNITY_TYPE.CONTENT ? (
+        {editableContentTypes.includes(content.type) ? (
           profile === null ? null : (
             <Link
               className="frame-56 link"
@@ -170,7 +177,9 @@ export default async function ContentPage({ params: { communityId } }) {
               <div className="frame-101">
                 <div className="frame-9">
                   <div className="frame-145">
-                    <h1 className="h4-20 color-black">{content.title}</h1>
+                    <h1 className="h4-20 color-black">
+                      [{ko_kr[content.type]}] {content.title}
+                    </h1>
                   </div>
                   <div className="frame-9-3">
                     <p className="caption-12 color-gray-04">
@@ -179,7 +188,7 @@ export default async function ContentPage({ params: { communityId } }) {
                     {/* <p className="caption-12 color-gray-04">
                       {getTimeStamp(content.createAt)}
                     </p> */}
-                    {content.type === COMMUNITY_TYPE.CONTENT ? (
+                    {editableContentTypes.includes(content.type) ? (
                       profile === null ? null : (
                         <DeleteContentButton communityId={communityId} />
                       )
@@ -194,7 +203,7 @@ export default async function ContentPage({ params: { communityId } }) {
               </div>
             </div>
           </div>
-          {content.type === COMMUNITY_TYPE.CONTENT ? (
+          {editableContentTypes.includes(content.type) ? (
             <div className="frame-150">
               <ContentCoomentList contentId={communityId} />
               <div className="frame background-white border-gray-06 mission-comment mission-comment-editor">
