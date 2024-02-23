@@ -5,11 +5,15 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import Editor from "../../../components/Editor";
 import fetchWithRetry from "../../../functions/api";
+import { uploadImage } from "@/functions/actions/ImageUpload";
+import Image from "next/image";
 
 export default function EditProfile({ profile }) {
   const editorRef = useRef(null);
+  const avatarRef = useRef(null);
   const router = useRouter();
   const [pending, setPending] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState(profile.avatar);
 
   if (!profile) return <h1>사용자 데이터를 불러오지 못했습니다.</h1>;
 
@@ -17,7 +21,7 @@ export default function EditProfile({ profile }) {
     e.preventDefault();
     setPending(true);
 
-    const { nick, phone_number } = e.target;
+    const { nick, phone_number, avatar } = e.target;
     const { editorInstance } = editorRef.current;
 
     try {
@@ -27,6 +31,7 @@ export default function EditProfile({ profile }) {
           nick: nick.value,
           phnNmb: phone_number.value,
           selfIntro: editorInstance.getMarkdown(),
+          avatar: avatar.dataset.url,
         }),
       });
 
@@ -41,6 +46,21 @@ export default function EditProfile({ profile }) {
     }
   };
 
+  const handleClickAvatarButton = (e) => {
+    avatarRef.current.click();
+  };
+
+  const handleUploadImage = async (e) => {
+    const avatarUploadFormData = new FormData();
+
+    avatarUploadFormData.append("image", e.target.files[0]);
+
+    const uploadAvatarImageResponse = await uploadImage(avatarUploadFormData);
+
+    e.target.dataset.url = uploadAvatarImageResponse;
+    setAvatarUrl(uploadAvatarImageResponse);
+  };
+
   return (
     <form
       className="frame-34-10 background-white border-gray-06"
@@ -48,6 +68,30 @@ export default function EditProfile({ profile }) {
     >
       <div className="frame-117-2">
         <div className="frame-116-2">
+          <div className="input-2">
+            <label className="h5-18 color-gray-03" htmlFor="avatar">
+              이미지
+            </label>
+            <div className="group-8">
+              <Image
+                className="avatar"
+                src={avatarUrl}
+                alt="아바타"
+                width={60}
+                height={60}
+                onClick={handleClickAvatarButton}
+              />
+              <input
+                className="avatar-hidden"
+                ref={avatarRef}
+                type="file"
+                id="avatar"
+                name="avatar"
+                data-url={null}
+                onChange={handleUploadImage}
+              />
+            </div>
+          </div>
           <div className="input-2">
             <label className="h5-18 color-gray-03" htmlFor="nick">
               닉네임

@@ -1483,6 +1483,15 @@ body {
 .frame-34-10 {
   align-self: stretch;
 }
+
+.avatar {
+  border-radius: 50%;
+  padding: 0;
+}
+
+.avatar-hidden {
+  display: none;
+}
 /* profile edit style end */
 
 .link {
