@@ -5,5 +5,9 @@ export const metadata = {
 };
 
 export default function SignUpPage() {
-  return <SignUp />;
+  return (
+    <div className="frame-93">
+      <SignUp />
+    </div>
+  );
 }

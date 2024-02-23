@@ -18,6 +18,7 @@ public class LudiumUser {
     private String selfIntro;
     private String phnNmb;
     private BigInteger gglId;
+    private String avatar;
 
     public UUID getId() {
         return id;
@@ -59,6 +60,14 @@ public class LudiumUser {
         this.gglId = gglId;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     @Override
     public String toString() {
         return "LudiumUser{" +
@@ -67,6 +76,7 @@ public class LudiumUser {
                 ", selfIntro='" + selfIntro + '\'' +
                 ", phnNmb='" + phnNmb + '\'' +
                 ", gglId=" + gglId +
+                ", avatar='" + avatar + '\'' +
                 '}';
     }
 }

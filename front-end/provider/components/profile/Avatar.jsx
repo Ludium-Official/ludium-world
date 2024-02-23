@@ -11,6 +11,13 @@ export default function Avatar({ profile }) {
         <div className="frame-83">
           <div className="frame-84">
             <div className="group-8">
+              <Icon
+                className="avatar"
+                src={profile.avatar}
+                alt="아바타"
+                width={60}
+                height={60}
+              ></Icon>
               {/* <Icon
                 className="ellipse-2"
                 src="/icon_ellipse.svg"
