@@ -156,6 +156,7 @@ async function Content() {
 export default async function Page() {
   return (
     <>
+      <link rel="canonical" href={process.env.NEXT_PUBLIC_SITE_MAP_URL} />
       <LatestAnnouncement />
       <Content />
     </>
