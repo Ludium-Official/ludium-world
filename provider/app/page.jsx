@@ -61,17 +61,17 @@ async function AnnouncementList() {
           <div className="article-list-more-icon">
             <Icon
               src="/icon_arrow_right.svg"
-              alt="more"
+              alt="모든 공고 목록 보기"
               width={12}
               height={12}
             />
           </div>
         </Link>
       </header>
-      <main className="article-list">
+      <ul className="article-list">
         {announcements.map((announcement, index) => (
           <Fragment key={announcement.postingId}>
-            <section className="article">
+            <li className="article">
               {/* <div className="article-status">
                 <p className="article-status-text caption-12 color-purple-01">
                   마감 N일전
@@ -83,13 +83,13 @@ async function AnnouncementList() {
               >
                 {announcement.title}
               </Link>
-            </section>
+            </li>
             {index < announcements.length - 1 ? (
-              <div className="article-divider" />
+              <hr className="article-divider" />
             ) : null}
           </Fragment>
         ))}
-      </main>
+      </ul>
     </article>
   );
 }
@@ -106,17 +106,17 @@ async function ParticipationList() {
           <div className="article-list-more-icon">
             <Icon
               src="/icon_arrow_right.svg"
-              alt="more"
+              alt="모든 학습 목록 보기"
               width={12}
               height={12}
             />
           </div>
         </Link>
       </header>
-      <main className="article-list">
+      <ul className="article-list">
         {participations.map((participation, index) => (
           <Fragment key={participation.postingId}>
-            <section className="article">
+            <li className="article">
               {/* <div className="article-status">
                 <p className="article-status-text caption-12 color-purple-01">
                   수강기한 N일
@@ -128,13 +128,13 @@ async function ParticipationList() {
               >
                 {participation.title}
               </Link>
-            </section>
+            </li>
             {index < participations.length - 1 ? (
-              <div className="article-divider" />
+              <hr className="article-divider" />
             ) : null}
           </Fragment>
         ))}
-      </main>
+      </ul>
     </article>
   );
 }

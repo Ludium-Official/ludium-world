@@ -519,12 +519,12 @@
 
 body {
   margin: 0;
-}
-
-.main {
   width: 100%;
   height: 1024px;
   background: var(--gray07, #fbfbfb);
+}
+
+.main {
 }
 
 /* aside style start */
@@ -925,6 +925,7 @@ body {
   width: Calc(100% - 60px);
   height: 0;
   border: 1px solid var(--gray05);
+  margin: 0;
 }
 /* home content style end */
 
