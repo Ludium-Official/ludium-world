@@ -22,7 +22,12 @@ export default function Footer() {
               href="https://twitter.com/ludium_official"
             >
               <div className="sns-icon">
-                <Icon src="/icon_x.svg" alt="X" width={16} height={15} />
+                <Icon
+                  src="/icon_x.svg"
+                  alt="루디움 X(트위터)로 이동하기"
+                  width={16}
+                  height={15}
+                />
               </div>
               Twitter
             </Link>
@@ -33,7 +38,7 @@ export default function Footer() {
               <div className="sns-icon">
                 <Icon
                   src="/icon_discord.svg"
-                  alt="discord"
+                  alt="루디움 디스코드로 이동하기"
                   width={13.333}
                   height={10.667}
                 />
@@ -46,17 +51,20 @@ export default function Footer() {
             >
               <Icon
                 src="/icon_youtube.svg"
-                alt="youtube"
+                alt="루디움 유튜브로 이동하기"
                 width={16}
                 height={16}
               />
               Youtube
             </Link>
-            <Link className="address-text sns" href="#">
+            <Link
+              className="address-text sns"
+              href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_MAIL}?subject=디렉투스의 도움이 필요해`}
+            >
               <div className="sns-icon">
                 <Icon
                   src="/icon_customer_service.svg"
-                  alt="custoer service"
+                  alt="루디움에 이메일로 지원 받기"
                   width={15.333}
                   height={14.667}
                 />
