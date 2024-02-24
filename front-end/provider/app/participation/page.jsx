@@ -6,7 +6,27 @@ import Link from "next/link";
 import { Fragment } from "react";
 
 export const metadata = {
-  title: "학습 참여",
+  metadataBase: process.env.NEXT_PUBLIC_SITE_MAP_URL,
+  title: "웹 3.0 프로젝트 학습 참여",
+  description:
+    "웹 3.0 기반의 평등한 참여와 학습으로 보상 받는 커뮤니티를 경험하세요.",
+  openGraph: {
+    title: "웹 3.0 프로젝트 학습 참여",
+    description:
+      "웹 3.0 기반의 평등한 참여와 학습으로 보상 받는 커뮤니티를 경험하세요.",
+    url: process.env.NEXT_PUBLIC_SITE_MAP_URL,
+    siteName: "루디움",
+    locale: "ko_KR",
+    type: "website",
+    images: [
+      {
+        url: "logo1.png",
+        width: 70,
+        height: 32,
+        alt: "루디움",
+      },
+    ],
+  },
 };
 
 export async function getProfile() {

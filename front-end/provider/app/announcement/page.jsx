@@ -4,7 +4,25 @@ import { Fragment } from "react";
 import fetchWithRetry from "../../functions/api";
 
 export const metadata = {
-  title: "공고 목록",
+  metadataBase: process.env.NEXT_PUBLIC_SITE_MAP_URL,
+  title: "웹 3.0 프로젝트 공고",
+  description: "웹 3.0 프로젝트 최신 공고 및 기회를 확인하세요.",
+  openGraph: {
+    title: "웹 3.0 프로젝트 공고",
+    description: "웹 3.0 프로젝트 최신 공고 및 기회를 확인하세요.",
+    url: process.env.NEXT_PUBLIC_SITE_MAP_URL,
+    siteName: "루디움",
+    locale: "ko_KR",
+    type: "website",
+    images: [
+      {
+        url: "logo1.png",
+        width: 70,
+        height: 32,
+        alt: "루디움",
+      },
+    ],
+  },
 };
 
 async function getAnnouncementList() {
