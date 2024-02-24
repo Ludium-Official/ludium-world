@@ -28,11 +28,11 @@ export default async function LatestAnnouncement() {
         }
       >
         <Icon src="/icon_announce.svg" alt="announce" width={24} height={24} />
-        <p className="h4-20 latest-announcement-text">
+        <h1 className="h4-20 latest-announcement-text">
           {latestAnnouncement == null
             ? "최신 공지 데이터가 없습니다."
             : latestAnnouncement.title}
-        </p>
+        </h1>
         <p className="latest-announcement-icon">N</p>
       </Link>
     </header>

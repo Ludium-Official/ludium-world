@@ -55,7 +55,7 @@ async function AnnouncementList() {
   return (
     <article className="article-list-wrapper">
       <header className="article-announce">
-        <h1 className="article-list-text h3-24">공고 목록</h1>
+        <h2 className="article-list-text h3-24">공고 목록</h2>
         <Link className="article-list-more" href="/announcement">
           <p className="article-list-more-text p1-18">모두 보기</p>
           <div className="article-list-more-icon">
@@ -100,7 +100,7 @@ async function ParticipationList() {
   return (
     <article className="article-list-wrapper">
       <header className="article-announce">
-        <h1 className="article-list-text h3-24">학습 목록</h1>
+        <h2 className="article-list-text h3-24">학습 목록</h2>
         <Link className="article-list-more" href="/participation">
           <p className="article-list-more-text p1-18">모두 보기</p>
           <div className="article-list-more-icon">
@@ -143,7 +143,7 @@ async function Content() {
   return (
     <article className="home-content">
       <div className="banner">
-        <h1 style={{ textAlign: "center" }}>배너 작업중...</h1>
+        <h2 style={{ textAlign: "center" }}>배너 작업중...</h2>
       </div>
       <div className="content-article">
         <AnnouncementList />
