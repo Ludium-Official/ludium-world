@@ -6,7 +6,7 @@ export default async function RootLayout({ children }) {
   const cookieStore = cookies();
 
   return (
-    <html lang="en">
+    <html lang="ko">
       <head>
         <meta
           name="naver-site-verification"
@@ -17,14 +17,12 @@ export default async function RootLayout({ children }) {
           content={process.env.NEXT_PUBLIC_GOOGLE_SEARCH_CONSOLE}
         />
       </head>
-      <body>
-        <main className="main">
-          <Navigation
-            googleAuthInfo={cookieStore.get("access_token")}
-            gglId={cookieStore.get("ggl_id")}
-          />
-          {children}
-        </main>
+      <body className="body">
+        <Navigation
+          googleAuthInfo={cookieStore.get("access_token")}
+          gglId={cookieStore.get("ggl_id")}
+        />
+        <main className="main">{children}</main>
       </body>
     </html>
   );

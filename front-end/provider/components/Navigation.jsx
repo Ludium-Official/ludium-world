@@ -43,7 +43,7 @@ export default function Navigation({ googleAuthInfo, gglId }) {
             href={`https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}&access_type=offline&prompt=consent`}
             iconClass="icon-profile"
             src="/icon_profile.svg"
-            alt="profile"
+            alt="로그인 페이지로 이동하기"
             width={17.323}
             height={17.323}
             text="로그인"
@@ -53,7 +53,7 @@ export default function Navigation({ googleAuthInfo, gglId }) {
             href="/profile"
             iconClass="icon-profile"
             src="/icon_profile.svg"
-            alt="profile"
+            alt="프로필 페이지로 이동하기"
             width={17.323}
             height={17.323}
             text="프로필"
@@ -63,7 +63,7 @@ export default function Navigation({ googleAuthInfo, gglId }) {
           href="/announcement"
           iconClass="icon-announcement"
           src="/icon_announcement.svg"
-          alt="announcement"
+          alt="공고 지원 페이지로 이동하기"
           width={17.2}
           height={20.62}
           text="공고 지원"
@@ -71,7 +71,7 @@ export default function Navigation({ googleAuthInfo, gglId }) {
         <GnbMenu
           href="/work"
           src="/icon_note.svg"
-          alt="work"
+          alt="작업 수행 페이지로 이동하기"
           width={24}
           height={24}
           text="작업 수행"
@@ -79,7 +79,7 @@ export default function Navigation({ googleAuthInfo, gglId }) {
         <GnbMenu
           href="/participation"
           src="/icon_learning.svg"
-          alt="learning"
+          alt="학습 참여 페이지로 이동하기"
           width={24}
           height={24}
           text="학습 참여"
@@ -87,7 +87,7 @@ export default function Navigation({ googleAuthInfo, gglId }) {
         <GnbMenu
           href="/community"
           src="/icon_community.svg"
-          alt="community"
+          alt="커뮤니티 페이지로 이동하기"
           width={24}
           height={24}
           text="커뮤니티"
@@ -98,7 +98,7 @@ export default function Navigation({ googleAuthInfo, gglId }) {
             <GnbMenu
               href="/mission"
               src="/icon_note.svg"
-              alt="work"
+              alt="미션 관리 페이지로 이동하기"
               width={24}
               height={24}
               text="미션 관리"
