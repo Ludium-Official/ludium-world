@@ -37,7 +37,7 @@ export async function generateMetadata({
       type: "website",
       images: [
         {
-          url: "/logo1.svg",
+          url: "/logo1.png",
           width: 70,
           height: 32,
           alt: "루디움",
