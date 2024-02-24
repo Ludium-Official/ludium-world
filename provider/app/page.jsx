@@ -7,19 +7,18 @@ import { Fragment } from "react";
 export const metadata = {
   metadataBase: process.env.NEXT_PUBLIC_SITE_MAP_URL,
   title: "루디움",
-  description:
-    "공지사항 그리고 전반적인 Web3.0에 대한 정보들을 찾아 볼 수 있어.",
+  description: "루디움: 웹 3.0 기반 플랫폼, 자유와 커뮤니티 중심, 데이터 주권",
   openGraph: {
     title: "루디움",
     description:
-      "공지사항 그리고 전반적인 Web3.0에 대한 정보들을 찾아 볼 수 있어.",
+      "루디움: 웹 3.0 기반 플랫폼, 자유와 커뮤니티 중심, 데이터 주권",
     url: process.env.NEXT_PUBLIC_SITE_MAP_URL,
     siteName: "루디움",
     locale: "ko_KR",
     type: "website",
     images: [
       {
-        url: "logo1.svg",
+        url: "logo1.png",
         width: 70,
         height: 32,
         alt: "루디움",
