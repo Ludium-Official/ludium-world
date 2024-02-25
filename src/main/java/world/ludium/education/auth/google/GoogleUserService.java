@@ -30,4 +30,10 @@ public class GoogleUserService {
     public GoogleRefreshToken getUserRefreshToken(BigInteger id) {
         return googleRefreshTokenRepository.findById(id).orElse(null);
     }
+
+    public void deleteUser(BigInteger id) {
+        var googleUser = googleUserRepository.findById(id).orElseThrow();
+
+        googleUserRepository.delete(googleUser);
+    }
 }
