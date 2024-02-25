@@ -88,7 +88,7 @@ export default function EditProfile({ profile }) {
                 type="file"
                 id="avatar"
                 name="avatar"
-                data-url={null}
+                data-url={avatarUrl}
                 onChange={handleUploadImage}
               />
             </div>
