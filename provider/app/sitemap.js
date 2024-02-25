@@ -28,9 +28,10 @@ export default function sitemap() {
       priority: 0.9,
     },
     {
-      url: `${siteMapUrl}/profile`,
+      url: `${siteMapUrl}/community`,
       lastModified: new Date(),
-      changeFrequency: "yearly",
+      changeFrequency: "weekly",
+      priority: 0.9,
     },
   ];
 }
