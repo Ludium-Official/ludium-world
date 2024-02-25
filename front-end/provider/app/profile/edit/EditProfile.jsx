@@ -7,6 +7,7 @@ import Editor from "../../../components/Editor";
 import fetchWithRetry from "../../../functions/api";
 import { uploadImage } from "@/functions/actions/ImageUpload";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function EditProfile({ profile }) {
   const editorRef = useRef(null);
@@ -136,6 +137,11 @@ export default function EditProfile({ profile }) {
           >
             {pending ? "프로필 적용을 진행중입니다..." : "프로필 적용"}
           </button>
+        </div>
+        <div className="frame-119">
+          <Link className="link" href="/profile/delete">
+            <p className="p5-18 color-alert">회원 탈퇴 페이지로 이동</p>
+          </Link>
         </div>
       </div>
     </form>

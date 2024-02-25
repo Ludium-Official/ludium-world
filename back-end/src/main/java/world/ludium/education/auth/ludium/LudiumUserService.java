@@ -77,4 +77,21 @@ public class LudiumUserService {
     public void updateUserRight(LudiumUserRight ludiumUserRight) {
         ludiumUserRightRepository.save(ludiumUserRight);
     }
+
+    public void deleteUser(LudiumUser ludiumUser) {
+        LudiumUserRight contributor = LudiumUserRight.Contributor();
+        contributor.setId(ludiumUser.getId());
+
+        updateUserRight(contributor);
+
+        var deletedGglId = new BigInteger("-1");
+
+        ludiumUser.setGglId(deletedGglId);
+        ludiumUser.setNick("탈퇴한 유저");
+        ludiumUser.setPhnNmb("");
+        ludiumUser.setSelfIntro("");
+        ludiumUser.setAvatar("");
+
+        updateUser(ludiumUser);
+    }
 }

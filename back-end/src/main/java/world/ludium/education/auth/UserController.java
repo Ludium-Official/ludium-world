@@ -1,5 +1,8 @@
 package world.ludium.education.auth;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -148,5 +151,29 @@ public class UserController {
         } catch (Exception e) {
             return responseUtil.getExceptionMessage("관리자 권한을 설정하는 중에 에러가 발생했습니다.", e.getMessage());
         }
+    }
+
+    @DeleteMapping("")
+    public ResponseEntity<Object> deleteUser(@CookieValue(name = "access_token", required = false) String accessToken,
+                                             HttpServletRequest request,
+                                             HttpServletResponse response) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null)
+            return responseUtil.getUnAuthorizedMessage();
+
+        var deletedKey = ludiumUser.getGglId();
+
+        ludiumUserService.deleteUser(ludiumUser);
+        googleUserService.deleteUser(deletedKey);
+
+        Cookie[] cookies = request.getCookies();
+
+        for(var expiredCookie: cookies) {
+            expiredCookie.setMaxAge(0);
+            response.addCookie(expiredCookie);
+        }
+
+        return ResponseEntity.ok(ludiumUser);
     }
 }
