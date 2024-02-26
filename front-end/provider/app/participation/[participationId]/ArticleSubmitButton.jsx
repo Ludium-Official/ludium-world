@@ -24,9 +24,12 @@ export default function ArticleSubmitbutton({
 
     setPending(false);
     if (!submitArticleResponse.ok)
-      if (submitArticleResponse.status !== 409)
-        alert("아티클을 제출하는 중 에러가 발생했습니다.");
+      if (submitArticleResponse.status !== 409) {
+        alert("아티클을 완료하는 중 에러가 발생했습니다.");
+        return;
+      }
 
+    alert("아티클을 완료했습니다.");
     router.refresh();
   };
   return (
