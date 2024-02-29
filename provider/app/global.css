@@ -1490,7 +1490,8 @@ body {
   padding: 0;
 }
 
-.avatar-hidden {
+.avatar-hidden,
+.image-hidden {
   display: none;
 }
 /* profile edit style end */
