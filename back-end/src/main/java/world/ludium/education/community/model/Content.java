@@ -18,6 +18,7 @@ public class Content {
     private Timestamp createAt;
     private String type;
     private boolean visible;
+    private String banner;
 
     public UUID getContentId() {
         return contentId;
@@ -73,5 +74,13 @@ public class Content {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public String getBanner() {
+        return banner;
+    }
+
+    public void setBanner(String banner) {
+        this.banner = banner;
     }
 }
