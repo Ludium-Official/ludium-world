@@ -102,13 +102,15 @@ export default function NewCommunityForm() {
         <label className="h5-18 color-gray-03" htmlFor="banner">
           배너
         </label>
-        <Image
-          src={bannerUrl ?? "a.png"}
-          alt="배너 이미지"
-          width={400}
-          height={116}
-          onClick={handleClickBannerButton}
-        />
+        {bannerUrl === "" ? null : (
+          <Image
+            src={bannerUrl}
+            alt="배너 이미지"
+            width={400}
+            height={116}
+            onClick={handleClickBannerButton}
+          />
+        )}
         <input
           className="image-hidden"
           ref={bannerRef}
