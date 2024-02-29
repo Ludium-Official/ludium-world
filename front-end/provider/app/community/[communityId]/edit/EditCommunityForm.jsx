@@ -1,8 +1,10 @@
 "use client";
 
 import HTTP_METHOD from "@/enums/HTTP_METHOD";
+import { uploadImage } from "@/functions/actions/ImageUpload";
 import fetchWithRetry from "@/functions/api";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
@@ -11,12 +13,15 @@ const Editor = dynamic(() => import("@/components/Editor"), { ssr: false });
 export default function EditCommunityForm({ content }) {
   const router = useRouter();
   const editorRef = useRef();
+  const bannerRef = useRef();
   const [pending, setPending] = useState(false);
+  const [bannerUrl, setBannerUrl] = useState(content.banner);
 
   const handleUpdateContent = async (e) => {
     e.preventDefault();
     setPending(true);
 
+    const { title, banner } = e.target;
     const { editorInstance } = editorRef.current;
 
     const updateContentResponse = await fetchWithRetry(
@@ -25,8 +30,9 @@ export default function EditCommunityForm({ content }) {
         method: HTTP_METHOD.PUT,
         body: JSON.stringify({
           ...content,
-          title: e.target.title.value,
+          title: title.value,
           description: editorInstance.getMarkdown(),
+          banner: banner.dataset.url,
         }),
       }
     );
@@ -51,6 +57,21 @@ export default function EditCommunityForm({ content }) {
     if (keydownEvent.key === "Enter") keydownEvent.preventDefault();
   };
 
+  const handleClickBannerButton = () => {
+    bannerRef.current.click();
+  };
+
+  const handleUploadImage = async (e) => {
+    const avatarUploadFormData = new FormData();
+
+    avatarUploadFormData.append("image", e.target.files[0]);
+
+    const uploadAvatarImageResponse = await uploadImage(avatarUploadFormData);
+
+    e.target.dataset.url = uploadAvatarImageResponse;
+    setBannerUrl(uploadAvatarImageResponse);
+  };
+
   return (
     <form className="frame-116" onSubmit={handleUpdateContent}>
       <div className="input-2">
@@ -65,6 +86,29 @@ export default function EditCommunityForm({ content }) {
           id="title"
           defaultValue={content.title}
           onKeyDown={handleIgnoreEnterKeyDown}
+        />
+      </div>
+      <div className="input-2">
+        <label htmlFor="banner" className="h5-18 color-gray-03">
+          배너
+        </label>
+        {bannerUrl === "" ? null : (
+          <Image
+            src={bannerUrl}
+            alt={content.title}
+            width={400}
+            height={116}
+            onClick={handleClickBannerButton}
+          />
+        )}
+        <input
+          className="image-hidden"
+          ref={bannerRef}
+          type="file"
+          name="banner"
+          id="banner"
+          data-url={bannerUrl}
+          onChange={handleUploadImage}
         />
       </div>
       <div className="input-2">
