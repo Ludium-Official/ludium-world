@@ -2151,7 +2151,8 @@ p {
 }
 
 .button-L:disabled,
-.button-L-2:disabled {
+.button-L-2:disabled,
+.button-S:disabled {
   color: var(--gray03);
   background: var(--gray05);
 }
