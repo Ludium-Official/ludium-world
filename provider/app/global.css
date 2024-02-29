@@ -2150,6 +2150,12 @@ p {
   border: none;
 }
 
+.button-L:disabled,
+.button-L-2:disabled {
+  color: var(--gray03);
+  background: var(--gray05);
+}
+
 .frame-140 {
   display: flex;
   flex-direction: row;
