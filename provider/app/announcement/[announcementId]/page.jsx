@@ -5,6 +5,7 @@ import BackButton from "../../../components/BackButton";
 import Viewer from "../../../components/Viewer";
 import fetchWithRetry from "../../../functions/api";
 import RedirectApplicationButton from "./RedirectApplicationButton";
+import DETAILED_ANNOUNCEMENT_STATUS from "@/enums/DETAILED_ANNOUNCEMENT_STATUS";
 
 export async function generateMetadata({ params: { announcementId } }) {
   const announcement = await getAnnouncement(announcementId);
@@ -68,7 +69,7 @@ async function DetailedAnnouncementList({ announcementId }) {
 
   return (
     <div className="frame-119">
-      {detailedAnnouncements.map(({ detailId, title }, index) => (
+      {detailedAnnouncements.map(({ detailId, title, status }, index) => (
         <Fragment key={detailId}>
           <div className="frame-118">
             <div className="frame-100-2">
@@ -92,6 +93,7 @@ async function DetailedAnnouncementList({ announcementId }) {
               <RedirectApplicationButton
                 announcementId={announcementId}
                 detailId={detailId}
+                isClosed={status === DETAILED_ANNOUNCEMENT_STATUS.CLOSED}
               />
             </div>
           </div>
