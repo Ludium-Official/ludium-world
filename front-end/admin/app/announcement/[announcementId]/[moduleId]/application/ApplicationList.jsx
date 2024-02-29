@@ -15,7 +15,7 @@ export default function ApplicationList({ announcementId, applicationList }) {
   const handleAllocateWorker = async (detailId, usrId, role) => {
     setPending(true);
     const createAllocateWorkerResponse = await fetchWithRetry(
-      `/announcement/${announcementId}/${applicationList.detailId}/worker`,
+      `/announcement/${announcementId}/${detailId}/worker`,
       {
         method: HTTP_METHOD.POST,
         body: JSON.stringify({ detailId, usrId, role }),

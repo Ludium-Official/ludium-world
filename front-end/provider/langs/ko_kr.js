@@ -9,4 +9,5 @@ export default {
   CREATE: "생성됨",
   FREE: "자유",
   QUESTION: "질문",
+  CLOSED: "마감",
 };

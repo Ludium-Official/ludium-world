@@ -210,6 +210,12 @@ public class AnnouncementController {
             return responseUtil.getUnAuthorizedMessage();
 
         try {
+            var detailedAnnouncement = detailedAnnouncementService.getDetailedAnnouncement(detailedAnnouncementWorker.getDetailId()).orElseThrow();
+
+            detailedAnnouncement.setStatus(DetailedAnnouncementStatus.CLOSED.toString());
+
+            detailedAnnouncementService.updateDetailedAnnouncement(detailedAnnouncement);
+
             return ResponseEntity.ok(detailedAnnouncementService.createDetailedAnnouncementWorker(detailedAnnouncementWorker));
         } catch (Exception e) {
             return responseUtil.getExceptionMessage("작업자를 만드는 중에 에러가 발생했습니다.", e.getMessage());
