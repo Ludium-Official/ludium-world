@@ -10,11 +10,11 @@ const Editor = dynamic(() => import("@/components/Editor"), {
   ssr: false,
 });
 
-export default function WorkContentEditor({ detailContent }) {
+export default function WorkContentEditor({ detailContent, isEditor }) {
   const router = useRouter();
   const editorRef = useRef();
   const formRef = useRef();
-  const [pending, setPending] = useState(false);
+  const [pending, setPending] = useState(!isEditor);
 
   const handleEditWorkContent = async (e) => {
     e.preventDefault();
@@ -86,7 +86,11 @@ export default function WorkContentEditor({ detailContent }) {
           className="button-L-2 background-purple-01 h5-18 color-white"
           disabled={pending}
         >
-          {pending ? "저장하는 중입니다..." : "저장하기"}
+          {!isEditor
+            ? "작업자만 저장할 수 있습니다"
+            : pending
+            ? "저장하는 중입니다..."
+            : "저장하기"}
         </button>
       </div>
     </form>
