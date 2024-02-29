@@ -7,6 +7,8 @@ import { getTimeStamp } from "@/functions/helper";
 import dynamic from "next/dynamic";
 import WorkContentCommentEditor from "../WorkContentCommentEditor";
 import WorkContentSubmitButton from "./WorkContentSubmitButton";
+import { cookies } from "next/headers";
+import UnAuthorizedError from "@/errors/UnAuthorizedError";
 
 const Viewer = dynamic(() => import("@/components/Viewer"), { ssr: false });
 
@@ -41,6 +43,26 @@ async function getWorkContentCommentList(workId, contentId) {
     else throw new Error(500);
 
   return await getWorkContentCommentListResponse.json();
+}
+
+async function getProfile() {
+  const cookieStore = cookies();
+
+  try {
+    const getProfileResponse = await fetchWithRetry(`/profile`, {
+      headers: {
+        cookie: cookieStore,
+      },
+    });
+
+    if (!getProfileResponse.ok)
+      throw new Error("프로필을 불러오는 중 에러가 발생했습니다.");
+
+    return await getProfileResponse.json();
+  } catch (error) {
+    if (error instanceof UnAuthorizedError) return null;
+    else throw new Error(error.message);
+  }
 }
 
 async function WorkContentCommentList({ workId, contentId }) {
@@ -83,6 +105,10 @@ export default async function WorkContentPage({
 }) {
   const detailContent = await getWorkContent(workId, contentId);
 
+  const profile = await getProfile();
+
+  const isEditor =
+    profile === null ? false : detailContent.usrId === profile.id;
   return (
     <>
       <header className="nb">
@@ -100,7 +126,10 @@ export default async function WorkContentPage({
               </div>
               <div className="frame-101">
                 <div className="frame-117">
-                  <WorkContentEditor detailContent={detailContent} />
+                  <WorkContentEditor
+                    detailContent={detailContent}
+                    isEditor={isEditor}
+                  />
                 </div>
               </div>
             </div>
