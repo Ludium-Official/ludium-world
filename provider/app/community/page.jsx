@@ -5,6 +5,7 @@ import UserNick from "@/components/UserNick";
 import fetchWithRetry from "@/functions/api";
 import { getTimeStamp } from "@/functions/helper";
 import ko_kr from "@/langs/ko_kr";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata = {
@@ -46,11 +47,11 @@ async function ContentList() {
 
   return (
     <div className="frame-152">
-      {contents.map(({ contentId, title, usrId, type, createAt }) => (
+      {contents.map(({ contentId, title, usrId, type, createAt, banner }) => (
         <div className="frame background-white border-gray-06" key={contentId}>
           <div className="frame-118-2">
-            <div className="frame-34-5">
-              <div className="frame-9-2">
+            <div className={banner === "" ? "frame-34-5" : "frame-34-11"}>
+              <div className="frame-9-6">
                 <div className="frame-30"></div>
                 <Link
                   className="frame-93-4 link"
@@ -71,6 +72,11 @@ async function ContentList() {
                   </p>
                 </div>
               </div>
+              {banner === "" ? null : (
+                <Link href={`/community/${contentId}`}>
+                  <Image src={banner} alt={title} width={400} height={116} />
+                </Link>
+              )}
             </div>
           </div>
         </div>
