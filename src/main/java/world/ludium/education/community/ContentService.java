@@ -52,6 +52,10 @@ public class ContentService {
         return contentRepository.findTop1ByTypeAndVisibleOrderByCreateAtDesc(ContentType.ANNOUNCEMENT.toString(), true).orElseThrow();
     }
 
+    public Content getLatestBanner() {
+        return contentRepository.findTop1ByTypeAndVisibleOrderByCreateAtDesc(ContentType.BANNER.toString(), true).orElseThrow();
+    }
+
     public Content deleteContent(Content content) {
         content.setVisible(false);
         return updateContent(content);

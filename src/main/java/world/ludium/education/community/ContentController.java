@@ -76,6 +76,17 @@ public class ContentController {
         }
     }
 
+    @GetMapping("/latest-banner")
+    public ResponseEntity<Object> getLatestBanner() {
+        try {
+            return ResponseEntity.ok(contentService.getLatestBanner());
+        } catch (NoSuchElementException nse) {
+            return responseUtil.getNoSuchElementExceptionMessage("최신 배너 데이터가 없습니다.", nse.getMessage());
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("최신 배너를 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
     @PostMapping("")
     public ResponseEntity<Object> createContent(@RequestBody Content content,
                                                 @RequestParam(required = false) String type,
