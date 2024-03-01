@@ -1,6 +1,7 @@
 import Icon from "@/components/Icon";
 import LatestAnnouncement from "@/components/LatestAnnouncement";
 import fetchWithRetry from "@/functions/api";
+import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
 
@@ -47,6 +48,18 @@ async function getTop5Participation() {
     else throw new Error("학습 목록을 조회하는 중 에러가 발생했습니다.");
 
   return await getTop5ParticipationResponse.json();
+}
+
+async function getLatestBanner() {
+  const getLatestBannerResponse = await fetchWithRetry(
+    "/content/latest-banner"
+  );
+
+  if (!getLatestBannerResponse.ok)
+    if (getLatestBannerResponse.status === 404) return null;
+    else throw new Error("최신 배너를 조회하는 중 에러가 발생했습니다.");
+
+  return await getLatestBannerResponse.json();
 }
 
 async function AnnouncementList() {
@@ -139,12 +152,37 @@ async function ParticipationList() {
   );
 }
 
+async function LatestBanner() {
+  const latestBanner = await getLatestBanner();
+
+  if (latestBanner === null) {
+    return (
+      <div className="banner">
+        <h2 className="h4-20 latest-announcement-text">
+          최신 배너 데이터가 없습니다.
+        </h2>
+      </div>
+    );
+  }
+
+  return (
+    <div className="banner">
+      {latestBanner.banner === "" ? null : (
+        <Image
+          className="banner-image"
+          src={latestBanner.banner}
+          alt={latestBanner.title}
+          fill
+        />
+      )}
+    </div>
+  );
+}
+
 async function Content() {
   return (
     <article className="home-content">
-      <div className="banner">
-        <h2 style={{ textAlign: "center" }}>배너 작업중...</h2>
-      </div>
+      <LatestBanner />
       <div className="content-article">
         <AnnouncementList />
         <ParticipationList />
