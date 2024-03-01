@@ -3,8 +3,10 @@
 import BackButton from "@/components/BackButton";
 import ContentNavigation from "@/components/ContentNavigation";
 import HTTP_METHOD from "@/enums/HTTP_METHOD";
+import { uploadImage } from "@/functions/actions/ImageUpload";
 import fetchWithRetry from "@/functions/api";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
@@ -14,11 +16,13 @@ export default function EditCommunityForm({ content }) {
   const router = useRouter();
   const editorRef = useRef();
   const [pending, setPending] = useState(false);
+  const [bannerUrl, setBannerUrl] = useState(content.banner);
 
   const handleUpdateContent = async (e) => {
     e.preventDefault();
     setPending(true);
 
+    const { title, banner } = e.target;
     const { editorInstance } = editorRef.current;
 
     const updateContentResponse = await fetchWithRetry(
@@ -27,8 +31,9 @@ export default function EditCommunityForm({ content }) {
         method: HTTP_METHOD.PUT,
         body: JSON.stringify({
           ...content,
-          title: e.target.title.value,
+          title: title.value,
           description: editorInstance.getMarkdown(),
+          banner: banner.dataset.url,
         }),
       }
     );
@@ -45,6 +50,17 @@ export default function EditCommunityForm({ content }) {
 
     router.back();
     router.refresh();
+  };
+
+  const handleUploadImage = async (e) => {
+    const avatarUploadFormData = new FormData();
+
+    avatarUploadFormData.append("image", e.target.files[0]);
+
+    const uploadAvatarImageResponse = await uploadImage(avatarUploadFormData);
+
+    e.target.dataset.url = uploadAvatarImageResponse;
+    setBannerUrl(uploadAvatarImageResponse);
   };
 
   return (
@@ -67,6 +83,21 @@ export default function EditCommunityForm({ content }) {
               if (evt.key === "Enter") evt.preventDefault();
             }}
           />
+          <input
+            type="file"
+            name="banner"
+            id="banner"
+            dataset={bannerUrl}
+            onChange={handleUploadImage}
+          />
+          {bannerUrl === "" ? null : (
+            <Image
+              src={bannerUrl}
+              alt={content.title}
+              width={400}
+              height={116}
+            />
+          )}
         </section>
         <section className="editor">
           <Editor

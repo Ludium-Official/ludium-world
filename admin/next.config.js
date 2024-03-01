@@ -1,7 +1,8 @@
-const config = {
+module.exports = {
   experimental: {
     serverActions: true,
   },
+  images: {
+    domains: ["i.ibb.co"],
+  },
 };
-
-module.exports = config;
