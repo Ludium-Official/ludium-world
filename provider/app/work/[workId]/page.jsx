@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Fragment } from "react";
 import WorkContentCreateButton from "./WorkContentCreateButton";
 import Icon from "@/components/Icon";
+import { cookies } from "next/headers";
+import UnAuthorizedError from "@/errors/UnAuthorizedError";
 
 const Viewer = dynamic(() => import("@/components/Viewer"), {
   ssr: false,
@@ -43,6 +45,38 @@ async function getWorkContentList(workId) {
   return await getWorkContentListResponse.json();
 }
 
+async function getWorker(workId) {
+  const getWorkerResponse = await fetchWithRetry(
+    `/detailed-announcement/${workId}/worker`
+  );
+
+  if (!getWorkerResponse.ok)
+    if (getWorkerResponse.status === 404) return null;
+    else throw new Error(500);
+
+  return await getWorkerResponse.json();
+}
+
+async function getProfile() {
+  const cookieStore = cookies();
+
+  try {
+    const getProfileResponse = await fetchWithRetry(`/profile`, {
+      headers: {
+        cookie: cookieStore,
+      },
+    });
+
+    if (!getProfileResponse.ok)
+      throw new Error("프로필을 불러오는 중 에러가 발생했습니다.");
+
+    return await getProfileResponse.json();
+  } catch (error) {
+    if (error instanceof UnAuthorizedError) return null;
+    else throw new Error(error.message);
+  }
+}
+
 async function WorkContentList({ workId }) {
   const workContentList = await getWorkContentList(workId);
 
@@ -77,18 +111,22 @@ async function WorkContentList({ workId }) {
 
 export default async function WorkPage({ params: { workId } }) {
   const work = await getWork(workId);
+  const worker = await getWorker(workId);
+  const profile = await getProfile();
 
   return (
     <>
       <header className="nb">
         <BackButton />
-        <Link
-          className="frame-56 background-white border-none link"
-          href={`/work/${workId}/co-worker`}
-        >
-          <Icon src="/icon_plus.svg" alt="제출하기" width={24} height={24} />
-          <p className="h4-20 color-purple-01">작업자 추가</p>
-        </Link>{" "}
+        {worker != null && profile != null && worker.usrId === profile.id ? (
+          <Link
+            className="frame-56 background-white border-none link"
+            href={`/work/${workId}/co-worker`}
+          >
+            <Icon src="/icon_plus.svg" alt="제출하기" width={24} height={24} />
+            <p className="h4-20 color-purple-01">작업자 추가</p>
+          </Link>
+        ) : null}
       </header>
       <div className="wrapper">
         <div className="frame-93">
@@ -107,7 +145,9 @@ export default async function WorkPage({ params: { workId } }) {
             </div>
           </div>
         </div>
-        <WorkContentCreateButton workId={workId} />
+        {worker != null && profile != null && worker.usrId === profile.id ? (
+          <WorkContentCreateButton workId={workId} />
+        ) : null}
         <div className="frame background-white border-gray-06">
           <div className="frame-101">
             <div className="frame-9">
