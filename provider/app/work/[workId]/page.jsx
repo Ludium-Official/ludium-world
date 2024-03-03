@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Fragment } from "react";
 import WorkContentCreateButton from "./WorkContentCreateButton";
+import Icon from "@/components/Icon";
 
 const Viewer = dynamic(() => import("@/components/Viewer"), {
   ssr: false,
@@ -81,6 +82,13 @@ export default async function WorkPage({ params: { workId } }) {
     <>
       <header className="nb">
         <BackButton />
+        <Link
+          className="frame-56 background-white border-none link"
+          href={`/work/${workId}/co-worker`}
+        >
+          <Icon src="/icon_plus.svg" alt="제출하기" width={24} height={24} />
+          <p className="h4-20 color-purple-01">작업자 추가</p>
+        </Link>{" "}
       </header>
       <div className="wrapper">
         <div className="frame-93">

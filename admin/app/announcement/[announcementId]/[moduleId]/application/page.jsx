@@ -1,6 +1,7 @@
 import announcementstyle from "@/app/announcement/announcement.module.css";
 import fetchWithRetry from "@/functions/api";
 import ApplicationList from "./ApplicationList";
+import DeleteWorkerButton from "./DeleteWorkerButtons";
 
 async function getApplicationTemplate(announcementId, detailId, role) {
   const getApplicationTemplateResponse = await fetchWithRetry(
@@ -46,7 +47,15 @@ async function DetailedAnnouncementWorker({ announcementId, detailId, role }) {
 
   const { nick } = worker ? worker : { nick: null };
 
-  return <h2>작업자: {nick ?? "없음"}</h2>;
+  return (
+    <>
+      {worker ? (
+        <DeleteWorkerButton announcementId={announcementId} worker={worker} />
+      ) : null}
+
+      <h2>작업자: {nick ?? "없음"}</h2>
+    </>
+  );
 }
 
 export default async function ApplicationPage({
