@@ -13,6 +13,7 @@ import java.nio.file.AccessDeniedException;
 import java.sql.Timestamp;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/detailed-announcement", produces = "application/json")
@@ -271,8 +272,12 @@ public class DetailedAnnouncementController {
 
     public void checkDetailedAnnouncementWorker(UUID detailedAnnouncementId, LudiumUser ludiumUser) throws AccessDeniedException {
         var detailedAnnouncementWorker = detailedAnnouncementService.getDetailedAnnouncementWorker(detailedAnnouncementId, "PROVIDER");
+        var detailedAnnouncementCoWorkerList = detailedAnnouncementService.getAllDetailedAnnouncementCoWorker(detailedAnnouncementId);
 
-        if (!ludiumUser.getId().equals(detailedAnnouncementWorker.getUsrId()))
-            throw new AccessDeniedException("작업자 정보가 일치하지 않습니다.");
-    }
+        if(!detailedAnnouncementCoWorkerList.stream().map(detailedAnnouncementCoWorker -> detailedAnnouncementCoWorker.usrId()).collect(Collectors.toList()).contains(ludiumUser.getId())) {
+            if (!ludiumUser.getId().equals(detailedAnnouncementWorker.getUsrId()))
+                throw new AccessDeniedException("작업자 정보가 일치하지 않습니다.");
+            }
+        }
+
 }
