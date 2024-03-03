@@ -182,7 +182,7 @@ async function LatestBanner() {
 async function Content() {
   return (
     <article className="home-content">
-      <LatestBanner />
+      {/* <LatestBanner /> */}
       <div className="content-article">
         <AnnouncementList />
         <ParticipationList />
