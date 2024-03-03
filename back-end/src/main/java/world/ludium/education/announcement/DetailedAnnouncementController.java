@@ -1,11 +1,9 @@
 package world.ludium.education.announcement;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import world.ludium.education.announcement.model.DetailedAnnouncement;
-import world.ludium.education.announcement.model.DetailedAnnouncementContent;
-import world.ludium.education.announcement.model.DetailedAnnouncementContentComment;
-import world.ludium.education.announcement.model.DetailedAnnouncementContentStatus;
+import world.ludium.education.announcement.model.*;
 import world.ludium.education.auth.ludium.LudiumUser;
 import world.ludium.education.auth.ludium.LudiumUserService;
 import world.ludium.education.util.ResponseException;
@@ -120,10 +118,23 @@ public class DetailedAnnouncementController {
     public ResponseEntity<Object> getDetailedAnnouncementWorker(@PathVariable UUID detailedAnnouncementId) {
         try {
             return ResponseEntity.ok(detailedAnnouncementService.getDetailedAnnouncementWorker(detailedAnnouncementId, "PROVIDER"));
-        } catch(NoSuchElementException nse) {
+        } catch (NoSuchElementException nse) {
             return responseUtil.getNoSuchElementExceptionMessage("작업자 데이터가 없습니다.", nse.getMessage());
-        } catch(Exception e) {
+        } catch (Exception e) {
             return responseUtil.getExceptionMessage("작업자를 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @GetMapping("{detailedAnnouncementId}/co-worker")
+    public ResponseEntity<Object> getDetailedAnnouncementCoWorker(@PathVariable UUID detailedAnnouncementId) {
+        try {
+            var coWorkerList = detailedAnnouncementService.getAllDetailedAnnouncementCoWorker(detailedAnnouncementId);
+
+            if (coWorkerList.isEmpty()) return responseUtil.getNoSuchElementExceptionMessage("공동 작업자 데이터가 없습니다.", "");
+
+            return ResponseEntity.ok(coWorkerList);
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("공동 작업자를 조회하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
@@ -177,6 +188,23 @@ public class DetailedAnnouncementController {
         }
     }
 
+    @PostMapping("{detailedAnnouncementId}/co-worker")
+    public ResponseEntity<Object> createCoWorker(@RequestBody DetailedAnnouncementCoWorker detailedAnnouncementCoWorker,
+                                                 @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null)
+            return responseUtil.getUnAuthorizedMessage();
+
+        try {
+            detailedAnnouncementService.createDetailedAnnouncementCoWorker(detailedAnnouncementCoWorker);
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("공동 작업자를 추가하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(detailedAnnouncementCoWorker);
+    }
+
     @PutMapping("{detailedAnnouncementId}")
     public ResponseEntity<Object> updateDetailedAnnouncement(@PathVariable UUID detailedAnnouncementId,
                                                              @RequestBody DetailedAnnouncement detailedAnnouncement,
@@ -215,6 +243,29 @@ public class DetailedAnnouncementController {
             return responseUtil.getForbiddenExceptionMessage(new ResponseException("작업자 정보가 일치하지 않습니다.", ade.getMessage()));
         } catch (Exception e) {
             return responseUtil.getExceptionMessage("작업물을 수정하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @DeleteMapping("{detailedAnnouncementId}/co-worker/{userId}")
+    public ResponseEntity<Object> deleteAnnouncementCoWorker(@PathVariable UUID detailedAnnouncementId,
+                                                             @PathVariable UUID userId,
+                                                             @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null)
+            return responseUtil.getUnAuthorizedMessage();
+
+        var detailedAnnouncementCoWorker = new DetailedAnnouncementCoWorker();
+
+        detailedAnnouncementCoWorker.setDetailId(detailedAnnouncementId);
+        detailedAnnouncementCoWorker.setUsrId(userId);
+
+        try {
+            detailedAnnouncementService.deleteDetailedAnnouncementCoWorker(detailedAnnouncementCoWorker);
+
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("공동 작업자를 삭제하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 

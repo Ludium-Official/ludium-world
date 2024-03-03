@@ -14,15 +14,18 @@ public class DetailedAnnouncementService {
     private final DetailedAnnouncementWorkerRepository detailedAnnouncementWorkerRepository;
     private final DetailedAnnouncementContentRepository detailedAnnouncementContentRepository;
     private final DetailedAnnouncementContentCommentRepository detailedAnnouncementContentCommentRepository;
+    private final DetailedAnnouncementCoWorkerRepository detailedAnnouncementCoWorkerRepository;
 
     public DetailedAnnouncementService(DetailedAnnouncementRepository detailedAnnouncementRepository,
                                        DetailedAnnouncementWorkerRepository detailedAnnouncementWorkerRepository,
                                        DetailedAnnouncementContentRepository detailedAnnouncementContentRepository,
-                                       DetailedAnnouncementContentCommentRepository detailedAnnouncementContentCommentRepository) {
+                                       DetailedAnnouncementContentCommentRepository detailedAnnouncementContentCommentRepository,
+                                       DetailedAnnouncementCoWorkerRepository detailedAnnouncementCoWorkerRepository) {
         this.detailedAnnouncementRepository = detailedAnnouncementRepository;
         this.detailedAnnouncementWorkerRepository = detailedAnnouncementWorkerRepository;
         this.detailedAnnouncementContentRepository = detailedAnnouncementContentRepository;
         this.detailedAnnouncementContentCommentRepository = detailedAnnouncementContentCommentRepository;
+        this.detailedAnnouncementCoWorkerRepository = detailedAnnouncementCoWorkerRepository;
     }
 
     public List<DetailedAnnouncement> getAllDetailedAnnouncement() {
@@ -44,26 +47,8 @@ public class DetailedAnnouncementService {
         return detailedAnnouncementRepository.findById(detailedAnnouncementId);
     }
 
-    public DetailedAnnouncement createDetailedAnnouncement(DetailedAnnouncement detailedAnnouncement) {
-        detailedAnnouncement.setDetailId(UUID.randomUUID());
-        return detailedAnnouncementRepository.save(detailedAnnouncement);
-    }
-
-
-    public DetailedAnnouncement updateDetailedAnnouncement(DetailedAnnouncement detailedAnnouncement) {
-        return detailedAnnouncementRepository.save(detailedAnnouncement);
-    }
-
     public DetailedAnnouncementWorker getDetailedAnnouncementWorker(UUID detailedAnnouncementId, String role) {
         return detailedAnnouncementWorkerRepository.findByDetailIdAndRole(detailedAnnouncementId, role).orElseThrow();
-    }
-
-    public DetailedAnnouncementWorker createDetailedAnnouncementWorker(DetailedAnnouncementWorker detailedAnnouncementWorker) {
-        return detailedAnnouncementWorkerRepository.save(detailedAnnouncementWorker);
-    }
-
-    public DetailedAnnouncementWorker updateDetailedAnnouncementWorker(DetailedAnnouncementWorker detailedAnnouncementWorker) {
-        return detailedAnnouncementWorkerRepository.save(detailedAnnouncementWorker);
     }
 
     public List<DetailedAnnouncementContent> getAllDetailedAnnouncementContent(UUID detailedAnnouncementId) {
@@ -78,18 +63,27 @@ public class DetailedAnnouncementService {
         return detailedAnnouncementContentRepository.findById(detailedAnnouncementContentId).orElseThrow();
     }
 
+    public List<DetailedAnnouncementContentComment> getAllDetailedAnnouncementContentComment(UUID detailedAnnouncementContentId) {
+        return detailedAnnouncementContentCommentRepository.findAllByDetailedContentIdOrderByCreateAt(detailedAnnouncementContentId);
+    }
+
+    public List<DetailedAnnouncementCoWorkerDTO> getAllDetailedAnnouncementCoWorker(UUID detailedAnnouncementId) {
+        return detailedAnnouncementCoWorkerRepository.findAllByDetailId(detailedAnnouncementId);
+    }
+
+    public DetailedAnnouncement createDetailedAnnouncement(DetailedAnnouncement detailedAnnouncement) {
+        detailedAnnouncement.setDetailId(UUID.randomUUID());
+        return detailedAnnouncementRepository.save(detailedAnnouncement);
+    }
+
+    public DetailedAnnouncementWorker createDetailedAnnouncementWorker(DetailedAnnouncementWorker detailedAnnouncementWorker) {
+        return detailedAnnouncementWorkerRepository.save(detailedAnnouncementWorker);
+    }
+
     public DetailedAnnouncementContent createDetailedAnnouncementContent(DetailedAnnouncementContent detailedAnnouncementContent) {
         detailedAnnouncementContent.setDetailContentId(UUID.randomUUID());
 
         return detailedAnnouncementContentRepository.save(detailedAnnouncementContent);
-    }
-
-    public DetailedAnnouncementContent updateDetailedAnnouncementContent(DetailedAnnouncementContent detailedAnnouncementContent) {
-        return detailedAnnouncementContentRepository.save(detailedAnnouncementContent);
-    }
-
-    public List<DetailedAnnouncementContentComment> getAllDetailedAnnouncementContentComment(UUID detailedAnnouncementContentId) {
-        return detailedAnnouncementContentCommentRepository.findAllByDetailedContentIdOrderByCreateAt(detailedAnnouncementContentId);
     }
 
     public DetailedAnnouncementContentComment createDetailedAnnouncementContentComment(DetailedAnnouncementContentComment detailedAnnouncementContentComment) {
@@ -97,4 +91,30 @@ public class DetailedAnnouncementService {
 
         return detailedAnnouncementContentCommentRepository.save(detailedAnnouncementContentComment);
     }
+
+    public DetailedAnnouncementCoWorker createDetailedAnnouncementCoWorker(DetailedAnnouncementCoWorker detailedAnnouncementCoWorker) {
+        return detailedAnnouncementCoWorkerRepository.save(detailedAnnouncementCoWorker);
+    }
+
+    public DetailedAnnouncement updateDetailedAnnouncement(DetailedAnnouncement detailedAnnouncement) {
+        return detailedAnnouncementRepository.save(detailedAnnouncement);
+    }
+
+    public DetailedAnnouncementWorker updateDetailedAnnouncementWorker(DetailedAnnouncementWorker detailedAnnouncementWorker) {
+        return detailedAnnouncementWorkerRepository.save(detailedAnnouncementWorker);
+    }
+
+    public DetailedAnnouncementContent updateDetailedAnnouncementContent(DetailedAnnouncementContent detailedAnnouncementContent) {
+        return detailedAnnouncementContentRepository.save(detailedAnnouncementContent);
+    }
+
+
+    public void deleteDetailedAnnouncementWorker(DetailedAnnouncementWorker detailedAnnouncementWorker) {
+        detailedAnnouncementWorkerRepository.delete(detailedAnnouncementWorker);
+    }
+
+    public void deleteDetailedAnnouncementCoWorker(DetailedAnnouncementCoWorker detailedAnnouncementCoWorker) {
+        detailedAnnouncementCoWorkerRepository.delete(detailedAnnouncementCoWorker);
+    }
+
 }

@@ -367,7 +367,13 @@ public class AnnouncementController {
     }
 
     @DeleteMapping("{announcementId}")
-    public ResponseEntity disableAnnouncement(@PathVariable UUID announcementId) {
+    public ResponseEntity disableAnnouncement(@PathVariable UUID announcementId,
+                                              @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null)
+            return responseUtil.getUnAuthorizedMessage();
+
         var disabledAnnouncemen = articleService.getArticle(announcementId);
 
         disabledAnnouncemen.setVisible(false);
@@ -385,5 +391,37 @@ public class AnnouncementController {
         return ResponseEntity.ok(new HashMap<>() {{
             put("id", announcementId);
         }});
+    }
+
+    @DeleteMapping("{announcementId}/{detailedAnnouncementId}/worker/{userId}/{role}")
+    public ResponseEntity<Object> getAnnouncementWorker(@PathVariable UUID detailedAnnouncementId,
+                                                        @PathVariable UUID userId,
+                                                        @PathVariable String role,
+                                                        @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null)
+            return responseUtil.getUnAuthorizedMessage();
+
+        var detailedAnnouncementWorker = new DetailedAnnouncementWorker();
+
+        detailedAnnouncementWorker.setDetailId(detailedAnnouncementId);
+        detailedAnnouncementWorker.setUsrId(userId);
+        detailedAnnouncementWorker.setRole(role);
+
+        try {
+            var detailedAnnouncement = detailedAnnouncementService.getDetailedAnnouncement(detailedAnnouncementWorker.getDetailId()).orElseThrow();
+
+            detailedAnnouncement.setStatus(DetailedAnnouncementStatus.CREATE.toString());
+
+            detailedAnnouncementService.updateDetailedAnnouncement(detailedAnnouncement);
+
+            detailedAnnouncementService.deleteDetailedAnnouncementWorker(detailedAnnouncementWorker);
+
+            return ResponseEntity.noContent().build();
+        } catch(Exception e) {
+            return responseUtil.getExceptionMessage("작업자 할당을 해제하는 중에 에러가 발생했습니다", e.getMessage());
+        }
+
     }
 }
