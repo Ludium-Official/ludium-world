@@ -65,6 +65,29 @@ async function getProfile() {
   }
 }
 
+async function getWorker(workId) {
+  const getWorkerResponse = await fetchWithRetry(
+    `/detailed-announcement/${workId}/worker`
+  );
+  const getCoWorkerListResponse = await fetchWithRetry(
+    `/detailed-announcement/${workId}/co-worker`
+  );
+
+  if (!getWorkerResponse.ok)
+    if (getWorkerResponse.status === 404) return null;
+    else throw new Error(500);
+
+  if (!getCoWorkerListResponse.ok) {
+    if (getCoWorkerListResponse.status === 404) return [];
+    else throw new Error(500);
+  }
+
+  const worker = await getWorkerResponse.json();
+  const coWorkerList = await getCoWorkerListResponse.json();
+
+  return [worker?.usrId, ...coWorkerList.map(({ usrId }) => usrId)];
+}
+
 async function WorkContentCommentList({ workId, contentId }) {
   const comments = await getWorkContentCommentList(workId, contentId);
 
@@ -105,10 +128,10 @@ export default async function WorkContentPage({
 }) {
   const detailContent = await getWorkContent(workId, contentId);
 
+  const workers = await getWorker(workId);
   const profile = await getProfile();
 
-  const isEditor =
-    profile === null ? false : detailContent.usrId === profile.id;
+  const isEditor = profile === null ? false : workers.includes(profile.id);
   return (
     <>
       <header className="nb">

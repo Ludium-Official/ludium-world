@@ -35,6 +35,7 @@ export default function WorkContentCreateButton({ workId }) {
       }
     }
 
+    alert("작업물을 추가했습니다.");
     router.refresh();
   };
 
