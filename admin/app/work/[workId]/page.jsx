@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import workstyle from "../work.module.css";
 import WorkContentCommentEditor from "./WorkContentCommentEditor";
 import ApproveWorkButton from "./ApproveWorkButton";
+import PinWorkButton from "./PinWorkButton";
 
 const Viewer = dynamic(() => import("@/components/Viewer"), {
   ssr: false,
@@ -174,6 +175,7 @@ export default async function WorkPage({ params: { workId } }) {
     <>
       <ContentNavigation links={[]}>
         <BackButton />
+        <PinWorkButton workId={workId} isPinned={work.pinned} />
         <ApproveWorkButton work={work} />
       </ContentNavigation>
       <div className={workstyle["work-view-wrapper"]}>
