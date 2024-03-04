@@ -1,5 +1,6 @@
 package world.ludium.education.community;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import world.ludium.education.auth.ludium.LudiumUserService;
@@ -102,7 +103,8 @@ public class ContentController {
             content.setType(contentType);
 
             if (contentType.equals(ContentType.ANNOUNCEMENT.toString()) || contentType.equals(ContentType.BANNER.toString()))
-                if(!ludiumUserService.isAdmin(ludiumUser.getId())) return responseUtil.getForbiddenExceptionMessage(new ResponseException("관리자만 공지사항 혹은 배너를 추가할 수 있습니다.", ""));
+                if (!ludiumUserService.isAdmin(ludiumUser.getId()))
+                    return responseUtil.getForbiddenExceptionMessage(new ResponseException("관리자만 공지사항 혹은 배너를 추가할 수 있습니다.", ""));
 
             return ResponseEntity.ok(contentService.createContent(content));
         } catch (Exception e) {
@@ -140,12 +142,38 @@ public class ContentController {
             return responseUtil.getForbiddenExceptionMessage(new ResponseException("콘텐츠 글쓴이 정보가 일치하지 않습니다.", ""));
 
         if (content.getType().equals(ContentType.ANNOUNCEMENT.toString()) || content.getType().equals(ContentType.BANNER.toString()))
-            if(!ludiumUserService.isAdmin(ludiumUser.getId())) return responseUtil.getForbiddenExceptionMessage(new ResponseException("관리자만 공지사항 혹은 배너를 수정할 수 있습니다.", ""));
+            if (!ludiumUserService.isAdmin(ludiumUser.getId()))
+                return responseUtil.getForbiddenExceptionMessage(new ResponseException("관리자만 공지사항 혹은 배너를 수정할 수 있습니다.", ""));
 
         try {
             return ResponseEntity.ok(contentService.updateContent(content));
         } catch (Exception e) {
             return responseUtil.getExceptionMessage("콘텐츠를 수정하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @PostMapping("/{contentId}/pin")
+    public ResponseEntity<Object> pinContent(@PathVariable UUID contentId,
+                                             @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null) return responseUtil.getUnAuthorizedMessage();
+
+        var maxPinnedContent = contentService.getContentMaxPinOrder();
+        var updatedContent = contentService.getContent(contentId);
+
+        if (updatedContent.isPinned())
+            return responseUtil.getDuplicateExceptionMessage(new ResponseException("이미 상단 고정된 콘텐츠 입니다.", ""));
+
+        updatedContent.setPinned(true);
+        updatedContent.setPinOrder(maxPinnedContent.getPinOrder() + 1);
+
+        try {
+            contentService.updateContent(updatedContent);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(updatedContent);
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("콘텐츠를 상단 고정하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
@@ -157,17 +185,42 @@ public class ContentController {
         if (ludiumUser == null) return responseUtil.getUnAuthorizedMessage();
 
         var content = contentService.getContent(contentId);
-        
+
         if (!ludiumUser.getId().equals(content.getUsrId()))
             return responseUtil.getForbiddenExceptionMessage(new ResponseException("콘텐츠 글쓴이 정보가 일치하지 않습니다.", ""));
 
         if (content.getType().equals(ContentType.ANNOUNCEMENT.toString()) || content.getType().equals(ContentType.BANNER.toString()))
-            if(!ludiumUserService.isAdmin(ludiumUser.getId())) return responseUtil.getForbiddenExceptionMessage(new ResponseException("관리자만 공지사항 혹은 배너를 삭제할 수 있습니다.", ""));
+            if (!ludiumUserService.isAdmin(ludiumUser.getId()))
+                return responseUtil.getForbiddenExceptionMessage(new ResponseException("관리자만 공지사항 혹은 배너를 삭제할 수 있습니다.", ""));
 
         try {
             return ResponseEntity.ok(contentService.deleteContent(content));
         } catch (Exception e) {
             return responseUtil.getExceptionMessage("콘텐츠를 수정하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{contentId}/unpin")
+    public ResponseEntity<Object> unpinContent(@PathVariable UUID contentId,
+                                               @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null) return responseUtil.getUnAuthorizedMessage();
+
+        var updatedContent = contentService.getContent(contentId);
+
+        if (!updatedContent.isPinned())
+            return responseUtil.getDuplicateExceptionMessage(new ResponseException("이미 고정 해제된 콘텐츠 입니다.", ""));
+
+        updatedContent.setPinned(false);
+        updatedContent.setPinOrder(-1);
+
+        try {
+            contentService.updateContent(updatedContent);
+
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("콘텐츠를 고정 해제하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 }
