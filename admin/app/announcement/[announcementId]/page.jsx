@@ -8,6 +8,7 @@ import announcementstyle from "../announcement.module.css";
 import ModuleCreateButton from "./button/ModuleCreateButton";
 import ModuleNavigation from "./ModuleNavigation";
 import APPLY_CATEGORY from "@/enums/APPLY_CATEGORY";
+import PinAnnouncementButton from "./PinAnnouncementButton";
 
 const Viewer = dynamic(() => import("@/components/Viewer"), {
   ssr: false,
@@ -125,11 +126,16 @@ async function AnnouncementContent({ announcementId }) {
 }
 
 export default async function AnnouncementPage({ params: { announcementId } }) {
+  const announcement = await getAnnouncement(announcementId);
+
   return (
     <>
       <ContentNavigation links={[]}>
         <BackButton />
-        {/* <DeleteButton deleteUrl={`/announcement/${announcementId}`} /> */}
+        <PinAnnouncementButton
+          announcementId={announcementId}
+          isPinned={announcement.pinned}
+        />
         <Link href={`/announcement/${announcementId}/edit`}>수정하기</Link>
       </ContentNavigation>
       <AnnouncementContent announcementId={announcementId} />

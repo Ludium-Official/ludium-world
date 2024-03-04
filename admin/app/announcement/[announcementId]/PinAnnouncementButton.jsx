@@ -5,22 +5,22 @@ import fetchWithRetry from "@/functions/api";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function PinContentButton({ communityId, isPinned }) {
+export default function PinAnnouncementButton({ announcementId, isPinned }) {
   const router = useRouter();
   const [pending, setPending] = useState(false);
 
-  const handlePinContent = async () => {
+  const handlePinAnnouncement = async () => {
     setPending(true);
 
-    const pinContentResponse = await fetchWithRetry(
-      `/content/${communityId}/pin`,
+    const pinAnnouncementResponse = await fetchWithRetry(
+      `/announcement/${announcementId}/pin`,
       {
         method: HTTP_METHOD.POST,
       }
     );
 
     setPending(false);
-    if (!pinContentResponse.ok) {
+    if (!pinAnnouncementResponse.ok) {
       alert("상단 고정하는 중 에러가 발생했습니다.");
       return;
     }
@@ -29,18 +29,18 @@ export default function PinContentButton({ communityId, isPinned }) {
     router.refresh();
   };
 
-  const handleUnpinContent = async () => {
+  const handleUnpinAnnouncement = async () => {
     setPending(true);
 
-    const unpinContentResponse = await fetchWithRetry(
-      `/content/${communityId}/pin`,
+    const unpinAnnouncementResponse = await fetchWithRetry(
+      `/announcement/${announcementId}/pin`,
       {
         method: HTTP_METHOD.DELETE,
       }
     );
 
     setPending(false);
-    if (!unpinContentResponse.ok) {
+    if (!unpinAnnouncementResponse.ok) {
       alert("고정 해제하는 중 에러가 발생했습니다.");
       return;
     }
@@ -52,11 +52,19 @@ export default function PinContentButton({ communityId, isPinned }) {
   return (
     <>
       {isPinned ? (
-        <button type="button" onClick={handleUnpinContent} disabled={pending}>
+        <button
+          type="button"
+          onClick={handleUnpinAnnouncement}
+          disabled={pending}
+        >
           {pending ? "고정 해제하는 중입니다." : "고정 해제 하기"}
         </button>
       ) : (
-        <button type="button" onClick={handlePinContent} disabled={pending}>
+        <button
+          type="button"
+          onClick={handlePinAnnouncement}
+          disabled={pending}
+        >
           {pending ? "고정하는 중입니다." : "상단 고정 하기"}
         </button>
       )}
