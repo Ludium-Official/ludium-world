@@ -6,10 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface DetailedAnnouncementRepository extends JpaRepository<DetailedAnnouncement, UUID> {
-    List<DetailedAnnouncement> findAllByOrderByCreateAtAsc();
+    List<DetailedAnnouncement> findAllByOrderByIsPinnedDescPinOrderDescCreateAtAsc();
     List<DetailedAnnouncement> findAllByPostingIdOrderByCreateAt(UUID postingId);
 
     @Query("""
@@ -31,4 +32,6 @@ public interface DetailedAnnouncementRepository extends JpaRepository<DetailedAn
              ORDER BY dp.createAt
             """)
     List<DetailedAnnouncement> findTop4ByWorkerOrderByCreateAt(@Param("usrId") UUID usrId, Pageable pageable);
+
+    Optional<DetailedAnnouncement> findTop1ByOrderByPinOrder();
 }

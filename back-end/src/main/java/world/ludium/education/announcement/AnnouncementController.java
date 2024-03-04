@@ -177,6 +177,8 @@ public class AnnouncementController {
         detailedAnnouncement.setPostingId(announcementId);
         detailedAnnouncement.setStatus(DetailedAnnouncementStatus.CREATE.toString());
         detailedAnnouncement.setCreateAt(new Timestamp(System.currentTimeMillis()));
+        detailedAnnouncement.setPinned(false);
+        detailedAnnouncement.setPinOrder(-1);
 
         try {
             return ResponseEntity.ok(detailedAnnouncementService.createDetailedAnnouncement(detailedAnnouncement));

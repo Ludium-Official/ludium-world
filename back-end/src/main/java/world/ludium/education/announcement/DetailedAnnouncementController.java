@@ -206,6 +206,29 @@ public class DetailedAnnouncementController {
         return ResponseEntity.status(HttpStatus.CREATED).body(detailedAnnouncementCoWorker);
     }
 
+    @PostMapping("{detailedAnnouncementId}/pin")
+    public ResponseEntity<Object> pinDetailedAnnouncement(@PathVariable UUID detailedAnnouncementId,
+                                                          @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null)
+            return responseUtil.getUnAuthorizedMessage();
+
+        var maxPinDetailedAnnouncement = detailedAnnouncementService.getDetailedAnnouncementMaxPinOrder();
+        var pinnedDetailedAnnouncement = detailedAnnouncementService.getDetailedAnnouncement(detailedAnnouncementId).orElseThrow();
+
+        pinnedDetailedAnnouncement.setPinned(true);
+        pinnedDetailedAnnouncement.setPinOrder(maxPinDetailedAnnouncement.getPinOrder() + 1);
+
+        try {
+            detailedAnnouncementService.updateDetailedAnnouncement(pinnedDetailedAnnouncement);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(pinnedDetailedAnnouncement);
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("작업을 상단 고정하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
     @PutMapping("{detailedAnnouncementId}")
     public ResponseEntity<Object> updateDetailedAnnouncement(@PathVariable UUID detailedAnnouncementId,
                                                              @RequestBody DetailedAnnouncement detailedAnnouncement,
@@ -270,14 +293,36 @@ public class DetailedAnnouncementController {
         }
     }
 
+    @DeleteMapping("{detailedAnnouncementId}/pin")
+    public ResponseEntity<Object> unpinDetailedAnnouncement(@PathVariable UUID detailedAnnouncementId,
+                                                            @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null)
+            return responseUtil.getUnAuthorizedMessage();
+
+        var unpinnedDetailedAnnouncement = detailedAnnouncementService.getDetailedAnnouncement(detailedAnnouncementId).orElseThrow();
+
+        unpinnedDetailedAnnouncement.setPinned(false);
+        unpinnedDetailedAnnouncement.setPinOrder(-1);
+
+        try {
+            detailedAnnouncementService.updateDetailedAnnouncement(unpinnedDetailedAnnouncement);
+
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("작업을 고정 해제하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
     public void checkDetailedAnnouncementWorker(UUID detailedAnnouncementId, LudiumUser ludiumUser) throws AccessDeniedException {
         var detailedAnnouncementWorker = detailedAnnouncementService.getDetailedAnnouncementWorker(detailedAnnouncementId, "PROVIDER");
         var detailedAnnouncementCoWorkerList = detailedAnnouncementService.getAllDetailedAnnouncementCoWorker(detailedAnnouncementId);
 
-        if(!detailedAnnouncementCoWorkerList.stream().map(detailedAnnouncementCoWorker -> detailedAnnouncementCoWorker.usrId()).collect(Collectors.toList()).contains(ludiumUser.getId())) {
+        if (!detailedAnnouncementCoWorkerList.stream().map(detailedAnnouncementCoWorker -> detailedAnnouncementCoWorker.usrId()).collect(Collectors.toList()).contains(ludiumUser.getId())) {
             if (!ludiumUser.getId().equals(detailedAnnouncementWorker.getUsrId()))
                 throw new AccessDeniedException("작업자 정보가 일치하지 않습니다.");
-            }
         }
+    }
 
 }
