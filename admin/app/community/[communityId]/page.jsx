@@ -8,6 +8,7 @@ import ContentCommentEditor from "./ContentCommentEditor";
 import Link from "next/link";
 import COMMUNITY_TYPE from "@/enums/COMMUNITY_TYPE";
 import DeleteContentButton from "./DeleteContentButton";
+import PinContentButton from "./PinContentButton";
 const Viewer = dynamic(() => import("@/components/Viewer"), { ssr: false });
 
 export async function generateMetadata({ params: { communityId } }) {
@@ -74,7 +75,8 @@ export default async function ContentPage({ params: { communityId } }) {
   return (
     <>
       <ContentNavigation links={[]}>
-        <BackButton />
+        <BackButton communityId={communityId} />
+        <PinContentButton communityId={communityId} isPinned={content.pinned} />
         <Link href={`/community/${communityId}/edit`}>수정 페이지로 이동</Link>
         <DeleteContentButton communityId={communityId} />
       </ContentNavigation>
