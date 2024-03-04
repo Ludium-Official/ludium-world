@@ -200,7 +200,7 @@ public class ContentController {
         }
     }
 
-    @DeleteMapping("/{contentId}/unpin")
+    @DeleteMapping("/{contentId}/pin")
     public ResponseEntity<Object> unpinContent(@PathVariable UUID contentId,
                                                @CookieValue(name = "access_token", required = false) String accessToken) {
         var ludiumUser = ludiumUserService.getUser(accessToken);
