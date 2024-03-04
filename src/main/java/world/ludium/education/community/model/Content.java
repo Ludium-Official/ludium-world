@@ -19,6 +19,8 @@ public class Content {
     private String type;
     private boolean visible;
     private String banner;
+    private boolean isPinned;
+    private Integer pinOrder;
 
     public UUID getContentId() {
         return contentId;
@@ -82,5 +84,21 @@ public class Content {
 
     public void setBanner(String banner) {
         this.banner = banner;
+    }
+
+    public boolean isPinned() {
+        return isPinned;
+    }
+
+    public void setPinned(boolean pinned) {
+        isPinned = pinned;
+    }
+
+    public Integer getPinOrder() {
+        return pinOrder;
+    }
+
+    public void setPinOrder(Integer pinOrder) {
+        this.pinOrder = pinOrder;
     }
 }

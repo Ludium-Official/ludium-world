@@ -19,7 +19,7 @@ public class ContentService {
     }
 
     public List<Content> getAllContent() {
-        return contentRepository.findAllByVisibleOrderByCreateAtDesc(true);
+        return contentRepository.findAllByVisibleOrderByIsPinnedDescPinOrderDescCreateAtDesc(true);
     }
 
 
@@ -27,26 +27,10 @@ public class ContentService {
         return contentRepository.findByContentIdAndVisible(contentId, true).orElseThrow();
     }
 
-    public Content createContent(Content content) {
-        content.setContentId(UUID.randomUUID());
-        content.setCreateAt(new Timestamp(System.currentTimeMillis()));
-        content.setVisible(true);
-
-        return contentRepository.save(content);
-    }
-
-    public Content updateContent(Content content) {
-        return contentRepository.save(content);
-    }
-
     public List<ContentComment> getAllContentComment(UUID contentId) {
         return contentCommentRepository.findAllByContentIdOrderByCreateAt(contentId);
     }
 
-    public ContentComment createContentComment(ContentComment contentComment) {
-        contentComment.setCreateAt(new Timestamp(System.currentTimeMillis()));
-        return contentCommentRepository.save(contentComment);
-    }
 
     public Content getLatestAnnouncement() {
         return contentRepository.findTop1ByTypeAndVisibleOrderByCreateAtDesc(ContentType.ANNOUNCEMENT.toString(), true).orElseThrow();
@@ -54,6 +38,28 @@ public class ContentService {
 
     public Content getLatestBanner() {
         return contentRepository.findTop1ByTypeAndVisibleOrderByCreateAtDesc(ContentType.BANNER.toString(), true).orElseThrow();
+    }
+
+    public Content getContentMaxPinOrder() {
+        return contentRepository.findTop1ByVisibleOrderByPinOrder(true).orElseThrow();
+    }
+    public Content createContent(Content content) {
+        content.setContentId(UUID.randomUUID());
+        content.setCreateAt(new Timestamp(System.currentTimeMillis()));
+        content.setVisible(true);
+        content.setPinned(false);
+        content.setPinOrder(-1);
+
+        return contentRepository.save(content);
+    }
+
+    public ContentComment createContentComment(ContentComment contentComment) {
+        contentComment.setCreateAt(new Timestamp(System.currentTimeMillis()));
+        return contentCommentRepository.save(contentComment);
+    }
+
+    public Content updateContent(Content content) {
+        return contentRepository.save(content);
     }
 
     public Content deleteContent(Content content) {
