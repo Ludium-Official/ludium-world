@@ -29,7 +29,7 @@ public class DetailedAnnouncementService {
     }
 
     public List<DetailedAnnouncement> getAllDetailedAnnouncement() {
-        return detailedAnnouncementRepository.findAllByOrderByCreateAtAsc();
+        return detailedAnnouncementRepository.findAllByOrderByIsPinnedDescPinOrderDescCreateAtAsc();
     }
 
     public List<DetailedAnnouncement> getAllDetailedAnnouncement(UUID announcementId) {
@@ -69,6 +69,10 @@ public class DetailedAnnouncementService {
 
     public List<DetailedAnnouncementCoWorkerDTO> getAllDetailedAnnouncementCoWorker(UUID detailedAnnouncementId) {
         return detailedAnnouncementCoWorkerRepository.findAllByDetailId(detailedAnnouncementId);
+    }
+
+    public DetailedAnnouncement getDetailedAnnouncementMaxPinOrder() {
+        return detailedAnnouncementRepository.findTop1ByOrderByPinOrder().orElseThrow();
     }
 
     public DetailedAnnouncement createDetailedAnnouncement(DetailedAnnouncement detailedAnnouncement) {
@@ -116,5 +120,4 @@ public class DetailedAnnouncementService {
     public void deleteDetailedAnnouncementCoWorker(DetailedAnnouncementCoWorker detailedAnnouncementCoWorker) {
         detailedAnnouncementCoWorkerRepository.delete(detailedAnnouncementCoWorker);
     }
-
 }
