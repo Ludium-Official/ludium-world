@@ -17,6 +17,8 @@ public class Announcement {
     private String description;
     private OffsetDateTime deadline;
     private Timestamp createAt;
+    private boolean isPinned;
+    private Integer pinOrder;
 
     public UUID getPostingId() {
         return postingId;
@@ -56,5 +58,21 @@ public class Announcement {
 
     public void setCreateAt(Timestamp createAt) {
         this.createAt = createAt;
+    }
+
+    public boolean isPinned() {
+        return isPinned;
+    }
+
+    public void setPinned(boolean pinned) {
+        isPinned = pinned;
+    }
+
+    public Integer getPinOrder() {
+        return pinOrder;
+    }
+
+    public void setPinOrder(Integer pinOrder) {
+        this.pinOrder = pinOrder;
     }
 }

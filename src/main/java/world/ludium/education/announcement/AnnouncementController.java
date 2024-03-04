@@ -12,12 +12,11 @@ import world.ludium.education.auth.ludium.LudiumUser;
 import world.ludium.education.auth.ludium.LudiumUserService;
 import world.ludium.education.course.Module;
 import world.ludium.education.course.ModuleService;
+import world.ludium.education.util.ResponseException;
 import world.ludium.education.util.ResponseUtil;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -239,6 +238,32 @@ public class AnnouncementController {
         }
     }
 
+    @PostMapping("{announcementId}/pin")
+    public ResponseEntity<Object> pinAnnouncement(@PathVariable UUID announcementId,
+                                                  @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null)
+            return responseUtil.getUnAuthorizedMessage();
+
+        var maxPinAnnouncement = announcementService.getAnnouncementMaxPinOrder();
+        var pinnedAnnouncement = announcementService.getAnnouncement(announcementId).orElseThrow();
+
+        if(pinnedAnnouncement.isPinned())
+            return responseUtil.getDuplicateExceptionMessage(new ResponseException("이미 상단 고정된 공고가 있습니다.", ""));
+
+        pinnedAnnouncement.setPinned(true);
+        pinnedAnnouncement.setPinOrder(maxPinAnnouncement.getPinOrder() + 1);
+
+        try {
+            announcementService.updateAnnouncement(pinnedAnnouncement);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(pinnedAnnouncement);
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("공고를 상단 고정하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
     @GetMapping("/{announcementId}/{moduleId}/make")
     public ResponseEntity getMake(@PathVariable UUID moduleId) {
         return ResponseEntity.ok(moduleService.getAllModulesByCourse(moduleId));
@@ -423,5 +448,30 @@ public class AnnouncementController {
             return responseUtil.getExceptionMessage("작업자 할당을 해제하는 중에 에러가 발생했습니다", e.getMessage());
         }
 
+    }
+
+    @DeleteMapping("{announcementId}/pin")
+    public ResponseEntity<Object> unpinAnnouncement(@PathVariable UUID announcementId,
+                                                    @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null)
+            return responseUtil.getUnAuthorizedMessage();
+
+        var unpinnedAnnouncement = announcementService.getAnnouncement(announcementId).orElseThrow();
+
+        if(!unpinnedAnnouncement.isPinned())
+            return responseUtil.getDuplicateExceptionMessage(new ResponseException("고정된 공고가 아닙니다.", ""));
+
+        unpinnedAnnouncement.setPinned(false);
+        unpinnedAnnouncement.setPinOrder(-1);
+
+        try {
+            announcementService.updateAnnouncement(unpinnedAnnouncement);
+
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("공고를 고정 해제하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
     }
 }
