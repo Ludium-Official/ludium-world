@@ -33,7 +33,7 @@ export default function PinContentButton({ communityId, isPinned }) {
     setPending(true);
 
     const unpinContentResponse = await fetchWithRetry(
-      `/content/${communityId}/unpin`,
+      `/content/${communityId}/pin`,
       {
         method: HTTP_METHOD.DELETE,
       }
