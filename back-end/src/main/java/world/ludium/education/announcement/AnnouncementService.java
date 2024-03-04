@@ -18,14 +18,20 @@ public class AnnouncementService {
     }
 
     public List<Announcement> getAllAnnouncement() {
-        return announcementRepository.findAll();
+        return announcementRepository.findAllByOrderByIsPinnedDescPinOrderDescCreateAtDesc();
     }
     public List<Announcement> getTop5Announcement() { return announcementRepository.findTop5ByOrderByCreateAtDesc(); }
     public Optional<Announcement> getAnnouncement(UUID announcementId) { return announcementRepository.findById(announcementId); }
 
+    public Announcement getAnnouncementMaxPinOrder() {
+        return announcementRepository.findTop1ByOrderByPinOrder().orElseThrow();
+    }
+
     public Announcement createAnnouncement(Announcement announcement) {
         announcement.setPostingId(UUID.randomUUID());
         announcement.setCreateAt(new Timestamp(System.currentTimeMillis()));
+        announcement.setPinned(false);
+        announcement.setPinOrder(-1);
 
         return announcementRepository.save(announcement);
     }
