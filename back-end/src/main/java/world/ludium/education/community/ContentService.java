@@ -11,11 +11,14 @@ import java.util.UUID;
 public class ContentService {
     private final ContentRepository contentRepository;
     private final ContentCommentRepository contentCommentRepository;
+    private final ContentRecommendRepository contentRecommendRepository;
 
     public ContentService(ContentRepository contentRepository,
-                          ContentCommentRepository contentCommentRepository) {
+                          ContentCommentRepository contentCommentRepository,
+                          ContentRecommendRepository contentRecommendRepository) {
         this.contentRepository = contentRepository;
         this.contentCommentRepository = contentCommentRepository;
+        this.contentRecommendRepository = contentRecommendRepository;
     }
 
     public List<Content> getAllContent() {
@@ -43,6 +46,19 @@ public class ContentService {
     public Content getContentMaxPinOrder() {
         return contentRepository.findTop1ByVisibleOrderByPinOrder(true).orElseThrow();
     }
+
+    public ContentRecommend getContentRecommend(ContentRecommendId contentRecommendId) {
+        return contentRecommendRepository.findById(contentRecommendId).orElseThrow();
+    }
+
+    public boolean isContentRecommendExist(ContentRecommendId contentRecommendId) {
+        return contentRecommendRepository.existsById(contentRecommendId);
+    }
+
+    public long getContentRecommendCount(UUID contentId) {
+        return contentRecommendRepository.countByContentId(contentId);
+    }
+
     public Content createContent(Content content) {
         content.setContentId(UUID.randomUUID());
         content.setCreateAt(new Timestamp(System.currentTimeMillis()));
@@ -55,7 +71,14 @@ public class ContentService {
 
     public ContentComment createContentComment(ContentComment contentComment) {
         contentComment.setCreateAt(new Timestamp(System.currentTimeMillis()));
+
         return contentCommentRepository.save(contentComment);
+    }
+
+    public ContentRecommend createContentRecommend(ContentRecommend contentRecommend) {
+        contentRecommend.setCreateAt(new Timestamp(System.currentTimeMillis()));
+
+        return contentRecommendRepository.save(contentRecommend);
     }
 
     public Content updateContent(Content content) {
@@ -65,5 +88,9 @@ public class ContentService {
     public Content deleteContent(Content content) {
         content.setVisible(false);
         return updateContent(content);
+    }
+
+    public void deleteContentRecommend(ContentRecommendId contentRecommendId) {
+        contentRecommendRepository.deleteById(contentRecommendId);
     }
 }
