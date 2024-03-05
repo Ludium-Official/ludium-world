@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Editor as ToastEditor } from "@toast-ui/editor";
 import { uploadImage } from "@/functions/actions/ImageUpload";
+import { YoutubeEmbedToolbar } from "./editor/toolbars";
+import sanitizer from "./editor/sanitizer";
 
 export default function Editor({ editorRef, content, height }) {
   useEffect(() => {
@@ -37,7 +39,32 @@ export default function Editor({ editorRef, content, height }) {
               callback(imageUploadResponse, blob.name);
             },
           },
+          usageStatistics: true,
+          customHTMLRenderer: {
+            htmlBlock: {
+              iframe(node) {
+                return [
+                  {
+                    type: "openTag",
+                    tagName: "iframe",
+                    outerNewLine: true,
+                    attributes: node.attrs,
+                  },
+                  { type: "html", content: node.childrenHTML },
+                  { type: "closeTag", tagName: "iframe", outerNewLine: true },
+                ];
+              },
+            },
+          },
+          customHTMLSanitizer: (html) => {
+            return sanitizer(html);
+          },
         });
+
+        editorRef.current.editorInstance.insertToolbarItem(
+          { groupIndex: 3, itemIndex: 3 },
+          YoutubeEmbedToolbar(editorRef.current.editorInstance)
+        );
       } catch (error) {
         console.error(error);
       }
