@@ -12,6 +12,7 @@ import { Fragment } from "react";
 import ContentCommentEditor from "./ContentCommentEditor";
 import DeleteContentButton from "./DeleteContentButton";
 import ko_kr from "@/langs/ko_kr";
+import ContentRecommendButton from "./ContentRecommendButton";
 const Viewer = dynamic(() => import("@/components/Viewer"), { ssr: false });
 
 export async function generateMetadata({ params: { communityId } }) {
@@ -91,6 +92,36 @@ async function getProfile() {
   }
 }
 
+async function getContentRecommend(contentId) {
+  const cookieStore = cookies();
+
+  const getContentRecommendResponse = await fetchWithRetry(
+    `/content/${contentId}/recommend`,
+    {
+      headers: {
+        cookie: cookieStore,
+      },
+    }
+  );
+
+  if (!getContentRecommendResponse.ok) {
+    if (getContentRecommendResponse.status === 404) return null;
+    else throw new Error(500);
+  }
+
+  return await getContentRecommendResponse.json();
+}
+
+async function getContentRecommendCount(contentId) {
+  const getContentRecommendCountResponse = await fetchWithRetry(
+    `/content/${contentId}/recommend/count`
+  );
+
+  if (!getContentRecommendCountResponse.ok) throw new Error(500);
+
+  return await getContentRecommendCountResponse.json();
+}
+
 async function ContentCoomentList({ contentId }) {
   const comments = await getContentCoomentList(contentId);
 
@@ -130,6 +161,27 @@ async function ContentCoomentList({ contentId }) {
         ))}
       </div>
     </div>
+  );
+}
+
+async function ContentRecommendCount({ contentId }) {
+  const contentRecommendCount = await getContentRecommendCount(contentId);
+
+  return (
+    <div>
+      <p className="caption-12">추천수: {contentRecommendCount}</p>
+    </div>
+  );
+}
+
+async function ContentRecommend({ contentId }) {
+  const contentRecommend = await getContentRecommend(contentId);
+
+  return (
+    <ContentRecommendButton
+      contentId={contentId}
+      isContentRecommendExist={contentRecommend}
+    />
   );
 }
 
@@ -188,6 +240,10 @@ export default async function ContentPage({ params: { communityId } }) {
                     {/* <p className="caption-12 color-gray-04">
                       {getTimeStamp(content.createAt)}
                     </p> */}
+                    <ContentRecommendCount contentId={communityId} />
+                    {profile === null ? null : (
+                      <ContentRecommend contentId={communityId} />
+                    )}
                     {editableContentTypes.includes(content.type) ? (
                       profile === null ? null : (
                         <DeleteContentButton communityId={communityId} />
