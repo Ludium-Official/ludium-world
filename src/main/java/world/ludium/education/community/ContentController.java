@@ -4,9 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import world.ludium.education.auth.ludium.LudiumUserService;
-import world.ludium.education.community.model.Content;
-import world.ludium.education.community.model.ContentComment;
-import world.ludium.education.community.model.ContentType;
+import world.ludium.education.community.model.*;
 import world.ludium.education.util.ResponseException;
 import world.ludium.education.util.ResponseUtil;
 
@@ -88,6 +86,36 @@ public class ContentController {
         }
     }
 
+    @GetMapping("/{contentId}/recommend")
+    public ResponseEntity<Object> getContentRecommend(@PathVariable UUID contentId,
+                                                      @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null) return responseUtil.getUnAuthorizedMessage();
+
+        var contentRecommendId = new ContentRecommendId();
+
+        contentRecommendId.setContentId(contentId);
+        contentRecommendId.setUsrId(ludiumUser.getId());
+
+        try {
+            return ResponseEntity.ok(contentService.getContentRecommend(contentRecommendId));
+        } catch (NoSuchElementException nse) {
+            return responseUtil.getNoSuchElementExceptionMessage("추천 데이터가 없습니다.", nse.getMessage());
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("추천을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @GetMapping("/{contentId}/recommend/count")
+    public ResponseEntity<Object> getContentRecommendCount(@PathVariable UUID contentId) {
+        try {
+            return ResponseEntity.ok(contentService.getContentRecommendCount(contentId));
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("콘텐츠의 추천 수를 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
     @PostMapping("")
     public ResponseEntity<Object> createContent(@RequestBody Content content,
                                                 @RequestParam(required = false) String type,
@@ -163,7 +191,7 @@ public class ContentController {
         var updatedContent = contentService.getContent(contentId);
 
         if (updatedContent.isPinned())
-            return responseUtil.getDuplicateExceptionMessage(new ResponseException("이미 상단 고정된 콘텐츠 입니다.", ""));
+            return responseUtil.getDuplicateExceptionMessage(new ResponseException("이미 상단 고정된 콘텐츠입니다.", ""));
 
         updatedContent.setPinned(true);
         updatedContent.setPinOrder(maxPinnedContent.getPinOrder() + 1);
@@ -174,6 +202,34 @@ public class ContentController {
             return ResponseEntity.status(HttpStatus.CREATED).body(updatedContent);
         } catch (Exception e) {
             return responseUtil.getExceptionMessage("콘텐츠를 상단 고정하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @PostMapping("/{contentId}/recommend")
+    public ResponseEntity<Object> recommendContent(@PathVariable UUID contentId,
+                                                   @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null) return responseUtil.getUnAuthorizedMessage();
+
+        var contentRecommendId = new ContentRecommendId();
+        contentRecommendId.setContentId(contentId);
+        contentRecommendId.setUsrId(ludiumUser.getId());
+
+        if (contentService.isContentRecommendExist(contentRecommendId))
+            return responseUtil.getDuplicateExceptionMessage(new ResponseException("이미 추천한 콘텐츠입니다.", ""));
+
+        var contentRecommend = new ContentRecommend();
+
+        contentRecommend.setContentId(contentId);
+        contentRecommend.setUsrId(ludiumUser.getId());
+
+        try {
+            var createdContentRecommend = contentService.createContentRecommend(contentRecommend);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdContentRecommend);
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("콘텐츠를 추천하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 
@@ -210,7 +266,7 @@ public class ContentController {
         var updatedContent = contentService.getContent(contentId);
 
         if (!updatedContent.isPinned())
-            return responseUtil.getDuplicateExceptionMessage(new ResponseException("이미 고정 해제된 콘텐츠 입니다.", ""));
+            return responseUtil.getDuplicateExceptionMessage(new ResponseException("이미 고정 해제된 콘텐츠입니다.", ""));
 
         updatedContent.setPinned(false);
         updatedContent.setPinOrder(-1);
@@ -221,6 +277,29 @@ public class ContentController {
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             return responseUtil.getExceptionMessage("콘텐츠를 고정 해제하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{contentId}/recommend")
+    public ResponseEntity<Object> cancelRecommendContent(@PathVariable UUID contentId,
+                                                         @CookieValue(name = "access_token", required = false) String accessToken) {
+        var ludiumUser = ludiumUserService.getUser(accessToken);
+
+        if (ludiumUser == null) return responseUtil.getUnAuthorizedMessage();
+
+        var contentRecommendId = new ContentRecommendId();
+        contentRecommendId.setContentId(contentId);
+        contentRecommendId.setUsrId(ludiumUser.getId());
+
+        if (!contentService.isContentRecommendExist(contentRecommendId))
+            return responseUtil.getDuplicateExceptionMessage(new ResponseException("추천하지 않은 콘텐츠입니다.", ""));
+
+        try {
+            contentService.deleteContentRecommend(contentRecommendId);
+
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("콘텐츠를 추천 해제하는 중에 에러가 발생했습니다.", e.getMessage());
         }
     }
 }
