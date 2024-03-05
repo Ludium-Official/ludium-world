@@ -16,6 +16,7 @@ export default function EditCommunityForm({ content }) {
   const router = useRouter();
   const editorRef = useRef();
   const [pending, setPending] = useState(false);
+
   const [bannerUrl, setBannerUrl] = useState(content.banner);
 
   const handleUpdateContent = async (e) => {
@@ -87,7 +88,7 @@ export default function EditCommunityForm({ content }) {
             type="file"
             name="banner"
             id="banner"
-            dataset={bannerUrl}
+            data-url={bannerUrl}
             onChange={handleUploadImage}
           />
           {bannerUrl === "" ? null : (
