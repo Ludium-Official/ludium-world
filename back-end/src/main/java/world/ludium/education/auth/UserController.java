@@ -11,6 +11,7 @@ import world.ludium.education.auth.google.GoogleUserService;
 import world.ludium.education.auth.ludium.LudiumUser;
 import world.ludium.education.auth.ludium.LudiumUserService;
 import world.ludium.education.auth.ludium.UserDTO;
+import world.ludium.education.util.ResponseException;
 import world.ludium.education.util.ResponseUtil;
 
 import java.math.BigInteger;
@@ -96,14 +97,19 @@ public class UserController {
                                              @CookieValue(name = "access_token", required = false) String accessToken) {
         try {
             var googleUserApiData = loginService.getUserResource(accessToken, "google");
+            var gglId = new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", ""));
 
             GoogleUser googleUser = new GoogleUser();
-            googleUser.setGgl_id(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+            googleUser.setGgl_id(gglId);
             googleUser.setGgl_gvn(googleUserApiData.get("given_name").toString().replaceAll("\"", ""));
             googleUser.setGgl_nm(googleUserApiData.get("name").toString().replaceAll("\"", ""));
             googleUser.setGgl_eml(googleUserApiData.get("email").toString().replaceAll("\"", ""));
 
-            ludiumUser.setGglId(new BigInteger(googleUserApiData.get("id").toString().replaceAll("\"", "")));
+            ludiumUser.setGglId(gglId);
+
+            if(ludiumUserService.getUser(gglId) != null) {
+                return responseUtil.getDuplicateExceptionMessage(new ResponseException("이미 가입한 회원입니다.", ""));
+            }
 
             googleUserService.createUser(googleUser);
             ludiumUserService.createUser(ludiumUser);
