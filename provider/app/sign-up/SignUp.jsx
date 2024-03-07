@@ -38,7 +38,7 @@ export default function SignUp() {
 
       if (!createUserSignResponse.ok) {
         if (createUserSignResponse.status === 409) {
-          alert("이미 가입되었습니다.");
+          alert("이미 가입되었습니다! 홈 화면으로 이동해보세요.");
           return;
         } else {
           alert("회원 가입하는 중 에러가 발생했습니다.");
