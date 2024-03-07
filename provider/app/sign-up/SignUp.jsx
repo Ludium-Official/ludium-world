@@ -8,36 +8,16 @@ import signupstyle from "./signup.module.css";
 import Image from "next/image";
 import { uploadImage } from "@/functions/actions/ImageUpload";
 
-export const metadata = {
-  metadataBase: process.env.NEXT_PUBLIC_SITE_MAP_URL,
-  title: "회원가입",
-  description: "루디움 회원이되어 WEB 3.0 활동을 시작해보세요",
-  openGraph: {
-    title: "회원가입",
-    description: "루디움 회원이되어 WEB 3.0 활동을 시작해보세요",
-    url: process.env.NEXT_PUBLIC_SITE_MAP_URL,
-    siteName: "루디움",
-    locale: "ko_KR",
-    type: "website",
-    images: [
-      {
-        url: "logo1.png",
-        width: 70,
-        height: 32,
-        alt: "루디움",
-      },
-    ],
-  },
-};
-
 export default function SignUp() {
   const router = useRouter();
   const editorRef = useRef(null);
   const avatarRef = useRef(null);
   const [avatarUrl, setAvatarUrl] = useState("/icon_default_profile.png");
+  const [pending, setPending] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setPending(true);
 
     const { editorInstance } = editorRef.current;
 
@@ -54,12 +34,25 @@ export default function SignUp() {
           }),
         }
       );
+      setPending(false);
 
-      if (createUserSignResponse.ok) {
-        router.push("/");
-        router.refresh();
+      if (!createUserSignResponse.ok) {
+        if (createUserSignResponse.status === 409) {
+          alert("이미 가입되었습니다.");
+          return;
+        } else {
+          alert("회원 가입하는 중 에러가 발생했습니다.");
+          return;
+        }
       }
-    } catch (error) {}
+
+      alert("회원가입이 완료되었습니다.");
+      router.push("/");
+      router.refresh();
+    } catch (error) {
+      setPending(false);
+      alert(error);
+    }
   };
 
   const handleClickAvatarButton = (e) => {
@@ -143,8 +136,11 @@ export default function SignUp() {
           </div>
         </div>
         <div className={signupstyle["form-button-area"]}>
-          <button className="button-L-2 background-purple-01 h5-18 color-white">
-            저장하기
+          <button
+            className="button-L-2 background-purple-01 h5-18 color-white"
+            disabled={pending}
+          >
+            {pending ? "가입하는 중입니다..." : "가입하기"}
           </button>
         </div>
       </div>
