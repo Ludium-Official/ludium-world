@@ -1,14 +1,15 @@
 import BackButton from "@/components/BackButton";
 import ContentNavigation from "@/components/ContentNavigation";
 import fetchWithRetry from "@/functions/api";
+import Link from "next/link";
 import learningstyle from "../learning.module.css";
-import LearningEditor from "./LearningEditor";
-import CreateCurriculumButton from "./CreateCurriculumButton";
-import CurriculumEditor from "./CurriculumEditor";
-import CreateMissionButton from "./CreateMissionButton";
-import MissionEditor from "./MissionEditor";
-import CreateArticleButton from "./CreateArticlebutton";
 import ArticleEditor from "./ArticleEditor";
+import CreateArticleButton from "./CreateArticlebutton";
+import CreateCurriculumButton from "./CreateCurriculumButton";
+import CreateMissionButton from "./CreateMissionButton";
+import CurriculumEditor from "./CurriculumEditor";
+import LearningEditor from "./LearningEditor";
+import MissionEditor from "./MissionEditor";
 
 export async function generateMetadata({ params: { learningId } }) {
   const learning = await getLearning(learningId);
@@ -174,6 +175,7 @@ export default async function LearningPage({ params: { learningId } }) {
     <>
       <ContentNavigation links={[]}>
         <BackButton />
+        <Link href={`/learning/${learningId}/monitor`}>학습 현황</Link>
       </ContentNavigation>
       <LearningContent learningId={learningId} />
     </>
