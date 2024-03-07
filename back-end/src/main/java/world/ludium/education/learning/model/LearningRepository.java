@@ -62,4 +62,19 @@ public interface LearningRepository extends JpaRepository<Learning, UUID> {
     List<Learning> findAllByOrderByCreateAtDesc();
 
     List<Learning> findTop5ByOrderByCreateAtDesc();
+
+    @Query(nativeQuery = true, value= """
+            SELECT c.title curriculum, m.title mission, tlu.nick nick, ms.usr_id usrId
+              FROM curriculum c
+              LEFT JOIN mission m
+                ON c.curriculum_id = m.curriculum_id
+              LEFT JOIN mission_Submit ms
+                ON ms.mission_id = m.mission_id
+              LEFT JOIN tb_ldm_usr tlu
+                ON tlu.id = ms.usr_id
+             WHERE c.posting_id = :learningId
+             GROUP BY c.title, m.title, ms.usr_id, c.order_num, m.order_num, tlu.nick
+             ORDER BY c.order_num, m.order_num
+            """)
+    List<LearnMonitorDTO> findAllLearningMonitor(@Param("learningId") UUID learningId);
 }

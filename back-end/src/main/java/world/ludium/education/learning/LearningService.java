@@ -2,6 +2,7 @@ package world.ludium.education.learning;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import world.ludium.education.learning.model.LearnMonitorDTO;
 import world.ludium.education.learning.model.Learning;
 import world.ludium.education.learning.model.LearningRepository;
 import world.ludium.education.profile.LearningDTO;
@@ -46,5 +47,9 @@ public class LearningService {
 
     public Learning updateLearning(Learning learning) {
         return learningRepository.save(learning);
+    }
+
+    public List<LearnMonitorDTO> getAllMonitor(UUID learningId) {
+        return learningRepository.findAllLearningMonitor(learningId);
     }
 }

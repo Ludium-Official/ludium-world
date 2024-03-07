@@ -88,6 +88,19 @@ public class LearningController {
         }
     }
 
+    @GetMapping("/{learningId}/monitor")
+    public ResponseEntity<Object> getAllMonitor(@PathVariable UUID learningId) {
+        try {
+            var monitoringList = learningService.getAllMonitor(learningId);
+
+            if (monitoringList.isEmpty()) return responseUtil.getNoSuchElementExceptionMessage("학습 현황 데이터가 없습니다.", "");
+
+            return ResponseEntity.ok(monitoringList);
+        } catch (Exception e) {
+            return responseUtil.getExceptionMessage("학습 현황을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+        }
+    }
+
     @GetMapping("/{learningId}/{curriculumId}/mission")
     public ResponseEntity<Object> getAllMission(@PathVariable UUID learningId,
                                                 @PathVariable UUID curriculumId) {
