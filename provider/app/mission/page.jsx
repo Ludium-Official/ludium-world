@@ -76,24 +76,32 @@ async function MissionList() {
             </div>
           </div>
           <hr className="line border-gray-02" />
-          {missions.map(({ missionId, title, curriculumId }) => (
-            <Fragment key={missionId}>
-              <div className="frame-136">
-                <div className="frame-35">
-                  <div className="frame-92">
-                    <div className="frame-3">
-                      <Link
-                        className="h5-18 color-gray-02 link"
-                        href={`/mission/${missionId}`}
-                      >
-                        {title}
-                      </Link>
+          {missions
+            .sort((a, b) => {
+              if (a.orderNum > b.orderNum) return 1;
+
+              if (a.orderNum < b.orderNum) return -1;
+
+              return 0;
+            })
+            .map(({ missionId, title }) => (
+              <Fragment key={missionId}>
+                <div className="frame-136">
+                  <div className="frame-35">
+                    <div className="frame-92">
+                      <div className="frame-3">
+                        <Link
+                          className="h5-18 color-gray-02 link"
+                          href={`/mission/${missionId}`}
+                        >
+                          {title}
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </Fragment>
-          ))}
+              </Fragment>
+            ))}
         </div>
       ))}
     </>
@@ -108,7 +116,7 @@ export default async function MissionListPage() {
       </header>
       <article className="wrapper">
         <div className="frame-93">
-          <h1 className="h3-24">미션 목록</h1>
+          <h3 className="h3-24">미션 목록</h3>
           <MissionList />
         </div>
       </article>
