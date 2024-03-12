@@ -2386,9 +2386,28 @@ p {
 }
 
 .toastui-editor-contents p,
-.ProseMirror {
+.ProseMirror,
+.toastui-editor-contents {
   font-weight: 400;
   font-size: 18px !important;
   line-height: 27px !important;
   letter-spacing: -0.005em;
+}
+
+.toastui-editor-contents ul > li:before {
+  margin-top: 12px !important;
+}
+
+.toastui-editor-contents pre,
+.toastui-editor-md-code-block-line-background {
+  background-color: var(--purple04) !important;
+  border-radius: 4px !important;
+}
+
+.toastui-editor-contents code {
+  letter-spacing: -0.005em;
+}
+
+.toastui-editor-contents *:not(table) {
+  line-height: 27px !important;
 }
