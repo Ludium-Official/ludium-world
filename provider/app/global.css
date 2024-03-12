@@ -2328,6 +2328,67 @@ p {
 /* announcement page style end */
 
 .toastui-editor-contents h1,
-.toastui-editor-contents h2 {
+.toastui-editor-contents h2,
+.toastui-editor-md-heading1,
+.toastui-editor-md-heading2,
+.toastui-editor-contents h3,
+.toastui-editor-md-heading3,
+.toastui-editor-contents h4,
+.toastui-editor-md-heading4,
+.toastui-editor-contents h5,
+.toastui-editor-md-heading5,
+.toastui-editor-contents h6,
+.toastui-editor-md-heading6,
+.toastui-editor-contents p,
+.ProseMirror {
+  font-family: "Pretendard Variable" !important;
+  font-style: normal;
   border-bottom: none !important;
+}
+
+.toastui-editor-contents h1,
+.toastui-editor-md-heading1 {
+  font-weight: 800 !important;
+  font-size: 32px !important;
+  line-height: 38px !important;
+}
+
+.toastui-editor-contents h2,
+.toastui-editor-md-heading2 {
+  font-weight: 750 !important;
+  font-size: 28px !important;
+  line-height: 33px !important;
+}
+
+.toastui-editor-contents h3,
+.toastui-editor-md-heading3 {
+  font-family: "Pretendard Variable";
+  font-style: normal;
+  font-weight: 700 !important;
+  font-size: 24px !important;
+  line-height: 29px !important;
+  letter-spacing: -0.003em;
+}
+
+.toastui-editor-contents h4,
+.toastui-editor-md-heading4 {
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  line-height: 30px !important; /* 150% */
+  letter-spacing: -0.06px;
+}
+
+.toastui-editor-contents h5,
+.toastui-editor-md-heading5 {
+  font-weight: 700 !important;
+  font-size: 18px !important;
+  line-height: 27px !important;
+}
+
+.toastui-editor-contents p,
+.ProseMirror {
+  font-weight: 400;
+  font-size: 18px !important;
+  line-height: 27px;
+  letter-spacing: -0.005em;
 }
