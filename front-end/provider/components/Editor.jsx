@@ -1,9 +1,8 @@
 import { uploadImage } from "@/functions/actions/ImageUpload";
 import "@toast-ui/editor/dist/toastui-editor.css";
-import DOMPurify from "dompurify";
 import { useEffect } from "react";
-import { YoutubeEmbedToolbar } from "./editor/toolbars";
 import sanitizer from "./editor/sanitizer";
+import { YoutubeEmbedToolbar } from "./editor/toolbars";
 
 export default function Editor({ editorRef, content, height }) {
   useEffect(() => {
