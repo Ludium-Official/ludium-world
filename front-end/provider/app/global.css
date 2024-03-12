@@ -2389,6 +2389,6 @@ p {
 .ProseMirror {
   font-weight: 400;
   font-size: 18px !important;
-  line-height: 27px;
+  line-height: 27px !important;
   letter-spacing: -0.005em;
 }
