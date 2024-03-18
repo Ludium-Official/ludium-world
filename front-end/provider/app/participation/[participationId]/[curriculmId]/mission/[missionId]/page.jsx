@@ -1,5 +1,6 @@
 import BackButton from "@/components/BackButton";
 import Icon from "@/components/Icon";
+import UnAuthorizedError from "@/errors/UnAuthorizedError";
 import fetchWithRetry from "@/functions/api";
 import ko_kr from "@/langs/ko_kr";
 import dynamic from "next/dynamic";
