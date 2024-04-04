@@ -49,7 +49,7 @@ public class UserController {
                     var userDTO = new UserDTO();
                     userDTO.setId(user.getId());
                     userDTO.setNick(user.getNick());
-                    userDTO.setEmail("");
+                    userDTO.setEmail(googleUser.getGgl_eml());
                     userDTO.setContributor(userRight.isCrt());
                     userDTO.setProvider(userRight.isPrv());
                     userDTO.setAdmin(userRight.isAdm());
