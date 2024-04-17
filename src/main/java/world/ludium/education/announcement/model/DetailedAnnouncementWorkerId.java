@@ -1,52 +1,55 @@
 package world.ludium.education.announcement.model;
 
-import jakarta.persistence.Id;
-
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
 public class DetailedAnnouncementWorkerId implements Serializable {
-    private UUID detailId;
-    private String role;
 
-    public DetailedAnnouncementWorkerId() {
-    }
+  private UUID detailId;
+  private String role;
 
-    public UUID getDetailId() {
-        return detailId;
-    }
+  public DetailedAnnouncementWorkerId() {
+  }
 
-    public void setDetailId(UUID detailId) {
-        this.detailId = detailId;
-    }
+  public UUID getDetailId() {
+    return detailId;
+  }
 
-    public String getRole() {
-        return role;
-    }
+  public void setDetailId(UUID detailId) {
+    this.detailId = detailId;
+  }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
+  public String getRole() {
+    return role;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DetailedAnnouncementWorkerId that = (DetailedAnnouncementWorkerId) o;
-        return getDetailId().equals(that.getDetailId()) && getRole().equals(that.getRole());
-    }
+  public void setRole(String role) {
+    this.role = role;
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getDetailId(), getRole());
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    DetailedAnnouncementWorkerId that = (DetailedAnnouncementWorkerId) o;
+    return getDetailId().equals(that.getDetailId()) && getRole().equals(that.getRole());
+  }
 
-    @Override
-    public String toString() {
-        return "DetailedAnnouncementWorkerId{" +
-                "detailId=" + detailId +
-                ", role='" + role + '\'' +
-                '}';
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(getDetailId(), getRole());
+  }
+
+  @Override
+  public String toString() {
+    return "DetailedAnnouncementWorkerId{"
+        + "detailId=" + detailId
+        + ", role='" + role + '\''
+        + '}';
+  }
 }

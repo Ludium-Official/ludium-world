@@ -3,75 +3,75 @@ package world.ludium.education.announcement.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
 import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
-@Table(name="application")
+@Table(name = "application")
 public class Application {
-    @Id
-    private UUID applicationId;
-    private String title;
-    private String description;
-    private UUID detailId;
-    private UUID usrId;
-    private String role;
-    private Timestamp createAt;
 
-    public UUID getApplicationId() {
-        return applicationId;
-    }
+  @Id
+  private UUID applicationId;
+  private String title;
+  private String description;
+  private UUID detailId;
+  private UUID usrId;
+  private String role;
+  private Timestamp createAt;
 
-    public void setApplicationId(UUID applicationId) {
-        this.applicationId = applicationId;
-    }
+  public UUID getApplicationId() {
+    return applicationId;
+  }
 
-    public String getTitle() {
-        return title;
-    }
+  public void setApplicationId(UUID applicationId) {
+    this.applicationId = applicationId;
+  }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+  public String getTitle() {
+    return title;
+  }
 
-    public String getDescription() {
-        return description;
-    }
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+  public String getDescription() {
+    return description;
+  }
 
-    public UUID getDetailId() {
-        return detailId;
-    }
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-    public void setDetailId(UUID detailId) {
-        this.detailId = detailId;
-    }
+  public UUID getDetailId() {
+    return detailId;
+  }
 
-    public UUID getUsrId() {
-        return usrId;
-    }
+  public void setDetailId(UUID detailId) {
+    this.detailId = detailId;
+  }
 
-    public void setUsrId(UUID usrId) {
-        this.usrId = usrId;
-    }
+  public UUID getUsrId() {
+    return usrId;
+  }
 
-    public String getRole() {
-        return role;
-    }
+  public void setUsrId(UUID usrId) {
+    this.usrId = usrId;
+  }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
+  public String getRole() {
+    return role;
+  }
 
-    public Timestamp getCreateAt() {
-        return createAt;
-    }
+  public void setRole(String role) {
+    this.role = role;
+  }
 
-    public void setCreateAt(Timestamp createAt) {
-        this.createAt = createAt;
-    }
+  public Timestamp getCreateAt() {
+    return createAt;
+  }
+
+  public void setCreateAt(Timestamp createAt) {
+    this.createAt = createAt;
+  }
 }

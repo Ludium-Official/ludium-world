@@ -3,7 +3,6 @@ package world.ludium.education.announcement.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
 import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -11,68 +10,69 @@ import java.util.UUID;
 @Entity
 @Table(name = "job_posting")
 public class Announcement {
-    @Id
-    private UUID postingId;
-    private String title;
-    private String description;
-    private OffsetDateTime deadline;
-    private Timestamp createAt;
-    private boolean isPinned;
-    private Integer pinOrder;
 
-    public UUID getPostingId() {
-        return postingId;
-    }
+  @Id
+  private UUID postingId;
+  private String title;
+  private String description;
+  private OffsetDateTime deadline;
+  private Timestamp createAt;
+  private boolean isPinned;
+  private Integer pinOrder;
 
-    public void setPostingId(UUID postingId) {
-        this.postingId = postingId;
-    }
+  public UUID getPostingId() {
+    return postingId;
+  }
 
-    public String getTitle() {
-        return title;
-    }
+  public void setPostingId(UUID postingId) {
+    this.postingId = postingId;
+  }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+  public String getTitle() {
+    return title;
+  }
 
-    public String getDescription() {
-        return description;
-    }
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+  public String getDescription() {
+    return description;
+  }
 
-    public OffsetDateTime getDeadline() {
-        return deadline;
-    }
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-    public void setDeadline(OffsetDateTime deadline) {
-        this.deadline = deadline;
-    }
+  public OffsetDateTime getDeadline() {
+    return deadline;
+  }
 
-    public Timestamp getCreateAt() {
-        return createAt;
-    }
+  public void setDeadline(OffsetDateTime deadline) {
+    this.deadline = deadline;
+  }
 
-    public void setCreateAt(Timestamp createAt) {
-        this.createAt = createAt;
-    }
+  public Timestamp getCreateAt() {
+    return createAt;
+  }
 
-    public boolean isPinned() {
-        return isPinned;
-    }
+  public void setCreateAt(Timestamp createAt) {
+    this.createAt = createAt;
+  }
 
-    public void setPinned(boolean pinned) {
-        isPinned = pinned;
-    }
+  public boolean isPinned() {
+    return isPinned;
+  }
 
-    public Integer getPinOrder() {
-        return pinOrder;
-    }
+  public void setPinned(boolean pinned) {
+    isPinned = pinned;
+  }
 
-    public void setPinOrder(Integer pinOrder) {
-        this.pinOrder = pinOrder;
-    }
+  public Integer getPinOrder() {
+    return pinOrder;
+  }
+
+  public void setPinOrder(Integer pinOrder) {
+    this.pinOrder = pinOrder;
+  }
 }
