@@ -3,75 +3,75 @@ package world.ludium.education.learning.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
 import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
-@Table(name="curriculum")
+@Table(name = "curriculum")
 public class Curriculum {
-    @Id
-    private UUID curriculumId;
-    private UUID postingId;
-    private String title;
-    private String description;
-    private Timestamp createAt;
-    private UUID usrId;
-    private Integer orderNum;
 
-    public UUID getCurriculumId() {
-        return curriculumId;
-    }
+  @Id
+  private UUID curriculumId;
+  private UUID postingId;
+  private String title;
+  private String description;
+  private Timestamp createAt;
+  private UUID usrId;
+  private Integer orderNum;
 
-    public void setCurriculumId(UUID curriculumId) {
-        this.curriculumId = curriculumId;
-    }
+  public UUID getCurriculumId() {
+    return curriculumId;
+  }
 
-    public UUID getPostingId() {
-        return postingId;
-    }
+  public void setCurriculumId(UUID curriculumId) {
+    this.curriculumId = curriculumId;
+  }
 
-    public void setPostingId(UUID postingId) {
-        this.postingId = postingId;
-    }
+  public UUID getPostingId() {
+    return postingId;
+  }
 
-    public String getTitle() {
-        return title;
-    }
+  public void setPostingId(UUID postingId) {
+    this.postingId = postingId;
+  }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+  public String getTitle() {
+    return title;
+  }
 
-    public String getDescription() {
-        return description;
-    }
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+  public String getDescription() {
+    return description;
+  }
 
-    public Timestamp getCreateAt() {
-        return createAt;
-    }
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-    public void setCreateAt(Timestamp createAt) {
-        this.createAt = createAt;
-    }
+  public Timestamp getCreateAt() {
+    return createAt;
+  }
 
-    public UUID getUsrId() {
-        return usrId;
-    }
+  public void setCreateAt(Timestamp createAt) {
+    this.createAt = createAt;
+  }
 
-    public void setUsrId(UUID usrId) {
-        this.usrId = usrId;
-    }
+  public UUID getUsrId() {
+    return usrId;
+  }
 
-    public Integer getOrderNum() {
-        return orderNum;
-    }
+  public void setUsrId(UUID usrId) {
+    this.usrId = usrId;
+  }
 
-    public void setOrderNum(Integer orderNum) {
-        this.orderNum = orderNum;
-    }
+  public Integer getOrderNum() {
+    return orderNum;
+  }
+
+  public void setOrderNum(Integer orderNum) {
+    this.orderNum = orderNum;
+  }
 }

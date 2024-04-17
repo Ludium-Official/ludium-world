@@ -4,46 +4,52 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class DetailedAnnouncementCoWorkerId {
-    private UUID detailId;
-    private UUID usrId;
 
-    public DetailedAnnouncementCoWorkerId() {
-    }
+  private UUID detailId;
+  private UUID usrId;
 
-    public UUID getDetailId() {
-        return detailId;
-    }
+  public DetailedAnnouncementCoWorkerId() {
+  }
 
-    public void setDetailId(UUID detailId) {
-        this.detailId = detailId;
-    }
+  public UUID getDetailId() {
+    return detailId;
+  }
 
-    public UUID getUsrId() {
-        return usrId;
-    }
+  public void setDetailId(UUID detailId) {
+    this.detailId = detailId;
+  }
 
-    public void setUsrId(UUID usrId) {
-        this.usrId = usrId;
-    }
+  public UUID getUsrId() {
+    return usrId;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DetailedAnnouncementCoWorkerId that = (DetailedAnnouncementCoWorkerId) o;
-        return Objects.equals(getDetailId(), that.getDetailId()) && Objects.equals(getUsrId(), that.getUsrId());
-    }
+  public void setUsrId(UUID usrId) {
+    this.usrId = usrId;
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getDetailId(), getUsrId());
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    DetailedAnnouncementCoWorkerId that = (DetailedAnnouncementCoWorkerId) o;
+    return Objects.equals(getDetailId(), that.getDetailId()) && Objects.equals(getUsrId(),
+        that.getUsrId());
+  }
 
-    @Override
-    public String toString() {
-        return "DetailedAnnouncementCoWorkerId{" +
-                "detailId=" + detailId +
-                ", usrId=" + usrId +
-                '}';
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(getDetailId(), getUsrId());
+  }
+
+  @Override
+  public String toString() {
+    return "DetailedAnnouncementCoWorkerId{"
+        + "detailId=" + detailId
+        + ", usrId=" + usrId
+        + '}';
+  }
 }

@@ -4,50 +4,50 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
-
 import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
-@Table(name="article_submit")
+@Table(name = "article_submit")
 @IdClass(ArticleSubmitId.class)
 public class ArticleSubmit {
-    @Id
-    private UUID articleId;
-    @Id
-    private UUID usrId;
-    private String status;
-    private Timestamp createAt;
 
-    public UUID getArticleId() {
-        return articleId;
-    }
+  @Id
+  private UUID articleId;
+  @Id
+  private UUID usrId;
+  private String status;
+  private Timestamp createAt;
 
-    public void setArticleId(UUID articleId) {
-        this.articleId = articleId;
-    }
+  public UUID getArticleId() {
+    return articleId;
+  }
 
-    public UUID getUsrId() {
-        return usrId;
-    }
+  public void setArticleId(UUID articleId) {
+    this.articleId = articleId;
+  }
 
-    public void setUsrId(UUID usrId) {
-        this.usrId = usrId;
-    }
+  public UUID getUsrId() {
+    return usrId;
+  }
 
-    public String getStatus() {
-        return status;
-    }
+  public void setUsrId(UUID usrId) {
+    this.usrId = usrId;
+  }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+  public String getStatus() {
+    return status;
+  }
 
-    public Timestamp getCreateAt() {
-        return createAt;
-    }
+  public void setStatus(String status) {
+    this.status = status;
+  }
 
-    public void setCreateAt(Timestamp createAt) {
-        this.createAt = createAt;
-    }
+  public Timestamp getCreateAt() {
+    return createAt;
+  }
+
+  public void setCreateAt(Timestamp createAt) {
+    this.createAt = createAt;
+  }
 }

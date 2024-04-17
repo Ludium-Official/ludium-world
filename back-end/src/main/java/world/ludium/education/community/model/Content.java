@@ -3,102 +3,102 @@ package world.ludium.education.community.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
 import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
 @Table(name = "content")
 public class Content {
-    @Id
-    private UUID contentId;
-    private String title;
-    private String description;
-    private UUID usrId;
-    private Timestamp createAt;
-    private String type;
-    private boolean visible;
-    private String banner;
-    private boolean isPinned;
-    private Integer pinOrder;
 
-    public UUID getContentId() {
-        return contentId;
-    }
+  @Id
+  private UUID contentId;
+  private String title;
+  private String description;
+  private UUID usrId;
+  private Timestamp createAt;
+  private String type;
+  private boolean visible;
+  private String banner;
+  private boolean isPinned;
+  private Integer pinOrder;
 
-    public void setContentId(UUID contentId) {
-        this.contentId = contentId;
-    }
+  public UUID getContentId() {
+    return contentId;
+  }
 
-    public String getTitle() {
-        return title;
-    }
+  public void setContentId(UUID contentId) {
+    this.contentId = contentId;
+  }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+  public String getTitle() {
+    return title;
+  }
 
-    public String getDescription() {
-        return description;
-    }
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+  public String getDescription() {
+    return description;
+  }
 
-    public UUID getUsrId() {
-        return usrId;
-    }
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-    public void setUsrId(UUID usrId) {
-        this.usrId = usrId;
-    }
+  public UUID getUsrId() {
+    return usrId;
+  }
 
-    public Timestamp getCreateAt() {
-        return createAt;
-    }
+  public void setUsrId(UUID usrId) {
+    this.usrId = usrId;
+  }
 
-    public void setCreateAt(Timestamp createAt) {
-        this.createAt = createAt;
-    }
+  public Timestamp getCreateAt() {
+    return createAt;
+  }
 
-    public String getType() {
-        return type;
-    }
+  public void setCreateAt(Timestamp createAt) {
+    this.createAt = createAt;
+  }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+  public String getType() {
+    return type;
+  }
 
-    public boolean isVisible() {
-        return visible;
-    }
+  public void setType(String type) {
+    this.type = type;
+  }
 
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
+  public boolean isVisible() {
+    return visible;
+  }
 
-    public String getBanner() {
-        return banner;
-    }
+  public void setVisible(boolean visible) {
+    this.visible = visible;
+  }
 
-    public void setBanner(String banner) {
-        this.banner = banner;
-    }
+  public String getBanner() {
+    return banner;
+  }
 
-    public boolean isPinned() {
-        return isPinned;
-    }
+  public void setBanner(String banner) {
+    this.banner = banner;
+  }
 
-    public void setPinned(boolean pinned) {
-        isPinned = pinned;
-    }
+  public boolean isPinned() {
+    return isPinned;
+  }
 
-    public Integer getPinOrder() {
-        return pinOrder;
-    }
+  public void setPinned(boolean pinned) {
+    isPinned = pinned;
+  }
 
-    public void setPinOrder(Integer pinOrder) {
-        this.pinOrder = pinOrder;
-    }
+  public Integer getPinOrder() {
+    return pinOrder;
+  }
+
+  public void setPinOrder(Integer pinOrder) {
+    this.pinOrder = pinOrder;
+  }
 }
