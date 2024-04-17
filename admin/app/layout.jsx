@@ -7,11 +7,6 @@ async function getNavigationLinks() {
   return [
     {
       id: crypto.randomUUID(),
-      dir: "/profile?active=article",
-      text: "프로필",
-    },
-    {
-      id: crypto.randomUUID(),
       dir: "/announcement",
       text: "공고",
     },
@@ -37,27 +32,9 @@ async function getNavigationLinks() {
     },
     {
       id: crypto.randomUUID(),
-      dir: "/apply",
-      text: "지원서 관리",
-    },
-    {
-      id: crypto.randomUUID(),
       dir: "/community",
       text: "커뮤니티",
     },
-    // , {
-    //     id: crypto.randomUUID(),
-    //     dir: "/article",
-    //     text: "아티클"
-    // }, {
-    //     id: crypto.randomUUID(),
-    //     dir: "/post",
-    //     text: "자유게시판"
-    // }, {
-    //     id: crypto.randomUUID(),
-    //     dir: "/course",
-    //     text: "교육"
-    // }
   ];
 }
 
