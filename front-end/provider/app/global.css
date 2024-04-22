@@ -2411,3 +2411,7 @@ p {
 .toastui-editor-contents *:not(table) {
   line-height: 27px !important;
 }
+
+.signup-editor {
+  width: 850px;
+}
