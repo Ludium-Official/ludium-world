@@ -1,11 +1,11 @@
 {
   "dependencies": {
     "@toast-ui/editor": "^3.2.2",
-    "next": "^13.5.6",
+    "dompurify": "^2.3.3",
+    "next": "^14.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tui-grid": "^4.21.18",
-    "dompurify": "^2.3.3"
+    "tui-grid": "^4.21.18"
   },
   "scripts": {
     "dev": "next dev -p 3001",
