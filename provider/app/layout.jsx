@@ -1,10 +1,7 @@
-import { cookies } from "next/headers";
 import Navigation from "../components/Navigation";
 import "./global.css";
 
 export default async function RootLayout({ children }) {
-  const cookieStore = cookies();
-
   return (
     <html lang="ko">
       <head>
@@ -18,10 +15,7 @@ export default async function RootLayout({ children }) {
         />
       </head>
       <body className="body">
-        <Navigation
-          googleAuthInfo={cookieStore.get("access_token")}
-          gglId={cookieStore.get("ggl_id")}
-        />
+        <Navigation />
         <main className="main">{children}</main>
       </body>
     </html>

@@ -1,44 +1,30 @@
-"use client";
-
-import { usePathname } from "next/navigation";
+import { headers } from "next/headers";
 import Footer from "./aisde/Footer";
 import GnbMenu from "./aisde/GnbMenu";
 import Logo1 from "./aisde/Logo1";
-import { useEffect, useState } from "react";
-import fetchWithRetry from "@/functions/api";
 
-export default function Navigation({ googleAuthInfo, gglId }) {
-  const pathName = usePathname();
-  const [isProvider, setIsProvider] = useState(false);
+export default async function Navigation() {
+  const headerList = headers();
+
+  const userRight = headerList.get("x-user-right");
+  const pathName = headerList.get("x-path-name");
 
   const CLIENT_ID = process.env.NEXT_PUBLIC_OAUTH2_GOOGLE_CLIENT_ID;
   const REDIRECT_URI = process.env.NEXT_PUBLIC_OAUTH2_GOOGLE_REDIRECT_URI;
   const RESPONSE_TYPE = process.env.NEXT_PUBLIC_OAUTH2_GOOGLE_RESPONSE_TYPE;
   const SCOPE = process.env.NEXT_PUBLIC_OAUTH2_GOOGLE_SCOPE;
 
-  const getUserRight = async () => {
-    if (googleAuthInfo == null || gglId == null) return;
-
-    const getRightResponse = await fetchWithRetry("/user/right", {});
-
-    if (getRightResponse.ok) {
-      const right = await getRightResponse.json();
-
-      setIsProvider(right.prv);
-    }
-  };
-
-  useEffect(() => {
-    getUserRight();
-  }, []);
-
   if (pathName === "/sign-up") return null;
+
+  const { prv, adm } = userRight
+    ? JSON.parse(userRight)
+    : { prv: false, adm: false };
 
   return (
     <aside className="aside">
       <Logo1 />
       <nav className="gnb">
-        {googleAuthInfo == null || gglId == null ? (
+        {userRight == null ? (
           <GnbMenu
             href={`https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}&access_type=offline&prompt=consent`}
             iconClass="icon-profile"
@@ -92,7 +78,7 @@ export default function Navigation({ googleAuthInfo, gglId }) {
           height={24}
           text="커뮤니티"
         />
-        {isProvider ? (
+        {prv ? (
           <div>
             <div className="line border-gray-05" />
             <GnbMenu
