@@ -1,12 +1,14 @@
 "use client";
 
-import Editor from "@/components/Editor";
 import { uploadImage } from "@/functions/actions/ImageUpload";
 import fetchWithRetry from "@/functions/api";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import signupstyle from "./signup.module.css";
+
+const Editor = dynamic(() => import("@/components/Editor"), { ssr: false });
 
 export default function SignUp() {
   const router = useRouter();
@@ -130,7 +132,7 @@ export default function SignUp() {
           </div>
           <div className="input-2">
             <label className="h5-18 color-gray-03">자기소개</label>
-            <div className="frame-102-4 background-white content-editor">
+            <div className="frame-102-4 background-white content-editor signup-editor">
               <Editor editorRef={editorRef} height="100%" />
             </div>
           </div>
