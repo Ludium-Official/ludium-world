@@ -22,7 +22,7 @@ export default async function middlware(req) {
   const { pathname } = req.nextUrl;
 
   if (pattern.test(pathname)) {
-    if (cookieStore.getAll().length === 0)
+    if (cookieStore.get("access_token") == null)
       return NextResponse.redirect(new URL("/", req.url));
 
     if (pathname === "/sign-up") {
