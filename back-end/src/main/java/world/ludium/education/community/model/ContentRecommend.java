@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
-
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -12,33 +11,34 @@ import java.util.UUID;
 @Table(name = "content_recommend")
 @IdClass(ContentRecommendId.class)
 public class ContentRecommend {
-    @Id
-    private UUID contentId;
-    @Id
-    private UUID usrId;
-    private Timestamp createAt;
 
-    public UUID getContentId() {
-        return contentId;
-    }
+  @Id
+  private UUID contentId;
+  @Id
+  private UUID usrId;
+  private Timestamp createAt;
 
-    public void setContentId(UUID contentId) {
-        this.contentId = contentId;
-    }
+  public UUID getContentId() {
+    return contentId;
+  }
 
-    public UUID getUsrId() {
-        return usrId;
-    }
+  public void setContentId(UUID contentId) {
+    this.contentId = contentId;
+  }
 
-    public void setUsrId(UUID usrId) {
-        this.usrId = usrId;
-    }
+  public UUID getUsrId() {
+    return usrId;
+  }
 
-    public Timestamp getCreateAt() {
-        return createAt;
-    }
+  public void setUsrId(UUID usrId) {
+    this.usrId = usrId;
+  }
 
-    public void setCreateAt(Timestamp createAt) {
-        this.createAt = createAt;
-    }
+  public Timestamp getCreateAt() {
+    return createAt;
+  }
+
+  public void setCreateAt(Timestamp createAt) {
+    this.createAt = createAt;
+  }
 }

@@ -8,21 +8,21 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {
 
-    private final Environment env;
+  private final Environment env;
 
-    public CorsConfig(Environment env) {
-        this.env = env;
-    }
+  public CorsConfig(Environment env) {
+    this.env = env;
+  }
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedOrigins(
-                        env.getProperty("ludium.world.admin.redirect-uri"),
-                        env.getProperty("ludium.world.provider.redirect-uri"),
-                        env.getProperty("ludium.world.contributor.redirect-uri"))
-                .maxAge(3600)
-                .allowCredentials(true);
-    }
+  @Override
+  public void addCorsMappings(CorsRegistry registry) {
+    registry.addMapping("/**")
+        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+        .allowedOrigins(
+            env.getProperty("ludium.world.admin.redirect-uri"),
+            env.getProperty("ludium.world.provider.redirect-uri"),
+            env.getProperty("ludium.world.contributor.redirect-uri"))
+        .maxAge(3600)
+        .allowCredentials(true);
+  }
 }

@@ -4,45 +4,50 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class ContentRecommendId {
-    private UUID contentId;
-    private UUID usrId;
 
-    public ContentRecommendId() {
-    }
+  private UUID contentId;
+  private UUID usrId;
 
-    public UUID getContentId() {
-        return contentId;
-    }
+  public ContentRecommendId() {
+  }
 
-    public void setContentId(UUID contentId) {
-        this.contentId = contentId;
-    }
+  public UUID getContentId() {
+    return contentId;
+  }
 
-    public UUID getUsrId() {
-        return usrId;
-    }
+  public void setContentId(UUID contentId) {
+    this.contentId = contentId;
+  }
 
-    public void setUsrId(UUID usrId) {
-        this.usrId = usrId;
-    }
+  public UUID getUsrId() {
+    return usrId;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ContentRecommendId that = (ContentRecommendId) o;
-        return Objects.equals(contentId, that.contentId) && Objects.equals(usrId, that.usrId);
-    }
+  public void setUsrId(UUID usrId) {
+    this.usrId = usrId;
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(contentId, usrId);
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    ContentRecommendId that = (ContentRecommendId) o;
+    return Objects.equals(contentId, that.contentId) && Objects.equals(usrId, that.usrId);
+  }
 
-    public String toString() {
-        return "ContentRecommendId{" +
-                "contentId=" + contentId +
-                ", usrId=" + usrId +
-                '}';
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(contentId, usrId);
+  }
+
+  public String toString() {
+    return "ContentRecommendId{"
+        + "contentId=" + contentId
+        + ", usrId=" + usrId
+        + '}';
+  }
 }
