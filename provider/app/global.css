@@ -2420,3 +2420,7 @@ p {
   overflow-y: auto;
   height: 520px;
 }
+
+.grid {
+  height: Calc(100% - 1px);
+}
