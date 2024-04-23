@@ -43,7 +43,10 @@ class CustomLink {
   }
 
   render(props) {
-    this.el.innerText = "보러가기";
+    const { text } = props.columnInfo.renderer.options;
+    const innerText = props.grid.getRow(props.rowKey)[text];
+
+    this.el.innerText = innerText;
   }
 }
 
@@ -76,6 +79,13 @@ export default function UserList({ users }) {
           {
             header: "닉네임",
             name: "nick",
+            renderer: {
+              type: CustomLink,
+              options: {
+                path: "profile",
+                text: "nick",
+              },
+            },
           },
           {
             header: "이메일",
@@ -102,18 +112,6 @@ export default function UserList({ users }) {
               type: CustomCheckBoxRenderer,
               options: {
                 onClick: handleEditAdminAuth,
-              },
-            },
-          },
-          {
-            header: "프로필",
-            name: "profile",
-            width: 120,
-            align: "center",
-            renderer: {
-              type: CustomLink,
-              options: {
-                path: "profile",
               },
             },
           },
