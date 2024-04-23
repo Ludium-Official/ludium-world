@@ -103,6 +103,14 @@ export default async function Navigation() {
               height={20.62}
               text="공고 관리"
             />
+            <GnbMenu
+              href="/work-management"
+              src="/icon_note.svg"
+              alt="작업 관리 페이지로 이동하기"
+              width={24}
+              height={24}
+              text="작업 관리"
+            />
           </div>
         ) : null}
       </nav>

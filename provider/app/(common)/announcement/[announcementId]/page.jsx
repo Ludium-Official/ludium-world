@@ -79,9 +79,7 @@ async function DetailedAnnouncementList({ announcementId }) {
                   href={`/announcement/${announcementId}/${detailId}`}
                 >
                   <h3 className="h4-20 color-gray-02">
-                    {title === ""
-                      ? "작업의 내용이 아직 작성되지 않았습니다."
-                      : title}
+                    {title === "" ? "작업 제목을 입력해주세요" : title}
                   </h3>
                 </Link>
               </div>

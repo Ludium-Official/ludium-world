@@ -2415,3 +2415,8 @@ p {
 .signup-editor {
   width: 850px;
 }
+
+.work-content-viewer {
+  overflow-y: auto;
+  height: 520px;
+}
