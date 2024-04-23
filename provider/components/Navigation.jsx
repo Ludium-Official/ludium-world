@@ -91,8 +91,22 @@ export default async function Navigation() {
             />
           </div>
         ) : null}
+        {adm ? (
+          <div>
+            <div className="line border-gray-05" />
+            <GnbMenu
+              href="/announcement-management"
+              iconClass="icon-announcement"
+              src="/icon_announcement.svg"
+              alt="공고 관리 페이지로 이동하기"
+              width={17.2}
+              height={20.62}
+              text="공고 관리"
+            />
+          </div>
+        ) : null}
       </nav>
-      <Footer />
+      {adm ? null : <Footer />}
     </aside>
   );
 }
