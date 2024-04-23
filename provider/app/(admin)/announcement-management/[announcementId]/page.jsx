@@ -75,7 +75,7 @@ async function DetailedAnnouncementList({ announcementId }) {
 
   return (
     <section className="frame-119">
-      {detailedAnnouncements.map(({ detailId, title, description }) => (
+      {detailedAnnouncements.map(({ detailId, title, description }, index) => (
         <Fragment key={detailId}>
           <div className="frame-118">
             <div className="frame-100-2">
@@ -85,9 +85,7 @@ async function DetailedAnnouncementList({ announcementId }) {
                   href={`/announcement-management/${announcementId}/${detailId}`}
                 >
                   <h4 className="h4-20 color-gray-02">
-                    {title === ""
-                      ? "작업의 내용이 아직 작성되지 않았습니다."
-                      : title}
+                    {title === "" ? "작업 제목을 입력해주세요" : title}
                   </h4>
                 </Link>
               </div>
@@ -109,6 +107,9 @@ async function DetailedAnnouncementList({ announcementId }) {
               </Link>
             </div>
           </div>
+          {index < detailedAnnouncements.length - 1 ? (
+            <div className="line border-gray-05" />
+          ) : null}
         </Fragment>
       ))}
     </section>
@@ -147,7 +148,7 @@ export default async function AnnouncementPage({ params: { announcementId } }) {
           <div className="frame background-white border-gray-06">
             <div className="frame-101">
               <div className="frame-9">
-                <h2 className="h4-20 color-black">{announcement.title}</h2>
+                <h4 className="h4-20 color-black">{announcement.title}</h4>
               </div>
             </div>
             <div className="line border-gray-05" />
