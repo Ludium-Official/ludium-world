@@ -111,6 +111,15 @@ export default async function Navigation() {
               height={24}
               text="작업 관리"
             />
+            <GnbMenu
+              href="/user-management"
+              iconClass="icon-profile"
+              src="/icon_profile.svg"
+              alt="사용자 관리 페이지로 이동하기"
+              width={17.323}
+              height={17.323}
+              text="사용자 관리"
+            />
           </div>
         ) : null}
       </nav>
