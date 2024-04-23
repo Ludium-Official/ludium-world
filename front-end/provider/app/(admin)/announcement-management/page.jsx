@@ -65,7 +65,7 @@ export default async function AnnouncementPage() {
       <article className="wrapper">
         <div className="frame-93-7">
           <div className="frame-57">
-            <h1 className="h3-24 color-black">공고목록</h1>
+            <h1 className="h3-24 color-black">공고 목록</h1>
           </div>
           <div className="frame-34">
             <AnnouncementList />
