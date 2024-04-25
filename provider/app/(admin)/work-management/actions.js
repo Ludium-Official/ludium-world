@@ -98,6 +98,6 @@ export async function createComment({ workId, contentId, description }) {
     throw new Error("댓글을 저장하는 중 에러가 발생했습니다.");
   }
 
-  revalidatePath("/work/[workId]/[contentId]", "page");
-  revalidatePath("/work-management/[workId]/[contentId]", "page");
+  revalidatePath(`/work/${workId}/${contentId}`);
+  revalidatePath(`/work-management/${workId}/${contentId}`);
 }
