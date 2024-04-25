@@ -110,6 +110,18 @@ public class LearningController {
     }
   }
 
+  @GetMapping("/{learningId}/{curriculumId}")
+  public ResponseEntity<Object> getCurriculum(@PathVariable UUID learningId,
+      @PathVariable UUID curriculumId) {
+    try {
+      return ResponseEntity.ok(curriculumService.getCurriculum(curriculumId));
+    } catch (NoSuchElementException nse) {
+      return responseUtil.getNoSuchElementExceptionMessage("커리큘럼 데이터가 없습니다.", nse.getMessage());
+    } catch (Exception e) {
+      return responseUtil.getExceptionMessage("커리큘럼을 조회하는 중에 에러가 발생했습니다.", e.getMessage());
+    }
+  }
+
   @GetMapping("/{learningId}/monitor")
   public ResponseEntity<Object> getAllMonitor(@PathVariable UUID learningId) {
     try {
