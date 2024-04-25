@@ -5,40 +5,39 @@ import Link from "next/link";
 import { Fragment } from "react";
 
 export const metadata = {
-  title: "공고 관리",
+  title: "학습 관리",
 };
 
-async function getAnnouncementList() {
-  const getannouncementsResponse = await fetchWithRetry(`/announcement`);
+async function getLearningList() {
+  const getLearningListResponse = await fetchWithRetry(`/learning`);
 
-  if (!getannouncementsResponse.ok) return [];
+  if (!getLearningListResponse.ok)
+    if (getLearningListResponse.status === 404) return [];
+    else throw new Error("학습을 불러오는 중 에러가 발생했습니다.");
 
-  return await getannouncementsResponse.json();
+  return await getLearningListResponse.json();
 }
 
-async function AnnouncementList() {
-  const announcements = await getAnnouncementList();
+async function LearningList() {
+  const learnings = await getLearningList();
 
   return (
     <div className="frame-119">
-      {announcements.map(({ postingId, title }, index) => (
+      {learnings.map(({ postingId, title }, index) => (
         <Fragment key={postingId}>
           <div className="frame-118">
             <div className="frame-100-2">
               <div className="frame-93-3">
-                <div className="frame-4-1 background-white border-purple-01">
-                  <p className="caption-12 color-purple-01">마감 미설정</p>
-                </div>
                 <Link
                   className="link"
-                  href={`/announcement-management/${postingId}`}
+                  href={`/learning-management/${postingId}`}
                 >
-                  <h2 className="h4-20 color-gray-02">{title}</h2>
+                  <h4 className="h4-20 color-gray-02">{title}</h4>
                 </Link>
               </div>
             </div>
           </div>
-          {index < announcements.length - 1 ? (
+          {index < learnings.length - 1 ? (
             <div className="line border-gray-05" />
           ) : null}
         </Fragment>
@@ -47,18 +46,18 @@ async function AnnouncementList() {
   );
 }
 
-export default async function AnnouncementPage() {
+export default async function LearningListPage() {
   return (
     <>
       <header className="nb">
         <BackButton />
         <Link
           className="frame-56 background-white border-none link"
-          href="/announcement-management/new"
+          href="/learning-management/new"
         >
           <Icon
             src="/icon_plus.svg"
-            alt="공고 추가하기"
+            alt="학습 추가하기"
             width={24}
             height={24}
           />
@@ -68,10 +67,10 @@ export default async function AnnouncementPage() {
       <article className="wrapper">
         <div className="frame-93-7">
           <div className="frame-57">
-            <h1 className="h3-24 color-black">공고 목록</h1>
+            <h3 className="h3-24 color-black">학습 목록</h3>
           </div>
           <div className="frame-34">
-            <AnnouncementList />
+            <LearningList />
           </div>
         </div>
       </article>
