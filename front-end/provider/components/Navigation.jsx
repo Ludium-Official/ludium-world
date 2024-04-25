@@ -112,6 +112,14 @@ export default async function Navigation() {
               text="작업 관리"
             />
             <GnbMenu
+              href="/learning-management"
+              src="/icon_learning.svg"
+              alt="학습 관리 페이지로 이동하기"
+              width={24}
+              height={24}
+              text="학습 관리"
+            />
+            <GnbMenu
               href="/user-management"
               iconClass="icon-profile"
               src="/icon_profile.svg"
