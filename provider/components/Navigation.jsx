@@ -120,6 +120,14 @@ export default async function Navigation() {
               text="학습 관리"
             />
             <GnbMenu
+              href="/community-management"
+              src="/icon_community.svg"
+              alt="커뮤니티 관리 페이지로 이동하기"
+              width={24}
+              height={24}
+              text="커뮤니티 관리"
+            />
+            <GnbMenu
               href="/user-management"
               iconClass="icon-profile"
               src="/icon_profile.svg"
