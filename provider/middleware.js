@@ -13,11 +13,23 @@ const isProviderAccessable = ({ prv, pathname }) => {
   return true;
 };
 
+const isAdminAccessable = ({ adm, pathname }) => {
+  const adminPattern =
+    /^\/announcement-management\/*|^\/work-management\/*|^\/learning-management\/*|^\/community-management\/*|^\/user-management\/*/;
+
+  if (adminPattern.test(pathname)) {
+    if (adm) return true;
+    else return false;
+  }
+
+  return true;
+};
+
 export default async function middlware(req) {
   const cookieStore = cookies();
 
   const pattern =
-    /\/sign-up|^\/mission\/*|\/profile|^\/announcement\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\/apply$|^\/community\/(([^/]+)\/edit$|new)$/;
+    /\/sign-up|^\/mission\/*|\/profile|^\/announcement\/([^/]+)\/([^/]+)\/apply$|^\/community\/(([^/]+)\/edit$|new)$|^\/announcement-management\/*|^\/work-management\/*|^\/learning-management\/*|^\/community-management\/*|^\/user-management\/*/;
 
   const { pathname } = req.nextUrl;
 
@@ -53,6 +65,10 @@ export default async function middlware(req) {
     rootPath.headers.set("x-user-right", JSON.stringify(userRight));
 
     if (!isProviderAccessable({ ...userRight, pathname })) {
+      return rootPath;
+    }
+
+    if (!isAdminAccessable({ ...userRight, pathname })) {
       return rootPath;
     }
 
