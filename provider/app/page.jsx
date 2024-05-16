@@ -1,9 +1,8 @@
 import Icon from "@/components/Icon";
-import LatestAnnouncement from "@/components/LatestAnnouncement";
 import fetchWithRetry from "@/functions/api";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import { Fragment } from "react";
 
 export const metadata = {
   metadataBase: process.env.NEXT_PUBLIC_SITE_MAP_URL,
@@ -28,27 +27,20 @@ export const metadata = {
   },
 };
 
-async function getTop5Announcement() {
-  const getTop5AnnouncementResponse = await fetchWithRetry(
-    "/announcement/top5"
-  );
+const LatestAnnouncement = dynamic(
+  () => import("@/components/LatestAnnouncement"),
+  { loading: () => <p>최신 공고를 조회하는 중입니다...</p> }
+);
 
-  if (!getTop5AnnouncementResponse.ok)
-    if (getTop5AnnouncementResponse.status === 404) return [];
-    else throw new Error("공고 목록을 조회하는 중 에러가 발생했습니다.");
+const Top5AnnouncementList = dynamic(
+  () => import("./(common)/home/Top5AnnouncementList"),
+  { loading: () => <p>공고 목록을 조회하는 중입니다...</p> }
+);
 
-  return await getTop5AnnouncementResponse.json();
-}
-
-async function getTop5Participation() {
-  const getTop5ParticipationResponse = await fetchWithRetry("/learning/top5");
-
-  if (!getTop5ParticipationResponse.ok)
-    if (getTop5ParticipationResponse.status === 404) return [];
-    else throw new Error("학습 목록을 조회하는 중 에러가 발생했습니다.");
-
-  return await getTop5ParticipationResponse.json();
-}
+const Top5ParticipationList = dynamic(
+  () => import("./(common)/home/Top5ParticipationList"),
+  { loading: () => <p>학습 목록을 조회하는 중입니다...</p> }
+);
 
 async function getLatestBanner() {
   const getLatestBannerResponse = await fetchWithRetry(
@@ -63,8 +55,6 @@ async function getLatestBanner() {
 }
 
 async function AnnouncementList() {
-  const announcements = await getTop5Announcement();
-
   return (
     <article className="article-list-wrapper">
       <header className="article-announce">
@@ -82,34 +72,13 @@ async function AnnouncementList() {
         </Link>
       </header>
       <ul className="article-list">
-        {announcements.map((announcement, index) => (
-          <Fragment key={announcement.postingId}>
-            <li className="article">
-              {/* <div className="article-status">
-                <p className="article-status-text caption-12 color-purple-01">
-                  마감 N일전
-                </p>
-              </div> */}
-              <Link
-                className="article-text h4-20"
-                href={`/announcement/${announcement.postingId}`}
-              >
-                {announcement.title}
-              </Link>
-            </li>
-            {index < announcements.length - 1 ? (
-              <hr className="article-divider" />
-            ) : null}
-          </Fragment>
-        ))}
+        <Top5AnnouncementList />
       </ul>
     </article>
   );
 }
 
 async function ParticipationList() {
-  const participations = await getTop5Participation();
-
   return (
     <article className="article-list-wrapper">
       <header className="article-announce">
@@ -127,26 +96,7 @@ async function ParticipationList() {
         </Link>
       </header>
       <ul className="article-list">
-        {participations.map((participation, index) => (
-          <Fragment key={participation.postingId}>
-            <li className="article">
-              {/* <div className="article-status">
-                <p className="article-status-text caption-12 color-purple-01">
-                  수강기한 N일
-                </p>
-              </div> */}
-              <Link
-                className="article-text h4-20"
-                href={`/participation/${participation.postingId}`}
-              >
-                {participation.title}
-              </Link>
-            </li>
-            {index < participations.length - 1 ? (
-              <hr className="article-divider" />
-            ) : null}
-          </Fragment>
-        ))}
+        <Top5ParticipationList />
       </ul>
     </article>
   );

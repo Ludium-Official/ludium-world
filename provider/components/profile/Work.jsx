@@ -18,23 +18,7 @@ export default async function Work({ usrId }) {
   const works = await getWorkList(usrId);
 
   return (
-    <div className="frame-34-6 background-white border-gray-06">
-      <div className="frame-35-2">
-        <h1 className="h4-20 color-black">나의 작업</h1>
-        {/* <Link className="frame-56-2 link" href="/">
-          <p className="more color-gray-04">모두 보기</p>
-          <div className="arrow-right">
-            <div className="frame-78">
-              <Icon
-                src="/icon_arrow_right.svg"
-                alt="more"
-                width={12}
-                height={12}
-              />
-            </div>
-          </div>
-        </Link> */}
-      </div>
+    <>
       {works.map((work, index) => (
         <Fragment key={work.detailId}>
           <div className="frame-44">
@@ -53,6 +37,6 @@ export default async function Work({ usrId }) {
           ) : null}
         </Fragment>
       ))}
-    </div>
+    </>
   );
 }
