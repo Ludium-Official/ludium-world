@@ -1,3 +1,4 @@
+import UnAuthorizedError from "@/errors/UnAuthorizedError";
 import fetchWithRetry from "@/functions/api";
 import { cookies } from "next/headers";
 import Link from "next/link";
