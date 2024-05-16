@@ -8,7 +8,6 @@ const refreshAccessToken = async (options) => {
       "Content-Type": "application/x-www-form-urlencoded",
     },
     credentials: "include",
-    cache: "no-store",
   };
 
   if (options.headers !== undefined) {
@@ -41,7 +40,6 @@ const fetchWithRetry = (url, options, maxRetry = 3) => {
     const response = await fetch(`${serverUri}${url}`, {
       ...options,
       credentials: "include",
-      cache: "no-store",
       headers: headers ?? {
         "Content-Type": "application/json",
       },
