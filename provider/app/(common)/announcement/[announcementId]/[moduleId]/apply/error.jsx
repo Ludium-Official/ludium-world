@@ -3,8 +3,6 @@
 import BackButton from "@/components/BackButton";
 
 export default function ApplyErrorPage({ error }) {
-  console.log({ error });
-
   const getApplicationErrorComponents = (status) => {
     switch (status) {
       case "401":

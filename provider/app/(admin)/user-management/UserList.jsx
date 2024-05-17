@@ -1,7 +1,7 @@
 "use client";
 
-import fetchWithRetry from "@/functions/api";
-import { useRouter } from "next/navigation";
+import { setGrantAdmin, setGrantProvider } from "@/app/actions/account";
+import { ProfileLink } from "@/components/datagrid/Link";
 import { useEffect, useRef } from "react";
 import Grid from "tui-grid";
 import "tui-grid/dist/tui-grid.css";
@@ -28,46 +28,55 @@ class CustomCheckBoxRenderer {
   }
 }
 
-class CustomLink {
-  constructor(props) {
-    const { path } = props.columnInfo.renderer.options;
-    const { id } = props.grid.getRow(props.rowKey);
-    this.el = document.createElement("a");
-    this.el.href = `/${path}/${id}`;
-
-    this.render(props);
-  }
-
-  getElement() {
-    return this.el;
-  }
-
-  render(props) {
-    const { text } = props.columnInfo.renderer.options;
-    const innerText = props.grid.getRow(props.rowKey)[text];
-
-    this.el.innerText = innerText;
-  }
-}
-
 export default function UserList({ users }) {
   const gridRef = useRef();
-  const router = useRouter();
+  const providerFormRef = useRef();
+  const adminFormRef = useRef();
 
-  const handleEditProviderAuth = async (user, isChecked) => {
-    await fetchWithRetry(`/user/${user.id}/provider?isProvider=${isChecked}`, {
-      method: "PUT",
-    });
+  const handleEditProviderAuth = async (user, checked) => {
+    const { userId, grant } = providerFormRef.current;
+
+    userId.value = user.id;
+    grant.value = checked;
+
+    providerFormRef.current.requestSubmit();
   };
 
-  const handleEditAdminAuth = async (user, isChecked) => {
-    await fetchWithRetry(`/user/${user.id}/admin?isAdmin=${isChecked}`, {
-      method: "PUT",
-    });
+  const handleEditAdminAuth = async (user, checked) => {
+    const { userId, grant } = adminFormRef.current;
+
+    userId.value = user.id;
+    grant.value = checked;
+
+    adminFormRef.current.requestSubmit();
   };
 
-  const handleRouterProfile = (user) => {
-    router.push(`/profile/${user.id}`);
+  const handleGrantProvider = async (providerFormData) => {
+    try {
+      await setGrantProvider({
+        id: providerFormData.get("userId"),
+        granted: providerFormData.get("grant"),
+      });
+
+      providerFormData.set("userId", "");
+      providerFormData.set("grant", "");
+    } catch ({ message }) {
+      alert(message);
+    }
+  };
+
+  const handleGrantAdmin = async (adminFormData) => {
+    try {
+      await setGrantAdmin({
+        id: adminFormData.get("userId"),
+        granted: adminFormData.get("grant"),
+      });
+
+      adminFormData.set("userId", "");
+      adminFormData.set("grant", "");
+    } catch ({ message }) {
+      alert(message);
+    }
   };
 
   const getGrid = () => {
@@ -80,7 +89,7 @@ export default function UserList({ users }) {
             header: "닉네임",
             name: "nick",
             renderer: {
-              type: CustomLink,
+              type: ProfileLink,
               options: {
                 path: "profile",
                 text: "nick",
@@ -128,8 +137,18 @@ export default function UserList({ users }) {
   }, []);
 
   return (
-    <div className="grid">
-      <div ref={gridRef} />
-    </div>
+    <>
+      <div className="grid">
+        <div ref={gridRef} />
+      </div>
+      <form ref={providerFormRef} action={handleGrantProvider}>
+        <input type="hidden" name="userId" />
+        <input type="hidden" name="grant" />
+      </form>
+      <form ref={adminFormRef} action={handleGrantAdmin}>
+        <input type="hidden" name="userId" />
+        <input type="hidden" name="grant" />
+      </form>
+    </>
   );
 }

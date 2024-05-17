@@ -1,50 +1,50 @@
 "use client";
 
-import fetchWithRetry from "@/functions/api";
+import { updateAnnouncementApplication } from "@/app/actions/announcement";
 import dynamic from "next/dynamic";
-import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useRef } from "react";
+import { useFormStatus } from "react-dom";
 
 const Editor = dynamic(() => import("@/components/Editor"), { ssr: false });
+
+const SubmitButton = () => {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      className="button-L-2 background-purple-01 h5-18 color-white"
+      type="submit"
+      disabled={pending}
+    >
+      {pending ? "지원서를 제출하는 중입니다..." : "제출하기"}
+    </button>
+  );
+};
 
 export default function EditApplyForm({
   announcementId,
   detailId,
   application,
 }) {
-  const router = useRouter();
-  const [pending, setPending] = useState(false);
-
   const editorRef = useRef();
-  const handleApplyForm = async (e) => {
-    e.preventDefault();
-    setPending(true);
+
+  const handleApplyForm = async () => {
     const { editorInstance } = editorRef.current;
 
-    const updateApplyResponse = await fetchWithRetry(
-      `/announcement/${announcementId}/${detailId}/application`,
-      {
-        method: "PUT",
-        body: JSON.stringify({
-          ...application,
-          description: editorInstance.getMarkdown(),
-        }),
-      }
-    );
-    setPending(false);
-
-    if (!updateApplyResponse.ok) {
-      const { message } = await updateApplyResponse.json();
-
+    try {
+      updateAnnouncementApplication({
+        announcementId,
+        detailId,
+        application,
+        description: editorInstance.getMarkdown(),
+      });
+    } catch ({ message }) {
       alert(message);
-    } else {
-      alert("지원서 제출이 완료되었습니다.");
-      router.refresh();
     }
   };
 
   return (
-    <form className="frame-116" onSubmit={handleApplyForm}>
+    <form className="frame-116" action={handleApplyForm}>
       <div className="input-2">
         <label className="h5-18 color-gray-03" htmlFor="title">
           제목
@@ -69,12 +69,7 @@ export default function EditApplyForm({
         </div>
       </div>
       <div className="frame-157">
-        <button
-          className="button-L-2 background-purple-01 h5-18 color-white"
-          disabled={pending}
-        >
-          {pending ? "지원서를 제출하는 중입니다..." : "제출하기"}
-        </button>
+        <SubmitButton />
       </div>
     </form>
   );
