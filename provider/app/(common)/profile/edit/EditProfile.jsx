@@ -1,49 +1,49 @@
 "use client";
 
-import HTTP_METHOD from "@/enums/HTTP_METHOD";
-import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
-import Editor from "@/components/Editor";
-import fetchWithRetry from "@/functions/api";
+import { updateProfile } from "@/app/actions/account";
 import { uploadImage } from "@/functions/actions/ImageUpload";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
+import { useRef, useState } from "react";
+import { useFormStatus } from "react-dom";
+
+const Editor = dynamic(() => import("@/components/Editor"), { ssr: false });
+
+const SubmitButton = () => {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      className="button-L-2 background-purple-01 h5-18 color-white"
+      disabled={pending}
+    >
+      {pending ? "프로필 적용을 진행중입니다..." : "프로필 적용"}
+    </button>
+  );
+};
 
 export default function EditProfile({ profile }) {
   const editorRef = useRef(null);
   const avatarRef = useRef(null);
-  const router = useRouter();
-  const [pending, setPending] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState(profile.avatar);
 
   if (!profile) return <h1>사용자 데이터를 불러오지 못했습니다.</h1>;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setPending(true);
-
-    const { nick, phone_number, avatar } = e.target;
+  const handleUpdateProfile = async (profileFormData) => {
     const { editorInstance } = editorRef.current;
 
     try {
-      const res = await fetchWithRetry(`/profile`, {
-        method: HTTP_METHOD.PUT,
-        body: JSON.stringify({
-          nick: nick.value,
-          phnNmb: phone_number.value,
-          selfIntro: editorInstance.getMarkdown(),
-          avatar: avatar.dataset.url,
-        }),
+      await updateProfile({
+        nick: profileFormData.get("nick"),
+        phnNmb: profileFormData.get("phone_number"),
+        selfIntro: editorInstance.getMarkdown(),
+        avatar: avatarRef.current.dataset.url,
       });
 
-      if (res.ok) {
-        router.push("/profile");
-        router.refresh();
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setPending(false);
+      alert("프로필이 업데이트 되었습니다.");
+    } catch ({ message }) {
+      alert(message);
     }
   };
 
@@ -65,7 +65,7 @@ export default function EditProfile({ profile }) {
   return (
     <form
       className="frame-34-10 background-white border-gray-06"
-      onSubmit={handleSubmit}
+      action={handleUpdateProfile}
     >
       <div className="frame-117-2">
         <div className="frame-116-2">
@@ -131,12 +131,7 @@ export default function EditProfile({ profile }) {
           </div>
         </div>
         <div className="flex-end">
-          <button
-            className="button-L-2 background-purple-01 h5-18 color-white"
-            disabled={pending}
-          >
-            {pending ? "프로필 적용을 진행중입니다..." : "프로필 적용"}
-          </button>
+          <SubmitButton />
         </div>
         <div className="frame-119">
           <Link className="link" href="/profile/delete">

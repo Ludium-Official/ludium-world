@@ -1,53 +1,48 @@
 "use client";
 
+import { createContent } from "@/app/actions/content";
 import COMMUNITY_TYPE from "@/enums/COMMUNITY_TYPE";
-import HTTP_METHOD from "@/enums/HTTP_METHOD";
 import { uploadImage } from "@/functions/actions/ImageUpload";
-import fetchWithRetry from "@/functions/api";
 import ko_kr from "@/langs/ko_kr";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
+import { useFormStatus } from "react-dom";
 
 const Editor = dynamic(() => import("@/components/Editor"), { ssr: false });
 
+const SubmitButton = () => {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      className="button-L-2 background-purple-01 h5-18 color-white"
+      disabled={pending}
+    >
+      {pending ? "저장하는 중입니다..." : "저장하기"}
+    </button>
+  );
+};
+
 export default function NewCommunityForm() {
-  const router = useRouter();
   const editorRef = useRef();
   const bannerRef = useRef();
-  const [pending, setPending] = useState(false);
   const [bannerUrl, setBannerUrl] = useState("");
 
-  const handleCreateContent = async (e) => {
-    e.preventDefault();
-    setPending(true);
-
-    const { title, banner } = e.target;
+  const handleCreateContent = async (contentFormData) => {
     const { editorInstance } = editorRef.current;
 
-    const createContentResponse = await fetchWithRetry(
-      `/content?type=${e.target.type.value}`,
-      {
-        method: HTTP_METHOD.POST,
-        body: JSON.stringify({
-          title: title.value,
-          description: editorInstance.getMarkdown(),
-          banner: banner.dataset.url,
-        }),
-      }
-    );
-
-    setPending(false);
-
-    if (!createContentResponse.ok) {
-      alert("콘텐츠를 저장하는 중 에러가 발생했습니다.");
-      return;
+    try {
+      await createContent({
+        type: contentFormData.get("type"),
+        title: contentFormData.get("title"),
+        description: editorInstance.getMarkdown(),
+        banner: bannerRef.current.dataset.url,
+      });
+      alert("콘텐츠가 저장되었습니다.");
+    } catch ({ message }) {
+      alert(message);
     }
-
-    alert("콘텐츠가 저장되었습니다.");
-    router.back();
-    router.refresh();
   };
 
   const handleIgnoreEnterKeyDown = (keydownEvent) => {
@@ -70,7 +65,7 @@ export default function NewCommunityForm() {
   };
 
   return (
-    <form className="frame-116" onSubmit={handleCreateContent}>
+    <form className="frame-116" action={handleCreateContent}>
       <div className="input-2">
         <label className="h5-18 color-gray-03" htmlFor="title">
           제목
@@ -128,12 +123,7 @@ export default function NewCommunityForm() {
         </div>
       </div>
       <div className="frame-157">
-        <button
-          className="button-L-2 background-purple-01 h5-18 color-white"
-          disabled={pending}
-        >
-          {pending ? "저장하는 중입니다..." : "저장하기"}
-        </button>
+        <SubmitButton />
       </div>
     </form>
   );

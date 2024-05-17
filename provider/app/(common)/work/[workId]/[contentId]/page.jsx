@@ -1,11 +1,11 @@
 import BackButton from "@/components/BackButton";
-import WorkContentEditor from "../WorkContentEditor";
+import WorkContentEditor from "./WorkContentEditor";
 import fetchWithRetry from "@/functions/api";
 import { Fragment } from "react";
 import UserNick from "@/components/UserNick";
 import { getTimeStamp } from "@/functions/helper";
 import dynamic from "next/dynamic";
-import WorkContentCommentEditor from "../WorkContentCommentEditor";
+import WorkContentCommentEditor from "./WorkContentCommentEditor";
 import WorkContentSubmitButton from "./WorkContentSubmitButton";
 import { cookies } from "next/headers";
 import UnAuthorizedError from "@/errors/UnAuthorizedError";

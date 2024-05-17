@@ -1,14 +1,27 @@
 "use client";
 
+import { signup } from "@/app/actions/account";
 import { uploadImage } from "@/functions/actions/ImageUpload";
-import fetchWithRetry from "@/functions/api";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
+import { useFormStatus } from "react-dom";
 import signupstyle from "./signup.module.css";
 
 const Editor = dynamic(() => import("@/components/Editor"), { ssr: false });
+
+const SubmitButton = () => {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      className="button-L-2 background-purple-01 h5-18 color-white"
+      disabled={pending}
+    >
+      {pending ? "가입하는 중입니다..." : "가입하기"}
+    </button>
+  );
+};
 
 export default function SignUp() {
   const router = useRouter();
@@ -17,43 +30,22 @@ export default function SignUp() {
   const [avatarUrl, setAvatarUrl] = useState("/icon_default_profile.png");
   const [pending, setPending] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setPending(true);
-
+  const handleSignup = async (userFormData) => {
     const { editorInstance } = editorRef.current;
 
     try {
-      const createUserSignResponse = await fetchWithRetry(
-        `/user/sign-up/google`,
-        {
-          method: "POST",
-          body: JSON.stringify({
-            nick: e.target.nick.value,
-            phnNmb: e.target.phone_number.value,
-            selfIntro: editorInstance.getMarkdown(),
-            avatar: e.target.avatar.dataset.url,
-          }),
-        }
-      );
-      setPending(false);
-
-      if (!createUserSignResponse.ok) {
-        if (createUserSignResponse.status === 409) {
-          alert("이미 가입되었습니다! 홈 화면으로 이동해보세요.");
-          return;
-        } else {
-          alert("회원 가입하는 중 에러가 발생했습니다.");
-          return;
-        }
-      }
+      await signup({
+        nick: userFormData.get("nick"),
+        phnNmb: userFormData.get("phone_number"),
+        selfIntro: editorInstance.getMarkdown(),
+        avatar: avatarRef.current.dataset.url,
+      });
 
       alert("회원가입이 완료되었습니다.");
-      router.push("/");
+      router.replace("/");
       router.refresh();
-    } catch (error) {
-      setPending(false);
-      alert(error);
+    } catch ({ message }) {
+      alert(message);
     }
   };
 
@@ -75,7 +67,7 @@ export default function SignUp() {
   return (
     <form
       className="frame-34-10 background-white border-gray-06"
-      onSubmit={handleSubmit}
+      action={handleSignup}
     >
       <div className="frame-117-2">
         <div className="frame-116-2">
@@ -138,12 +130,7 @@ export default function SignUp() {
           </div>
         </div>
         <div className={signupstyle["form-button-area"]}>
-          <button
-            className="button-L-2 background-purple-01 h5-18 color-white"
-            disabled={pending}
-          >
-            {pending ? "가입하는 중입니다..." : "가입하기"}
-          </button>
+          <SubmitButton />
         </div>
       </div>
     </form>

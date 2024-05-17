@@ -1,13 +1,22 @@
 "use client";
 
+import { MissionSubmit } from "@/app/actions/mission";
 import HTTP_METHOD from "@/enums/HTTP_METHOD";
-import fetchWithRetry from "@/functions/api";
-import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
-
-const { default: dynamic } = require("next/dynamic");
+import dynamic from "next/dynamic";
+import { useRef } from "react";
+import { useFormStatus } from "react-dom";
 
 const Editor = dynamic(() => import("@/components/Editor"), { ssr: false });
+
+const SubmitButton = () => {
+  const { pending } = useFormStatus();
+
+  return (
+    <button className="button1 h5-18 button-L" type="submit" disabled={pending}>
+      {pending ? "제출하는 중입니다..." : "제출하기"}
+    </button>
+  );
+};
 
 export default function MissionSubmitEditor({
   learningId,
@@ -16,9 +25,7 @@ export default function MissionSubmitEditor({
   missionSubmit,
   isCreate,
 }) {
-  const router = useRouter();
   const editorRef = useRef();
-  const [pending, setPending] = useState(false);
   const description = isCreate
     ? missionSubmit.missionSubmitForm
     : missionSubmit.description;
@@ -36,46 +43,41 @@ export default function MissionSubmitEditor({
     const method = isCreate ? HTTP_METHOD.POST : HTTP_METHOD.PUT;
 
     return Promise.resolve(
-      fetchWithRetry(
-        `/learning/${learningId}/${curriculumId}/mission/${missionId}`,
-        {
-          method,
-          body,
-        }
-      )
+      MissionSubmit({
+        learningId,
+        curriculumId,
+        missionId,
+        method,
+        body,
+      })
     );
   };
 
   const handleMissionSubmit = async () => {
-    setPending(true);
-    const missionSubmitResponse = await getMissionSubmitRequest();
-
-    setPending(false);
-    if (!missionSubmitResponse.ok) {
-      alert("미션을 제출하는 중 에러가 발생했습니다.");
-      return;
+    try {
+      await getMissionSubmitRequest();
+      alert("미션이 제출되었습니다.");
+    } catch ({ message }) {
+      alert(message);
     }
-
-    alert("미션이 제출되었습니다.");
-    router.back();
-    router.refresh();
   };
 
   return (
-    <>
+    <form
+      className="frame background-white border-gray-06"
+      action={handleMissionSubmit}
+    >
+      <div className="frame-101">
+        <div className="frame-9">
+          <h1 className="h4-20 color-black">제출 내용</h1>
+        </div>
+      </div>
       <section className="frame-101 mission-submit-content">
         <Editor editorRef={editorRef} content={description} height="100%" />
       </section>
       <div className="frame-157">
-        <button
-          className="button1 h5-18 button-L"
-          type="button"
-          disabled={pending}
-          onClick={handleMissionSubmit}
-        >
-          {pending ? "제출하는 중입니다..." : "제출하기"}
-        </button>
+        <SubmitButton />
       </div>
-    </>
+    </form>
   );
 }

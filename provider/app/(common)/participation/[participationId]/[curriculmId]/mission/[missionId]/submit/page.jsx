@@ -90,25 +90,18 @@ async function MissionSubmit({ learningId, curriculumId, missionId }) {
 
   return (
     <div className="frame-149 mission-submit">
-      <div className="frame background-white border-gray-06">
-        <div className="frame-101">
-          <div className="frame-9">
-            <h1 className="h4-20 color-black">제출 내용</h1>
-          </div>
-        </div>
-        <MissionSubmitEditor
-          learningId={learningId}
-          curriculumId={curriculumId}
-          missionId={missionId}
-          missionSubmit={missionSubmit === null ? newMission : missionSubmit}
-          isCreate={missionSubmit === null}
-        />
-      </div>
+      <MissionSubmitEditor
+        learningId={learningId}
+        curriculumId={curriculumId}
+        missionId={missionId}
+        missionSubmit={missionSubmit === null ? newMission : missionSubmit}
+        isCreate={missionSubmit === null}
+      />
     </div>
   );
 }
 
-async function MissionComment({ missionId }) {
+async function MissionComment({ learningId, curriculumId, missionId }) {
   const profile = await getProfile();
   const comments =
     profile === null
@@ -162,6 +155,8 @@ async function MissionComment({ missionId }) {
           <h2 className="h5-18">코멘트 작성하기</h2>
         </div>
         <MissionSubmitCommentEditor
+          learningId={learningId}
+          curriculumId={curriculumId}
           missionId={missionId}
           usrId={profile === null ? null : profile.id}
         />
@@ -185,7 +180,11 @@ export default async function MissionSubmitPage({
             curriculumId={curriculmId}
             missionId={missionId}
           />
-          <MissionComment missionId={missionId} />
+          <MissionComment
+            learningId={participationId}
+            curriculumId={curriculmId}
+            missionId={missionId}
+          />
         </section>
       </article>
     </>
