@@ -32,7 +32,7 @@ export async function createLearning({ title, description }) {
 export async function updateLearning({ title, description, learning }) {
   const cookieStore = cookies();
 
-  const updateWorkContentResponse = await fetchWithRetry(
+  const updateLearningResponse = await fetchWithRetry(
     `/learning/${learning.postingId}`,
     {
       method: HTTP_METHOD.PUT,
@@ -47,11 +47,11 @@ export async function updateLearning({ title, description, learning }) {
     }
   );
 
-  if (!updateWorkContentResponse.ok) {
-    switch (updateWorkContentResponse.status) {
+  if (!updateLearningResponse.ok) {
+    switch (updateLearningResponse.status) {
       case 403:
       case 404: {
-        const { message } = await updateWorkContentResponse.json();
+        const { message } = await updateLearningResponse.json();
         throw new Error(message);
       }
       default:

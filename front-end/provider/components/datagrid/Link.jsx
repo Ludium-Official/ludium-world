@@ -1,13 +1,10 @@
-export default class DynamicLink {
+export class ProfileLink {
   constructor(props) {
-    const row = props.grid.getRow(props.rowKey);
-    const key = props.columnInfo.renderer.options.key;
-    const href = key.reduce((acc, cur) => {
-      return acc.replace("$", row[cur]);
-    }, props.columnInfo.renderer.options.href);
-
+    const { path } = props.columnInfo.renderer.options;
+    const { id, usrId } = props.grid.getRow(props.rowKey);
     this.el = document.createElement("a");
-    this.el.href = href;
+    this.el.href = `/${path}/${id ?? usrId}`;
+
     this.render(props);
   }
 
@@ -16,6 +13,9 @@ export default class DynamicLink {
   }
 
   render(props) {
-    this.el.innerText = props.columnInfo.renderer.options.text;
+    const { text } = props.columnInfo.renderer.options;
+    const innerText = props.grid.getRow(props.rowKey)[text];
+
+    this.el.innerText = innerText;
   }
 }

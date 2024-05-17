@@ -38,8 +38,8 @@ export default function NewAnnouncement() {
       });
 
       router.back();
-    } catch (error) {
-      alert(error.message);
+    } catch ({ message }) {
+      alert(message);
     }
   };
 

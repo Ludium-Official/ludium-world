@@ -1,54 +1,16 @@
 "use client";
 
+import { submitWorkContent } from "@/app/actions/work";
 import Icon from "@/components/Icon";
-import HTTP_METHOD from "@/enums/HTTP_METHOD";
 import WORK_CONTENT_STATUS from "@/enums/WORK_CONTENT_STATUS";
-import fetchWithRetry from "@/functions/api";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useFormStatus } from "react-dom";
 
-export default function WorkContentSubmitButton({ detailContent }) {
-  const router = useRouter();
-  const [pending, setPending] = useState(false);
-
-  const handleSubmitWorkContent = async () => {
-    router.refresh();
-
-    setPending(true);
-    const submitWorkContentResponse = await fetchWithRetry(
-      `/detailed-announcement/${detailContent.detailId}/${detailContent.detailContentId}`,
-      {
-        method: HTTP_METHOD.PUT,
-        body: JSON.stringify({
-          ...detailContent,
-          status: WORK_CONTENT_STATUS.SUBMIT,
-        }),
-      }
-    );
-
-    setPending(false);
-    if (!submitWorkContentResponse.ok) {
-      switch (submitWorkContentResponse.status) {
-        case 403:
-        case 404: {
-          const { message } = await submitWorkContentResponse.json();
-          alert(message);
-          break;
-        }
-        default:
-          alert("작업물을 제출하는 중에 에러가 발생했습니다.");
-      }
-    } else {
-      alert("작업물이 제출되었습니다.");
-      router.refresh();
-    }
-  };
-
+const SubmitButton = () => {
+  const { pending } = useFormStatus();
   return (
     <button
       className="frame-56 background-white border-none"
-      type="button"
-      onClick={handleSubmitWorkContent}
+      type="submit"
       disabled={pending}
     >
       <Icon
@@ -61,5 +23,25 @@ export default function WorkContentSubmitButton({ detailContent }) {
         {pending ? "제출중..." : "제출하기"}
       </p>
     </button>
+  );
+};
+
+export default function WorkContentSubmitButton({ detailContent }) {
+  const handleSubmitWorkContent = async () => {
+    try {
+      await submitWorkContent({
+        detailContent,
+        status: WORK_CONTENT_STATUS.SUBMIT,
+      });
+      alert("작업물이 제출되었습니다.");
+    } catch ({ message }) {
+      alert(message);
+    }
+  };
+
+  return (
+    <form action={handleSubmitWorkContent}>
+      <SubmitButton />
+    </form>
   );
 }

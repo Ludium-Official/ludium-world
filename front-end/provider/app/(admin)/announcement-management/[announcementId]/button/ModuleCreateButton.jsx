@@ -17,8 +17,8 @@ export default function ModuleCreateButton({ announcementId }) {
   const handleCreateDetailedAnnouncement = async () => {
     try {
       await createDetailedAnnouncement({ announcementId });
-    } catch (error) {
-      alert(error.message);
+    } catch ({ message }) {
+      alert(message);
     }
   };
 

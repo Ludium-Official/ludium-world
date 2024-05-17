@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { getUserRight } from "./app/actions";
+import { getUserRight, refreshAccessToken } from "./app/actions";
 import { cookies } from "next/headers";
+import UnAuthorizedError from "./errors/UnAuthorizedError";
 
 const isProviderAccessable = ({ prv, pathname }) => {
   const providerPattern = /^\/mission\/*/;
@@ -73,7 +74,32 @@ export default async function middlware(req) {
     }
 
     return res;
-  } catch (_) {
+  } catch (error) {
+    if (error instanceof UnAuthorizedError) {
+      const refreshPage = NextResponse.redirect(req.url);
+      const result = await refreshAccessToken();
+      const cookieOption = {
+        maxAge: 604800,
+        sameSite: "none",
+        httpOnly: true,
+        secure: true,
+        domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
+      };
+
+      refreshPage.cookies.set(
+        "ggl_id",
+        result.headers.cookie.split("ggl_id=")[1].split(";")[0],
+        cookieOption
+      );
+
+      refreshPage.cookies.set(
+        "access_token",
+        result.headers.cookie.split("access_token=")[1].replace("\n", ""),
+        cookieOption
+      );
+
+      return refreshPage;
+    }
     return NextResponse.redirect(new URL("/sign-up", req.url));
   }
 }
