@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "baseUrl": "",
+    "paths": {
+      "@/components/*": ["components/*"],
+      "@/app/*": ["app/*"],
+      "@/enums/*": ["enums/*"],
+      "@/functions/*": ["functions/*"],
+      "@/errors/*": ["errors/*"],
+      "@/langs/*": ["langs/*"]
+    }
+  }
+}
