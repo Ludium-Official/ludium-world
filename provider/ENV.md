@@ -1,0 +1,19 @@
+```txt
+// 구글 간편 로그인 설정 정보
+NEXT_PUBLIC_OAUTH2_GOOGLE_CLIENT_ID = ""
+NEXT_PUBLIC_OAUTH2_GOOGLE_REDIRECT_URI = ""
+NEXT_PUBLIC_OAUTH2_GOOGLE_RESPONSE_TYPE = ""
+NEXT_PUBLIC_OAUTH2_GOOGLE_SCOPE = ""
+// API 서버 URI
+NEXT_PUBLIC_BACKEND_URI = ""
+// 네이버 검색 엔진 최적화 관련 정보(Naver Search Advisor) 메타 데이터 값
+NEXT_PUBLIC_NAVER_SEARCH_ADVISOR = ""
+// Sitemap url
+NEXT_PUBLIC_SITE_MAP_URL = ""
+// 구글 검색 엔진 최적화 관련 정보(Google Search Console) 메타 데이터 값
+NEXT_PUBLIC_GOOGLE_SEARCH_CONSOLE = ""
+// 이미지 저장 API KEY (IMGBB)
+NEXT_PUBLIC_IMGBB_KEY = ""
+// Contact US 메일
+NEXT_PUBLIC_CONTACT_MAIL = ""
+```
