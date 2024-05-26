@@ -2424,3 +2424,7 @@ p {
 .grid {
   height: Calc(100% - 1px);
 }
+
+.toastui-editor-contents ol > li:before {
+  width: 26px !important;
+}
