@@ -1,1 +1,0 @@
-ALTER TABLE public.detailed_posting ALTER COLUMN posting_id SET NOT NULL;
