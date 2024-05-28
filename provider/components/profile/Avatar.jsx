@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import Icon from "../Icon";
 import Link from "next/link";
+import NearWallet from "../blockchain/wallet/NearWallet";
 
 const Viewer = dynamic(() => import("@/components/Viewer"), { ssr: false });
 
@@ -50,6 +51,7 @@ export default function Avatar({ profile }) {
           />
           <p className="p5-18 color-white">프로필 수정</p>
         </Link>
+        <NearWallet />
       </div>
     </div>
   );

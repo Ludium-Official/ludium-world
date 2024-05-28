@@ -2428,3 +2428,7 @@ p {
 .toastui-editor-contents ol > li:before {
   width: 26px !important;
 }
+
+.blockchain-wallet {
+  order: 2;
+}
