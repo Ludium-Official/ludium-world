@@ -1,0 +1,1 @@
+CREATE TYPE coin_type AS ENUM ('NATIVE', 'FT', 'NFT');
