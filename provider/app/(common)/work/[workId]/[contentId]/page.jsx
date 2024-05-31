@@ -132,7 +132,7 @@ export default async function WorkContentPage({
   const workers = await getWorker(workId);
   const profile = await getProfile();
 
-  const isEditor = profile === null ? false : workers.includes(profile.id);
+  const isEditor = profile === null ? false : workers?.includes(profile.id);
   return (
     <>
       <header className="nb">
