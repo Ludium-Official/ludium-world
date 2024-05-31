@@ -9,12 +9,14 @@ const Editor = dynamic(() => import("@/components/Editor"), {
   ssr: false,
 });
 
-const SubmitButton = (isEditor) => {
+const SubmitButton = ({ isEditor }) => {
   const { pending } = useFormStatus();
+
+  console.log({ isEditor });
   return (
     <button
       className="button-L-2 background-purple-01 h5-18 color-white"
-      disabled={pending}
+      disabled={!isEditor ? true : pending}
     >
       {!isEditor
         ? "작업자만 저장할 수 있습니다"
