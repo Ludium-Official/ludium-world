@@ -74,4 +74,45 @@ const fetchWithRetry = async (url, options, maxRetry = 3) => {
   return retry(url, options, 0);
 };
 
+export const fetchPayment = async (url, options, maxRetry = 3) => {
+  const paymentServerUri = process.env.NEXT_PUBLIC_PAYMENT_URI;
+
+  const retry = async (url, options, retryCount) => {
+    const { headers } = { ...options };
+    const cookieStore = cookies();
+
+    if (headers != null) headers["Content-Type"] = "application/json";
+
+    const response = await fetch(`${paymentServerUri}${url}`, {
+      ...options,
+      credentials: "include",
+      next: { revalidate: 0 },
+      headers: headers ?? {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.status === 401 && retryCount < maxRetry) {
+      const refreshAccessTokenResponse = await refreshAccessToken(options);
+
+      const token = refreshAccessTokenResponse.headers.cookie
+        .split("access_token=")[1]
+        .replace("\n", "");
+      cookieStore.set("access_token", token);
+
+      return retry(
+        url,
+        {
+          ...options,
+          ...refreshAccessTokenResponse,
+        },
+        retryCount + 1
+      );
+    }
+    return response;
+  };
+
+  return retry(url, options, 0);
+};
+
 export default fetchWithRetry;
