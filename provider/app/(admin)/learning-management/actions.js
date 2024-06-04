@@ -165,6 +165,8 @@ export async function updateMission({
   description,
   missionSubmitForm,
   orderNum,
+  rewardToken,
+  rewardAmount,
   mission,
 }) {
   const cookieStore = cookies();
@@ -178,6 +180,8 @@ export async function updateMission({
         description,
         missionSubmitForm,
         orderNum,
+        rewardToken,
+        rewardAmount,
         ...mission,
       }),
       headers: {
