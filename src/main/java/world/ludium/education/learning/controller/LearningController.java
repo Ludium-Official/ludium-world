@@ -295,6 +295,8 @@ public class LearningController {
     mission.setDescription("");
     mission.setUsrId(ludiumUser.getId());
     mission.setMissionSubmitForm("");
+    mission.setRewardToken(null);
+    mission.setRewardAmount(0);
 
     try {
       return ResponseEntity.ok(missionService.createMission(mission));

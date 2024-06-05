@@ -19,6 +19,8 @@ public class Mission {
   private UUID usrId;
   private String missionSubmitForm;
   private Integer orderNum;
+  private UUID rewardToken;
+  private Integer rewardAmount;
 
   public UUID getMissionId() {
     return missionId;
@@ -82,5 +84,21 @@ public class Mission {
 
   public void setOrderNum(Integer orderNum) {
     this.orderNum = orderNum;
+  }
+
+  public UUID getRewardToken() {
+    return rewardToken;
+  }
+
+  public void setRewardToken(UUID rewardToken) {
+    this.rewardToken = rewardToken;
+  }
+
+  public Integer getRewardAmount() {
+    return rewardAmount;
+  }
+
+  public void setRewardAmount(Integer rewardAmount) {
+    this.rewardAmount = rewardAmount;
   }
 }
