@@ -2433,12 +2433,20 @@ p {
   order: 2;
 }
 
-.copy-button {
+.viewer-codeblock-copy-button {
   background: #d1a0ff;
-  color: white;
+  color: var(--white);
   border: none;
   border-radius: 3px;
   padding: 5px 10px;
   cursor: pointer;
   font-size: 12px;
+}
+
+.viewer-codeblock-copy-button:hover {
+  background: #b080ff;
+}
+
+.viewer-codeblock-copy-button:active {
+  background: #a060ff;
 }

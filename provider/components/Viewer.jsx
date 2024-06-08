@@ -81,6 +81,7 @@ export default function Viewer({ content, height }) {
           },
         });
 
+        // 코드 블록에 복사 버튼 추가
         const preElements = document.querySelectorAll("pre");
         for (const codeBlock of preElements) {
           const code = codeBlock.querySelector("code");
@@ -88,14 +89,13 @@ export default function Viewer({ content, height }) {
           buttonWrapper.classList.add("flex-end");
           const button = document.createElement("button");
           button.innerText = "복사";
-          button.classList.add("copy-button");
+          button.classList.add("viewer-codeblock-copy-button");
 
           button.addEventListener("click", () => {
             copyToClipboard(code.innerText, button);
           });
 
           buttonWrapper.appendChild(button);
-          codeBlock.style.position = "relative";
           codeBlock.insertBefore(buttonWrapper, codeBlock.firstChild);
         }
       } catch (error) {
@@ -110,6 +110,7 @@ export default function Viewer({ content, height }) {
 
     viewerRef.current.viewerInstance.setMarkdown(content);
 
+    // 마크다운 변경 시 코드 블록에 복사 버튼 다시 추가
     const preElements = document.querySelectorAll("pre");
     for (const codeBlock of preElements) {
       const code = codeBlock.querySelector("code");
@@ -117,7 +118,7 @@ export default function Viewer({ content, height }) {
       buttonWrapper.classList.add("flex-end");
       const button = document.createElement("button");
       button.innerText = "복사";
-      button.classList.add("copy-button");
+      button.classList.add("viewer-codeblock-copy-button");
 
       button.addEventListener("click", () => {
         copyToClipboard(code.innerText, button);
