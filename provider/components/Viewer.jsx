@@ -1,22 +1,34 @@
 "use client";
-
 import "@toast-ui/editor/dist/toastui-editor.css";
 import DOMPurify from "dompurify";
 import { useEffect, useRef } from "react";
 
+const copyToClipboard = (text, button) => {
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      const originalText = button.innerText;
+      button.innerText = "복사됨";
+      setTimeout(() => {
+        button.innerText = originalText;
+      }, 2000);
+    })
+    .catch((err) => {
+      console.error("복사 실패: ", err);
+    });
+};
+
 export default function Viewer({ content, height }) {
   const viewerRef = useRef(null);
+
   useEffect(() => {
     const putViewer = async () => {
       const toastViewer = (
         await import("@toast-ui/editor/dist/toastui-editor-viewer")
       ).default;
-
       try {
         if (viewerRef.current === null) return;
-
         viewerRef.current.innerText = "";
-
         viewerRef.current.viewerInstance = new toastViewer({
           el: viewerRef.current,
           width: "100%",
@@ -68,11 +80,28 @@ export default function Viewer({ content, height }) {
             });
           },
         });
+
+        const preElements = document.querySelectorAll("pre");
+        for (const codeBlock of preElements) {
+          const code = codeBlock.querySelector("code");
+          const buttonWrapper = document.createElement("div");
+          buttonWrapper.classList.add("flex-end");
+          const button = document.createElement("button");
+          button.innerText = "복사";
+          button.classList.add("copy-button");
+
+          button.addEventListener("click", () => {
+            copyToClipboard(code.innerText, button);
+          });
+
+          buttonWrapper.appendChild(button);
+          codeBlock.style.position = "relative";
+          codeBlock.insertBefore(buttonWrapper, codeBlock.firstChild);
+        }
       } catch (error) {
         console.error(error);
       }
     };
-
     putViewer();
   }, []);
 
@@ -80,6 +109,23 @@ export default function Viewer({ content, height }) {
     if (viewerRef.current.viewerInstance === undefined) return;
 
     viewerRef.current.viewerInstance.setMarkdown(content);
+
+    const preElements = document.querySelectorAll("pre");
+    for (const codeBlock of preElements) {
+      const code = codeBlock.querySelector("code");
+      const buttonWrapper = document.createElement("div");
+      buttonWrapper.classList.add("flex-end");
+      const button = document.createElement("button");
+      button.innerText = "복사";
+      button.classList.add("copy-button");
+
+      button.addEventListener("click", () => {
+        copyToClipboard(code.innerText, button);
+      });
+
+      buttonWrapper.appendChild(button);
+      codeBlock.insertBefore(buttonWrapper, codeBlock.firstChild);
+    }
   }, [content]);
 
   return (

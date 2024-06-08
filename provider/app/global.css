@@ -2432,3 +2432,13 @@ p {
 .blockchain-wallet {
   order: 2;
 }
+
+.copy-button {
+  background: #d1a0ff;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
