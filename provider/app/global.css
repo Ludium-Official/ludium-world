@@ -2450,3 +2450,8 @@ p {
 .viewer-codeblock-copy-button:active {
   background: #a060ff;
 }
+
+.reward-claim-form {
+  display: flex;
+  order: 2;
+}
