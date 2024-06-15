@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import Footer from "./aisde/Footer";
 import GnbMenu from "./aisde/GnbMenu";
 import Logo1 from "./aisde/Logo1";
+import Logout from "./aisde/Logout";
 
 export default async function Navigation() {
   const headerList = headers();
@@ -35,15 +36,18 @@ export default async function Navigation() {
             text="로그인"
           />
         ) : (
-          <GnbMenu
-            href="/profile"
-            iconClass="icon-profile"
-            src="/icon_profile.svg"
-            alt="프로필 페이지로 이동하기"
-            width={17.323}
-            height={17.323}
-            text="프로필"
-          />
+          <>
+            <Logout />
+            <GnbMenu
+              href="/profile"
+              iconClass="icon-profile"
+              src="/icon_profile.svg"
+              alt="프로필 페이지로 이동하기"
+              width={17.323}
+              height={17.323}
+              text="프로필"
+            />
+          </>
         )}
         <GnbMenu
           href="/announcement"
