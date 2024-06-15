@@ -566,6 +566,7 @@ body {
   order: 0;
   flex-grow: 0;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .icon-28 {
