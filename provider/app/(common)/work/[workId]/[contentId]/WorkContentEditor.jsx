@@ -12,7 +12,6 @@ const Editor = dynamic(() => import("@/components/Editor"), {
 const SubmitButton = ({ isEditor }) => {
   const { pending } = useFormStatus();
 
-  console.log({ isEditor });
   return (
     <button
       className="button-L-2 background-purple-01 h5-18 color-white"
