@@ -25,6 +25,10 @@ const Application = dynamic(() => import("@/components/profile/Application"), {
   loading: () => <p>지원서를 조회하는 중입니다...</p>,
 });
 
+const Reward = dynamic(() => import("@/components/profile/Reward"), {
+  loading: () => <p>보상을 조회하는 중입니다...</p>,
+});
+
 export async function generateMetadata() {
   const profile = await getProfile();
 
@@ -156,6 +160,33 @@ export default async function ProfilePage() {
                 </Link> */}
               </div>
               <Application usrId={profile.id} />
+            </div>
+          </div>
+          <div className="frame-42">
+            <div className="frame-34-6 background-white border-gray-06">
+              <div className="frame-35-3">
+                <div className="frame-9">
+                  <h4 className="h4-20 color-black">나의 보상</h4>
+                  <Link className="frame-56-2 link" href="/profile/reward">
+                    <p className="more color-gray-04">모두 보기</p>
+                    <div className="arrow-right">
+                      <div className="frame-78">
+                        <Icon
+                          src="/icon_arrow_right.svg"
+                          alt="more"
+                          width={12}
+                          height={12}
+                        />
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              </div>
+              <div className="frame-96">
+                <div className="frame-93-6">
+                  <Reward usrId={profile.id} />
+                </div>
+              </div>
             </div>
           </div>
         </div>
