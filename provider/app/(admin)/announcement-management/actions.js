@@ -96,6 +96,8 @@ export async function updateModule({
   detailId,
   title,
   description,
+  rewardToken,
+  rewardAmount,
   module,
 }) {
   const cookieStore = cookies();
@@ -109,6 +111,8 @@ export async function updateModule({
         detailId,
         title,
         description,
+        rewardToken,
+        rewardAmount,
         ...module,
       }),
       headers: {
