@@ -1,0 +1,1 @@
+ALTER TABLE public.mission ALTER COLUMN reward_amount TYPE numeric USING reward_amount::numeric;
