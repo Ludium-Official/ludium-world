@@ -17,14 +17,14 @@ const MissionReward = ({
   const { pending } = useFormStatus();
 
   useEffect(() => {
-    const getRewardClaimStatusSse = async () => {
+    const getRewardClaimStatus = async () => {
       const missionListStr =
         localStorage.getItem("ludium-mission-claim") ?? "[]";
       const missionList = JSON.parse(missionListStr);
 
       if (missionList.includes(mission.missionId)) {
         const missionRewardClaimStatusResponse = await fetch(
-          `/profile/mission/claim?missionId=${mission.missionId}`
+          `/profile/reward/claim?resourceId=${mission.missionId}`
         );
 
         if (!missionRewardClaimStatusResponse.ok) {
@@ -61,7 +61,7 @@ const MissionReward = ({
             if (chunk.startsWith("data:")) {
               const data = chunk.slice("data:".length);
 
-              if (TRANSACTION_CODE[data] !== 0) {
+              if (TRANSACTION_CODE[data] > 0) {
                 setMissionRewardClaimStatus(data);
               }
             }
@@ -74,7 +74,7 @@ const MissionReward = ({
       }
     };
 
-    getRewardClaimStatusSse();
+    getRewardClaimStatus();
   }, []);
 
   return (
@@ -99,8 +99,7 @@ const MissionReward = ({
         <div className={`frame-97 border-none`}>
           {mission.status !== "APPROVE" ? (
             <button disabled={true}>
-              {" "}
-              <h4 className="h4-20">검증안됨</h4>{" "}
+              <h4 className="h4-20">검증안됨</h4>
             </button>
           ) : mission.rewardToken == null ||
             mission.rewardAmount == null ? null : (
@@ -153,11 +152,12 @@ export default function MissionRewardClaimForm({ mission }) {
 
     try {
       await claimMissionReward({
-        missionId: mission.missionId,
+        resourceId: mission.missionId,
+        resourceType: "MISSION",
         coinNetworkId: mission.rewardToken,
         amount: mission.rewardAmount,
         userAddress: accountId,
-        missionRewardClaimStatus: mission.rewardClaimStatus,
+        rewardClaimStatus: mission.rewardClaimStatus,
       });
       localStorage.setItem(
         "ludium-mission-claim",

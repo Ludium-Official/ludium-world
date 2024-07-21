@@ -7,12 +7,14 @@ import { revalidatePath } from "next/cache";
 import { cookies, headers } from "next/headers";
 
 export async function claimMissionReward({
-  missionId,
+  resourceId,
+  resourceType,
   coinNetworkId,
   amount,
   userAddress,
   rewardClaimStatus,
 }) {
+  console.log("hello");
   if (
     [TRANSACTION_CODE.READY, TRANSACTION_CODE.TRANSACTION_APPROVED].includes(
       TRANSACTION_CODE[rewardClaimStatus]
@@ -27,7 +29,8 @@ export async function claimMissionReward({
   const res = await fetchPayment("/api/reward-claims", {
     method: HTTP_METHOD.POST,
     body: JSON.stringify({
-      mission_id: missionId,
+      resource_id: resourceId,
+      resource_type: resourceType,
       coin_network_id: coinNetworkId,
       amount: amount.toString(),
       user_address: userAddress,
@@ -48,5 +51,14 @@ export async function claimMissionReward({
     } else {
       throw new Error("보상을 요청하는 중 에러가 발생했습니다.");
     }
+  }
+
+  revalidatePath("/profile");
+  revalidatePath("/profile/reward");
+
+  if (resourceType === "MISSION") {
+    revalidatePath("/profile/mission");
+  } else {
+    revalidatePath("/profile/work");
   }
 }

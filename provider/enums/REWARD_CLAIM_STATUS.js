@@ -4,4 +4,4 @@ export const TRANSACTION_CODE = {
   TRANSACTION_FAILED: 2,
 };
 
-export const TRANSACTION_VALUES = ["대기중", "승인됨", "실패함"];
+export const TRANSACTION_VALUES = ["요청중", "승인됨", "실패함"];
