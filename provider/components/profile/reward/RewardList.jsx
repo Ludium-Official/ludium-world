@@ -29,10 +29,28 @@ async function getMission(missionId) {
   return await getMissionResponse.json();
 }
 
+async function getWork(workId) {
+  const getWorkResponse = await fetchWithRetry(
+    `/detailed-announcement/${workId}`
+  );
+
+  if (!getWorkResponse.ok)
+    if (getWorkResponse.status === 404) throw new Error(404);
+    else throw new Error(500);
+
+  return await getWorkResponse.json();
+}
+
 async function Mission({ missionId }) {
   const mission = await getMission(missionId);
 
   return <h5 className="h5-18 color-gray-02">{mission.title}</h5>;
+}
+
+async function Work({ workId }) {
+  const work = await getWork(workId);
+
+  return <h5 className="h5-18 color-gray-02">{work.title}</h5>;
 }
 
 export default async function RewardList() {
@@ -45,18 +63,25 @@ export default async function RewardList() {
       </div>
       <div className="frame-34 background-white border-gray-06">
         {rewards.map(
-          ({ id, mission_id, detail: { transaction_hash } }, index) => (
+          (
+            { id, resource_id, resource_type, detail: { transaction_hash } },
+            index
+          ) => (
             <Fragment key={id}>
               <div className="frame-136">
                 <div className="frame-35">
                   <div className="frame-92">
-                    {/* <Link
+                    <Link
                       className="link"
                       href={`${process.env.NEXT_PUBLIC_NEAR_BLOCK_SCAN}/txns/${transaction_hash}`}
                       target="_blank"
-                    > */}
-                    <Mission missionId={mission_id} />
-                    {/* </Link> */}
+                    >
+                      {resource_type === "DETAILED_POSTING" ? (
+                        <Work workId={resource_id} />
+                      ) : (
+                        <Mission missionId={resource_id} />
+                      )}
+                    </Link>
                   </div>
                 </div>
                 <div className="frame-101-2"></div>

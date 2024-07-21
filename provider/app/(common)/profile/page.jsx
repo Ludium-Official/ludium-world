@@ -89,7 +89,7 @@ export default async function ProfilePage() {
             <div className="frame-34-6 background-white border-gray-06">
               <div className="frame-35-2">
                 <h1 className="h4-20 color-black">나의 작업</h1>
-                {/* <Link className="frame-56-2 link" href="/">
+                <Link className="frame-56-2 link" href="/profile/work">
                   <p className="more color-gray-04">모두 보기</p>
                   <div className="arrow-right">
                     <div className="frame-78">
@@ -101,7 +101,7 @@ export default async function ProfilePage() {
                       />
                     </div>
                   </div>
-                </Link> */}
+                </Link>
               </div>
               <Work usrId={profile.id} />
             </div>

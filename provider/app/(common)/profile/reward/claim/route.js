@@ -6,12 +6,12 @@ const encoder = new TextEncoder();
 export async function GET(request) {
   const cookieStore = cookies();
   const { searchParams } = new URL(request.url);
-  const missionId = searchParams.get("missionId");
+  const resourceId = searchParams.get("resourceId");
 
   const stream = new ReadableStream({
     async pull(controller) {
-      const missionRewardClaimStatusResponse = await fetchWithRetry(
-        `/mission-reward/status?missionId=${missionId}`,
+      const rewardClaimStatusResponse = await fetchWithRetry(
+        `/reward/status?resourceId=${resourceId}`,
         {
           headers: {
             Accept: "text/event-stream",
@@ -20,7 +20,7 @@ export async function GET(request) {
         }
       );
 
-      const reader = missionRewardClaimStatusResponse.body.getReader();
+      const reader = rewardClaimStatusResponse.body.getReader();
       const decoder = new TextDecoder("utf-8");
 
       while (true) {
