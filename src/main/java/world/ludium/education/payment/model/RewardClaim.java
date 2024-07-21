@@ -12,7 +12,8 @@ import java.util.UUID;
 public class RewardClaim {
     @Id
     private UUID id;
-    private UUID missionId;
+    private UUID resourceId;
+    private String resourceType;
     private UUID coinNetworkId;
     private String rewardClaimStatus;
     private Integer amount;
@@ -29,12 +30,12 @@ public class RewardClaim {
         this.id = id;
     }
 
-    public UUID getMissionId() {
-        return missionId;
+    public UUID getResourceId() {
+        return resourceId;
     }
 
-    public void setMissionId(UUID missionId) {
-        this.missionId = missionId;
+    public void setResourceId(UUID resourceId) {
+        this.resourceId = resourceId;
     }
 
     public UUID getCoinNetworkId() {
@@ -91,5 +92,13 @@ public class RewardClaim {
 
     public void setUpdatedDate(Timestamp updatedDate) {
         this.updatedDate = updatedDate;
+    }
+
+    public String getResourceType() {
+        return resourceType;
+    }
+
+    public void setResourceType(String resourceType) {
+        this.resourceType = resourceType;
     }
 }

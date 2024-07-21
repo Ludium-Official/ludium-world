@@ -28,7 +28,7 @@ public interface MissionRepository extends JpaRepository<Mission, UUID> {
         FROM EnhancedMissionSubmit ms
         JOIN Mission m ON ms.missionId = m.missionId
         JOIN Curriculum c ON c.curriculumId = m.curriculumId
-        LEFT JOIN RewardClaim rc ON rc.missionId = m.missionId AND rc.userId = ms.usrId
+        LEFT JOIN RewardClaim rc ON rc.resourceId = m.missionId AND rc.userId = ms.usrId
        WHERE ms.usrId = :usrId
        ORDER BY ms.createAt
       """)
@@ -47,7 +47,7 @@ public interface MissionRepository extends JpaRepository<Mission, UUID> {
             FROM EnhancedMissionSubmit ms
             JOIN Mission m ON ms.missionId = m.missionId
             JOIN Curriculum c ON c.curriculumId = m.curriculumId
-            LEFT JOIN RewardClaim rc ON rc.missionId = m.missionId AND rc.userId = ms.usrId
+            LEFT JOIN RewardClaim rc ON rc.resourceId = m.missionId AND rc.userId = ms.usrId
            WHERE ms.usrId = :usrId
            ORDER BY ms.createAt
       """)
