@@ -112,7 +112,7 @@ function WorkReward({ work, workRewardClaimStatus, setWorkRewardClaimStatus }) {
                   ? "요청중"
                   : TRANSACTION_CODE[workRewardClaimStatus] ===
                     TRANSACTION_CODE.TRANSACTION_APPROVED
-                  ? "요청 완료"
+                  ? "지급 완료"
                   : pending
                   ? "요청중"
                   : "보상 요청"}
