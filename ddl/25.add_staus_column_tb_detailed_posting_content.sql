@@ -1,1 +1,0 @@
-ALTER TABLE public.detailed_posting_content ADD status varchar(50) NOT NULL DEFAULT 'CREATE';
