@@ -2,7 +2,8 @@ import BackButton from "@/components/BackButton";
 import Category from "@/enums/Category";
 import MissionEditor from "./MissionEditor";
 import ArticleEditor from "../../ArticleEditor";
-import fetchWithRetry from "@/functions/api";
+import fetchWithRetry, { fetchPayment } from "@/functions/api";
+import { cookies, headers } from "next/headers";
 
 async function getMission(learningId, curriculumId, missionId) {
   const getMissionResponse = await fetchWithRetry(
@@ -24,10 +25,39 @@ async function getArticle(learningId, curriculumId, articleId) {
   return await getArticleResponse.json();
 }
 
+async function getCoinList() {
+  const cookieStore = cookies();
+  const header = headers();
+  const networkCode = process.env.NEXT_PUBLIC_NETWORK_CODE;
+
+  const getCoinListResponse = await fetchPayment(
+    `/api/coin-networks?network_code=${networkCode}`,
+    {
+      headers: {
+        cookie: cookieStore,
+        "x-user-right": header.get("x-user-right"),
+      },
+    }
+  );
+
+  if (!getCoinListResponse.ok) {
+    throw new Error("코인을 조회하는 중 에러가 발생했습니다.");
+  }
+
+  return getCoinListResponse.json();
+}
+
 async function Mission({ learningId, curriculumId, contentId }) {
   const mission = await getMission(learningId, curriculumId, contentId);
+  const coinList = await getCoinList();
 
-  return <MissionEditor postingId={learningId} mission={mission} />;
+  return (
+    <MissionEditor
+      postingId={learningId}
+      mission={mission}
+      coinList={coinList}
+    />
+  );
 }
 
 async function Article({ learningId, curriculumId, contentId }) {

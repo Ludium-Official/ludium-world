@@ -24,7 +24,16 @@ const SubmitButton = () => {
 };
 
 export default function EditModuleContent({
-  module: { postingId, detailId, title, description, ...module },
+  module: {
+    postingId,
+    detailId,
+    title,
+    description,
+    rewardToken,
+    rewardAmount,
+    ...module
+  },
+  coinList,
 }) {
   const editorRef = useRef(null);
   const router = useRouter();
@@ -38,6 +47,8 @@ export default function EditModuleContent({
         detailId,
         title: moduleData.get("title"),
         description: editorInstance.getMarkdown(),
+        rewardToken: moduleData.get("rewardToken"),
+        rewardAmount: moduleData.get("rewardAmount"),
         module,
       });
 
@@ -60,6 +71,35 @@ export default function EditModuleContent({
           id="title"
           defaultValue={title}
           placeholder="제목을 입력해주세요"
+        />
+      </div>
+      <div className="input-2">
+        <label className="h5-18 color-gray-03" htmlFor="rewardToken">
+          토큰
+        </label>
+        <select
+          className="frame-102-3 background-white border-gray-05 p1-18 color-gray-04"
+          name="rewardToken"
+          id="rewardToken"
+          defaultValue={rewardToken}
+        >
+          {coinList.map(({ coin, id }) => (
+            <option key={id} value={id}>
+              {coin.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="input-2">
+        <label className="h5-18 color-gray-03" htmlFor="rewardAmount">
+          금액
+        </label>
+        <input
+          className="frame-102-3 background-white border-gray-05 p1-18 color-gray-04"
+          type="number"
+          name="rewardAmount"
+          id="rewardAmount"
+          defaultValue={rewardAmount}
         />
       </div>
       <div className="input-2">

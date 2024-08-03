@@ -1,7 +1,0 @@
-export default {
-  CONTENT: "CONTENT",
-  ANNOUNCEMENT: "ANNOUNCEMENT",
-  BANNER: "BANNER",
-  FREE: "FREE",
-  QUESTION: "QUESTION",
-};
