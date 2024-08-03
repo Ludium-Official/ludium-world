@@ -1,0 +1,1 @@
+ALTER TABLE public.reward_claim ALTER COLUMN amount TYPE int8 USING amount::int8;

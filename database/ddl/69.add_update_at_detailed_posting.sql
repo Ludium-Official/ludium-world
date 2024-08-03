@@ -1,0 +1,1 @@
+ALTER TABLE public.detailed_posting ADD update_at timestamp DEFAULT now() NOT NULL;
