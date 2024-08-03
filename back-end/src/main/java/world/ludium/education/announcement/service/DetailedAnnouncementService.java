@@ -16,6 +16,7 @@ import world.ludium.education.announcement.repository.DetailedAnnouncementConten
 import world.ludium.education.announcement.repository.DetailedAnnouncementContentRepository;
 import world.ludium.education.announcement.repository.DetailedAnnouncementRepository;
 import world.ludium.education.announcement.repository.DetailedAnnouncementWorkerRepository;
+import world.ludium.education.profile.dto.MyDetailAnnouncementDTO;
 
 @Service
 public class DetailedAnnouncementService {
@@ -48,11 +49,11 @@ public class DetailedAnnouncementService {
     return detailedAnnouncementRepository.findAllByPostingIdOrderByCreateAt(announcementId);
   }
 
-  public List<DetailedAnnouncement> getAllDetailedAnnouncementByWorker(UUID usrId) {
+  public List<MyDetailAnnouncementDTO> getAllDetailedAnnouncementByWorker(UUID usrId) {
     return detailedAnnouncementRepository.findAllByWorkerOrderByCreateAt(usrId);
   }
 
-  public List<DetailedAnnouncement> getTop4DetailedAnnouncementByWorker(UUID usrId) {
+  public List<MyDetailAnnouncementDTO> getTop4DetailedAnnouncementByWorker(UUID usrId) {
     return detailedAnnouncementRepository.findTop4ByWorkerOrderByCreateAt(usrId,
         PageRequest.of(0, 4));
   }

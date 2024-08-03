@@ -70,7 +70,7 @@ public class LearningController {
   @GetMapping("/top5")
   public ResponseEntity<Object> getTop5Learning() {
     try {
-      var top5LearningList = learningService.getAllLearning();
+      var top5LearningList = learningService.getTop5Learning();
 
       if (top5LearningList.isEmpty()) {
         return responseUtil.getNoSuchElementExceptionMessage("학습 데이터가 없습니다.", "");
@@ -295,6 +295,8 @@ public class LearningController {
     mission.setDescription("");
     mission.setUsrId(ludiumUser.getId());
     mission.setMissionSubmitForm("");
+    mission.setRewardToken(null);
+    mission.setRewardAmount(0);
 
     try {
       return ResponseEntity.ok(missionService.createMission(mission));

@@ -8,6 +8,9 @@ public record MyMissionDTO(UUID missionId,
                            Timestamp createAt,
                            String status,
                            UUID postingId,
-                           UUID curriculumId) {
+                           UUID curriculumId,
+                           UUID rewardToken,
+                           Integer rewardAmount,
+                           String rewardClaimStatus) {
 
 }
