@@ -21,6 +21,8 @@ public class DetailedAnnouncement {
   private Timestamp createAt;
   private boolean isPinned;
   private Integer pinOrder;
+  private UUID rewardToken;
+  private Integer rewardAmount;
 
   public UUID getDetailId() {
     return detailId;
@@ -92,5 +94,21 @@ public class DetailedAnnouncement {
 
   public void setPinOrder(Integer pinOrder) {
     this.pinOrder = pinOrder;
+  }
+
+  public UUID getRewardToken() {
+    return rewardToken;
+  }
+
+  public void setRewardToken(UUID rewardToken) {
+    this.rewardToken = rewardToken;
+  }
+
+  public Integer getRewardAmount() {
+    return rewardAmount;
+  }
+
+  public void setRewardAmount(Integer rewardAmount) {
+    this.rewardAmount = rewardAmount;
   }
 }

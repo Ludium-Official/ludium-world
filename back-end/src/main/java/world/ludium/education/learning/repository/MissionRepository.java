@@ -20,32 +20,36 @@ public interface MissionRepository extends JpaRepository<Mission, UUID> {
                                                              m.title,
                                                              m.createAt,
                                                              ms.status,
+                                                             c.postingId,
                                                              c.curriculumId,
-                                                             c.postingId)
+                                                             m.rewardToken,
+                                                             m.rewardAmount,
+                                                             rc.rewardClaimStatus)
         FROM EnhancedMissionSubmit ms
-           , Mission m
-           , Curriculum c
-       WHERE ms.missionId = m.missionId
-         AND m.curriculumId = c.curriculumId
-         AND ms.usrId = :usrId
+        JOIN Mission m ON ms.missionId = m.missionId
+        JOIN Curriculum c ON c.curriculumId = m.curriculumId
+        LEFT JOIN RewardClaim rc ON rc.resourceId = m.missionId AND rc.userId = ms.usrId
+       WHERE ms.usrId = :usrId
        ORDER BY ms.createAt
       """)
   List<MyMissionDTO> findAllByUsrIdOrderByCreateAt(@Param("usrId") UUID usrId);
 
   @Query("""
-      SELECT new world.ludium.education.profile.dto.MyMissionDTO(m.missionId,
-                                                             m.title,
-                                                             m.createAt,
-                                                             ms.status,
-                                                             c.curriculumId,
-                                                             c.postingId)
-        FROM EnhancedMissionSubmit ms
-           , Mission m
-           , Curriculum c
-       WHERE ms.missionId = m.missionId
-         AND m.curriculumId = c.curriculumId
-         AND ms.usrId = :usrId
-       ORDER BY ms.createAt
+          SELECT new world.ludium.education.profile.dto.MyMissionDTO(m.missionId,
+                                                                     m.title,
+                                                                     m.createAt,
+                                                                     ms.status,
+                                                                     c.postingId,
+                                                                     c.curriculumId,
+                                                                     m.rewardToken,
+                                                                     m.rewardAmount,
+                                                                     rc.rewardClaimStatus)
+            FROM EnhancedMissionSubmit ms
+            JOIN Mission m ON ms.missionId = m.missionId
+            JOIN Curriculum c ON c.curriculumId = m.curriculumId
+            LEFT JOIN RewardClaim rc ON rc.resourceId = m.missionId AND rc.userId = ms.usrId
+           WHERE ms.usrId = :usrId
+           ORDER BY ms.createAt
       """)
   List<MyMissionDTO> findTop4ByUsrIdOrderByCreateAt(@Param("usrId") UUID usrId, Pageable pageable);
 }
