@@ -3,18 +3,18 @@ import ko_kr from "@/langs/ko_kr";
 import { cookies, headers } from "next/headers";
 import Link from "next/link";
 import { Fragment } from "react";
-import MissionRewardClaimForm from "./MissionRewardClaimButton";
+import WorkRewardClaimForm from "./WorkRewardClaimForm";
 
-async function getMissionList(usrId) {
-  const getMissionListResponse = await fetchWithRetry(
-    `/profile/${usrId}/mission`
+async function getWorkList(usrId) {
+  const getWorkListResponse = await fetchWithRetry(
+    `/profile/${usrId}/detailed-announcement`
   );
 
-  if (!getMissionListResponse.ok)
-    if (getMissionListResponse.status === 404) return [];
-    else throw new Error("미션을 조회하는 중 에러가 발생했습니다.");
+  if (!getWorkListResponse.ok)
+    if (getWorkListResponse.status === 404) return [];
+    else throw new Error("작업을 조회하는 중 에러가 발생했습니다.");
 
-  return await getMissionListResponse.json();
+  return getWorkListResponse.json();
 }
 
 async function getCoinList() {
@@ -39,14 +39,14 @@ async function getCoinList() {
   return getCoinListResponse.json();
 }
 
-export default async function MissionList({ usrId }) {
-  const missions = await getMissionList(usrId);
+export default async function MyWorkList({ usrId }) {
+  const works = await getWorkList(usrId);
   const coins = await getCoinList();
 
   return (
     <div className="frame-93-7">
       <div className="frame-57">
-        <h3 className="h3-24 color-black">나의 미션</h3>
+        <h3 className="h3-24 color-black">나의 작업</h3>
       </div>
       <div className="frame-58 background-white border-gray-06">
         <div className="frame-119">
@@ -79,23 +79,18 @@ export default async function MissionList({ usrId }) {
               </div>
             </div>
             <div className="frame-101-3">
-              <div className="frame-93-8">
-                {/* <MissionRewardBatchClaimButton /> */}
-              </div>
+              <div className="frame-93-8"></div>
             </div>
           </div>
           <div className="line border-gray-04" />
-          {missions.map((mission, index) => (
-            <Fragment key={mission.missionId}>
+          {works.map((work, index) => (
+            <Fragment key={work.detailId}>
               <div className="frame-118">
                 <div className="frame-34-8">
                   <div className="frame-9-6">
                     <div className="frame-93-2">
-                      <Link
-                        className="link"
-                        href={`/participation/${mission.postingId}/${mission.curriculumId}/mission/${mission.missionId}`}
-                      >
-                        <h4 className="h4-20 color-gray-02">{mission.title}</h4>
+                      <Link className="link" href={`/work/${work.detailId}`}>
+                        <h4 className="h4-20 color-gray-02">{work.title}</h4>
                       </Link>
                     </div>
                   </div>
@@ -103,38 +98,38 @@ export default async function MissionList({ usrId }) {
                 <div className="frame-101-3">
                   <div className={`frame-97 border-none`}>
                     <h4 className={`h4-20`}>
-                      {mission.rewardToken == null
+                      {work.rewardToken == null
                         ? "없음"
-                        : coins.find(({ id }) => id === mission.rewardToken)
-                            .coin.symbol}
+                        : coins.find(({ id }) => id === work.rewardToken).coin
+                            .symbol}
                     </h4>
                   </div>
                 </div>
                 <div className="frame-101-3">
                   <div className={`frame-97 border-none`}>
-                    <h4 className={`h4-20`}>{mission.rewardAmount ?? 0}</h4>
+                    <h4 className={`h4-20`}>{work.rewardAmount ?? 0}</h4>
                   </div>
                 </div>
                 <div className="frame-101-3">
                   <div
                     className={`frame-97 ${
-                      mission.status === "APPROVE"
+                      work.status === "APPROVE"
                         ? "background-purple-01"
                         : "background-purple-04"
                     }`}
                   >
                     <h4
                       className={`h4-20 ${
-                        mission.status === "APPROVE"
+                        work.status === "APPROVE"
                           ? "color-white"
                           : "color-purple-01"
                       }`}
                     >
-                      {ko_kr[mission.status]}
+                      {ko_kr[work.status]}
                     </h4>
                   </div>
                 </div>
-                <MissionRewardClaimForm mission={mission} />
+                <WorkRewardClaimForm work={work} />
               </div>
             </Fragment>
           ))}

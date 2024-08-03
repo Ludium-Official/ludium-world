@@ -566,6 +566,7 @@ body {
   order: 0;
   flex-grow: 0;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .icon-28 {
@@ -2034,6 +2035,7 @@ h1,
 h2,
 h3,
 h4,
+h5,
 p {
   margin: 0;
 }
@@ -2430,5 +2432,28 @@ p {
 }
 
 .blockchain-wallet {
+  order: 2;
+}
+
+.viewer-codeblock-copy-button {
+  background: #d1a0ff;
+  color: var(--white);
+  border: none;
+  border-radius: 3px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.viewer-codeblock-copy-button:hover {
+  background: #b080ff;
+}
+
+.viewer-codeblock-copy-button:active {
+  background: #a060ff;
+}
+
+.reward-claim-form {
+  display: flex;
   order: 2;
 }
