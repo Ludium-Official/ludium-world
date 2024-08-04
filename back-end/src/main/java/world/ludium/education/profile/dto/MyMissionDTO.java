@@ -10,7 +10,7 @@ public record MyMissionDTO(UUID missionId,
                            UUID postingId,
                            UUID curriculumId,
                            UUID rewardToken,
-                           Integer rewardAmount,
+                           Double rewardAmount,
                            String rewardClaimStatus) {
 
 }
