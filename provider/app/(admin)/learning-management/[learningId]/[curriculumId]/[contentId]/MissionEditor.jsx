@@ -54,8 +54,8 @@ export default function MissionEditor({
         rewardAmount: missionData.get("rewardAmount"),
         mission,
       });
-    } catch ({ message }) {
-      alert(message);
+    } catch (error) {
+      alert(error);
     }
   };
 
@@ -112,6 +112,7 @@ export default function MissionEditor({
           type="number"
           name="rewardAmount"
           id="rewardAmount"
+          step="any"
           defaultValue={rewardAmount}
         />
       </div>

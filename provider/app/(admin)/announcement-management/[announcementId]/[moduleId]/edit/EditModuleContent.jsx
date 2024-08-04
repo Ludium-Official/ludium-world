@@ -99,6 +99,7 @@ export default function EditModuleContent({
           type="number"
           name="rewardAmount"
           id="rewardAmount"
+          step="any"
           defaultValue={rewardAmount}
         />
       </div>
