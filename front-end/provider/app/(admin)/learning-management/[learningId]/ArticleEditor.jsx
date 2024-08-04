@@ -33,13 +33,17 @@ export default function ArticleEditor({
     const { editorInstance } = editorRef.current;
 
     try {
-      await updateArticle({
+      const message = await updateArticle({
         postingId,
         title: articleData.get("title"),
         description: editorInstance.getMarkdown(),
         orderNum: articleData.get("orderNum"),
         article,
       });
+
+      if (message) {
+        alert(message);
+      }
     } catch ({ message }) {
       alert(message);
     }

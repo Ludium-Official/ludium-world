@@ -44,7 +44,7 @@ export default function MissionEditor({
     const submitFormEditorInstance = submitFormEditorRef.current.editorInstance;
 
     try {
-      await updateMission({
+      const message = await updateMission({
         postingId,
         title: missionData.get("title"),
         description: editorInstance.getMarkdown(),
@@ -54,8 +54,12 @@ export default function MissionEditor({
         rewardAmount: missionData.get("rewardAmount"),
         mission,
       });
-    } catch ({ message }) {
-      alert(message);
+
+      if (message) {
+        alert(message);
+      }
+    } catch (error) {
+      alert(error);
     }
   };
 
@@ -112,6 +116,7 @@ export default function MissionEditor({
           type="number"
           name="rewardAmount"
           id="rewardAmount"
+          step="any"
           defaultValue={rewardAmount}
         />
       </div>
