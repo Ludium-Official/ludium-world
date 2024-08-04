@@ -44,7 +44,7 @@ export default function MissionEditor({
     const submitFormEditorInstance = submitFormEditorRef.current.editorInstance;
 
     try {
-      const { error } = await updateMission({
+      const message = await updateMission({
         postingId,
         title: missionData.get("title"),
         description: editorInstance.getMarkdown(),
@@ -55,8 +55,8 @@ export default function MissionEditor({
         mission,
       });
 
-      if (error) {
-        alert(error);
+      if (message) {
+        alert(message);
       }
     } catch (error) {
       alert(error);
