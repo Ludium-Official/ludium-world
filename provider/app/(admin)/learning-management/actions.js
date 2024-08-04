@@ -269,10 +269,10 @@ export async function updateArticle({
       case 403:
       case 404: {
         const { message } = await updateArticleResponse.json();
-        throw new Error(message);
+        throw { error: message };
       }
       default:
-        throw new Error("아티클을 저장하는 중 에러가 발생했습니다.");
+        throw { error: "아티클을 저장하는 중 에러가 발생했습니다." };
     }
   }
 
