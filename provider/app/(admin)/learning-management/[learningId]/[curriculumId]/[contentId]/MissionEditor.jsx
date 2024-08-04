@@ -43,18 +43,18 @@ export default function MissionEditor({
     const { editorInstance } = editorRef.current;
     const submitFormEditorInstance = submitFormEditorRef.current.editorInstance;
 
-    try {
-      await updateMission({
-        postingId,
-        title: missionData.get("title"),
-        description: editorInstance.getMarkdown(),
-        missionSubmitForm: submitFormEditorInstance.getMarkdown(),
-        orderNum: missionData.get("orderNum"),
-        rewardToken: missionData.get("rewardToken"),
-        rewardAmount: missionData.get("rewardAmount"),
-        mission,
-      });
-    } catch (error) {
+    const { error } = await updateMission({
+      postingId,
+      title: missionData.get("title"),
+      description: editorInstance.getMarkdown(),
+      missionSubmitForm: submitFormEditorInstance.getMarkdown(),
+      orderNum: missionData.get("orderNum"),
+      rewardToken: missionData.get("rewardToken"),
+      rewardAmount: missionData.get("rewardAmount"),
+      mission,
+    });
+
+    if (error) {
       alert(error);
     }
   };

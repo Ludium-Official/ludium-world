@@ -195,17 +195,10 @@ export async function updateMission({
       case 403:
       case 404: {
         const { message } = await updateMissionResponse.json();
-        throw new Error(message, {
-          cause: { nextNoDigest: true, originalCause: message },
-        });
+        return { error: message };
       }
       default:
-        throw new Error("미션을 저장하는 중 에러가 발생했습니다.", {
-          cause: {
-            nextNoDigest: true,
-            originalCause: "미션을 저장하는 중 에러가 발생했습니다.",
-          },
-        });
+        return { error: "미션을 저장하는 중 에러가 발생했습니다." };
     }
   }
 
