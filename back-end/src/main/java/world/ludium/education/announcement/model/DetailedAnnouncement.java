@@ -22,7 +22,7 @@ public class DetailedAnnouncement {
   private boolean isPinned;
   private Integer pinOrder;
   private UUID rewardToken;
-  private Integer rewardAmount;
+  private Double rewardAmount;
 
   public UUID getDetailId() {
     return detailId;
@@ -104,11 +104,11 @@ public class DetailedAnnouncement {
     this.rewardToken = rewardToken;
   }
 
-  public Integer getRewardAmount() {
+  public Double getRewardAmount() {
     return rewardAmount;
   }
 
-  public void setRewardAmount(Integer rewardAmount) {
+  public void setRewardAmount(Double rewardAmount) {
     this.rewardAmount = rewardAmount;
   }
 }

@@ -8,6 +8,6 @@ public record MyDetailAnnouncementDTO(UUID detailId,
                                       Timestamp createAt,
                                       String status,
                                       UUID rewardToken,
-                                      Integer rewardAmount,
+                                      Double rewardAmount,
                                       String rewardClaimStatus) {
 }

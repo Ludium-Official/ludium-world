@@ -20,7 +20,7 @@ public class Mission {
   private String missionSubmitForm;
   private Integer orderNum;
   private UUID rewardToken;
-  private Integer rewardAmount;
+  private Double rewardAmount;
 
   public UUID getMissionId() {
     return missionId;
@@ -94,11 +94,11 @@ public class Mission {
     this.rewardToken = rewardToken;
   }
 
-  public Integer getRewardAmount() {
+  public Double getRewardAmount() {
     return rewardAmount;
   }
 
-  public void setRewardAmount(Integer rewardAmount) {
+  public void setRewardAmount(Double rewardAmount) {
     this.rewardAmount = rewardAmount;
   }
 }
